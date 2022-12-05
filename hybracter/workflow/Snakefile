@@ -50,12 +50,12 @@ include: "rules/directories.smk"
 # Parse the samples and read files
 include: "rules/samples.smk"
 dictReads = parseSamples(CSV, LR_ONLY)
+SAMPLES = list(dictReads.keys())
 
 wildcard_constraints:
     sample= '|'.join([re.escape(x) for x in SAMPLES])
 
 
-print(dictReads)
 
 
 # Import rules and functions
