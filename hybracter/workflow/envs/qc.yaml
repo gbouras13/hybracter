@@ -1,0 +1,8 @@
+name: qc
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - filtlong
+    - porechop

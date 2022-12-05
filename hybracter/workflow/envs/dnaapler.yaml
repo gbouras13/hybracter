@@ -1,0 +1,8 @@
+name: dnaapler
+channels:
+    - bioconda 
+    - conda-forge
+    - gbouras13
+dependencies:
+     - dnaapler 
+     - python >=3

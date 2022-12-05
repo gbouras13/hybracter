@@ -1,0 +1,5 @@
+name: roary
+channels:
+    - bioconda
+dependencies:
+    - roary

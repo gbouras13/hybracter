@@ -1,0 +1,7 @@
+name: polca
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - masurca

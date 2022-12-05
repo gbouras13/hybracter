@@ -1,0 +1,4 @@
+include hybracter/hybracter.LICENSE
+include hybracter/hybracter.CITATION
+include hybracter/hybracter.VERSION
+recursive-include hybracter *

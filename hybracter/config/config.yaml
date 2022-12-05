@@ -1,0 +1,34 @@
+# Snakemake config
+input:
+output: 'hybracter.out/'
+log: 'hybracter/hybracter.log'
+threads: 16
+long: False
+
+# Nanopore QC params
+min_length: 1500
+min_quality: 9
+
+# Snakemake Params
+BigJobMem: 32000     
+BigJobCpu: 16       
+SmallJobMem: 4000
+SmallJobCpu: 1 
+
+SmallTime: 5
+BigTime: 300
+MediumTime: 120
+
+
+
+# 
+
+min_chrom_length: 2500000
+Polca: True
+min_length: 1500
+min_quality: 9
+
+# medaka model
+medakaModel: 'r941_min_sup_g507'
+flyeModel: '--nano-hq'
+

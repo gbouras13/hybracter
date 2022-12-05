@@ -1,0 +1,6 @@
+name: medaka
+channels:
+    - bioconda 
+    - conda-forge
+dependencies:
+     - medaka 

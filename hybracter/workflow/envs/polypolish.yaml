@@ -1,0 +1,7 @@
+name: polypolish
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - polypolish

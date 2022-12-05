@@ -1,0 +1,85 @@
+
+### DEFAULT CONFIG FILE
+
+import os
+
+configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+
+### from config files
+#  input as csv
+CSV = config['input']
+OUTPUT = config['output']
+THREADS = config['threads']
+
+# snakemake params 
+BigJobMem = config["BigJobMem"]
+BigJobCpu = config["BigJobCpu"]
+SmallJobMem = config["SmallJobMem"]
+SmallJobCpu = config["SmallJobCpu"]
+
+SmallTime = config["SmallTime"]
+BigTime = config["BigTime"]
+MediumTime = config["MediumTime"]
+
+# LR Only flag 
+LR_ONLY = config['long']
+
+
+# min chrom length for 
+#MIN_CHROM_LENGTH = config['MinChromLength']
+
+# min chrom length for 
+MIN_LENGTH = config['min_length']
+MIN_QUALITY = config['min_quality']
+
+POLCA_FLAG = config['Polca']
+
+MEDAKA_MODEL = config['medakaModel']
+FLYE_MODEL = config['flyeModel']
+
+# define functions
+def get_input_lr_fastqs(wildcards):
+    return dictReads[wildcards.sample]["LR"]
+
+
+
+
+### Include Directories
+include: "rules/directories.smk"
+
+# Parse the samples and read files
+include: "rules/samples.smk"
+dictReads = parseSamples(CSV, LR_ONLY)
+SAMPLES = list(dictReads.keys())
+
+wildcard_constraints:
+    sample= '|'.join([re.escape(x) for x in SAMPLES])
+
+
+print(dictReads)
+
+
+# Import rules and functions
+include: "rules/targets.smk"
+include: "rules/qc.smk"
+include: "rules/assemble.smk"
+include: "rules/assembly_statistics.smk"
+include: "rules/extract_fastas.smk"
+
+#  polish the assemblies
+include: "rules/long_read_polish.smk"
+
+if LR_ONLY == False:
+    include: "rules/short_read_polish.smk"
+    if POLCA_FLAG == False:
+        include: "rules/short_read_polish_no_polca.smk"
+
+if LR_ONLY == False:
+    include: "rules/plassembler.smk"
+    include: "rules/combine_plassembler_info.smk"
+
+### need to get final chromosome and plasmids
+
+rule all:
+    input:
+        TargetFiles

@@ -1,0 +1,8 @@
+name: short_read_polish
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - fastp
+    - bwa

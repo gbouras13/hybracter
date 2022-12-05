@@ -1,0 +1,7 @@
+name: assemble
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - flye

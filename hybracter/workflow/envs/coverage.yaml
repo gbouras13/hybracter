@@ -1,0 +1,8 @@
+name: coverage
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - samtools
+    - bwa
