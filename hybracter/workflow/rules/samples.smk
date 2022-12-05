@@ -43,11 +43,8 @@ def samplesFromCsvLong(csvFile):
                     outDict[l[0]]['MinChromLength'] = l[2]
                 else:
                     sys.stderr.write("\n"
-                                     f"    FATAL: Error parsing {csvFile}. One of \n"
-                                     f"    {l[1]} or \n"
-                                     f"    {l[2]} or \n"
-                                     f"    {l[3]} \n"
-                                     f"    does not exist or  {l[4]} is not an integer. \n"
+                                     f"    FATAL: Error parsing {csvFile}. {l[1]} \n"
+                                     f"    does not exist or  {l[2]} is not an integer. \n"
                                      "    Check formatting, and that \n" 
                                      "    file names and file paths are correct.\n"
                                      "\n")
