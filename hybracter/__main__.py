@@ -117,12 +117,15 @@ Available targets:
 )
 @click.option("--input", "_input", help="Input csv", type=str, required=True)
 @click.option('--long',  help='Long Read only',is_flag=True,  default=False)
+@click.option('--polca',  help='Use Polca to Polish assemblies',is_flag=True,  default=False)
+@click.option('--medakaModel',  help='Medaka Model: default is r941_min_sup_g507.', type=str,  default='r941_min_sup_g507')
+@click.option('--flyeModel',  help='Flye Assembly Parameter: default is --nano-hq.', type=str,  default='--nano-hq')
 @common_options
 
-def run(_input, long, output, log, **kwargs):
+def run(_input, long, polca,medakaModel, flyeModel, output, log, **kwargs):
     """Run hybracter"""
     # Config to add or update in configfile
-    merge_config = {"input": _input, "output": output, "log": log, "long": long}
+    merge_config = {"input": _input, "output": output, "log": log, "long": long, "polca": polca, "medakaModel": medakaModel, "flyeModel": flyeModel }
 
     # run!
     run_snakemake(

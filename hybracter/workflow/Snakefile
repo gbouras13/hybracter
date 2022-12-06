@@ -25,23 +25,20 @@ MediumTime = config["MediumTime"]
 LR_ONLY = config['long']
 
 
-# min chrom length for 
-#MIN_CHROM_LENGTH = config['MinChromLength']
 
 # min chrom length for 
 MIN_LENGTH = config['min_length']
 MIN_QUALITY = config['min_quality']
 
-POLCA_FLAG = config['Polca']
+POLCA_FLAG = config['polca']
 
 MEDAKA_MODEL = config['medakaModel']
 FLYE_MODEL = config['flyeModel']
 
 # define functions
+# get long reads
 def get_input_lr_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
-
-
 
 
 ### Include Directories
@@ -56,8 +53,6 @@ wildcard_constraints:
     sample= '|'.join([re.escape(x) for x in SAMPLES])
 
 
-
-
 # Import rules and functions
 include: "rules/targets.smk"
 include: "rules/qc.smk"
@@ -70,8 +65,8 @@ include: "rules/long_read_polish.smk"
 
 if LR_ONLY == False:
     include: "rules/short_read_polish.smk"
-    if POLCA_FLAG == False:
-        include: "rules/short_read_polish_no_polca.smk"
+    if POLCA_FLAG == True:
+        include: "rules/short_read_polca.smk"
 
 if LR_ONLY == False:
     include: "rules/plassembler.smk"
