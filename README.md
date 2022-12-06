@@ -1,5 +1,5 @@
 # hybracter
-Hybrid (and long-only) bacterial assembly pipeline for many isolates using Snakemake and Snaketool
+Hybrid (and long-only) bacterial assembly pipeline for many isolates using Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool)
 
 ```
 git clone "https://github.com/gbouras13/hybracter.git"
