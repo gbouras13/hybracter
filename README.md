@@ -46,6 +46,7 @@ Input
 * Column 1 is the sample name, column 2 is the long read ONT fastq file , column 3 is the minChromLength for that sample
 * For hybrid, column 4 is the R1 short read fastq file, column 5 is the R2 short read fastq file.
 * minChromLength is the minimum chromosome length (bp) that hybracter will consider as a "complete" chromosome for that sample. It is required to be an integer e.g. 2000000 for 2Mbp. 
+* No headers
 
 e.g.
 
