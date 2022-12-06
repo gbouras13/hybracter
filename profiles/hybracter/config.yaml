@@ -1,0 +1,27 @@
+cluster:
+  mkdir -p logs/{rule}/ &&
+  sbatch
+    --nodes=1
+    --cpus-per-task={threads}
+    --mem={resources.mem_mb}
+    --time={resources.time}
+    --job-name=smk-{rule}
+    --parsable
+    --output=logs/{rule}/{jobid}.out
+    --error=logs/{rule}/{jobid}.err
+default-resources:
+  - mem_mb=4000
+  - time=1320
+jobs: 200
+latency-wait: 30
+local-cores: 8
+restart-times: 1
+max-jobs-per-second: 10
+keep-going: True
+rerun-incomplete: True
+printshellcmds: True
+scheduler: greedy
+use-conda: True
+conda-frontend: conda
+cluster-status: ~/slurm-status.py
+max-status-checks-per-second: 10

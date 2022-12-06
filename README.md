@@ -86,3 +86,9 @@ hybracter will not use polca as a polisher by default. To use polca specify `--p
 ```
 hybracter run --input <input.csv> --output <output_dir> --threads <threads> --polca
 ```
+
+I would highly highly recommend running hybracter using a Snakemake profile. Please see this blog [post](https://fame.flinders.edu.au/blog/2021/08/02/snakemake-profiles-updated) for more details. I have included an example slurm profile in the profile directory, but check out this [link](https://github.com/Snakemake-Profiles) for more detail on other HPC job scheduler profiles. 
+
+```
+hybracter run --input <input.csv> --output <output_dir> --threads <threads> --polca --profile profiles/hybracter
+```
