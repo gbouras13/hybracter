@@ -57,7 +57,8 @@ sample2,sample2_long_read.fastq.gz,1500000,sample2_SR_R1.fastq.gz,sample2_SR_R2.
 
 Long Only 
 
-sample1,sample1_long_read.fastq.gz,2000000\n
+sample1,sample1_long_read.fastq.gz,2000000
+
 sample2,sample2_long_read.fastq.gz,1500000
 
 
