@@ -25,7 +25,7 @@ rule aggregate_long_read_polish_input:
         touch {output}
         """
 
-rule aggr_long_read_polish:
+rule aggr_long_read_polish_flag:
     """Aggregate."""
     input:
         expand(os.path.join(AGGREGATE_LONG_READ_POLISH,"{sample}.txt"), sample = SAMPLES)
@@ -71,7 +71,7 @@ rule aggregate_short_read_polish_input:
         """
 
 
-rule aggr_long_read_polish:
+rule aggr_short_read_polish_flag:
     """Aggregate."""
     input:
         expand(os.path.join(AGGREGATE_SHORT_READ_POLISH,"{sample}.txt"), sample = SAMPLES)
@@ -115,7 +115,7 @@ rule aggregate_polca_polish_input:
         """
 
 
-rule aggr_polca:
+rule aggr_polca_flag:
     """Aggregate."""
     input:
         expand(os.path.join(AGGREGATE_POLCA_POLISH,"{sample}.txt"), sample = SAMPLES)
