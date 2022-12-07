@@ -8,6 +8,15 @@ checkpoint check_completeness:
         os.path.join(ASSEMBLIES,"{sample}", "assembly.fasta")
     output:
         os.path.join(COMPLETENESS_FLAG,"{sample}.txt")
+    params:
+        getMinChromLength
+    conda:
+        os.path.join('..', 'envs','scripts.yaml')
+    resources:
+        mem_mb=SmallJobMem,
+        time=SmallTime
+    threads:
+        1
     script:
         '../scripts/check_completeness.py'
 
