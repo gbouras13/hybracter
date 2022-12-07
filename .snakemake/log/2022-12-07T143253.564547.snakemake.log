@@ -1,0 +1,5 @@
+Config file /Users/a1667917/Documents/hybracter/hybracter/workflow/../config/config.yaml is extended by additional config specified via the command line.
+SystemExit in line 101 of /Users/a1667917/Documents/hybracter/hybracter/workflow/rules/samples.smk:
+1
+  File "/Users/a1667917/Documents/hybracter/hybracter/workflow/Snakefile", line 47, in <module>
+  File "/Users/a1667917/Documents/hybracter/hybracter/workflow/rules/samples.smk", line 101, in parseSamples
