@@ -23,26 +23,39 @@ Pipeline
 1. Long-read QC: filtlong for quality and porechop for adapters (qc.smk)
 2. Long-read only assembly with Flye (assemble.smk)
 3. Combine flye assembly stats (assembly_statistics.smk)
-4. Extract chromosome if over minChromLength (extract_fastas.smk)
-5. Polish chromosome with medaka, reorient with dnaapler so it begins with dnaA gene, then polish again with medaka (long_read_polish.smk)
+4. Extract chromosome if over the specified minChromLength (extract_fastas.smk) - assumes haploid bacteria!
 
-If you have short reads and step 4 succeeded in getting a full chromosome:
+Completeness & Long Read Polishing
+===========
 
-6. Polish with short reads with Polypolish (short_read_polish.smk).
+At this point, the pipeline splits in 2 - complete vs incomplete. This is helpful for knowing that you should get your friendly local wet-lab colleague to fire up the MinION and get you some more reads for the incomplete isolates.
+
+For "complete" assemblies, chromosomes are polished with medaka, reorient with dnaapler so it begins with dnaA gene, then polish again with medaka (long_read_polish.smk)
+
+For incomplete assemblies, the entire assembly is simply polished with medaka (long_read_incomplete.smk).
+
+Short Read Polishing
+===========
+
+If you have short reads the following steps will occur:
+
+1. Polish the assembly (complete or not) with short reads with Polypolish (short_read_polish.smk and short_read_polish_incomplete.smk).
 
 If you choose to polish with polca:
 
-7. Polish with short reads with polca (short_read_polish.smk).
+2. Polish with short reads with polca (short_read_polish.smk).
 
-If you have short reads and step 4 succeeded in getting a full chromosome:
+Plassembler
+===========
 
-8. Use plassembler to assembly plasmids and calculate copy number (plassembler.smk).
-9. Combine plassembler output for each sample into one file (combine_plassembler_info.smk).
+Finally, I run [plassembler](https://github.com/gbouras13/plassembler) on hybrid assemblies
 
-To be Done
-=========
+1. Use plassembler to assembly plasmids and calculate copy number (plassembler.smk).
+2. Combine plassembler output for each sample into one file (combine_plassembler_info.smk).
 
-* Option to allow for incomplete assemblies - would require steps 4 -> 7 to proceed without extracting chromosome.
+Work in Progress
+==========
+* Auto-skipping plassembler for incomplete assemblies.
 
 Input
 =======
