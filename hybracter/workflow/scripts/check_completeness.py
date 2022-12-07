@@ -11,7 +11,7 @@ def get_completeness( input_fasta, completeness_check,   min_chrom_length):
         if len(dna_record.seq) > int(min_chrom_length):
             comp = True
 
-    with open('readme.txt', 'w') as f:    
+    with open(completeness_check, 'w') as f:    
         if comp == True:
             f.write('C')
         else:
