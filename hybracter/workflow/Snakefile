@@ -24,8 +24,6 @@ MediumTime = config["MediumTime"]
 # LR Only flag 
 LR_ONLY = config['long']
 
-
-
 # min chrom length for 
 MIN_LENGTH = config['min_length']
 MIN_QUALITY = config['min_quality']
@@ -58,10 +56,16 @@ include: "rules/targets.smk"
 include: "rules/qc.smk"
 include: "rules/assemble.smk"
 include: "rules/assembly_statistics.smk"
-include: "rules/extract_fastas.smk"
+include: "rules/assembly_statistics.smk"
+
+if COMPLETE == True:
+    include: "rules/extract_fastas.smk"
+    include: "rules/long_read_polish.smk"
 
 #  polish the assemblies
-include: "rules/long_read_polish.smk"
+
+if COMPLETE == False:
+    include: "rules/long_read_polish_all.smk"
 
 if LR_ONLY == False:
     include: "rules/short_read_polish.smk"
