@@ -1,4 +1,4 @@
-rule medaka_round_1:
+rule medaka_incomplete:
     input:
         os.path.join(INCOMPLETE_PRE_POLISH,"{sample}.fasta"),
         get_input_lr_fastqs
