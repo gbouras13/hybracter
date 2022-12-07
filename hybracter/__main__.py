@@ -118,8 +118,8 @@ Available targets:
 @click.option("--input", "_input", help="Input csv", type=str, required=True)
 @click.option('--long',  help='Long Read only',is_flag=True,  default=False)
 @click.option('--polca',  help='Use Polca to Polish assemblies',is_flag=True,  default=False)
-@click.option('--medakaModel',  help='Medaka Model: default is r941_min_sup_g507.', type=str,  default='r941_min_sup_g507')
-@click.option('--flyeModel',  help='Flye Assembly Parameter: default is --nano-hq.', type=str,  default='--nano-hq')
+@click.option('--medakaModel',  help='Medaka Model.',show_default=True, type=str,  default='r941_min_sup_g507')
+@click.option('--flyeModel',  help='Flye Assembly Parameter',show_default=True, type=str,  default='--nano-hq')
 @common_options
 
 def run(_input, long, polca,medakaModel, flyeModel, output, log, **kwargs):
