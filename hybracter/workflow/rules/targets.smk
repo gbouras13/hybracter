@@ -9,7 +9,7 @@ else:
     short_read_polish_files = []
 
 # Polca
-if POLCA_FLAG == False:
+if POLCA_FLAG == True:
     polca_files = os.path.join(FLAGS, "aggr_polca.txt")
 else:
     polca_files = []
