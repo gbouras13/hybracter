@@ -1,3 +1,9 @@
+"""
+
+Stores all the aggregation rules post assembly - due to the split between complete and incomplete
+
+"""
+
 
 # input function for the rule aggregate
 def aggregate_long_read_polish_input(wildcards):
