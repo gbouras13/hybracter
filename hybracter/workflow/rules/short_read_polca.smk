@@ -22,18 +22,30 @@ rule polca:
         """
 
 
-
-rule aggr_polca:
+rule polca_incomplete:
     input:
-        expand(os.path.join(POLCA,"{sample}.fasta.PolcaCorrected.fa")), sample = SAMPLES )
+        os.path.join(POLYPOLISH_INCOMPLETE,"{sample}.fasta")
     output:
-        os.path.join(FLAGS, "aggr_polca.txt")
+        os.path.join(POLCA_INCOMPLETE,"{sample}.fasta.PolcaCorrected.fa")
     threads:
-        1
+        BigJobCpu
+    params:
+        os.path.join(FASTP,"{sample}_1.fastq.gz"),
+        os.path.join(FASTP,"{sample}_2.fastq.gz"),
+        POLCA
+    conda:
+        os.path.join('..', 'envs','polca.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=BigJobMem,
+        time=MediumTime
     shell:
         """
-        touch {output[0]}
+        cd {params[2]}
+        polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {resources.th}
         """
+
+
+
+
+
+

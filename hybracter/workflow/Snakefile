@@ -53,20 +53,26 @@ wildcard_constraints:
 
 # Import rules and functions
 include: "rules/targets.smk"
+include: "rules/aggregate.smk"
 include: "rules/qc.smk"
 include: "rules/assemble.smk"
 include: "rules/assembly_statistics.smk"
 include: "rules/extract_fastas.smk"
 
+# checkpoint here for completeness
 include: "rules/long_read_polish.smk"
+include: "rules/long_read_incomplete.smk"
+
+
 
 #  polish the assemblies
-
-
 if LR_ONLY == False:
     include: "rules/short_read_polish.smk"
+    include: "rules/short_read_polish_incomplete.smk"
     if POLCA_FLAG == True:
         include: "rules/short_read_polca.smk"
+
+
 
 if LR_ONLY == False:
     include: "rules/plassembler.smk"

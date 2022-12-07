@@ -16,11 +16,17 @@ else:
 
 # plassembler
 
+
+
+
 if LR_ONLY == False:
     plassembler_files = [os.path.join(LOGS, "aggr_plasembler.txt"),
     os.path.join(LOGS, "aggr_combine_plassembler_info.txt")]
 else:
     plassembler_files = []
+
+
+
 
 
 
@@ -30,11 +36,8 @@ TargetFiles = [
     os.path.join(FLAGS, "aggr_assemble.txt"),
     os.path.join(FLAGS, "aggr_assembly_statistics.txt"),
     os.path.join(FLAGS, "aggr_chr_plas.txt"),
-    #os.path.join(FLAGS, "aggr_long_read_polish.txt"),
+    os.path.join(FLAGS, "aggr_long_read_polish.txt"),
     short_read_polish_files,
     polca_files,
     plassembler_files
-
-
-
 ]

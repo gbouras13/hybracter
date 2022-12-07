@@ -61,18 +61,3 @@ rule medaka_round_2:
         medaka_consensus -i {input[1]} -d {input[0]} -o {output[0]} -m {params[0]}  -t {threads}
         """
 
-rule aggr_long_read_polish:
-    input:
-        expand(os.path.join(MEDAKA_RD_2,"{sample}", "consensus.fasta"), sample = SAMPLES )
-    output:
-        os.path.join(FLAGS, "aggr_long_read_polish.txt")
-    threads:
-        1
-    resources:
-        mem_mb=SmallJobMem,
-        time=2,
-        th=1
-    shell:
-        """
-        touch {output[0]}
-        """
