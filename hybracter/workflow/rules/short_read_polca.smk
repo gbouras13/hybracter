@@ -23,9 +23,6 @@ rule polca:
 
 
 rule polca_incomplete:
-    """"
-    need the ../../../../ for polca as no output dir
-    """"
     input:
         os.path.join(POLYPOLISH_INCOMPLETE,"{sample}.fasta")
     output:
