@@ -19,7 +19,7 @@ rule combine_plassembler_info:
     input:
         summaries = expand(os.path.join(PLASSEMBLER_SUMMARIES, "{sample}_with_sample.tsv"), sample = SAMPLES)
     output:
-        out = os.path.join(SUMMARY_OUT,"plassembler_assembly_info.txt")
+        out = os.path.join(PLASSEMBLER_SUMMARY_ALL,"plassembler_assembly_info.txt")
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
@@ -34,7 +34,7 @@ rule combine_plassembler_info:
 rule aggr_combine_plassembler_info:
     """Aggregate."""
     input:
-        os.path.join(SUMMARY_OUT,"plassembler_assembly_info.txt")
+        os.path.join(PLASSEMBLER_SUMMARY_ALL,"plassembler_assembly_info.txt")
     output:
         os.path.join(FLAGS, "aggr_combine_plassembler_info.txt")
     resources:
