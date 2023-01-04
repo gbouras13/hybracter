@@ -32,8 +32,8 @@ rule bwa_mem_incomplete:
         os.path.join(FASTP,"{sample}_2.fastq.gz"),
         os.path.join(MEDAKA_INCOMPLETE,"{sample}", "consensus.fasta.bwt")
     output:
-        os.path.join(BWA,"{sample}_1.sam"),
-        os.path.join(BWA,"{sample}_2.sam")
+        os.path.join(BWA_INCOMPLETE,"{sample}_1.sam"),
+        os.path.join(BWA_INCOMPLETE,"{sample}_2.sam")
     threads:
         BigJobCpu
     conda:
@@ -50,8 +50,8 @@ rule bwa_mem_incomplete:
 rule polypolish_incomplete:
     input:
         os.path.join(MEDAKA_INCOMPLETE,"{sample}", "consensus.fasta"),
-        os.path.join(BWA,"{sample}_1.sam"),
-        os.path.join(BWA,"{sample}_2.sam")
+        os.path.join(BWA_INCOMPLETE,"{sample}_1.sam"),
+        os.path.join(BWA_INCOMPLETE,"{sample}_2.sam")
     output:
         os.path.join(POLYPOLISH_INCOMPLETE,"{sample}.fasta")
     threads:
