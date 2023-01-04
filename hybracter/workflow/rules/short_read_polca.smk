@@ -17,7 +17,6 @@ rule polca:
         time=MediumTime
     shell:
         """
-        cd {params[2]}
         polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {threads}
         """
 
@@ -40,7 +39,6 @@ rule polca_incomplete:
         time=MediumTime
     shell:
         """
-        cd {params[2]}
         polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {threads}
         """
 
