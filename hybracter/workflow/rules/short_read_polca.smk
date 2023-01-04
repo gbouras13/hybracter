@@ -18,7 +18,7 @@ rule polca:
     shell:
         """
         cd {params[2]}
-        polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {resources.th}
+        polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {threads}
         """
 
 
@@ -41,7 +41,7 @@ rule polca_incomplete:
     shell:
         """
         cd {params[2]}
-        polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {resources.th}
+        polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {threads}
         """
 
 
