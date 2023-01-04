@@ -20,8 +20,8 @@ else:
 
 
 if LR_ONLY == False:
-    plassembler_files = [os.path.join(LOGS, "aggr_plasembler.txt"),
-    os.path.join(LOGS, "aggr_combine_plassembler_info.txt")]
+    plassembler_files = [os.path.join(FLAGS, "aggr_plasembler.txt"),
+    os.path.join(FLAGS, "aggr_combine_plassembler_info.txt")]
 else:
     plassembler_files = []
 
