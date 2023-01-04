@@ -32,7 +32,7 @@ rule polca_incomplete:
     params:
         os.path.join(FASTP,"{sample}_1.fastq.gz"),
         os.path.join(FASTP,"{sample}_2.fastq.gz"),
-        POLCA
+        POLCA_INCOMPLETE
     conda:
         os.path.join('..', 'envs','polca.yaml')
     resources:
