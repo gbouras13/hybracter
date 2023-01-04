@@ -17,11 +17,15 @@ rule polca:
         time=MediumTime
     shell:
         """
-        polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {threads}
+        cd {params[2]}
+        polca.sh -a ../../../../{input[0]}  -r "../../../../{params[0]} ../../../../{params[1]}" -t {threads}
         """
 
 
 rule polca_incomplete:
+    """"
+    need the ../../../../ for polca as no output dir
+    """"
     input:
         os.path.join(POLYPOLISH_INCOMPLETE,"{sample}.fasta")
     output:
@@ -39,7 +43,8 @@ rule polca_incomplete:
         time=MediumTime
     shell:
         """
-        polca.sh -a {input[0]}  -r "{params[0]} {params[1]}" -t {threads}
+        cd {params[2]}
+        polca.sh -a ../../../../{input[0]}  -r "../../../../{params[0]} ../../../../{params[1]}" -t {threads}
         """
 
 
