@@ -23,7 +23,7 @@ rule plassembler:
         th=BigJobCpu
     shell:
         """
-        plassembler.py -l {input[0]} -o {output[0]} -1 {input[1]} -2 {input[1]} -m 500 -t {resources.th} -c 2500000 -f
+        plassembler.py -l {input[0]} -o {output[0]} -s1 {input[1]} -s2 {input[1]} -m 500 -t {resources.th} -c 2500000 -f
         """
 
 rule plassembler_move_fastas:
