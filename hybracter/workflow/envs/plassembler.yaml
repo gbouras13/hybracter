@@ -2,6 +2,5 @@ name: plassembler
 channels:
     - bioconda 
     - conda-forge
-    - gbouras13
 dependencies:
      - plassembler 
