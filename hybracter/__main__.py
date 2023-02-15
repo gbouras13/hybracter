@@ -108,6 +108,15 @@ Available targets:
     print_targets   List available targets
 """
 
+help_msg_install = """
+\b
+Installed the plassembler database
+hybracter install ... 
+\b
+RUN EXAMPLES:
+Database:           hybracter install --database [file]
+"""
+
 
 @click.command(
     epilog=help_msg_extra,
@@ -144,6 +153,40 @@ def run(_input, long, polca, medakaModel, flyeModel, output, log, **kwargs):
     )
 
 
+@click.command(
+    epilog=help_msg_install,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ))
+@click.option(
+            "--use-conda/--no-use-conda",
+            default=True,
+            help="Use conda for Snakemake rules",
+            show_default=True,
+        )
+@click.option(
+            "--snake-default",
+            multiple=True,
+            default=[
+                "--rerun-incomplete",
+                "--printshellcmds",
+                "--nolock",
+                "--show-failed-logs",
+                "--conda-frontend conda"
+            ],
+            help="Customise Snakemake runtime args",
+            show_default=True,
+        )
+@click.option('--database','database',  help='Database Directory', show_default=True,  default='Database')
+@common_options
+def install( database, log,output,  **kwargs):
+    # Config to add or update in configfile
+    merge_config = { "database": database, "output": output, "log": log }
+    """Install databases"""
+    run_snakemake(
+        snakefile_path=snake_base(os.path.join('workflow','installDB.smk')),
+        merge_config=merge_config,
+        **kwargs)
 
 
 

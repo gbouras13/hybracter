@@ -24,3 +24,6 @@ MediumTime: 120
 medakaModel: 'r941_min_sup_g507'
 flyeModel: '--nano-hq'
 
+# plassembler db
+plassemblerDatabase: 'plassembler_DB'
+

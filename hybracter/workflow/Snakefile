@@ -21,6 +21,9 @@ SmallTime = config["SmallTime"]
 BigTime = config["BigTime"]
 MediumTime = config["MediumTime"]
 
+# plassembler DB
+PlassemblerDatabase = config["plassemblerDatabase"]
+
 # LR Only flag 
 LR_ONLY = config['long']
 
