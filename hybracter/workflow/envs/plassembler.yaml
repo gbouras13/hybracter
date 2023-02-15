@@ -3,5 +3,4 @@ channels:
     - bioconda 
     - conda-forge
 dependencies:
-     - plassembler 
-     - python=3.8
+     - plassembler
