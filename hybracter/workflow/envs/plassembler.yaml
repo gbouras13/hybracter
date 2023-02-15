@@ -4,3 +4,4 @@ channels:
     - conda-forge
 dependencies:
      - plassembler 
+     - python=3.8
