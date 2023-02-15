@@ -22,10 +22,8 @@ MediumTime = config["MediumTime"]
 
 rule all:
     input:
-        os.path.join(ReferenceDir,'download_fasta.dlflag'),
-        os.path.join(ReferenceDir,'download_gtf.dlflag'),
-        os.path.join(ReferenceDir, 'unzip.dlflag'),
-        os.path.join(ReferenceDir, FastaGunzippedIndex)
+        os.path.join(DatabaseDir,'plsdb.msh'),
+        os.path.join(DatabaseDir, 'plsdb.tsv')
 
 
 rule download_db:
