@@ -127,20 +127,23 @@ Database:           hybracter install --database [file]
 @click.option("--input", "_input", help="Input csv", type=str, required=True)
 @click.option('--long',  help='Long Read only',is_flag=True,  default=False)
 @click.option('--polca',  help='Use Polca to Polish assemblies', is_flag=True,  default=False)
+@click.option('--min_length',  help='min read length for long reads', is_flag=True,  default=False)
 # need to include the name as separate text for later
 @click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_min_fast_g507']) )
 @click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw']))
 @common_options
-def run(_input, long, polca, medakaModel, flyeModel, output, log, **kwargs):
+def run(_input, long, polca, medakaModel, flyeModel,min_length, output, log, **kwargs):
     """Run hybracter"""
     # Config to add or update in configfile
     merge_config = {
         "input": _input, 
         "output": output, 
         "log": log, 
+        "min_length": min_length,
         "long": long, 
         "polca": polca, 
         "medakaModel": medakaModel, 
+        ""
         "flyeModel": flyeModel }
 
     # run!
