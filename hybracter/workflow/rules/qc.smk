@@ -10,12 +10,13 @@ rule filtlong:
         mem_mb=BigJobMem,
         time=MediumTime
     params:
-        MIN_QUALITY
+        MIN_QUALITY,
+        MIN_LENGTH
     threads: 
         1
     shell:
         """
-        filtlong --min_mean_q {params[0]}  {input[0]} | gzip > {output[0]}
+        filtlong --min_mean_q {params[0]} --min_length {params[1]} {input[0]} | gzip > {output[0]}
         """
 
 ### for really large sets, can include rasusa - no need I think
