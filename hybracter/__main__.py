@@ -129,7 +129,7 @@ Database:           hybracter install --database [file]
 @click.option('--polca',  help='Use Polca to Polish assemblies', is_flag=True,  default=False)
 @click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
 # need to include the name as separate text for later
-@click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_min_fast_g507']) )
+@click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_min_fast_g507', 'r1041_e82_400bps_sup_g615']) )
 @click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw']))
 @common_options
 def run(_input, long, polca, medakaModel, flyeModel,min_length, output, log, **kwargs):
