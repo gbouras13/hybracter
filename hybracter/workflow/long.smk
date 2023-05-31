@@ -23,11 +23,9 @@ MediumTime = config["MediumTime"]
 PlassemblerDatabase = config["plassemblerDatabase"]
 
 # LR Only flag 
-LR_ONLY = config['long']
 PLASMIDS = config['plasmids']
 MIN_LENGTH = config['min_length']
 MIN_QUALITY = config['min_quality']
-POLCA_FLAG = config['polca']
 NO_POLISH = config['no_polish']
 MEDAKA_MODEL = config['medakaModel']
 FLYE_MODEL = config['flyeModel']

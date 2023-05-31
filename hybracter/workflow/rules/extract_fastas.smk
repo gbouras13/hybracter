@@ -16,7 +16,6 @@ checkpoint check_completeness:
     script:
         '../scripts/check_completeness.py'
 
-
 rule extract_complete:
     input:
         os.path.join(ASSEMBLIES,"{sample}", "assembly.fasta"),

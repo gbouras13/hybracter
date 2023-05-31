@@ -168,6 +168,7 @@ def hybrid(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_leng
     # run!
     run_snakemake(
         # Full path to Snakefile
+        configfile=snake_base(os.path.join("config", "config_hybrid.yaml")),
         snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
         merge_config=merge_config,
         log=log,
@@ -206,6 +207,7 @@ def long(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_length
     # run!
     run_snakemake(
         # Full path to Snakefile
+        configfile=snake_base(os.path.join("config", "config_long.yaml")),
         snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
         merge_config=merge_config,
         log=log,
@@ -252,9 +254,20 @@ def install( database, log,output,  **kwargs):
 
 @click.command()
 @common_options
-def config(configfile, **kwargs):
+@click.option(
+            "--long",
+            default=True,
+            help="Copy long default config file, not hybrid",
+            is_flag=True,  default=False 
+        )
+def config(configfile,long, **kwargs):
     """Copy the system default config file"""
-    copy_config(configfile)
+    if long is False:
+        system_config = snake_base(os.path.join("config", "config_hybrid.yaml"))
+    else:
+        system_config = snake_base(os.path.join("config", "config_long.yaml"))
+    
+    copy_config(local_config =  configfile, merge_config=None, system_config=system_config, log = None)
 
 
 @click.command()
