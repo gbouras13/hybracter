@@ -48,7 +48,7 @@ include: "rules/directories.smk"
 
 # Parse the samples and read files
 include: "rules/samples.smk"
-dictReads = parseSamples(CSV, LR_ONLY)
+dictReads = parseSamples(CSV, True)
 SAMPLES = list(dictReads.keys())
 
 wildcard_constraints:
@@ -73,7 +73,7 @@ include: "rules/extract_fastas.smk"
 include: "rules/aggregate.smk"
 
 # checkpoint here for completeness
-if NO_POLISH is False:
+
     include: "rules/long_read_polish.smk"
     include: "rules/long_read_incomplete.smk"
 

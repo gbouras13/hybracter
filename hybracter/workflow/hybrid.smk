@@ -44,7 +44,7 @@ include: "rules/directories.smk"
 
 # Parse the samples and read files
 include: "rules/samples.smk"
-dictReads = parseSamples(CSV, LR_ONLY)
+dictReads = parseSamples(CSV, False)
 SAMPLES = list(dictReads.keys())
 
 wildcard_constraints:
