@@ -189,7 +189,7 @@ def hybrid(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_leng
 @click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_min_fast_g507', 'r1041_e82_400bps_sup_g615']) )
 @click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
 @common_options
-def long(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_length, output, log, **kwargs):
+def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output, log, **kwargs):
     """Run hybracter"""
     # Config to add or update in configfile
     merge_config = {
@@ -199,7 +199,6 @@ def long(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_length
         "min_length": min_length,
         "plasmids": plasmids,
         "no_polish": no_polish,
-        "polca": polca, 
         "medakaModel": medakaModel, 
         "flyeModel": flyeModel }
 
