@@ -72,8 +72,8 @@ include: "rules/aggregate.smk"
 
 # checkpoint here for completeness
 
-    include: "rules/long_read_polish.smk"
-    include: "rules/long_read_incomplete.smk"
+include: "rules/long_read_polish.smk"
+include: "rules/long_read_incomplete.smk"
 
 
 # plassembler if PLASMIDS true
