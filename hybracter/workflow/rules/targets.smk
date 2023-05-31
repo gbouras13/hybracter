@@ -3,13 +3,9 @@ All target output files are declared here
 """
 
 # need long read polish aggr file regardless even if no polish selected 
+# because of dnaapler
 long_read_polish_files = os.path.join(FLAGS, "aggr_long_read_polish.txt")
 
-# Short reads
-if LR_ONLY == False:
-    short_read_polish_files = os.path.join(FLAGS, "aggr_short_read_polish.txt")
-else:
-    short_read_polish_files = []
 
 # Polca
 if POLCA_FLAG == True:
@@ -19,7 +15,7 @@ else:
 
 # plassembler
 
-if LR_ONLY is False and PLASMIDS is True:
+if PLASMIDS is True:
     plassembler_files = [os.path.join(FLAGS, "aggr_plassembler.txt"),
     os.path.join(FLAGS, "aggr_combine_plassembler_info.txt")]
 else:
@@ -29,12 +25,22 @@ else:
 
 
 # Preprocessing files
-TargetFiles = [
+TargetFilesHybrid = [
     os.path.join(FLAGS, "aggr_qc.txt"),
     os.path.join(FLAGS, "aggr_assemble.txt"),
     os.path.join(FLAGS, "aggr_assembly_statistics.txt"),
-    long_read_polish_files,
-    short_read_polish_files,
+    os.path.join(FLAGS, "aggr_short_read_polish.txt"),
+    os.path.join(FLAGS, "aggr_long_read_polish.txt"),
     polca_files,
+    plassembler_files
+]
+
+
+# Preprocessing files
+TargetFilesLong = [
+    os.path.join(FLAGS, "aggr_qc.txt"),
+    os.path.join(FLAGS, "aggr_assemble.txt"),
+    os.path.join(FLAGS, "aggr_assembly_statistics.txt"),
+    os.path.join(FLAGS, "aggr_long_read_polish.txt"),
     plassembler_files
 ]

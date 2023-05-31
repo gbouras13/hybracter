@@ -72,22 +72,14 @@ include: "rules/extract_fastas.smk"
 
 include: "rules/aggregate.smk"
 
-
 # checkpoint here for completeness
+if NO_POLISH is False:
+    include: "rules/long_read_polish.smk"
+    include: "rules/long_read_incomplete.smk"
 
-include: "rules/long_read_polish.smk"
-include: "rules/long_read_incomplete.smk"
-
-
-#  polish the assemblies
-if LR_ONLY is False:
-    include: "rules/short_read_polish.smk"
-    include: "rules/short_read_polish_incomplete.smk"
-    if POLCA_FLAG == True:
-        include: "rules/short_read_polca.smk"
 
 # plassembler if PLASMIDS true
-if LR_ONLY is False and PLASMIDS is True:
+if PLASMIDS is True:
     include: "rules/plassembler.smk"
     include: "rules/combine_plassembler_info.smk"
 
@@ -95,4 +87,4 @@ if LR_ONLY is False and PLASMIDS is True:
 
 rule all:
     input:
-        TargetFiles
+        TargetFilesLong

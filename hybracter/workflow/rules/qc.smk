@@ -34,7 +34,7 @@ rule filtlong:
 #         mem_mb=SmallJobMem,
 #         time=30
 #     params:
-#         MIN_CHROM_LENGTH
+#         MIN_CHROM_LENGTH, 
 #     shell:
 #         """
 #         rasusa -i {input[0]} --coverage 100 --genome-size {params[0]} -o {output[0]}

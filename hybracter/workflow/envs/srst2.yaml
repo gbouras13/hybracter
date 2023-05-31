@@ -1,7 +1,0 @@
-name: srst2
-channels:
-    - conda-forge
-    - bioconda
-    - defaults
-dependencies:
-    - srst2
