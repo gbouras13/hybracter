@@ -168,7 +168,7 @@ def hybrid(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_leng
     # run!
     run_snakemake(
         # Full path to Snakefile
-        snakefile_path=snake_base(os.path.join("workflow", "run.smk")),
+        snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -206,7 +206,7 @@ def long(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_length
     # run!
     run_snakemake(
         # Full path to Snakefile
-        snakefile_path=snake_base(os.path.join("workflow", "run.smk")),
+        snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
         merge_config=merge_config,
         log=log,
         **kwargs
