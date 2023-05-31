@@ -2,7 +2,7 @@ name: dnaapler
 channels:
     - bioconda 
     - conda-forge
-    - gbouras13
+    - defaults
 dependencies:
      - dnaapler 
-     - python >=3
+

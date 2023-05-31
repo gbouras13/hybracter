@@ -1,8 +1,6 @@
 
 ### DEFAULT CONFIG FILE
-
 import os
-
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 
 ### from config files
@@ -26,13 +24,11 @@ PlassemblerDatabase = config["plassemblerDatabase"]
 
 # LR Only flag 
 LR_ONLY = config['long']
-
-# min chrom length for 
+PLASMIDS = config['plasmids']
 MIN_LENGTH = config['min_length']
 MIN_QUALITY = config['min_quality']
-
 POLCA_FLAG = config['polca']
-
+NO_POLISH = config['no_polish']
 MEDAKA_MODEL = config['medakaModel']
 FLYE_MODEL = config['flyeModel']
 
@@ -41,9 +37,14 @@ FLYE_MODEL = config['flyeModel']
 def get_input_lr_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
 
+# get min chrom length (define chrom size)
+def getMinChromLength(wildcards):
+    return dictReads[wildcards.sample]["MinChromLength"]
+
 
 ### Include Directories
 include: "rules/directories.smk"
+
 
 # Parse the samples and read files
 include: "rules/samples.smk"
@@ -53,31 +54,40 @@ SAMPLES = list(dictReads.keys())
 wildcard_constraints:
     sample= '|'.join([re.escape(x) for x in SAMPLES])
 
-
+##############################
 # Import rules and functions
+##############################
+
+# import targets
 include: "rules/targets.smk"
-include: "rules/aggregate.smk"
+
+# qc
 include: "rules/qc.smk"
+# assembly
 include: "rules/assemble.smk"
+# get flye stats and combine across all runs
 include: "rules/assembly_statistics.smk"
+# extract chrom
 include: "rules/extract_fastas.smk"
 
+include: "rules/aggregate.smk"
+
+
 # checkpoint here for completeness
+
 include: "rules/long_read_polish.smk"
 include: "rules/long_read_incomplete.smk"
 
 
-
 #  polish the assemblies
-if LR_ONLY == False:
+if LR_ONLY is False:
     include: "rules/short_read_polish.smk"
     include: "rules/short_read_polish_incomplete.smk"
     if POLCA_FLAG == True:
         include: "rules/short_read_polca.smk"
 
-
-
-if LR_ONLY == False:
+# plassembler if PLASMIDS true
+if LR_ONLY is False and PLASMIDS is True:
     include: "rules/plassembler.smk"
     include: "rules/combine_plassembler_info.smk"
 

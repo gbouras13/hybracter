@@ -4,7 +4,9 @@ output: 'hybracter.out/'
 log: 'hybracter/hybracter.log'
 threads: 16
 long: False
+plasmids: True
 polca: False
+
 
 # Nanopore QC params
 min_length: 1500

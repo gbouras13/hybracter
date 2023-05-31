@@ -4,7 +4,6 @@ Stores all the aggregation rules post assembly - due to the split between comple
 
 """
 
-
 # input function for the rule aggregate
 def aggregate_long_read_polish_input(wildcards):
     # decision based on content of output file
@@ -12,14 +11,14 @@ def aggregate_long_read_polish_input(wildcards):
     # This way, Snakemake is able to automatically download the file if it is generated in
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
-        if f.read().strip() == "C":
+        if f.read().strip() is "C" and NO_POLISH is False: # if complete and long polish
             return os.path.join(MEDAKA_RD_2,"{sample}", "consensus.fasta")
-        else:
+        elif f.read().strip() is "C" and NO_POLISH is True: # if complete and long polish
+            return os.path.join(DNAAPLER_NO_POLISH, "{sample}", "{sample}_reoriented.fasta")
+        else: # if incomplete and long polish
             return os.path.join(MEDAKA_INCOMPLETE,"{sample}", "consensus.fasta")
 
-
 ### from the long_read_polishing 
-
 
 rule aggregate_long_read_polish_input:
     input:

@@ -1,3 +1,4 @@
+
 rule assemble:
     input:
         os.path.join(QC,"{sample}_filt_trim.fastq.gz")
@@ -6,7 +7,7 @@ rule assemble:
         os.path.join(ASSEMBLIES,"{sample}", "assembly.fasta"),
         os.path.join(ASSEMBLIES,"{sample}", "assembly_info.txt")
     conda:
-        os.path.join('..', 'envs','assemble.yaml')
+        os.path.join('..', 'envs','flye.yaml')
     resources:
         mem_mb=BigJobMem,
         time=BigTime
