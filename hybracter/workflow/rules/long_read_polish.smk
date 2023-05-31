@@ -37,7 +37,7 @@ rule dnaapler:
         BigJobCpu
     shell:
         """
-        dnaapler run -i {input[0]} -o {params[0]} -p {wildcards.sample} -t {threads} -f
+        dnaapler chromosome -i {input[0]} -o {params[0]} -p {wildcards.sample} -t {threads} -f
         """
 
 rule medaka_round_2:
@@ -79,5 +79,5 @@ rule dnaapler_no_polish:
         BigJobCpu
     shell:
         """
-        dnaapler run -i {input[0]} -o {params[0]} -p {wildcards.sample} -t {threads} -f
+        dnaapler chromosome -i {input[0]} -o {params[0]} -p {wildcards.sample} -t {threads} -f
         """
