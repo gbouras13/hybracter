@@ -256,7 +256,6 @@ def install( database, log,output,  **kwargs):
 @common_options
 @click.option(
             "--long",
-            default=True,
             help="Copy long default config file, not hybrid",
             is_flag=True,  default=False 
         )
