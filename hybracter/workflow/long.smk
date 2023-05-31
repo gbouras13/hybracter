@@ -57,7 +57,7 @@ wildcard_constraints:
 ##############################
 
 # import targets
-include: "rules/targets.smk"
+include: "rules/targets_long.smk"
 
 # qc
 include: "rules/qc.smk"
