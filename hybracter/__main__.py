@@ -186,7 +186,7 @@ def hybrid(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_leng
 @click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
 @click.option('--plasmids',  help='whether you want to use Plassembler for plasmid recovery. Long only mode. Experimental.', is_flag=True,  default=False)
 @click.option('--no_polish','no_polish',  help='whether you want to turn off Medaka to polishing for your genome.', is_flag=True,  default=False )
-@click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_min_fast_g507', 'r1041_e82_400bps_sup_g615']) )
+@click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_e81_fast_g514', 'r1041_e82_400bps_sup_g615']) )
 @click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
 @common_options
 def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output, log, **kwargs):
