@@ -4,8 +4,6 @@ All target output files are declared here
 
 # need long read polish aggr file regardless even if no polish selected 
 # because of dnaapler
-long_read_polish_files = os.path.join(FLAGS, "aggr_long_read_polish.txt")
-
 
 # plassembler
 

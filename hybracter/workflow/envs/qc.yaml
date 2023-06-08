@@ -6,3 +6,4 @@ channels:
 dependencies:
     - filtlong
     - porechop
+    - pigz

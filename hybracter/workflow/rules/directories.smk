@@ -36,7 +36,7 @@ MEDAKA = os.path.join(COMPLETE, 'MEDAKA')
 MEDAKA_RD_1 = os.path.join(MEDAKA, 'MEDAKA_RD_1')
 MEDAKA_RD_2 = os.path.join(MEDAKA, 'MEDAKA_RD_2')
 DNAAPLER = os.path.join(COMPLETE, 'DNAAPLER')
-DNAAPLER_NO_POLISH = os.path.join(COMPLETE, 'DNAAPLER')
+DNAAPLER_NO_POLISH = os.path.join(COMPLETE, 'DNAAPLER_NO_POLISH')
 
 # long_Read_polish_incomplete.smk
 MEDAKA_INCOMPLETE = os.path.join(INCOMPLETE, 'MEDAKA_INCOMPLETE')

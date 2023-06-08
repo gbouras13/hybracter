@@ -11,12 +11,18 @@ def aggregate_long_read_polish_input(wildcards):
     # This way, Snakemake is able to automatically download the file if it is generated in
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
-        if f.read().strip() == "C" and NO_POLISH is False: # if complete and long polish
-            return os.path.join(MEDAKA_RD_2,"{sample}", "consensus.fasta")
-        elif f.read().strip() == "C" and NO_POLISH is True: # if complete and long polish
-            return os.path.join(DNAAPLER_NO_POLISH, "{sample}", "{sample}_reoriented.fasta")
-        else: # if incomplete and long polish
-            return os.path.join(MEDAKA_INCOMPLETE,"{sample}", "consensus.fasta")
+        if f.read().strip() == "C":
+            if NO_POLISH is False: # if complete and long polish, do 2 rouns
+                return os.path.join(MEDAKA_RD_2,"{sample}", "consensus.fasta")
+            else: # if complete and no polish 
+                # f.read().strip() == "C" and NO_POLISH is True: # if complete and no polish
+                print('te')
+                return os.path.join(DNAAPLER_NO_POLISH, "{sample}", "{sample}_reoriented.fasta")
+        else: # if incomplete 
+            if NO_POLISH is False: # if long polish, medaka once
+                return os.path.join(MEDAKA_INCOMPLETE,"{sample}", "consensus.fasta")
+            else:  # nothing
+                return os.path.join(INCOMPLETE_PRE_POLISH,"{sample}.fasta")
 
 ### from the long_read_polishing 
 
@@ -27,6 +33,7 @@ rule aggregate_long_read_polish_input:
         os.path.join(AGGREGATE_LONG_READ_POLISH,"{sample}.txt")
     shell:
         """
+        echo {input[0]}
         touch {output}
         """
 

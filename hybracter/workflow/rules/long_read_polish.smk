@@ -63,7 +63,7 @@ rule medaka_round_2:
 
 rule dnaapler_no_polish:
     input:
-        os.path.join(CHROMOSOME_PRE_POLISH,"{sample}", "consensus.fasta")
+        os.path.join(CHROMOSOME_PRE_POLISH,"{sample}.fasta")
     output:
         os.path.join(DNAAPLER_NO_POLISH, "{sample}", "{sample}_reoriented.fasta")
     threads:

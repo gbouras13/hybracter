@@ -67,10 +67,8 @@ include: "rules/assemble.smk"
 include: "rules/assembly_statistics.smk"
 # extract chrom
 include: "rules/extract_fastas.smk"
-
-include: "rules/aggregate.smk"
-
 # checkpoint here for completeness
+include: "rules/aggregate.smk"
 
 include: "rules/long_read_polish.smk"
 include: "rules/long_read_incomplete.smk"

@@ -20,5 +20,3 @@ rule medaka_incomplete:
         """
 
 
-
-
