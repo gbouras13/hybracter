@@ -16,7 +16,6 @@ def aggregate_long_read_polish_input(wildcards):
                 return os.path.join(MEDAKA_RD_2,"{sample}", "consensus.fasta")
             else: # if complete and no polish 
                 # f.read().strip() == "C" and NO_POLISH is True: # if complete and no polish
-                print('te')
                 return os.path.join(DNAAPLER_NO_POLISH, "{sample}", "{sample}_reoriented.fasta")
         else: # if incomplete 
             if NO_POLISH is False: # if long polish, medaka once
