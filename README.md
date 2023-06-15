@@ -13,6 +13,10 @@ hybracter --help
 hybracter run --help
 ```
 
+<p align="center">
+  <img src="img/hybracter.png" alt="Hybracter" height=600>
+</p>
+
 ## Description
 
 `hybracter` is designed for assembling many bacterial isolate genomes using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have a number of isolates with ONT long reads and optionally matched paired end short reads for polishing.
