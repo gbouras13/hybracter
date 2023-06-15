@@ -1,9 +1,7 @@
 
 ### DEFAULT CONFIG FILE
-
 import os
-
-configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+configfile: os.path.join(workflow.basedir, '../', 'config', 'config_hybrid.yaml')
 
 ### from config files
 #  input as csv
@@ -16,23 +14,17 @@ BigJobMem = config["BigJobMem"]
 BigJobCpu = config["BigJobCpu"]
 SmallJobMem = config["SmallJobMem"]
 SmallJobCpu = config["SmallJobCpu"]
-
 SmallTime = config["SmallTime"]
 BigTime = config["BigTime"]
 MediumTime = config["MediumTime"]
 
-# plassembler DB
+# Config
 PlassemblerDatabase = config["plassemblerDatabase"]
-
-# LR Only flag 
-LR_ONLY = config['long']
-
-# min chrom length for 
+PLASMIDS = config['plasmids']
 MIN_LENGTH = config['min_length']
 MIN_QUALITY = config['min_quality']
-
 POLCA_FLAG = config['polca']
-
+NO_POLISH = config['no_polish']
 MEDAKA_MODEL = config['medakaModel']
 FLYE_MODEL = config['flyeModel']
 
@@ -41,43 +33,56 @@ FLYE_MODEL = config['flyeModel']
 def get_input_lr_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
 
+# get min chrom length (define chrom size)
+def getMinChromLength(wildcards):
+    return dictReads[wildcards.sample]["MinChromLength"]
+
 
 ### Include Directories
 include: "rules/directories.smk"
 
+
 # Parse the samples and read files
 include: "rules/samples.smk"
-dictReads = parseSamples(CSV, LR_ONLY)
+dictReads = parseSamples(CSV, False)
 SAMPLES = list(dictReads.keys())
 
 wildcard_constraints:
     sample= '|'.join([re.escape(x) for x in SAMPLES])
 
-
+##############################
 # Import rules and functions
+##############################
+
+# import targets
 include: "rules/targets.smk"
-include: "rules/aggregate.smk"
+
+# qc
 include: "rules/qc.smk"
+# assembly
 include: "rules/assemble.smk"
+# get flye stats and combine across all runs
 include: "rules/assembly_statistics.smk"
+# extract chrom
 include: "rules/extract_fastas.smk"
 
+# checkpoint
+include: "rules/aggregate.smk"
+
 # checkpoint here for completeness
+# need long read polish files regardless
 include: "rules/long_read_polish.smk"
 include: "rules/long_read_incomplete.smk"
 
-
-
 #  polish the assemblies
-if LR_ONLY == False:
-    include: "rules/short_read_polish.smk"
-    include: "rules/short_read_polish_incomplete.smk"
-    if POLCA_FLAG == True:
-        include: "rules/short_read_polca.smk"
+include: "rules/short_read_polish.smk"
+include: "rules/short_read_polish_incomplete.smk"
 
+if POLCA_FLAG == True:
+    include: "rules/short_read_polca.smk"
 
-
-if LR_ONLY == False:
+# plassembler if PLASMIDS true
+if PLASMIDS is True:
     include: "rules/plassembler.smk"
     include: "rules/combine_plassembler_info.smk"
 
@@ -85,4 +90,4 @@ if LR_ONLY == False:
 
 rule all:
     input:
-        TargetFiles
+        TargetFilesHybrid

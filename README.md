@@ -1,6 +1,10 @@
 # hybracter
 Hybrid (and long-only) bacterial assembly pipeline for many isolates using Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool)
 
+## Quick Start
+
+`hybracter` is available to install from source only for now
+
 ```
 git clone "https://github.com/gbouras13/hybracter.git"
 cd hybracter/
@@ -9,9 +13,11 @@ hybracter --help
 hybracter run --help
 ```
 
-hybracter is designed for assembling many bacterial isolate genomes using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have a number of isolates with ONT long reads and optionally matched paired end short reads for polishing.
+## Description
 
-If you are looking for the best possible manual bacterial assembly on few isolates, definitely use [Trycyler](https://github.com/rrwick/Trycycler) - though I would recommend using [Unicycler](https://github.com/rrwick/Unicycler) or my own program [plassembler](https://github.com/gbouras13/plassembler) separately to assemble plasmids if you are especially interested in those.
+`hybracter` is designed for assembling many bacterial isolate genomes using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have a number of isolates with ONT long reads and optionally matched paired end short reads for polishing.
+
+If you are looking for the best possible manual bacterial assembly on few isolates, definitely use [Trycyler](https://github.com/rrwick/Trycycler) - though I would recommend using [Unicycler](https://github.com/rrwick/Unicycler) or my own program [plassembler](https://github.com/gbouras13/plassembler) (built into hybracter) separately to assemble plasmids if you are especially interested in those.
 
 In general, if you haven't, you should also read Ryan Wick's [tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905).
 

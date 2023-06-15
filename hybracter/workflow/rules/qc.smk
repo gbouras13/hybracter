@@ -19,8 +19,10 @@ rule filtlong:
         filtlong --min_mean_q {params[0]} --min_length {params[1]} {input[0]} | gzip > {output[0]}
         """
 
-### for really large sets, can include rasusa - no need I think
-
+# for really large sets, can include rasusa - no need I think
+# no rasusa 
+# according to Ryan Wick, more depth is better (up to 400x at least)
+# https://rrwick.github.io/2021/08/10/accuracy-vs-depth.html
 # rule rasusa:
 #     input:
 #         get_input_fastqs
@@ -32,7 +34,7 @@ rule filtlong:
 #         mem_mb=SmallJobMem,
 #         time=30
 #     params:
-#         MIN_CHROM_LENGTH
+#         MIN_CHROM_LENGTH, 
 #     shell:
 #         """
 #         rasusa -i {input[0]} --coverage 100 --genome-size {params[0]} -o {output[0]}

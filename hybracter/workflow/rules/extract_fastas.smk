@@ -1,8 +1,4 @@
 
-def getMinChromLength(wildcards):
-    return dictReads[wildcards.sample]["MinChromLength"]
-
-
 checkpoint check_completeness:
     input:
         os.path.join(ASSEMBLIES,"{sample}", "assembly.fasta")
@@ -19,7 +15,6 @@ checkpoint check_completeness:
         1
     script:
         '../scripts/check_completeness.py'
-
 
 rule extract_complete:
     input:

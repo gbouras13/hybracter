@@ -89,20 +89,39 @@ def cli():
     pass
 
 
-help_msg_extra = """
+help_hybrid_msg_extra = """
 \b
 CLUSTER EXECUTION:
-hybracter run ... --profile [profile]
+hybracter hybrid ... --profile [profile]
 For information on Snakemake profiles see:
 https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
 \b
 RUN EXAMPLES:
-Required:           hybracter run --input [file]
-Specify threads:    hybracter run ... --threads [threads]
-Disable conda:      hybracter run ... --no-use-conda 
-Change defaults:    hybracter run ... --snake-default="-k --nolock"
-Add Snakemake args: hybracter run ... --dry-run --keep-going --touch
-Specify targets:    hybracter run ... all print_targets
+Required:           hybracter hybrid --input [file]
+Specify threads:    hybracter hybrid ... --threads [threads]
+Disable conda:      hybracter hybrid ... --no-use-conda 
+Change defaults:    hybracter hybrid ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter hybrid ... --dry-run --keep-going --touch
+Specify targets:    hybracter hybrid ... all print_targets
+Available targets:
+    all             Run everything (default)
+    print_targets   List available targets
+"""
+
+help_long_msg_extra = """
+\b
+CLUSTER EXECUTION:
+hybracter hybrid ... --profile [profile]
+For information on Snakemake profiles see:
+https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+\b
+RUN EXAMPLES:
+Required:           hybracter hybrid --input [file]
+Specify threads:    hybracter hybrid ... --threads [threads]
+Disable conda:      hybracter hybrid ... --no-use-conda 
+Change defaults:    hybracter hybrid ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter hybrid ... --dry-run --keep-going --touch
+Specify targets:    hybracter hybrid ... all print_targets
 Available targets:
     all             Run everything (default)
     print_targets   List available targets
@@ -119,20 +138,20 @@ Database:           hybracter install --database [file]
 
 
 @click.command(
-    epilog=help_msg_extra,
+    epilog=help_hybrid_msg_extra,
     context_settings=dict(
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
 @click.option("--input", "_input", help="Input csv", type=str, required=True)
-@click.option('--long',  help='Long Read only',is_flag=True,  default=False)
-@click.option('--polca',  help='Use Polca to Polish assemblies', is_flag=True,  default=False)
+@click.option('--polca',  help='Use Polca to polish assemblies with short reads', is_flag=True,  default=False)
 @click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
-# need to include the name as separate text for later
+@click.option('--plasmids',  help='whether you want to use Plassembler for plasmid recovery.', is_flag=True,  default=False)
+@click.option('--no_polish','no_polish',  help='whether you want to turn off Medaka to polishing for your genome.', is_flag=True,  default=False )
 @click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_min_fast_g507', 'r1041_e82_400bps_sup_g615']) )
-@click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw']))
+@click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
 @common_options
-def run(_input, long, polca, medakaModel, flyeModel,min_length, output, log, **kwargs):
+def hybrid(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_length, output, log, **kwargs):
     """Run hybracter"""
     # Config to add or update in configfile
     merge_config = {
@@ -140,16 +159,53 @@ def run(_input, long, polca, medakaModel, flyeModel,min_length, output, log, **k
         "output": output, 
         "log": log, 
         "min_length": min_length,
-        "long": long, 
+        "plasmids": plasmids,
+        "no_polish": no_polish,
         "polca": polca, 
         "medakaModel": medakaModel, 
-        ""
         "flyeModel": flyeModel }
 
     # run!
     run_snakemake(
         # Full path to Snakefile
-        snakefile_path=snake_base(os.path.join("workflow", "Snakefile")),
+        snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
+        merge_config=merge_config,
+        log=log,
+        **kwargs
+    )
+
+
+
+@click.command(
+    epilog=help_long_msg_extra,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@click.option("--input", "_input", help="Input csv", type=str, required=True)
+@click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
+@click.option('--plasmids',  help='whether you want to use Plassembler for plasmid recovery. Long only mode. Experimental.', is_flag=True,  default=False)
+@click.option('--no_polish','no_polish',  help='whether you want to turn off Medaka to polishing for your genome.', is_flag=True,  default=False )
+@click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_e81_fast_g514', 'r1041_e82_400bps_sup_g615']) )
+@click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
+@common_options
+def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output, log, **kwargs):
+    """Run hybracter"""
+    # Config to add or update in configfile
+    merge_config = {
+        "input": _input, 
+        "output": output, 
+        "log": log, 
+        "min_length": min_length,
+        "plasmids": plasmids,
+        "no_polish": no_polish,
+        "medakaModel": medakaModel, 
+        "flyeModel": flyeModel }
+
+    # run!
+    run_snakemake(
+        # Full path to Snakefile
+        snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -206,7 +262,8 @@ def citation(**kwargs):
     print_citation()
 
 cli.add_command(install)
-cli.add_command(run)
+cli.add_command(hybrid)
+cli.add_command(long)
 cli.add_command(config)
 cli.add_command(citation)
 
