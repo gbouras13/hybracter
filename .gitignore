@@ -8,6 +8,10 @@ __pycache__/
 
 .DS_Store
 
+# dont include conda envs locally
+hybracter/workflow/conda/*
+hybracter/workflow/conda
+
 # Distribution / packaging
 .Python
 env/

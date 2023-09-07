@@ -1,5 +1,5 @@
 """
-Snakefile for downloading transcriptomes 
+Snakefile for downloading database 
 """
 import os
 

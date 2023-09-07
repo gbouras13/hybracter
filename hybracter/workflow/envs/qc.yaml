@@ -4,6 +4,6 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - filtlong
-    - porechop
+    - filtlong >=0.2.1
+    - porechop >=0.2.4
     - pigz

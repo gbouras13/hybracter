@@ -8,23 +8,36 @@ polca: False
 
 
 # Nanopore QC params
-min_length: 1500
-min_quality: 9
+nanopore:
+    min_length: 1000
+    min_quality: 9
 
 # Snakemake Params
-BigJobMem: 32000     
-BigJobCpu: 16       
-SmallJobMem: 4000
-SmallJobCpu: 1 
+resources:
+    big:
+        mem: 32000      # Memory for big (mostly mmseqs) jobs in megabytes (e.g 64GB = 64000, recommend >= 64000)
+        cpu: 16         # Threads (recommend >= 16)
+        time: 2000      # Max runtime in minutes (allows to set max time for the scheduler via snakemake profiles)
+    med:
+        mem: 8000      # Memory for most jobs in megabytes (recommend >= 32000)
+        cpu: 4         # CPUs for most jobs in megabytes (recommend >= 16)
+        time: 500        # Max runtime in minutes for medium jobs (relevant for scheduler)
+    sml:
+        mem: 4000
+        cpu: 1
+        time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
 
-SmallTime: 5
-BigTime: 300
-MediumTime: 120
 
-# medaka and flye model
-medakaModel: 'r941_min_sup_g507'
-flyeModel: '--nano-hq'
+# DBs
+# define the paths here
+databases:
+    plassembler: 'plassembler_DB'
 
-# plassembler db
-plassemblerDatabase: 'plassembler_DB'
+# medaka and flye models
+medaka:
+    model: 'r1041_e82_400bps_sup_v4.2.0'
+flye:
+    model: '--nano-hq'
+
+
 

@@ -6,8 +6,6 @@ def get_input_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
 
 
-
-
 rule bwa_index_incomplete:
     input:
         os.path.join(MEDAKA_INCOMPLETE,"{sample}", "consensus.fasta")

@@ -4,4 +4,4 @@ channels:
     - conda-forge
     - defaults  
 dependencies:
-     - plassembler
+     - plassembler >=1.1.0

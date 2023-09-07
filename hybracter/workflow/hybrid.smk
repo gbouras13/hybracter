@@ -41,7 +41,6 @@ def getMinChromLength(wildcards):
 ### Include Directories
 include: "rules/directories.smk"
 
-
 # Parse the samples and read files
 include: "rules/samples.smk"
 dictReads = parseSamples(CSV, False)

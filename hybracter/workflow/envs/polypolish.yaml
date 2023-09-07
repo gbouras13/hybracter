@@ -4,4 +4,4 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - polypolish
+    - polypolish >=0.5.0
