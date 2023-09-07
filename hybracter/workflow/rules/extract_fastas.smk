@@ -9,10 +9,10 @@ checkpoint check_completeness:
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     script:
         '../scripts/check_completeness.py'
 
@@ -27,10 +27,10 @@ rule extract_complete:
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     script:
         '../scripts/extract_chromosome.py'
 
@@ -45,10 +45,10 @@ rule extract_incomplete:
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     script:
         '../scripts/extract_incomplete.py'
 

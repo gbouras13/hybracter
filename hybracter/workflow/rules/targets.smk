@@ -21,9 +21,6 @@ if PLASMIDS is True:
 else:
     plassembler_files = []
 
-
-
-
 # Preprocessing files
 TargetFilesHybrid = [
     os.path.join(FLAGS, "aggr_qc.txt"),

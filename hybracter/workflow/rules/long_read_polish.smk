@@ -10,10 +10,10 @@ rule medaka_round_1:
     params:
         MEDAKA_MODEL
     resources:
-        mem_mb=BigJobMem,
-        time=MediumTime
+        mem_mb=config.resources.big.mem,
+        time=config.resources.med.time
     threads:
-        BigJobCpu
+        config.resources.big.cpus
     shell:
         """
         medaka_consensus -i {input[1]} -d {input[0]} -o {output[0]} -m {params[0]}  -t {threads}
@@ -31,10 +31,10 @@ rule dnaapler:
     params:
         os.path.join(DNAAPLER, "{sample}")
     resources:
-        mem_mb=BigJobMem,
-        time=MediumTime
+        mem_mb=config.resources.med.mem,
+        time=config.resources.med.time
     threads:
-        BigJobCpu
+        config.resources.med.cpus
     shell:
         """
         dnaapler chromosome -i {input[0]} -o {params[0]} -p {wildcards.sample} -t {threads} -f
@@ -52,10 +52,10 @@ rule medaka_round_2:
     params:
         MEDAKA_MODEL
     resources:
-        mem_mb=BigJobMem,
-        time=MediumTime
+        mem_mb=config.resources.med.mem,
+        time=config.resources.med.time
     threads:
-        BigJobCpu
+        config.resources.med.cpus
     shell:
         """
         medaka_consensus -i {input[1]} -d {input[0]} -o {output[0]} -m {params[0]}  -t {threads}
@@ -73,10 +73,10 @@ rule dnaapler_no_polish:
     params:
         os.path.join(DNAAPLER_NO_POLISH, "{sample}")
     resources:
-        mem_mb=BigJobMem,
-        time=MediumTime
+        mem_mb=config.resources.med.mem,
+        time=config.resources.med.time
     threads:
-        BigJobCpu
+        config.resources.med.cpus
     shell:
         """
         dnaapler chromosome -i {input[0]} -o {params[0]} -p {wildcards.sample} -t {threads} -f

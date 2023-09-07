@@ -2,7 +2,10 @@
 input:
 output: 'hybracter.out/'
 log: 'hybracter/hybracter.log'
-threads: 16
+threads: 1
+
+#
+
 plasmids: True
 polca: False
 

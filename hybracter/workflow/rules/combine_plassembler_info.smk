@@ -7,10 +7,10 @@ rule add_sample_plassembler:
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     script:
         '../scripts/add_sample_plassembler.py'
 
@@ -23,10 +23,10 @@ rule combine_plassembler_info:
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     script:
         '../scripts/combine_plassembler_info.py'
 
@@ -38,10 +38,10 @@ rule aggr_combine_plassembler_info:
     output:
         os.path.join(FLAGS, "aggr_combine_plassembler_info.txt")
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1 
+        config.resources.small.cpu
     shell:
         """
         touch {output[0]}

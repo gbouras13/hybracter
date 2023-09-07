@@ -8,10 +8,10 @@ rule extract_summary_assembly_stats:
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     script:
         '../scripts/extract_summary_assembly_stats.py'
 
@@ -23,10 +23,10 @@ rule combine_summary_stats:
     conda:
         os.path.join('..', 'envs','scripts.yaml')
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     script:
         '../scripts/combine_summary_assembly_stats.py'
 
@@ -40,10 +40,10 @@ rule aggr_statistics:
     output:
         os.path.join(FLAGS, "aggr_assembly_statistics.txt")
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.small.mem,
+        time=config.resources.small.time
     threads:
-        1
+        config.resources.small.cpu
     shell:
         """
         touch {output[0]}

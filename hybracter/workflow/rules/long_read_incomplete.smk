@@ -10,10 +10,10 @@ rule medaka_incomplete:
     params:
         MEDAKA_MODEL
     resources:
-        mem_mb=BigJobMem,
-        time=MediumTime
+        mem_mb=config.resources.big.mem,
+        time=config.resources.med.time
     threads:
-        BigJobCpu
+        config.resources.big.cpus
     shell:
         """
         medaka_consensus -i {input[1]} -d {input[0]} -o {output[0]} -m {params[0]}  -t {threads}

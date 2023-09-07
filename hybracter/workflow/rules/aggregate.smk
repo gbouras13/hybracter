@@ -12,13 +12,13 @@ def aggregate_long_read_polish_input(wildcards):
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
         if f.read().strip() == "C":
-            if NO_POLISH is False: # if complete and long polish, do 2 rouns
+            if NO_POLISH is False: # if complete and you want to polish, do 2 rounds
                 return os.path.join(MEDAKA_RD_2,"{sample}", "consensus.fasta")
             else: # if complete and no polish 
                 # f.read().strip() == "C" and NO_POLISH is True: # if complete and no polish
                 return os.path.join(DNAAPLER_NO_POLISH, "{sample}", "{sample}_reoriented.fasta")
-        else: # if incomplete 
-            if NO_POLISH is False: # if long polish, medaka once
+        else: # if incomplete  
+            if NO_POLISH is False: # if you want long polish, medaka once
                 return os.path.join(MEDAKA_INCOMPLETE,"{sample}", "consensus.fasta")
             else:  # nothing
                 return os.path.join(INCOMPLETE_PRE_POLISH,"{sample}.fasta")
@@ -46,7 +46,7 @@ rule aggr_long_read_polish_flag:
         mem_mb=SmallJobMem,
         time=SmallTime
     threads:
-        1
+        config.resources.small.cpu
     shell:
         """
         touch {output[0]}
@@ -92,7 +92,7 @@ rule aggr_short_read_polish_flag:
         mem_mb=SmallJobMem,
         time=SmallTime
     threads:
-        1
+        config.resources.small.cpu
     shell:
         """
         touch {output[0]}
@@ -136,7 +136,7 @@ rule aggr_polca_flag:
         mem_mb=SmallJobMem,
         time=SmallTime
     threads:
-        1
+        config.resources.small.cpu
     shell:
         """
         touch {output[0]}

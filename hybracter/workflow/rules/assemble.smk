@@ -9,12 +9,12 @@ rule assemble:
     conda:
         os.path.join('..', 'envs','flye.yaml')
     resources:
-        mem_mb=BigJobMem,
-        time=BigTime
+        mem_mb=config.resources.med.cpu,
+        time=config.resources.big.time
     params:
         FLYE_MODEL
     threads:
-        BigJobCpu
+        config.resources.big.cpu
     shell:
         """
         flye {params[0]} {input[0]} -t {threads}  --out-dir {output[0]}
@@ -27,10 +27,10 @@ rule aggr_assemble:
     output:
         os.path.join(FLAGS, "aggr_assemble.txt")
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallTime
+        mem_mb=config.resources.big.mem,
+        time=config.resources.big.time
     threads:
-        1
+        config.resources.small.cpu
     shell:
         """
         touch {output[0]}
