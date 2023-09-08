@@ -9,18 +9,6 @@ CSV = config['input']
 OUTPUT = config['output']
 THREADS = config['threads']
 
-# snakemake params 
-BigJobMem = config["BigJobMem"]
-BigJobCpu = config["BigJobCpu"]
-SmallJobMem = config["SmallJobMem"]
-SmallJobCpu = config["SmallJobCpu"]
-
-SmallTime = config["SmallTime"]
-BigTime = config["BigTime"]
-MediumTime = config["MediumTime"]
-
-# plassembler DB
-PlassemblerDatabase = config["plassemblerDatabase"]
 
 # LR Only flag 
 PLASMIDS = config['plasmids']

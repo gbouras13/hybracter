@@ -117,3 +117,26 @@ I would highly highly recommend running hybracter using a Snakemake profile. Ple
 ```
 hybracter run --input <input.csv> --output <output_dir> --threads <threads> --polca --profile profiles/hybracter
 ```
+
+Assessing Quality
+================
+
+https://github.com/rrwick/Perfect-bacterial-genome-tutorial/wiki/Assessing-quality-without-a-reference
+
+Assessing with ALE
+
+If you have short reads, then running ALE to get an ALE score is the best option. Larger ALE scores are better, and since ALE scores are negative, 'larger' means scores with a smaller magnitude and are closer to zero.
+
+To make this easier, we have created the ale_score.sh script (which you can find in the scripts directory of this repo). Just give it the assembly, the two Illumina read files and a thread count like this:
+
+ale_score.sh assembly.fasta reads/illumina_1.fastq.gz reads/illumina_2.fastq.gz 16
+And it will produce a file (the assembly filename with .ale appended) which contains the ALE score.
+
+Assessing with Prodigal
+
+If you don't have short reads, then you can run Prodigal and calculate the mean length of predicted proteins. Larger is better because assembly errors (especially indels) often create stop codons.
+
+To make this easier, we have created the mean_prodigal_length.sh script (which you can find in the scripts directory of this repo). Just give it the assembly like this:
+
+mean_prodigal_length.sh assembly.fasta
+And it will produce a file (the assembly filename with .prod appended) which contains the mean Prodigal length

@@ -1,0 +1,78 @@
+DOCUMENTATION
+-------------
+
+http://portal.nersc.gov/dna/RD/Adv-Seq/ALE-doc/
+
+This code is no longer in active development. Pull requests and bugs will be addressed as needed.
+
+Plotting
+--------
+
+The authors recommend using IGV to view the output.
+
+http://www.broadinstitute.org/igv/
+
+Just import the assembly, bam and ALE scores. You can convert the .ale file to a set of .wig files with ale2wiggle.py and IGV can read those directly.  Depending on your genome size you may want to convert the .wig files to the BigWig format.
+
+LICENSE
+-------
+
+/*
+ * Copyright (C) 2010,2011,2012 Scott Clark. All rights reserved.
+ *
+ * Developed by:
+ * Scott Clark
+ * Cornell University Center for Applied Mathematics
+ * http://cam.cornell.edu
+ * AND
+ * Rob Egan
+ * Department of Energy Joint Genome Institute
+ * http://jgi.doe.gov
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a 
+ * copy of this software and associated documentation files (the "Software"), 
+ * to deal with the Software without restriction, including without limitation 
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * and/or sell copies of the Software, and to permit persons to whom the 
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, 
+ *      this list of conditions and the following disclaimers.
+ *   2. Redistributions in binary form must reproduce the above copyright 
+ *      notice, this list of conditions and the following disclaimers in the 
+ *      documentation and/or other materials provided with the distribution.
+ *   3. Neither the names of Cornell University, The Joint Genome Institute, 
+ *      nor the names of its contributors may be used to endorse or promote 
+ *      products derived from this Software without specific prior written 
+ *      permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+ * CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * DEALINGS WITH THE SOFTWARE.
+ */
+
+// For more information on the licence please see
+// The University of Illinois/NCSA Open Source License
+// http://www.opensource.org/licenses/UoI-NCSA.php
+
+INSTALL
+-------
+
+http://portal.nersc.gov/dna/RD/Adv-Seq/ALE-doc/index.html#installation
+
+#
+# ALE comes packaged with samtools-0.1.18  Feel free to use a later version
+# samtools is open source (MIT license)
+# We would like to thank the creators for the extensive and very useful package
+#
+
+Requirements for plotter4.py:
+	numpy 1.6.1
+	mpmath 0.17
+	setuptools 0.6c11
+	matplotlib 1.0.1
+	pymix 0.8  http://www.pymix.org/pymix/

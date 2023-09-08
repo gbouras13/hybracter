@@ -1,19 +1,14 @@
 # Snakemake config
-input:
 output: 'hybracter.out/'
 log: 'hybracter/hybracter.log'
 threads: 1
 
-#
-
-plasmids: True
-polca: False
-
+#  whether to turn off polca
+no_polca: False
 
 # Nanopore QC params
-nanopore:
-    min_length: 1000
-    min_quality: 9
+min_length: 1000
+min_quality: 9
 
 # Snakemake Params
 resources:
@@ -32,9 +27,8 @@ resources:
 
 
 # DBs
-# define the paths here
-databases:
-    plassembler: 'plassembler_DB'
+# define the path for plassembler db
+databases: 'plassembler_DB'
 
 # medaka and flye models
 medaka:

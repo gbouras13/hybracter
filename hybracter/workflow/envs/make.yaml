@@ -1,0 +1,5 @@
+name: make
+channels:
+    - anaconda 
+dependencies:
+    - make

@@ -88,6 +88,18 @@ def cli():
     hybracter command --help"""
     pass
 
+def print_splash():
+    click.echo("""\b
+
+ _           _                    _            
+| |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
+| '_ \| | | | '_ \| '__/ _` |/ __| __/ _ \ '__|
+| | | | |_| | |_) | | | (_| | (__| ||  __/ |   
+|_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
+       |___/
+
+""")
+
 
 help_hybrid_msg_extra = """
 \b
@@ -129,7 +141,7 @@ Available targets:
 
 help_msg_install = """
 \b
-Installed the plassembler database
+Installs ALE from source and downloads the plassembler database
 hybracter install ... 
 \b
 RUN EXAMPLES:
@@ -144,8 +156,8 @@ all_medaka_models = [
     'r1041_e82_400bps_hac_v4.2.0',
     'r1041_e82_400bps_sup_v4.2.0',
     # r1041 variant calling
-    'r1041_e82_400bps_hac_variant_v4.2.0',
-    'r1041_e82_400bps_sup_variant_v4.2.0',
+    # 'r1041_e82_400bps_hac_variant_v4.2.0',
+    # 'r1041_e82_400bps_sup_variant_v4.2.0',
     # r9 consensus
     'r941_sup_plant_g610',
     'r941_min_fast_g507', 'r941_prom_fast_g507',
@@ -161,8 +173,8 @@ all_medaka_models = [
     'r104_e81_fast_g5015', 'r104_e81_sup_g5015', 'r104_e81_hac_g5015',
     'r104_e81_sup_g610',
     # r104 e81 variant calling
-    'r104_e81_fast_variant_g5015', 'r104_e81_hac_variant_g5015',
-    'r104_e81_sup_variant_g610',
+    # 'r104_e81_fast_variant_g5015', 'r104_e81_hac_variant_g5015',
+    # 'r104_e81_sup_variant_g610',
     # r1041 e82 consensus
     'r1041_e82_400bps_hac_g615',  'r1041_e82_400bps_fast_g615',
     'r1041_e82_400bps_fast_g632', 'r1041_e82_260bps_fast_g632',
@@ -173,47 +185,47 @@ all_medaka_models = [
     'r1041_e82_260bps_hac_v4.1.0', 'r1041_e82_260bps_sup_v4.1.0',
     'r1041_e82_400bps_hac_v4.1.0', 'r1041_e82_400bps_sup_v4.1.0',
     # r1041 e82 variant calling
-    'r1041_e82_400bps_hac_variant_g615',
-    'r1041_e82_400bps_fast_variant_g615',
-    'r1041_e82_400bps_fast_variant_g632',
-    'r1041_e82_260bps_fast_variant_g632',
-    'r1041_e82_400bps_hac_variant_g632',
-    'r1041_e82_400bps_sup_variant_g615',
-    'r1041_e82_260bps_hac_variant_g632',
-    'r1041_e82_260bps_sup_variant_g632',
-    'r1041_e82_260bps_hac_variant_v4.1.0',
-    'r1041_e82_260bps_sup_variant_v4.1.0',
-    'r1041_e82_400bps_hac_variant_v4.1.0',
-    'r1041_e82_400bps_sup_variant_v4.1.0',
+    # 'r1041_e82_400bps_hac_variant_g615',
+    # 'r1041_e82_400bps_fast_variant_g615',
+    # 'r1041_e82_400bps_fast_variant_g632',
+    # 'r1041_e82_260bps_fast_variant_g632',
+    # 'r1041_e82_400bps_hac_variant_g632',
+    # 'r1041_e82_400bps_sup_variant_g615',
+    # 'r1041_e82_260bps_hac_variant_g632',
+    # 'r1041_e82_260bps_sup_variant_g632',
+    # 'r1041_e82_260bps_hac_variant_v4.1.0',
+    # 'r1041_e82_260bps_sup_variant_v4.1.0',
+    # 'r1041_e82_400bps_hac_variant_v4.1.0',
+    # 'r1041_e82_400bps_sup_variant_v4.1.0',
     # snp and variant - flipflop
-    'r941_prom_snp_g303', 'r941_prom_variant_g303',
-    'r941_prom_snp_g322', 'r941_prom_variant_g322',
-    'r941_prom_snp_g360', 'r941_prom_variant_g360',
-    'r103_prom_snp_g3210', 'r103_prom_variant_g3210',
+    # 'r941_prom_snp_g303', 'r941_prom_variant_g303',
+    # 'r941_prom_snp_g322', 'r941_prom_variant_g322',
+    # 'r941_prom_snp_g360', 'r941_prom_variant_g360',
+    # 'r103_prom_snp_g3210', 'r103_prom_variant_g3210',
     # snp and variant - crf guppy507+
-    'r941_sup_plant_variant_g610',
-    'r941_min_fast_snp_g507', 'r941_min_fast_variant_g507',
-    'r941_min_hac_snp_g507',
-    'r941_min_sup_snp_g507', 'r941_min_sup_variant_g507',
-    'r941_prom_fast_snp_g507', 'r941_prom_fast_variant_g507',
-    'r941_prom_hac_snp_g507',
-    'r941_prom_sup_snp_g507', 'r941_prom_sup_variant_g507',
-    'r103_fast_snp_g507', 'r103_fast_variant_g507',
-    'r103_hac_snp_g507', 'r103_hac_variant_g507',
-    'r103_sup_snp_g507', 'r103_sup_variant_g507',
+    # 'r941_sup_plant_variant_g610',
+    # 'r941_min_fast_snp_g507', 'r941_min_fast_variant_g507',
+    # 'r941_min_hac_snp_g507',
+    # 'r941_min_sup_snp_g507', 'r941_min_sup_variant_g507',
+    # 'r941_prom_fast_snp_g507', 'r941_prom_fast_variant_g507',
+    # 'r941_prom_hac_snp_g507',
+    # 'r941_prom_sup_snp_g507', 'r941_prom_sup_variant_g507',
+    # 'r103_fast_snp_g507', 'r103_fast_variant_g507',
+    # 'r103_hac_snp_g507', 'r103_hac_variant_g507',
+    # 'r103_sup_snp_g507', 'r103_sup_variant_g507',
     # rle consensus
     'r941_min_high_g340_rle',
     # r9 consensus
     'r941_min_hac_g507', 'r941_min_sup_g507',
     'r941_prom_hac_g507', 'r941_prom_sup_g507',
     # r9 variant calling
-    'r941_min_hac_variant_g507',
-    'r941_prom_hac_variant_g507',
+    # 'r941_min_hac_variant_g507',
+    # 'r941_prom_hac_variant_g507',
     # r941 e81 consensus
     'r941_e81_fast_g514', 'r941_e81_hac_g514', 'r941_e81_sup_g514',
     # r941 e81 variant calling
-    'r941_e81_fast_variant_g514', 'r941_e81_hac_variant_g514',
-    'r941_e81_sup_variant_g514',
+    # 'r941_e81_fast_variant_g514', 'r941_e81_hac_variant_g514',
+    # 'r941_e81_sup_variant_g514',
 ]
 
 
@@ -228,27 +240,27 @@ hybrid
     ),
 )
 @click.option("--input", "_input", help="Input csv", type=str, required=True)
-@click.option('--polca',  help='Use Polca to polish assemblies with short reads', is_flag=True,  default=False)
-@click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
-@click.option('--plassembler',  help='whether you want to use Plassembler for plasmid recovery.', is_flag=True,  default=False)
-@click.option('--plassemblerdb',  help='Plassembler DB directory.', type=click.Path(dir_okay=True, readable=True),  default='plassembler_DB')
-@click.option('--no_polish','no_polish',  help='whether you want to turn off Medaka to polishing for your genome.', is_flag=True,  default=False )
+@click.option('--no_polca',  help='Do not use Polca to polish assemblies with short reads', is_flag=True,  default=False)
+@click.option('--min_length', 'min_length',  help='min read length for long reads', type=int,  default=1000)
+@click.option('--min_quality', 'min_quality',  help='min read quality for long reads', type=int,  default=9)
+@click.option('--databases',  help='Plassembler Databases directory.', type=click.Path(dir_okay=True, readable=True),  default='plassembler_DB')
 @click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r1041_e82_400bps_sup_v4.2.0', show_default=True, type=click.Choice(all_medaka_models) )
-@click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
+@click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq', type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
 @common_options
-def hybrid(_input,  polca, medakaModel, plasmids, no_polish, flyeModel, min_length, output, log, **kwargs):
-    """Run hybracter"""
+def hybrid(_input,  no_polca, medakaModel, databases, min_quality, flyeModel, min_length, output, log, **kwargs):
+    """Run hybracter with hybrid long and paired end short reads"""
     # Config to add or update in configfile
     merge_config = {
+        'args': {
         "input": _input, 
         "output": output, 
         "log": log, 
         "min_length": min_length,
-        "plasmids": plasmids,
-        "no_polish": no_polish,
-        "polca": polca, 
+        "databases": databases,
+        "min_quality": min_quality,
+        "no_polca": no_polca, 
         "medakaModel": medakaModel, 
-        "flyeModel": flyeModel }
+        "flyeModel": flyeModel } }
 
     # run!
     run_snakemake(
@@ -278,6 +290,7 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
     """Run hybracter"""
     # Config to add or update in configfile
     merge_config = {
+         'args': {
         "input": _input, 
         "output": output, 
         "log": log, 
@@ -285,7 +298,7 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
         "plasmids": plasmids,
         "no_polish": no_polish,
         "medakaModel": medakaModel, 
-        "flyeModel": flyeModel }
+        "flyeModel": flyeModel } }
 
     # run!
     run_snakemake(
@@ -321,14 +334,49 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
             help="Customise Snakemake runtime args",
             show_default=True,
         )
-@click.option('--database','database',  help='Database Directory', show_default=True,  default='Database')
+@click.option('--databases','databases',  help='Plassembler databases Directory', show_default=True,  default='Database')
 @common_options
-def install( database, log,output,  **kwargs):
+def download( databases, log,output,  **kwargs):
     # Config to add or update in configfile
-    merge_config = { "database": database, "output": output, "log": log }
-    """Install databases"""
+    merge_config = { "databases": databases, "output": output, "log": log }
+    """Downloads the plassembler database"""
     run_snakemake(
-        snakefile_path=snake_base(os.path.join('workflow','installDB.smk')),
+        snakefile_path=snake_base(os.path.join('workflow','download.smk')),
+        merge_config=merge_config,
+        **kwargs)
+
+
+@click.command(
+    epilog=help_msg_install,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ))
+@click.option(
+            "--use-conda/--no-use-conda",
+            default=True,
+            help="Use conda for Snakemake rules",
+            show_default=True,
+        )
+@click.option(
+            "--snake-default",
+            multiple=True,
+            default=[
+                "--rerun-incomplete",
+                "--printshellcmds",
+                "--nolock",
+                "--show-failed-logs",
+                "--conda-frontend conda"
+            ],
+            help="Customise Snakemake runtime args",
+            show_default=True,
+        )
+@common_options
+def ale(  log,output,  **kwargs):
+    # install ale
+    merge_config = { "output": output, "log": log }
+    """installs ale"""
+    run_snakemake(
+        snakefile_path=snake_base(os.path.join('workflow','ale.smk')),
         merge_config=merge_config,
         **kwargs)
 
@@ -346,8 +394,9 @@ def citation(**kwargs):
     """Print the citation(s) for this tool"""
     print_citation()
 
-cli.add_command(install)
+cli.add_command(download)
 cli.add_command(hybrid)
+cli.add_command(ale)
 cli.add_command(long)
 cli.add_command(config)
 cli.add_command(citation)
@@ -355,6 +404,7 @@ cli.add_command(citation)
 
 def main():
     print_version()
+    print_splash()
     cli()
 
 
