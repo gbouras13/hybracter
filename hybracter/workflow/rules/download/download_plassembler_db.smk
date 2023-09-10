@@ -15,5 +15,5 @@ rule download_db:
         config.resources.sml.cpu
     shell:
         """
-        install_database.py -d {params[0]}
+        plassembler download -d {params[0]}
         """
