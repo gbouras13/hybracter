@@ -2,12 +2,12 @@
 rule download_db:
     """Rule to Download plassembler db."""
     params:
-        config.databases
+        dir.plassemblerdb
     conda:
         os.path.join(dir.env,'plassembler.yaml')
     output:
-        os.path.join(config.databases,'plsdb.msh'),
-        os.path.join(config.databases, 'plsdb.tsv')
+        os.path.join(dir.plassemblerdb,'plsdb.msh'),
+        os.path.join(dir.plassemblerdb, 'plsdb.tsv')
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time

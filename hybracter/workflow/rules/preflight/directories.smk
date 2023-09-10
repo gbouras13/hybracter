@@ -8,13 +8,12 @@ import attrmap as ap
 
 dir = ap.AttrMap()
 
-
 ### DATABASE LOCATION
 try:
     assert(config.args.databases) is not None
-    dir.dbs.base = config.args.databases
+    dir.plassemblerdb = config.args.databases
 except (KeyError,AssertionError):
-    dir.dbs.base = "Plassembler_DB"
+    dir.plassemblerdb = os.path.join(workflow.basedir,"..","databases")
 
 
 ### OUTPUT LOCATION
@@ -29,9 +28,6 @@ except (KeyError, AssertionError):
 dir.env     = os.path.join(workflow.basedir, "envs")
 dir.rules = os.path.join(workflow.basedir, "rules")
 dir.scripts = os.path.join(workflow.basedir, "scripts")
-
-### DATABASE DIR
-dir.dbs.plassemblerdb  = os.path.join(dir.dbs.base, "plassemblerdb")
 
 ### OUTPUT DIRs
 dir.out.results  = os.path.join(dir.out.base, "results")
