@@ -56,8 +56,8 @@ download
 """
 
 TargetFilesDownload = [
-    os.path.join(config.databases,'plsdb.msh'),
-    os.path.join(config.databases, 'plsdb.tsv')
+    os.path.join(dir.plassemblerdb  ,'plsdb.msh'),
+    os.path.join(dir.plassemblerdb, 'plsdb.tsv')
 ]
 
 
