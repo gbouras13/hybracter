@@ -4,7 +4,9 @@ All target output files are declared here
 
 # need long read polish aggr file regardless even if no polish selected 
 # because of dnaapler
-
+"""
+polca depends on --no_polca flag
+"""
 
 # Polca
 if config.no_polca == True:
@@ -13,15 +15,21 @@ if config.no_polca == True:
 else:
     polca_files = os.path.join(dir.out.flags, "aggr_polca.flag")
 
-# plassembler
 
-if config.plasmids is True:
-    plassembler_files = [os.path.join(dir.out.flags, "aggr_plassembler.flag"),
-    os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag")]
-else:
-    plassembler_files = []
+"""
+plassembler
+"""
+# plassembler files
+plassembler_files = [
+    os.path.join(dir.out.flags, "aggr_plassembler.flag"),
+    os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag")
+    ]
 
 
+
+"""
+hybrid
+"""
 
 TargetFilesHybrid = [
     os.path.join(dir.out.flags, "aggr_qc.flag"),
@@ -56,7 +64,7 @@ download
 """
 
 TargetFilesDownload = [
-    os.path.join(dir.plassemblerdb  ,'plsdb.msh'),
+    os.path.join(dir.plassemblerdb,'plsdb.msh'),
     os.path.join(dir.plassemblerdb, 'plsdb.tsv')
 ]
 

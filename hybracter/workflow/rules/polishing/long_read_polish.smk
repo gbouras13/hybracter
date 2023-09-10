@@ -66,6 +66,6 @@ rule medaka_round_2:
         config.resources.big.cpu
     shell:
         """
-        medaka_consensus -i {input.fastq} -d {input.fasta} -o {output.fasta} -m {params.dir}  -t {threads}
+        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads}
         """
 
