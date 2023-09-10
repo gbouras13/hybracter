@@ -5,3 +5,4 @@ channels:
     - defaults
 dependencies:
     - masurca >=4.1.0
+    - bwa >=0.7.17
