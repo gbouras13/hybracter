@@ -18,7 +18,7 @@ rule polca:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time
     threads:
-        config.resources.med.cpu
+        config.resources.sml.cpu
     shell:
         """
         # real struggle running polca honestly
@@ -48,7 +48,7 @@ rule polca_incomplete:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time
     threads:
-        config.resources.med.cpu
+        config.resources.sml.cpu
     shell:
         """
         # real struggle running polca honestly
