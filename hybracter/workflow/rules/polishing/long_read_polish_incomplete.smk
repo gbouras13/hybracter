@@ -1,14 +1,15 @@
 rule medaka_incomplete:
     input:
-        os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta"),
-        get_input_lr_fastqs
+        fasta = os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta"),
+        fastq = os.path.join(dir.out.qc,"{sample}_filt.fastq.gz")
     output:
-        directory(os.path.join(dir.out.medaka_incomplete,"{sample}")),
-        os.path.join(dir.out.medaka_incomplete,"{sample}", "consensus.fasta")
+        fasta = os.path.join(dir.out.medaka_incomplete,"{sample}", "consensus.fasta"),
+        version = os.path.join(dir.out.versions, "{sample}", "medaka_incomplete.version")
     conda:
         os.path.join(dir.env,'medaka.yaml')
     params:
-        MEDAKA_MODEL
+        model = MEDAKA_MODEL,
+        dir = os.path.join(dir.out.medaka_incomplete,"{sample}")
     resources:
         mem_mb=config.resources.big.mem,
         time=config.resources.med.time
@@ -16,7 +17,8 @@ rule medaka_incomplete:
         config.resources.big.cpu
     shell:
         """
-        medaka_consensus -i {input[1]} -d {input[0]} -o {output[0]} -m {params[0]}  -t {threads}
+        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads}
+        medaka --version > {output.version}
         """
 
 

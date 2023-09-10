@@ -43,7 +43,7 @@ rule aggr_long_read_polish_flag:
     input:
         expand(os.path.join(dir.out.aggr_lr_polish ,"{sample}.txt"), sample = SAMPLES)
     output:
-        os.path.join(dir.out.flags, "aggr_long_read_polish.flag")
+        flag = os.path.join(dir.out.flags, "aggr_long_read_polish.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time
@@ -51,7 +51,7 @@ rule aggr_long_read_polish_flag:
         config.resources.sml.cpu
     shell:
         """
-        touch {output[0]}
+        touch {output.flag}
         """
 
 
@@ -96,7 +96,7 @@ rule aggr_short_read_polish_flag:
     input:
         expand(os.path.join(dir.out.aggr_sr_polish,"{sample}.txt"), sample = SAMPLES)
     output:
-        os.path.join(dir.out.flags, "aggr_short_read_polish.flag")
+        flag = os.path.join(dir.out.flags, "aggr_short_read_polish.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time
@@ -104,7 +104,7 @@ rule aggr_short_read_polish_flag:
         config.resources.sml.cpu
     shell:
         """
-        touch {output[0]}
+        touch {output.flag}
         """
 
 ####### polca ##########
@@ -145,7 +145,7 @@ rule aggr_polca_flag:
     input:
         expand(os.path.join(dir.out.aggr_polca_polish,"{sample}.txt"), sample = SAMPLES)
     output:
-        os.path.join(dir.out.flags, "aggr_polca.flag")
+        flag = os.path.join(dir.out.flags, "aggr_polca.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time
@@ -153,5 +153,5 @@ rule aggr_polca_flag:
         config.resources.sml.cpu
     shell:
         """
-        touch {output[0]}
+        touch {output.flag}
         """
