@@ -30,8 +30,7 @@ rule bwa_index:
     input:
         fasta = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta")
     output:
-        index = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt"),
-        version = os.path.join(dir.out.versions, "{sample}", "bwa_complete.version")
+        index = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt")
     conda:
         os.path.join(dir.env,'short_read_polish.yaml')
     resources:
@@ -42,7 +41,6 @@ rule bwa_index:
     shell:
         """
         bwa index {input.fasta}
-        bwa  2> {output.version}
         """
 
 rule bwa_mem:
