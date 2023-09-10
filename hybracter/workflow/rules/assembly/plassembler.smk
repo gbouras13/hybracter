@@ -20,6 +20,8 @@ rule plassembler_hybrid:
     shell:
         """
         plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc -f
+        touch {output.fasta}
+        touch {output.summary}
         """
 
 rule plassembler_move_fastas:
