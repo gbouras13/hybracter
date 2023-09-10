@@ -1,11 +1,14 @@
 
 checkpoint check_completeness:
+    """
+    adds checkpoint to determine whether the Flye assembly recovered the complete chromosome (or not)
+    """
     input:
-        os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta")
+        fasta = os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta")
     output:
-        os.path.join(dir.out.completeness,"{sample}.txt")
+        completeness_check = os.path.join(dir.out.completeness,"{sample}.txt")
     params:
-        getMinChromLength
+        min_chrom_length = getMinChromLength
     conda:
         os.path.join(dir.env,'scripts.yaml')
     resources:
@@ -14,16 +17,19 @@ checkpoint check_completeness:
     threads:
         config.resources.sml.cpu
     script:
-        '../scripts/check_completeness.py'
+        '../../scripts/check_completeness.py'
 
-rule extract_complete:
+rule extract_chromosome_complete:
+    """
+    extracts the chromosome for complete samples
+    """
     input:
-        os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta"),
-        os.path.join(dir.out.completeness,"{sample}.txt")
+        fasta = os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta"),
+        completeness_check = os.path.join(dir.out.completeness,"{sample}.txt")
     output:
-        os.path.join(dir.out.chrom_pre_polish,"{sample}.fasta")
+        fasta = os.path.join(dir.out.chrom_pre_polish,"{sample}.fasta")
     params:
-        getMinChromLength
+        min_chrom_length = getMinChromLength
     conda:
         os.path.join(dir.env,'scripts.yaml')
     resources:
@@ -32,16 +38,19 @@ rule extract_complete:
     threads:
         config.resources.sml.cpu
     script:
-        '../scripts/extract_chromosome.py'
+        '../../scripts/extract_chromosome.py'
 
 rule extract_incomplete:
+    """
+    extracts the chromosome for complete samples
+    """
     input:
-        os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta"),
-        os.path.join(dir.out.completeness ,"{sample}.txt")
+        fasta = os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta"),
+        completeness_check = os.path.join(dir.out.completeness ,"{sample}.txt")
     output:
-        os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta")
+        fasta = os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta")
     params:
-        getMinChromLength
+        min_chrom_length = getMinChromLength
     conda:
         os.path.join(dir.env,'scripts.yaml')
     resources:
@@ -50,7 +59,7 @@ rule extract_incomplete:
     threads:
         config.resources.sml.cpu
     script:
-        '../scripts/extract_incomplete.py'
+        '../../scripts/extract_incomplete.py'
 
 
-### no aggr rule - flows into the long_read_polish rules
+### no aggr rule - it flows into the long_read_polish rules

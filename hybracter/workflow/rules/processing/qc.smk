@@ -1,5 +1,8 @@
 
 rule filtlong:
+    """
+    runs filtlong to filter my quality and length
+    """
     input:
         fastq = get_input_lr_fastqs
     output:
@@ -22,6 +25,9 @@ rule filtlong:
         """
 
 rule porechop:
+    """
+    runs porechop to trim adapters
+    """
     input:
         fastq = os.path.join(dir.out.qc,"{sample}_filt.fastq.gz")
     output:
@@ -41,6 +47,9 @@ rule porechop:
         """
 
 rule aggr_qc:
+    """
+    aggregates over all samples
+    """
     input:
         expand(os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(dir.out.versions, "{sample}", "filtlong.version"), sample = SAMPLES),

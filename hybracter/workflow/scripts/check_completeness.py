@@ -19,4 +19,4 @@ def get_completeness(input_fasta, completeness_check, min_chrom_length):
             f.write("I")
 
 
-get_completeness(snakemake.input[0], snakemake.output[0], snakemake.params[0])
+get_completeness(snakemake.input.fasta, snakemake.output.completeness_check, snakemake.params.min_chrom_length)
