@@ -10,7 +10,7 @@ dir = ap.AttrMap()
 
 ### DATABASE LOCATION
 try:
-    assert(ap.utils.to_dict(config.args)["databases") is not None
+    assert(ap.utils.to_dict(config.args)["databases"]) is not None
     dir.plassemblerdb = config.args.databases
 except (KeyError,AssertionError):
     dir.plassemblerdb = os.path.join(workflow.basedir,"..","databases")
