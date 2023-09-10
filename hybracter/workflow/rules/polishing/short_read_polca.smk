@@ -11,7 +11,7 @@ rule polca:
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
         polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca, "{sample}"),
-        reads = ' '.join(['"'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
+        reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -41,7 +41,7 @@ rule polca_incomplete:
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
         polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
-        reads = ' '.join(['"../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
+        reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
