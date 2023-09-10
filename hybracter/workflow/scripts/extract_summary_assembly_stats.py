@@ -24,7 +24,6 @@ def summarise_contigs(assembly_info, sample, assembly_cleaned_out, summary_out):
     # remove first row (from the file)
     assembly_df = assembly_df.iloc[1:, :]
 
-    # sample = 'C183'
     # add sample
     assembly_df["sample"] = sample
 
