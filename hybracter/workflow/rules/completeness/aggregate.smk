@@ -160,6 +160,10 @@ rule aggr_short_read_polish_flag:
 
 ####### polca ##########
 
+"""
+polca
+"""
+
 
 # input function for the rule aggregate polca
 def aggregate_polca_polish_input(wildcards):
@@ -171,7 +175,7 @@ def aggregate_polca_polish_input(wildcards):
         if f.read().strip() == "C":
             return os.path.join(dir.out.polca,"{sample}", "{sample}.fasta.PolcaCorrected.fa")
         else:
-            return os.path.join(dir.out.polca_incomplete,"{sample}.fasta.PolcaCorrected.fa")
+            return os.path.join(dir.out.polca_incomplete,"{sample}", "{sample}.fasta.PolcaCorrected.fa") 
 
 
 ### from the short_read_polishing 
