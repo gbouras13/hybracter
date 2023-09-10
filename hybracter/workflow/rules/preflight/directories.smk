@@ -51,7 +51,7 @@ dir.out.completeness  = os.path.join(dir.out.base, "completeness")
 dir.out.aggr_lr_polish  = os.path.join(dir.out.flags, "aggr_long_read_polish")
 dir.out.aggr_sr_polish  = os.path.join(dir.out.flags, "aggr_short_read_polish")
 dir.out.aggr_polca_polish  = os.path.join(dir.out.flags, "aggr_polca_polish")
-
+dir.out.aggr_plassembler = os.path.join(dir.out.flags, "aggr_plassembler")
 
 # long_read_polish.smk
 dir.out.medaka_rd_1  = os.path.join(dir.out.complete, "medaka_rd_1")
