@@ -54,6 +54,6 @@ rule polypolish_incomplete:
         config.resources.med.cpu
     shell:
         """
-        polypolish {input.fasta} {input.sam1} {input,sam2} > {output.fasta}
+        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta}
         polypolish --version > {output.version}
         """
