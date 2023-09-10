@@ -17,7 +17,7 @@ rule polca:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time
     threads:
-        config.resources.big.cpu
+        config.resources.med.cpu
     shell:
         """
         # real struggle running polca honestly
@@ -36,16 +36,17 @@ rule polca_incomplete:
         version = os.path.join(dir.out.versions, "{sample}", "polca_complete.version"),
         polca_input_fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta")
     params:
-        r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
-        r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
-        dir = dir.out.polca_incomplete
+        #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
+        #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
+        dir = dir.out.polca_incomplete,
+        reads = ' '.join([os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), os.path.join(dir.out.fastp,"{sample}_2.fastq.gz")])
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time
     threads:
-        config.resources.big.cpu
+        config.resources.med.cpu
     shell:
         """
         # real struggle running polca honestly
