@@ -7,9 +7,9 @@ rule plassembler_hybrid:
         fasta = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_plasmids.fasta"),
         summary = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_copy_number_summary.tsv")
     params:
-        db = dir.dbs.plassemblerdb,
+        db = dir.plassemblerdb,
         chromlen = getMinChromLength,
-        outdir = os.path.join(dir.plassemblerdb ,"{sample}")
+        outdir = os.path.join(dir.out.plassembler ,"{sample}")
     conda:
         os.path.join(dir.env,'plassembler.yaml')
     resources:
