@@ -1,11 +1,11 @@
 
 rule polca:
     input:
-        polypolish_fasta = os.path.join(dir.out.polypolish,"{sample}.fasta"),
-        polca_fasta = os.path.join(dir.out.polca, "{sample}", "{sample}.fasta")
+        polypolish_fasta = os.path.join(dir.out.polypolish,"{sample}.fasta")
     output:
         fasta = os.path.join(dir.out.polca,"{sample}", "{sample}.fasta.PolcaCorrected.fa"),
-        version = os.path.join(dir.out.versions, "{sample}", "polca_complete.version")
+        version = os.path.join(dir.out.versions, "{sample}", "polca_complete.version"),
+        polca_input_fasta = os.path.join(dir.out.polca, "{sample}", "{sample}.fasta")
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
@@ -21,7 +21,7 @@ rule polca:
     shell:
         """
         # real struggle running polca honestly
-        cp {input.polypolish_fasta} {input.polca_fasta}
+        cp {input.polypolish_fasta} {input.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {input.polca_fasta}  -r {params.reads} -t {threads}
         polca.sh --version > {output.version}
