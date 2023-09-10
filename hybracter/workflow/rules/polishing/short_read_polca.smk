@@ -4,7 +4,7 @@ rule polca:
         polypolish_fasta = os.path.join(dir.out.polypolish,"{sample}.fasta")
     output:
         fasta = os.path.join(dir.out.polca,"{sample}", "{sample}.fasta.PolcaCorrected.fa"),
-        version = os.path.join(dir.out.versions, "{sample}", "polca_complete.version"),
+        version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
         polca_input_fasta = os.path.join(dir.out.polca, "{sample}", "{sample}.fasta")
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
@@ -24,7 +24,7 @@ rule polca:
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
-        polca.sh --version > {output.version}
+        masurca --version > {output.version}
         """
 
 
@@ -33,7 +33,7 @@ rule polca_incomplete:
         polypolish_fasta = os.path.join(dir.out.polypolish_incomplete,"{sample}.fasta")
     output:
         fasta = os.path.join(dir.out.polca_incomplete,"{sample}", "{sample}.fasta.PolcaCorrected.fa"),
-        version = os.path.join(dir.out.versions, "{sample}", "polca_complete.version"),
+        version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
         polca_input_fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta")
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
@@ -53,7 +53,7 @@ rule polca_incomplete:
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
-        polca.sh --version > {output.version}
+        masurca --version > {output.version}
         """
 
 
