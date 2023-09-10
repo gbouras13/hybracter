@@ -303,7 +303,6 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
         **kwargs
     )
 
-
 @click.command(
     epilog=help_msg_install,
     context_settings=dict(
@@ -333,13 +332,12 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
 def download( databases, log,output,  **kwargs):
     # Config to add or update in configfile
     merge_config = { 
-         'args': {"databases": databases, "output": output, "log": log } }
+         'args': { "databases": databases, "output": output, "log": log } }
     """Downloads the plassembler database"""
     run_snakemake(
         snakefile_path=snake_base(os.path.join('workflow','download.smk')),
         merge_config=merge_config,
         **kwargs)
-
 
 @click.command(
     epilog=help_msg_install,
@@ -374,8 +372,6 @@ def ale(  log,output,  **kwargs):
         snakefile_path=snake_base(os.path.join('workflow','ale.smk')),
         merge_config=merge_config,
         **kwargs)
-
-
 
 @click.command()
 @common_options

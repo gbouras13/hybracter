@@ -32,6 +32,7 @@ dir.scripts = os.path.join(workflow.basedir, "scripts")
 ### OUTPUT DIRs
 dir.out.results  = os.path.join(dir.out.base, "results")
 dir.out.flags  = os.path.join(dir.out.base, "flags")
+dir.out.versions  = os.path.join(dir.out.base, "versions")
 dir.out.processing  = os.path.join(dir.out.base, "processing")
 dir.out.complete  = os.path.join(dir.out.results, "complete")
 dir.out.incomplete  = os.path.join(dir.out.results, "incomplete")
