@@ -21,9 +21,9 @@ rule polca:
     shell:
         """
         # real struggle running polca honestly
-        cp {input.polypolish_fasta} {input.polca_input_fasta}
+        cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {input.polca_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {output.polca_fasta}  -r {params.reads} -t {threads}
         polca.sh --version > {output.version}
         """
 
@@ -49,9 +49,9 @@ rule polca_incomplete:
     shell:
         """
         # real struggle running polca honestly
-        cp {input.polypolish_fasta} {input.polca_input_fasta}
+        cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {input.polca_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {output.polca_fasta}  -r {params.reads} -t {threads}
         polca.sh --version > {output.version}
         """
 
