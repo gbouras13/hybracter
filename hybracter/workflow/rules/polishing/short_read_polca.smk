@@ -24,7 +24,7 @@ rule polca:
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {params.input_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads}
         masurca --version > {output.version}
         """
 
