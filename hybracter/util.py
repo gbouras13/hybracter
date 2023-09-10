@@ -2,13 +2,14 @@
 You shouldn't need to tweak these much if at all
 """
 
-import sys
 import os
 import subprocess
-import yaml
-import click
+import sys
 from shutil import copyfile
 from time import localtime, strftime
+
+import click
+import yaml
 
 
 class OrderedCommands(click.Group):

@@ -6,17 +6,11 @@ https://github.com/beardymcjohnface/Snaketool/wiki/Customising-your-Snaketool
 """
 
 import os
+
 import click
 
-from .util import (
-    snake_base,
-    print_version,
-    default_to_ouput,
-    copy_config,
-    run_snakemake,
-    OrderedCommands,
-    print_citation,
-)
+from .util import (OrderedCommands, copy_config, default_to_ouput,
+                   print_citation, print_version, run_snakemake, snake_base)
 
 
 def common_options(func):
@@ -338,7 +332,8 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
 @common_options
 def download( databases, log,output,  **kwargs):
     # Config to add or update in configfile
-    merge_config = { "databases": databases, "output": output, "log": log }
+    merge_config = { 
+         'args': {"databases": databases, "output": output, "log": log } }
     """Downloads the plassembler database"""
     run_snakemake(
         snakefile_path=snake_base(os.path.join('workflow','download.smk')),
