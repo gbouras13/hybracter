@@ -1,10 +1,11 @@
 
 rule combine_plassembler_info:
     input:
-        summary_dir = directory(dir.out.plassembler_individual_summaries), # all the samples where plassembler ran (complete)
-        flag_dir = directory(dir.out.plassembler_individual_summaries) # all the samples where plassembler was skipped (incomplete)
+        os.path.join(dir.out.flags, "aggr_plassembler.flag") # need the flag as in the put - to be run after plassembler
     output:
         out = os.path.join(dir.out.plassembler_all_summary,"plassembler_assembly_info.txt")
+    params: 
+        summary_dir = dir.out.plassembler_individual_summaries, # all the samples where plassembler ran (complete)
     conda:
         os.path.join(dir.env,'scripts.yaml')
     resources:

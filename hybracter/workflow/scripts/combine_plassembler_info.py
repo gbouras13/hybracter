@@ -28,4 +28,4 @@ def combine_sample_plassembler(summary_dir, output):
     total_summary_df.to_csv(output, sep=",", index=False)
 
 
-combine_sample_plassembler(snakemake.input.summary_dir, snakemake.output.out)
+combine_sample_plassembler(snakemake.params.summary_dir, snakemake.output.out)
