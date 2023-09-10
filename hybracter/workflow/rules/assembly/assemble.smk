@@ -7,7 +7,7 @@ rule assemble:
         fastq = os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz")
     output:
         fasta = os.path.join(dir.out.assemblies ,"{sample}", "assembly.fasta"),
-        info = os.path.join(dir.out.assemblies ,"{sample}", "assembly_info.txt")
+        info = os.path.join(dir.out.assemblies ,"{sample}", "assembly_info.txt"),
         version = os.path.join(dir.out.versions, "{sample}", "flye.version")
     conda:
         os.path.join(dir.env,'flye.yaml')
@@ -28,7 +28,7 @@ rule assemble:
 rule aggr_assemble:
     input:
         expand(os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta"), sample = SAMPLES),
-        expand(os.path.join(dir.out.assemblies,"{sample}", "assembly_info.txt"), sample = SAMPLES)
+        expand(os.path.join(dir.out.assemblies,"{sample}", "assembly_info.txt"), sample = SAMPLES),
         expand(os.path.join(dir.out.versions, "{sample}", "flye.version"), sample = SAMPLES)
     output:
         flag = os.path.join(dir.out.flags, "aggr_assemble.flag")
