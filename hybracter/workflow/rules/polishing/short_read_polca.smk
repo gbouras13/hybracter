@@ -52,6 +52,7 @@ rule polca_incomplete:
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
+        echo $PWD
         polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
         masurca --version > {output.version}
         """
