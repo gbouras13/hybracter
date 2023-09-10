@@ -22,7 +22,8 @@ rule polca:
         """
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
-        polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
+        cd {params.dir}
+        polca.sh -a {output.input_fasta}  -r {params.reads} -t {threads}
         masurca --version > {output.version}
         """
 
@@ -38,7 +39,7 @@ rule polca_incomplete:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
         dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
-        reads = ' '.join(['"'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
+        reads = ' '.join(['"../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -50,6 +51,7 @@ rule polca_incomplete:
         """
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
+        cd {params.dir}
         polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
         masurca --version > {output.version}
         """
