@@ -42,7 +42,7 @@ rule bwa_index:
     shell:
         """
         bwa index {input.fasta}
-        bwa  > {output.version}
+        bwa  2> {output.version}
         """
 
 rule bwa_mem:

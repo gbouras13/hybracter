@@ -14,7 +14,7 @@ rule bwa_index_incomplete:
     shell:
         """
         bwa index {input.fasta}
-        bwa  > {output.version}
+        bwa  2> {output.version}
         """
 
 rule bwa_mem_incomplete:
