@@ -30,7 +30,7 @@ rule polca:
 
 rule polca_incomplete:
     input:
-        fasta = os.path.join(dir.out.polypolish_incomplete,"{sample}.fasta")
+        polypolish_fasta = os.path.join(dir.out.polypolish_incomplete,"{sample}.fasta")
     output:
         fasta = os.path.join(dir.out.polca_incomplete,"{sample}", "{sample}.fasta.PolcaCorrected.fa"),
         version = os.path.join(dir.out.versions, "{sample}", "polca_complete.version"),
