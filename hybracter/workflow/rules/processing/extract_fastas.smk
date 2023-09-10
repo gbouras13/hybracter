@@ -17,7 +17,7 @@ checkpoint check_completeness:
     threads:
         config.resources.sml.cpu
     script:
-        '../../scripts/check_completeness.py'
+        os.path.join(dir.scripts,  'check_completeness.py')
 
 rule extract_chromosome_complete:
     """
@@ -38,7 +38,7 @@ rule extract_chromosome_complete:
     threads:
         config.resources.sml.cpu
     script:
-        '../../scripts/extract_chromosome.py'
+        os.path.join(dir.scripts,  'extract_chromosome.py')
 
 rule extract_incomplete:
     """
@@ -59,7 +59,7 @@ rule extract_incomplete:
     threads:
         config.resources.sml.cpu
     script:
-        '../../scripts/extract_incomplete.py'
+        os.path.join(dir.scripts,  'extract_incomplete.py')
 
 
 ### no aggr rule - it flows into the long_read_polish rules

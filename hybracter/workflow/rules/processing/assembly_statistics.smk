@@ -13,7 +13,7 @@ rule extract_summary_assembly_stats:
     threads:
         config.resources.sml.cpu
     script:
-        '../scripts/extract_summary_assembly_stats.py'
+        os.path.join(dir.scripts,  'extract_summary_assembly_stats.py')
 
 rule combine_summary_stats:
     input:
@@ -28,7 +28,7 @@ rule combine_summary_stats:
     threads:
         config.resources.sml.cpu
     script:
-        '../scripts/combine_summary_assembly_stats.py'
+        os.path.join(dir.scripts,  'combine_summary_assembly_stats.py')
 
 
 rule aggr_statistics:
@@ -38,7 +38,7 @@ rule aggr_statistics:
         expand(os.path.join(dir.out.assembly_statistics,"{sample}_summary.csv"), sample = SAMPLES),
         os.path.join(dir.out.assembly_summary,"total_assembly_summary.csv")
     output:
-        os.path.join(dir.out.flags, "aggr_assembly_statistics.flag")
+        flag = os.path.join(dir.out.flags, "aggr_assembly_statistics.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time
@@ -46,5 +46,5 @@ rule aggr_statistics:
         config.resources.sml.cpu
     shell:
         """
-        touch {output[0]}
+        touch {output.flag}
         """
