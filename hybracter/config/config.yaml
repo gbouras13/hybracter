@@ -1,6 +1,6 @@
 # Snakemake config
 output: 'hybracter.out/'
-log: 'hybracter/hybracter.log'
+log: 'hybracter.out/hybracter.log'
 threads: 1
 
 #  whether to turn off polca
