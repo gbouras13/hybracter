@@ -1,8 +1,9 @@
 rule bwa_index_incomplete:
     input:
-        os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta")
+        fasta = os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta")
     output:
-        os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta.bwt")
+        index = os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta.bwt"),
+        version = os.path.join(dir.out.versions, "{sample}", "bwa_incomplete.version")
     conda:
         os.path.join(dir.env,'short_read_polish.yaml')
     resources:
@@ -12,18 +13,19 @@ rule bwa_index_incomplete:
         config.resources.sml.cpu
     shell:
         """
-        bwa index {input}
+        bwa index {input.fasta}
+        bwa --version > {output.version}
         """
 
 rule bwa_mem_incomplete:
     input:
-        os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta"),
-        os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
-        os.path.join(dir.out.fastp ,"{sample}_2.fastq.gz"),
-        os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta.bwt")
+        fasta = os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta"),
+        r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
+        r2 = os.path.join(dir.out.fastp ,"{sample}_2.fastq.gz"),
+        index = os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta.bwt")
     output:
-        os.path.join(dir.out.bwa_incomplete ,"{sample}_1.sam"),
-        os.path.join(dir.out.bwa_incomplete ,"{sample}_2.sam")
+        sam1 = os.path.join(dir.out.bwa_incomplete ,"{sample}_1.sam"),
+        sam2 = os.path.join(dir.out.bwa_incomplete ,"{sample}_2.sam")
     conda:
         os.path.join(dir.env,'short_read_polish.yaml')
     resources:
@@ -33,17 +35,18 @@ rule bwa_mem_incomplete:
         config.resources.med.cpu
     shell:
         """
-        bwa mem -t {threads} -a {input[0]} {input[1]} > {output[0]}
-        bwa mem -t {threads} -a {input[0]} {input[2]} > {output[1]}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1}
+        bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2}
         """
 
 rule polypolish_incomplete:
     input:
-        os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta"),
-        os.path.join(dir.out.bwa_incomplete ,"{sample}_1.sam"),
-        os.path.join(dir.out.bwa_incomplete ,"{sample}_2.sam")
+        fasta = os.path.join(dir.out.medaka_incomplete ,"{sample}", "consensus.fasta"),
+        sam1 = os.path.join(dir.out.bwa_incomplete ,"{sample}_1.sam"),
+        sam2 = os.path.join(dir.out.bwa_incomplete ,"{sample}_2.sam")
     output:
-        os.path.join(dir.out.polypolish_incomplete,"{sample}.fasta")
+        fasta = os.path.join(dir.out.polypolish_incomplete,"{sample}.fasta"),
+        version = os.path.join(dir.out.versions, "{sample}", "polypolish_incomplete.version")
     conda:
         os.path.join(dir.env,'polypolish.yaml')
     resources:
@@ -53,5 +56,6 @@ rule polypolish_incomplete:
         config.resources.med.cpu
     shell:
         """
-        polypolish {input[0]} {input[1]} {input[2]} > {output[0]}
+        polypolish {input.fasta} {input.sam1} {input,sam2} > {output.fasta}
+        polypolish --version > {output.version}
         """

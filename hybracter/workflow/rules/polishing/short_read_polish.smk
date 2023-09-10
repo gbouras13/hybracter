@@ -3,29 +3,35 @@ fastp rule for both short_read_polish.smk short_read_polish_incomplete.smk
 """
 
 rule fastp:
+    """
+    runs fastp on the paired end short reads
+    """
     input:
-        get_input_r1,
-        get_input_r2
+        r1 = get_input_r1,
+        r2 = get_input_r2
     output:
-        os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
-        os.path.join(dir.out.fastp,"{sample}_2.fastq.gz")
+        r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
+        r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
+        version = os.path.join(dir.out.versions, "{sample}", "fastp.version")
     conda:
         os.path.join(dir.env,'short_read_polish.yaml')
     resources:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time
     threads:
-        config.resources.med.cpu
+        config.resources.sml.cpu
     shell:
         """
-        fastp --in1 {input[0]} --in2 {input[1]} --out1 {output[0]} --out2 {output[1]} 
+        fastp --in1 {input.r1} --in2 {input.r2} --out1 {output.r1} --out2 {output.r2} 
+        fastp --version > {output.version}
         """
 
 rule bwa_index:
     input:
-        os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta")
+        fasta = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta")
     output:
-        os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt")
+        index = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt"),
+        version = os.path.join(dir.out.versions, "{sample}", "bwa_complete.version")
     conda:
         os.path.join(dir.env,'short_read_polish.yaml')
     resources:
@@ -35,18 +41,19 @@ rule bwa_index:
         config.resources.sml.cpu
     shell:
         """
-        bwa index {input}
+        bwa index {input.fasta}
+        bwa --version > {output.version}
         """
 
 rule bwa_mem:
     input:
-        os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta"),
-        os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
-        os.path.join(dir.out.fastp ,"{sample}_2.fastq.gz"),
-        os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt")
+        fasta = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta"),
+        r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
+        r2 = os.path.join(dir.out.fastp ,"{sample}_2.fastq.gz"),
+        index = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt")
     output:
-        os.path.join(dir.out.bwa ,"{sample}_1.sam"),
-        os.path.join(dir.out.bwa ,"{sample}_2.sam")
+        sam1 = os.path.join(dir.out.bwa ,"{sample}_1.sam"),
+        sam2 = os.path.join(dir.out.bwa ,"{sample}_2.sam")
     conda:
         os.path.join(dir.env,'short_read_polish.yaml')
     resources:
@@ -56,17 +63,18 @@ rule bwa_mem:
         config.resources.med.cpu
     shell:
         """
-        bwa mem -t {threads} -a {input[0]} {input[1]} > {output[0]}
-        bwa mem -t {threads} -a {input[0]} {input[2]} > {output[1]}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1}
+        bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2}
         """
 
 rule polypolish:
     input:
-        os.path.join(dir.out.medaka_rd_2,"{sample}", "consensus.fasta"),
-        os.path.join(dir.out.bwa ,"{sample}_1.sam"),
-        os.path.join(dir.out.bwa ,"{sample}_2.sam")
+        fasta = os.path.join(dir.out.medaka_rd_2,"{sample}", "consensus.fasta"),
+        sam1 = os.path.join(dir.out.bwa ,"{sample}_1.sam"),
+        sam2 = os.path.join(dir.out.bwa ,"{sample}_2.sam")
     output:
-        os.path.join(dir.out.polypolish,"{sample}.fasta")
+        fasta = os.path.join(dir.out.polypolish,"{sample}.fasta"),
+        version = os.path.join(dir.out.versions, "{sample}", "polypolish_complete.version")
     conda:
         os.path.join(dir.env,'polypolish.yaml')
     resources:
@@ -76,6 +84,7 @@ rule polypolish:
         config.resources.med.cpu
     shell:
         """
-        polypolish {input[0]} {input[1]} {input[2]} > {output[0]}
+        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta}
+        polypolish --version > {output.version}
         """
 
