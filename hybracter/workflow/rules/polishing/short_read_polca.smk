@@ -23,7 +23,7 @@ rule polca:
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {output.polca_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
         polca.sh --version > {output.version}
         """
 
@@ -51,7 +51,7 @@ rule polca_incomplete:
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {output.polca_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
         polca.sh --version > {output.version}
         """
 
