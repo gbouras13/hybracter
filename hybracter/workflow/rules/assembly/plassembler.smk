@@ -5,7 +5,7 @@ rule plassembler_hybrid:
         r2 = os.path.join(dir.out.fastp ,"{sample}_2.fastq.gz")
     output:
         fasta = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_plasmids.fasta"),
-        summary = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_copy_number_summary.tsv")
+        summary = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_summary.tsv")
     params:
         db = dir.plassemblerdb,
         chromlen = getMinChromLength,
