@@ -4,6 +4,57 @@ Stores all the aggregation rules and checkpoints post assembly - due to the spli
 
 """
 
+
+"""
+plassembler
+"""
+
+# input function for the rule aggregate
+def aggregate_plassembler_input(wildcards):
+    # decision based on content of output file
+    # Important: use the method open() of the returned file!
+    # This way, Snakemake is able to automatically download the file if it is generated in
+    # a cloud environment without a shared filesystem.
+    with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
+        if f.read().strip() == "C":
+            return os.path.join(dir.out.plassembler_individual_summaries , "{sample}_with_sample.tsv")
+        else: # if incomplete  
+                return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
+
+### from the long_read_polishing 
+
+rule aggregate_plassembler_input:
+    input:
+        aggregate_plassembler_input
+    output:
+        os.path.join(dir.out.aggr_plassembler ,"{sample}.txt")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        echo {input[0]}
+        touch {output}
+        """
+
+rule aggr_plassembler_flag:
+    """Aggregate."""
+    input:
+        expand(os.path.join(dir.out.aggr_plassembler ,"{sample}.txt"), sample = SAMPLES)
+    output:
+        flag = os.path.join(dir.out.flags, "aggr_plassembler.flag")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        touch {output.flag}
+        """
+
 """
 long read polishing
 """

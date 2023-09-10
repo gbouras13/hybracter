@@ -1,23 +1,8 @@
 
-rule add_sample_plassembler:
-    input:
-        inp = os.path.join(dir.out.plassembler_individual_summaries , "{sample}.tsv")
-    output:
-        out = os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_with_sample.tsv")
-    conda:
-        os.path.join(dir.env,'scripts.yaml')
-    resources:
-        mem_mb=config.resources.sml.mem,
-        time=config.resources.sml.time
-    threads:
-        config.resources.sml.cpu
-    script:
-        os.path.join(dir.scripts,  'add_sample_plassembler.py')
-
-
 rule combine_plassembler_info:
     input:
-        summaries = expand(os.path.join(dir.out.plassembler_individual_summaries , "{sample}_with_sample.tsv"), sample = SAMPLES)
+        summary_dir = directory(dir.out.plassembler_individual_summaries), # all the samples where plassembler ran (complete)
+        flag_dir = directory(dir.out.plassembler_individual_summaries) # all the samples where plassembler was skipped (incomplete)
     output:
         out = os.path.join(dir.out.plassembler_all_summary,"plassembler_assembly_info.txt")
     conda:

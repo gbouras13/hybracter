@@ -54,13 +54,47 @@ rule plassembler_move_summaries:
         cp {input.tsv} {output.tsv}
         """
 
-rule aggr_plassembler:
-    """Aggregate."""
+rule add_sample_plassembler:
     input:
-        expand(os.path.join(dir.out.plassembler_fastas, "{sample}.fasta"), sample = SAMPLES),
-        expand(os.path.join(dir.out.plassembler_individual_summaries, "{sample}.tsv"), sample = SAMPLES)
+        inp = os.path.join(dir.out.plassembler_individual_summaries , "{sample}.tsv")
     output:
-        flag = os.path.join(dir.out.flags, "aggr_plassembler.flag")
+        out = os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_with_sample.tsv")
+    conda:
+        os.path.join(dir.env,'scripts.yaml')
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts,  'add_sample_plassembler.py')
+
+
+# aggr rule in the aggregate.smk rule - because don't run plassembler on incomplete samples
+
+# rule aggr_plassembler:
+#     """Aggregate."""
+#     input:
+#         expand(os.path.join(dir.out.plassembler_fastas, "{sample}.fasta"), sample = SAMPLES),
+#         expand(os.path.join(dir.out.plassembler_individual_summaries, "{sample}.tsv"), sample = SAMPLES)
+#     output:
+#         flag = os.path.join(dir.out.flags, "aggr_plassembler.flag")
+#     resources:
+#         mem_mb=config.resources.sml.mem,
+#         time=config.resources.sml.time
+#     threads:
+#         config.resources.sml.cpu
+#     shell:
+#         """
+#         touch {output.flag}
+#         """
+
+rule plassembler_incomplete:
+    """
+    touch the output flag for the plassembler incomplete samples (i.e. don't run plassembler at all)
+    """
+    output:
+        flag = os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time

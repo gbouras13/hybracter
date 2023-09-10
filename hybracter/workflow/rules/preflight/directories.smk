@@ -75,8 +75,9 @@ dir.out.polypolish_incomplete  = os.path.join(dir.out.complete, "polypolish_inco
 dir.out.polca  = os.path.join(dir.out.complete, "polca")
 dir.out.polca_incomplete  = os.path.join(dir.out.incomplete, "polca")
 
-# PLASSEMBLER DIR
+# plassembler dirs
 dir.out.plassembler =  os.path.join(dir.out.processing, 'plassembler')
+dir.out.plassembler_incomplete =  os.path.join(dir.out.processing, 'plassembler_incomplete')
 dir.out.plassembler_fastas =  os.path.join(dir.out.results, 'plassembler_fastas')
 dir.out.plassembler_individual_summaries =  os.path.join(dir.out.results, 'plassembler_individual_summaries')
 dir.out.plassembler_all_summary =  os.path.join(dir.out.results, 'plassembler_all_summary')
