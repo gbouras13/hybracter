@@ -52,10 +52,10 @@ TargetFilesLong = [
 
 
 """
-install 
+download 
 """
 
-TargetFilesInstall = [
+TargetFilesDownload = [
     os.path.join(config.databases,'plsdb.msh'),
     os.path.join(config.databases, 'plsdb.tsv')
 ]
