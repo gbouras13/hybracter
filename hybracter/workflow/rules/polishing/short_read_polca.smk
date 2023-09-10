@@ -9,7 +9,7 @@ rule polca:
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
-        dir = os.path.join(dir.out.polca, "{sample}")
+        dir = os.path.join(dir.out.polca, "{sample}"),
         reads = ' '.join(os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"))
     conda:
         os.path.join(dir.env,'polca.yaml')
