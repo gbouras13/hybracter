@@ -9,7 +9,7 @@ rule polca:
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
-        dir = os.path.join(dir.out.polca, "{sample}"),
+        dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
         reads = ' '.join(['"'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
     conda:
         os.path.join(dir.env,'polca.yaml')
@@ -38,7 +38,7 @@ rule polca_incomplete:
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
-        dir = dir.out.polca_incomplete,
+        dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
         reads = ' '.join(['"'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
     conda:
         os.path.join(dir.env,'polca.yaml')
@@ -52,7 +52,6 @@ rule polca_incomplete:
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        echo $PWD
         polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
         masurca --version > {output.version}
         """
