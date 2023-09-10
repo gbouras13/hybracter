@@ -39,7 +39,7 @@ rule plassembler_move_fastas:
         
 rule plassembler_move_summaries:
     input:
-        tsv = os.path.join(dir.out.plassembler,"{sample}", "plassembler_copy_number_summary.tsv")
+        tsv = os.path.join(dir.out.plassembler,"{sample}", "plassembler_summary.tsv")
     output:
         tsv = os.path.join(dir.out.plassembler_individual_summaries, "{sample}.tsv")
     resources:
