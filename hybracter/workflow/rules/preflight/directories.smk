@@ -14,7 +14,7 @@ try:
     assert(config.args.databases) is not None
     dir.dbs.base = config.args.databases
 except (KeyError,AssertionError):
-    dir.dbs.base = os.path.join(workflow.basedir,"..","databases")
+    dir.dbs.base = "Plassembler_DB"
 
 
 ### OUTPUT LOCATION
