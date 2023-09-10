@@ -69,7 +69,7 @@ def aggregate_long_read_polish_input(wildcards):
         if f.read().strip() == "C":
             return os.path.join(dir.out.medaka_rd_2,"{sample}", "consensus.fasta")
         else: # if incomplete  
-                return os.path.join(dir.out.medaka_incomplete,"{sample}.fasta")
+                return os.path.join(dir.out.medaka_incomplete,"{sample}", "consensus.fasta")
 
 ### from the long_read_polishing 
 
