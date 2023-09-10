@@ -9,6 +9,7 @@ rule polca:
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
+        polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca, "{sample}"),
         reads = ' '.join(['"'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
     conda:
@@ -23,7 +24,7 @@ rule polca:
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {output.input_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {params.input_fasta}  -r {params.reads} -t {threads}
         masurca --version > {output.version}
         """
 
@@ -38,6 +39,7 @@ rule polca_incomplete:
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
+        polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
         reads = ' '.join(['"../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')])
     conda:
@@ -52,7 +54,7 @@ rule polca_incomplete:
         # real struggle running polca honestly
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {output.polca_input_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads}
         masurca --version > {output.version}
         """
 
