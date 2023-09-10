@@ -12,7 +12,7 @@ rule add_sample_plassembler:
     threads:
         config.resources.sml.cpu
     script:
-        '../scripts/add_sample_plassembler.py'
+        os.path.join(dir.scripts,  'add_sample_plassembler.py')
 
 
 rule combine_plassembler_info:
@@ -28,7 +28,7 @@ rule combine_plassembler_info:
     threads:
         config.resources.sml.cpu
     script:
-        '../scripts/combine_plassembler_info.py'
+        os.path.join(dir.scripts,  'combine_plassembler_info.py')
 
 
 rule aggr_combine_plassembler_info:
@@ -36,7 +36,7 @@ rule aggr_combine_plassembler_info:
     input:
         os.path.join(dir.out.plassembler_all_summary,"plassembler_assembly_info.txt")
     output:
-        os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag")
+        flag = os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time
@@ -44,5 +44,5 @@ rule aggr_combine_plassembler_info:
         config.resources.sml.cpu
     shell:
         """
-        touch {output[0]}
+        touch {output.flag}
         """
