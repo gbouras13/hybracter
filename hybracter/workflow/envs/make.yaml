@@ -3,3 +3,4 @@ channels:
     - anaconda 
 dependencies:
     - make
+    - git
