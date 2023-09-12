@@ -16,8 +16,8 @@ rule filtlong:
     threads:
         config.resources.sml.cpu
     params:
-        qual = config.args.min_quality,
-        length = config.args.min_length
+        qual = MIN_QUALITY,
+        length = MIN_LENGTH
     benchmark:
         os.path.join(dir.out.bench, "filtlong", "{sample}.txt")
     log:
