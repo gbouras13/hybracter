@@ -150,10 +150,8 @@ Database:           hybracter install --download [directory]
 help_msg_ale = """
 \b
 Compiles ale 
-hybracter ale ... 
-\b
 RUN EXAMPLES:
-Database:           hybracter ale
+hybracter ale
 """
 
 # from medaka models.py 
@@ -384,10 +382,9 @@ ale
 @common_options
 def ale(  **kwargs):
     # install ale
-    """installs ale"""
+    """compiles ale"""
     run_snakemake(
         snakefile_path=snake_base(os.path.join('workflow','ale.smk')),
-        merge_config=merge_config,
         **kwargs)
 
 @click.command()
