@@ -9,7 +9,7 @@ polca depends on --no_polca flag
 """
 
 # Polca
-if config.no_polca == True:
+if config.args.no_polca == True:
     polca_files = []
     
 else:
