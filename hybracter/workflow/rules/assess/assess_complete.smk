@@ -6,11 +6,10 @@ rule assess_chrom_pre_polish:
         ALE = os.path.join(dir.env, "ALE-master", "src", "ALE"),
         r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
         fasta = os.path.join(dir.out.chrom_pre_polish,"{sample}.fasta")
-    params:
-        ale = os.path.join(dir.out.ale_out_files ,"{sample}", "chrom_pre_polish.ale"),
-        sam1 = os.path.join(dir.out.ale_sams ,"{sample}_chrom_pre_polish_1.sam")
     output:
-        score = os.path.join(dir.out.ale_scores_complete ,"{sample}", "chrom_pre_polish.score")
+        score = os.path.join(dir.out.ale_scores_complete ,"{sample}", "chrom_pre_polish.score"),
+        ale = temp(os.path.join(dir.out.ale_out_files ,"{sample}", "chrom_pre_polish.ale")),
+        sam1 = temp(os.path.join(dir.out.ale_sams ,"{sample}_chrom_pre_polish_1.sam"))
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -26,8 +25,7 @@ rule assess_chrom_pre_polish:
         """
 
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {params.sam1} 2> {log}
-        {input.ALE} {params.sam1} {input.fasta} {params.ale} 2> {log}
-        grep "# ALE_score: " {params.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {params.ale}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        {input.ALE} {output.sam1} {input.fasta} {output.ale} 2> {log}
+        grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         """
