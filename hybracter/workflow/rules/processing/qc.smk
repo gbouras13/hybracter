@@ -16,8 +16,8 @@ rule filtlong:
     threads:
         config.resources.sml.cpu
     params:
-        qual = config.min_quality,
-        length = config.min_length
+        qual = config.args.min_quality,
+        length = config.args.min_length
     shell:
         """
         filtlong --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq}
