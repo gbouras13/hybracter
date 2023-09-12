@@ -12,7 +12,7 @@ rule assess_chrom_pre_polish:
     output:
         score = os.path.join(dir.out.ale_scores_complete ,"{sample}", "chrom_pre_polish.score")
     conda:
-        os.path.join(dir.env,'polypolish.yaml')
+        os.path.join(dir.env,'polca.yaml')
     resources:
         mem_mb=config.resources.med.cpu,
         time=config.resources.big.time
