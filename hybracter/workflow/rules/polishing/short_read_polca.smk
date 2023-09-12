@@ -30,9 +30,8 @@ rule polca:
         # need these workaround with '../../' etc
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 2> {log}
+        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
         masurca --version > {params.version}
-        rm {log}
         """
 
 
@@ -67,9 +66,8 @@ rule polca_incomplete:
         # need these workaround with '../../' etc
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 2> {log}
+        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
         masurca --version > {params.version}
-        rm {log}
         """
 
 
