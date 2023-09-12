@@ -37,8 +37,9 @@ dir.out.processing  = os.path.join(dir.out.base, "processing")
 dir.out.complete  = os.path.join(dir.out.results, "complete")
 dir.out.incomplete  = os.path.join(dir.out.results, "incomplete")
 dir.out.qc  = os.path.join(dir.out.processing, "qc")
+
 # logs and benchmarks
-dir.out.benchmarks  = os.path.join(dir.out.base, "benchmarks")
+dir.out.bench  = os.path.join(dir.out.base, "benchmarks")
 dir.out.stderr  = os.path.join(dir.out.base, "stderr")
 
 # assemble.smk and assembly_statistics.smk
