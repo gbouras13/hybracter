@@ -380,11 +380,13 @@ ale
             show_default=True,
         )
 @common_options
-def ale(  **kwargs):
+def ale(  log, output,  **kwargs):
     # install ale
-    """compiles ale"""
+    merge_config = { "output": output, "log": log }
+    """installs ale"""
     run_snakemake(
         snakefile_path=snake_base(os.path.join('workflow','ale.smk')),
+        merge_config=merge_config,
         **kwargs)
 
 @click.command()
