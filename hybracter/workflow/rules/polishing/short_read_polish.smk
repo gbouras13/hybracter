@@ -20,10 +20,15 @@ rule fastp:
         time=config.resources.med.time
     threads:
         config.resources.sml.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "fastp", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "fastp", "{sample}.log")
     shell:
         """
-        fastp --in1 {input.r1} --in2 {input.r2} --out1 {output.r1} --out2 {output.r2} 
+        fastp --in1 {input.r1} --in2 {input.r2} --out1 {output.r1} --out2 {output.r2}  2> {log}
         fastp --version > {output.version}
+        rm {log}
         """
 
 rule bwa_index:
@@ -59,10 +64,14 @@ rule bwa_mem:
         time=config.resources.med.time
     threads:
         config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "bwa_mem", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "bwa_mem", "{sample}.log")
     shell:
         """
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1}
-        bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2} 2> {log}
         """
 
 rule polypolish:
@@ -80,9 +89,13 @@ rule polypolish:
         time=config.resources.med.time
     threads:
         config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "polypolish", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "polypolish", "{sample}.log")
     shell:
         """
-        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta}
+        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         polypolish --version > {output.version}
         """
 

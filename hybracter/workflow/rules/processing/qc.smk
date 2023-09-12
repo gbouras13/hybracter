@@ -1,7 +1,7 @@
 
 rule filtlong:
     """
-    runs filtlong to filter my quality and length
+    runs filtlong to filter quality and length
     """
     input:
         fastq = get_input_lr_fastqs
@@ -18,10 +18,15 @@ rule filtlong:
     params:
         qual = config.args.min_quality,
         length = config.args.min_length
+    benchmark:
+        os.path.join(dir.out.bench, "filtlong", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "filtlong", "{sample}.log")    
     shell:
         """
-        filtlong --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq}
+        filtlong --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq} 2> {log}
         filtlong --version > {output.version}
+        rm {log}
         """
 
 rule porechop:
@@ -40,10 +45,15 @@ rule porechop:
         time=config.resources.med.time
     threads:
         config.resources.sml.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "porechop", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "porechop", "{sample}.log")    
     shell:
         """
-        porechop -i {input.fastq}  -o {output.fastq} -t {threads}
+        porechop -i {input.fastq}  -o {output.fastq} -t {threads} 2> {log}
         porechop --version > {output.version}
+        rm {log}
         """
 
 rule aggr_qc:

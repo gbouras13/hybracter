@@ -18,10 +18,15 @@ rule medaka_round_1:
         time=config.resources.med.time
     threads:
         config.resources.big.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "medaka_round_1", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "medaka_round_1", "{sample}.log")
     shell:
         """
-        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads}
+        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         medaka --version > {output.version}
+        rm {log}
         """
 
 rule dnaapler:
@@ -42,10 +47,15 @@ rule dnaapler:
         time=config.resources.med.time
     threads:
         config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "dnaapler", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "dnaapler", "{sample}.log")
     shell:
         """
-        dnaapler chromosome -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -f
+        dnaapler chromosome -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -f 2> {log}
         dnaapler --version > {output.version}
+        rm {log}
         """
 
 rule medaka_round_2:
@@ -64,8 +74,13 @@ rule medaka_round_2:
         time=config.resources.med.time
     threads:
         config.resources.big.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "medaka_round_2", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "medaka_round_2", "{sample}.log")
     shell:
         """
-        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads}
+        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
+        rm {log}
         """
 

@@ -20,11 +20,16 @@ rule plassembler_hybrid:
         time=config.resources.med.time
     threads:
         config.resources.big.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "plassembler_hybrid", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "plassembler_hybrid", "{sample}.log")
     shell:
         """
-        plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc -f
+        plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc -f 2> {log}
         touch {output.fasta}
         touch {output.summary}
+        rm {log}
         """
 
 rule plassembler_move_fastas:

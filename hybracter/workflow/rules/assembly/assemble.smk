@@ -19,9 +19,14 @@ rule assemble:
         dir = os.path.join(dir.out.assemblies ,"{sample}")
     threads:
         config.resources.big.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "assemble", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "assemble", "{sample}.log")
     shell:
         """
-        flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir}
+        flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir} 2> {log}
+        rm {log}
         flye --version > {output.version}
         """
 

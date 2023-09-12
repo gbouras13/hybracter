@@ -20,14 +20,19 @@ rule polca:
         time=config.resources.med.time
     threads:
         config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "polca", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "polca", "{sample}.log")
     shell:
         """
         # real struggle running polca honestly
         # need these workaround with '../../' etc
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 2> {log}
         masurca --version > {params.version}
+        rm {log}
         """
 
 
@@ -52,14 +57,19 @@ rule polca_incomplete:
         time=config.resources.med.time
     threads:
         config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "polca_incomplete", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "polca_incomplete", "{sample}.log")
     shell:
         """
         # real struggle running polca honestly
         # need these workaround with '../../' etc
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads}
+        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 2> {log}
         masurca --version > {params.version}
+        rm {log}
         """
 
 

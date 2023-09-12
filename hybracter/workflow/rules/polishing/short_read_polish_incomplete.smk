@@ -12,7 +12,7 @@ rule bwa_index_incomplete:
         config.resources.sml.cpu
     shell:
         """
-        bwa index {input.fasta}
+        bwa index {input.fasta} 
         """
 
 rule bwa_mem_incomplete:
@@ -31,10 +31,15 @@ rule bwa_mem_incomplete:
         time=config.resources.med.time
     threads:
         config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "bwa_mem_incomplete", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "bwa_mem_incomplete", "{sample}.log")
     shell:
         """
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1}
-        bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2} 2> {log}
+        rm {log}
         """
 
 rule polypolish_incomplete:
@@ -52,8 +57,13 @@ rule polypolish_incomplete:
         time=config.resources.med.time
     threads:
         config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "polypolish_incomplete", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "polypolish_incomplete", "{sample}.log")
     shell:
         """
-        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta}
+        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         polypolish --version > {output.version}
+        rm {log}
         """

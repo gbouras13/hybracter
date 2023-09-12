@@ -15,10 +15,15 @@ rule medaka_incomplete:
         time=config.resources.med.time
     threads:
         config.resources.big.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "medaka_incomplete", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "medaka_incomplete", "{sample}.log")
     shell:
         """
-        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads}
+        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         medaka --version > {output.version}
+        rm {log}
         """
 
 

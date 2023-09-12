@@ -138,13 +138,22 @@ Available targets:
     print_targets   List available targets
 """
 
-help_msg_install = """
+help_msg_download = """
 \b
-Installs ALE from source and downloads the plassembler database
-hybracter install ... 
+Downloads the plassembler database
+hybracter download ... 
 \b
 RUN EXAMPLES:
-Database:           hybracter install --database [file]
+Database:           hybracter install --download [directory]
+"""
+
+help_msg_ale = """
+\b
+Compiles ale 
+hybracter ale ... 
+\b
+RUN EXAMPLES:
+Database:           hybracter ale
 """
 
 # from medaka models.py 
@@ -309,7 +318,7 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
     )
 
 @click.command(
-    epilog=help_msg_install,
+    epilog=help_msg_download,
     context_settings=dict(
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ))
@@ -344,8 +353,12 @@ def download( databases, log,output,  **kwargs):
         merge_config=merge_config,
         **kwargs)
 
+"""
+ale
+"""
+
 @click.command(
-    epilog=help_msg_install,
+    epilog=help_msg_ale,
     context_settings=dict(
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ))
@@ -369,9 +382,8 @@ def download( databases, log,output,  **kwargs):
             show_default=True,
         )
 @common_options
-def ale(  log,output,  **kwargs):
+def ale(  **kwargs):
     # install ale
-    merge_config = { "output": output, "log": log }
     """installs ale"""
     run_snakemake(
         snakefile_path=snake_base(os.path.join('workflow','ale.smk')),
