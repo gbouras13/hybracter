@@ -13,6 +13,7 @@ rule compile_c_program:
     shell:
         """
         cd {params.rule_dir}
+        rm -rf ALE-master
         wget https://github.com/sc932/ALE/archive/master.zip
         unzip master.zip 
         cd ALE-master/src
