@@ -8,7 +8,7 @@ rule assess_incomp_pre_polish:
         fasta = os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta")
     output:
         ale = temp(os.path.join(dir.out.ale_out_files ,"{sample}", "incomp_pre_polish.ale")),
-        sam1 = temp(os.path.join(dir.out.ale_sams ,"{sample}_incomp_pre_polish_1.sam"))
+        sam1 = temp(os.path.join(dir.out.ale_sams ,"{sample}_incomp_pre_polish_1.sam")),
         score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "incomp_pre_polish.score")
     conda:
         os.path.join(dir.env,'polca.yaml')
