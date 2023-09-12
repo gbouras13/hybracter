@@ -210,3 +210,57 @@ rule aggr_polca_flag:
         """
         touch {output.flag}
         """
+
+
+
+####### ale ##########
+
+"""
+ale
+"""
+
+
+# input function for the rule aggregate polca
+def aggregate_ale_input(wildcards):
+    # decision based on content of output file
+    # Important: use the method open() of the returned file!
+    # This way, Snakemake is able to automatically download the file if it is generated in
+    # a cloud environment without a shared filesystem.
+    with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
+        if f.read().strip() == "C":
+            return os.path.join(dir.out.ale_scores_complete ,"{sample}", "chrom_pre_polish.score")
+        else:
+            return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "incomp_pre_polish.score")
+
+
+### from the short_read_polishing 
+rule aggregate_ale_input_files:
+    input:
+        aggregate_ale_input
+    output:
+        os.path.join(dir.out.aggr_ale,"{sample}.txt")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        touch {output}
+        """
+
+rule aggr_ale_flag:
+    """Aggregate."""
+    input:
+        expand(os.path.join(dir.out.aggr_ale,"{sample}.txt"), sample = SAMPLES)
+    output:
+        flag = os.path.join(dir.out.flags, "aggr_ale.flag")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        touch {output.flag}
+        """

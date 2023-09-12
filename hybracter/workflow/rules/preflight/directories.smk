@@ -56,6 +56,7 @@ dir.out.aggr_lr_polish  = os.path.join(dir.out.flags, "aggr_long_read_polish")
 dir.out.aggr_sr_polish  = os.path.join(dir.out.flags, "aggr_short_read_polish")
 dir.out.aggr_polca_polish  = os.path.join(dir.out.flags, "aggr_polca_polish")
 dir.out.aggr_plassembler = os.path.join(dir.out.flags, "aggr_plassembler")
+dir.out.aggr_ale = os.path.join(dir.out.flags, "aggr_ale")
 
 # long_read_polish.smk
 dir.out.medaka_rd_1  = os.path.join(dir.out.complete, "medaka_rd_1")
@@ -74,7 +75,6 @@ dir.out.polypolish  = os.path.join(dir.out.complete, "polypolish")
 dir.out.bwa_incomplete  = os.path.join(dir.out.complete, "bwa_incomplete")
 dir.out.polypolish_incomplete  = os.path.join(dir.out.complete, "polypolish_incomplete")
 
-
 # short_read_polca.smk (has complete and incomplete)
 dir.out.polca  = os.path.join(dir.out.complete, "polca")
 dir.out.polca_incomplete  = os.path.join(dir.out.incomplete, "polca")
@@ -86,7 +86,11 @@ dir.out.plassembler_fastas =  os.path.join(dir.out.results, 'plassembler_fastas'
 dir.out.plassembler_individual_summaries =  os.path.join(dir.out.results, 'plassembler_individual_summaries')
 dir.out.plassembler_all_summary =  os.path.join(dir.out.results, 'plassembler_all_summary')
 
-
+# ale
+dir.out.ale_scores_complete =  os.path.join(dir.out.results, 'ale_scores_complete')
+dir.out.ale_scores_incomplete =  os.path.join(dir.out.results, 'ale_scores_incomplete')
+dir.out.ale_sams =  os.path.join(dir.out.processing, 'ale_sams')
+dir.out.ale_out_files =  os.path.join(dir.out.processing, 'ale_out_files')
 
 
 

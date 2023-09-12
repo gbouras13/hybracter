@@ -90,6 +90,10 @@ include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 if config.args.no_polca is False:
     include: os.path.join("rules", "polishing", "short_read_polca.smk")
 
+# ale
+include: os.path.join("rules", "assess", "assess_complete.smk")
+include: os.path.join("rules", "assess", "assess_incomplete.smk")
+
 ### rule all
 rule all:
     input:
