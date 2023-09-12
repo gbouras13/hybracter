@@ -238,11 +238,11 @@ hybrid
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
-@click.option("-i", "--input", "_input", help="Input csv", type=click.Path(), required=True)
+@click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @click.option('--no_polca',  help='Do not use Polca to polish assemblies with short reads', is_flag=True,  default=False)
 @click.option('--min_length', 'min_length',  help='min read length for long reads', type=int,  default=1000)
 @click.option('--min_quality', 'min_quality',  help='min read quality for long reads', type=int,  default=9)
-@click.option('--databases',  help='Plassembler Databases directory.', type=click.Path(dir_okay=True, readable=True),  default='plassembler_DB')
+@click.option('-d','--databases',  help='Plassembler Databases directory.', type=click.Path(dir_okay=True, readable=True),  default='plassembler_DB')
 @click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r1041_e82_400bps_sup_v4.2.0', show_default=True, type=click.Choice(all_medaka_models) )
 @click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq', type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
 @common_options
@@ -278,7 +278,7 @@ def hybrid(_input,  no_polca, medakaModel, databases, min_quality, flyeModel, mi
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
-@click.option("-i", "--input", "_input", help="Input csv", type=click.Path(), required=True)
+@click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
 @click.option('--plasmids',  help='whether you want to use Plassembler for plasmid recovery. Long only mode. Experimental.', is_flag=True,  default=False)
 @click.option('--no_polish','no_polish',  help='whether you want to turn off Medaka to polishing for your genome.', is_flag=True,  default=False )
@@ -332,7 +332,7 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
             help="Customise Snakemake runtime args",
             show_default=True,
         )
-@click.option('--databases','databases',  help='Plassembler databases Directory', show_default=True,  default='Database')
+@click.option('-d','--databases','databases',  help='Plassembler databases Directory', show_default=True,  default='plassembler_DB')
 @common_options
 def download( databases, log,output,  **kwargs):
     # Config to add or update in configfile

@@ -26,9 +26,6 @@ resources:
         time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
 
 
-# DBs
-# define the path for plassembler db
-databases: 'plassembler_DB'
 
 # medaka and flye models
 medaka:

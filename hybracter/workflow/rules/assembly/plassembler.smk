@@ -1,4 +1,7 @@
 rule plassembler_hybrid:
+    """
+    runs plassembler for hybrid
+    """
     input:
         l = os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz"),
         r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
@@ -9,7 +12,7 @@ rule plassembler_hybrid:
     params:
         db = dir.plassemblerdb,
         chromlen = getMinChromLength,
-        outdir = os.path.join(dir.out.plassembler ,"{sample}")
+        outdir = os.path.join(dir.out.plassembler ,"{sample}") # add flye_directory once v1.2.0 is live
     conda:
         os.path.join(dir.env,'plassembler.yaml')
     resources:
@@ -71,23 +74,6 @@ rule add_sample_plassembler:
 
 
 # aggr rule in the aggregate.smk rule - because don't run plassembler on incomplete samples
-
-# rule aggr_plassembler:
-#     """Aggregate."""
-#     input:
-#         expand(os.path.join(dir.out.plassembler_fastas, "{sample}.fasta"), sample = SAMPLES),
-#         expand(os.path.join(dir.out.plassembler_individual_summaries, "{sample}.tsv"), sample = SAMPLES)
-#     output:
-#         flag = os.path.join(dir.out.flags, "aggr_plassembler.flag")
-#     resources:
-#         mem_mb=config.resources.sml.mem,
-#         time=config.resources.sml.time
-#     threads:
-#         config.resources.sml.cpu
-#     shell:
-#         """
-#         touch {output.flag}
-#         """
 
 rule plassembler_incomplete:
     """
