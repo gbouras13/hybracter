@@ -1,14 +1,6 @@
 # Snakemake config
-output: 'hybracter.out/'
-log: 'hybracter.out/hybracter.log'
-threads: 1
-
-#  whether to turn off polca
-no_polca: False
-
-# Nanopore QC params
-min_length: 1000
-min_quality: 9
+# output: 'hybracter.out/'
+# log: 'hybracter.out/hybracter.log'
 
 # Snakemake Params
 resources:
@@ -26,12 +18,21 @@ resources:
         time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
 
 
+# #  whether to turn off polca
+# no_polca: False
 
-# medaka and flye models
-medaka:
-    model: 'r1041_e82_400bps_sup_v4.2.0'
-flye:
-    model: '--nano-hq'
+# # Nanopore QC params
+# min_length: 1000
+# min_quality: 9
+
+
+
+
+# # medaka and flye models
+# medaka:
+#     model: 'r1041_e82_400bps_sup_v4.2.0'
+# flye:
+#     model: '--nano-hq'
 
 
 
