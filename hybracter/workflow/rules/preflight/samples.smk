@@ -75,8 +75,7 @@ def samplesFromCsvShort(csvFile):
 
 
 def parseSamples(csvfile, long_flag):
-    print(os.path.isfile(csvfile))
-    print(long_flag)
+    print(csvfile)
     if os.path.isfile(csvfile) and long_flag is True:
         sampleDict = samplesFromCsvLong(csvfile)
     elif os.path.isfile(csvfile) and long_flag is False:

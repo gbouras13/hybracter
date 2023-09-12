@@ -19,6 +19,7 @@ def common_options(func):
     """
     options = [
         click.option(
+            "-o",
             "--output",
             help="Output directory",
             type=click.Path(dir_okay=True, writable=True, readable=True),
@@ -33,20 +34,24 @@ def common_options(func):
             help="Custom config file [default: (outputDir)/config.yaml]",
         ),
         click.option(
-            "--threads", help="Number of threads to use", default=1, show_default=True
+            "-t", 
+            "--threads", 
+            help="Number of threads to use",
+            default=1, 
+            show_default=True
         ),
         click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
-            show_default=True,
+            show_default=True
         ),
         click.option(
             "--conda-prefix",
             default=snake_base(os.path.join("workflow", "conda")),
             help="Custom conda env directory",
             type=click.Path(),
-            show_default=False,
+            show_default=False
         ),   
         click.option(
             "--snake-default",
@@ -233,7 +238,7 @@ hybrid
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
-@click.option("--input", "_input", help="Input csv", type=str, required=True)
+@click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @click.option('--no_polca',  help='Do not use Polca to polish assemblies with short reads', is_flag=True,  default=False)
 @click.option('--min_length', 'min_length',  help='min read length for long reads', type=int,  default=1000)
 @click.option('--min_quality', 'min_quality',  help='min read quality for long reads', type=int,  default=9)
@@ -273,7 +278,7 @@ def hybrid(_input,  no_polca, medakaModel, databases, min_quality, flyeModel, mi
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
-@click.option("--input", "_input", help="Input csv", type=str, required=True)
+@click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
 @click.option('--plasmids',  help='whether you want to use Plassembler for plasmid recovery. Long only mode. Experimental.', is_flag=True,  default=False)
 @click.option('--no_polish','no_polish',  help='whether you want to turn off Medaka to polishing for your genome.', is_flag=True,  default=False )
