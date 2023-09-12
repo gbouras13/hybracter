@@ -228,9 +228,9 @@ def aggregate_ale_input(wildcards):
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
         if f.read().strip() == "C":
-            return os.path.join(dir.out.ale_scores_complete ,"{sample}", "chrom_pre_polish.score")
+            return os.path.join(dir.out.ale_scores_complete ,"{sample}", "medaka_rd_1.score")
         else:
-            return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "incomp_pre_polish.score")
+            return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "medaka_incomplete.score")
 
 
 ### from the short_read_polishing 
