@@ -170,11 +170,12 @@ hybrid
 @click.option('--no_polca',  help='Do not use Polca to polish assemblies with short reads', is_flag=True,  default=False)
 @click.option('--min_length', 'min_length',  help='min read length for long reads', type=int,  default=1000)
 @click.option('--min_quality', 'min_quality',  help='min read quality for long reads', type=int,  default=9)
+@click.option('--skip_qc',  help='Do not run porechop, filtlong and fastp to QC the reads', is_flag=True,  default=False)
 @click.option('-d','--databases',  help='Plassembler Databases directory.', type=click.Path(dir_okay=True, readable=True),  default='plassembler_DB')
 @click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r1041_e82_400bps_sup_v4.2.0', show_default=True, type=click.Choice(all_medaka_models) )
 @click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq', type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
 @common_options
-def hybrid(_input,  no_polca, medakaModel, databases, min_quality, flyeModel, min_length, output, log, **kwargs):
+def hybrid(_input,  no_polca, skip_qc, medakaModel, databases, min_quality, flyeModel, min_length, output, log, **kwargs):
     """Run hybracter with hybrid long and paired end short reads"""
     # Config to add or update in configfile
     merge_config = {
@@ -186,6 +187,7 @@ def hybrid(_input,  no_polca, medakaModel, databases, min_quality, flyeModel, mi
         "databases": databases,
         "min_quality": min_quality,
         "no_polca": no_polca, 
+        "skip_qc": skip_qc,
         "medakaModel": medakaModel, 
         "flyeModel": flyeModel } }
 
