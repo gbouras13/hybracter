@@ -23,7 +23,7 @@ def aggregate_plassembler_input(wildcards):
 
 ### from the long_read_polishing 
 
-rule aggregate_plassembler_input:
+rule aggregate_plassembler_input_rule:
     input:
         aggregate_plassembler_input
     output:
@@ -73,7 +73,7 @@ def aggregate_long_read_polish_input(wildcards):
 
 ### from the long_read_polishing 
 
-rule aggregate_long_read_polish_input:
+rule aggregate_long_read_polish_input_rule:
     input:
         aggregate_long_read_polish_input
     output:
