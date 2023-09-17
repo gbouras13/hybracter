@@ -137,7 +137,7 @@ rule assess_polca:
     """
     input:
         r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
-        fasta = os.path.join(dir.out.polca, "{sample}", "{sample}.fasta"),
+        fasta = os.path.join(dir.out.polca, "{sample}", "{sample}.fasta.PolcaCorrected.fa"),
         score = os.path.join(dir.out.ale_scores_complete ,"{sample}", "polypolish.score")
     output:
         score = os.path.join(dir.out.ale_scores_complete ,"{sample}", "polca.score"),

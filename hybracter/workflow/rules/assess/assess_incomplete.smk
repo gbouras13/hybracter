@@ -103,7 +103,7 @@ rule assess_polca_incomplete:
     """
     input:
         r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
-        fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta"),
+        fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta.PolcaCorrected.fa"),
         score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polypolish_incomplete.score")
     output:
         ale = temp(os.path.join(dir.out.ale_out_files ,"{sample}", "polca_incomplete.ale")),
