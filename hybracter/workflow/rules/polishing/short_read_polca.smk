@@ -13,7 +13,8 @@ rule polca:
         polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
-        version = '../../../../../'+ os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version")
+        version = '../../../../../'+ os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
+        copy_fasta = "{sample}.fasta" # need this as you have cd into the polca dir
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -33,7 +34,7 @@ rule polca:
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
         masurca --version > {params.version}
-        cp {output.fasta} {output.copy_fasta}
+        cp {params.copy_fasta} {output.copy_fasta}
         """
 
 
@@ -51,7 +52,8 @@ rule polca_incomplete:
         polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
-        version = '../../../../../'+ os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version")
+        version = '../../../../../'+ os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
+        copy_fasta = "{sample}.fasta" # need this as you have cd into the polca dir
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -70,8 +72,8 @@ rule polca_incomplete:
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
+        cp {params.copy_fasta} {output.copy_fasta}
         masurca --version > {params.version}
-        cp {output.fasta} {output.copy_fasta}
         """
 
 
