@@ -35,7 +35,7 @@ rule select_best_chromosome_assembly_complete:
         plasmid_fasta = os.path.join(dir.out.final_contigs_complete,"{sample}_plasmid.fasta"),
         total_fasta = os.path.join(dir.out.final_contigs_complete,"{sample}_final.fasta"),
         ale_summary = os.path.join(dir.out.ale_summary,"complete","{sample}.tsv"),
-        hybracter_summary = (dir.out.final_summaries_complete, "{sample}.tsv")
+        hybracter_summary = os.path.join(dir.out.final_summaries_complete, "{sample}.tsv")
     params:
         ale_dir = os.path.join(dir.out.ale_scores_complete, "{sample}"),
         chrom_pre_polish_fasta = os.path.join(dir.out.chrom_pre_polish,"{sample}.fasta"),
@@ -64,7 +64,7 @@ rule select_best_chromosome_assembly_incomplete:
     output:
         fasta = os.path.join(dir.out.final_contigs_incomplete,"{sample}_final.fasta"),
         ale_summary = os.path.join(dir.out.ale_summary, "incomplete", "{sample}.tsv"),
-        hybracter_summary = (dir.out.final_summaries_incomplete, "{sample}.tsv")
+        hybracter_summary = os.path.join(dir.out.final_summaries_incomplete, "{sample}.tsv")
     params:
         ale_dir = os.path.join(dir.out.ale_scores_incomplete, "{sample}"),
         pre_polish_fasta = os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta"),
