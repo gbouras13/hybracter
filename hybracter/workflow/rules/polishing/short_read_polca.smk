@@ -25,7 +25,7 @@ rule polca:
         os.path.join(dir.out.stderr, "polca", "{sample}.log")
     shell:
         """
-        CURR_DIR=$(PWD)
+        CURR_DIR=$(pwd)
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         cd $CURR_DIR
@@ -60,7 +60,7 @@ rule polca_incomplete:
         os.path.join(dir.out.stderr, "polca_incomplete", "{sample}.log")
     shell:
         """
-        CURR_DIR=$(PWD)
+        CURR_DIR=$(pwd)
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
