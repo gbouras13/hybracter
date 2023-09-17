@@ -8,7 +8,7 @@ rule medaka_round_1:
     output:
         fasta = os.path.join(dir.out.medaka_rd_1 ,"{sample}", "consensus.fasta"),
         version = os.path.join(dir.out.versions, "{sample}", "medaka_complete.version"),
-        copy_fasta = os.path.join(dir.out.intermediate_assemblies , "{sample}_medaka_rd_1.fasta")
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta")
     conda:
         os.path.join(dir.env,'medaka.yaml')
     params:
@@ -66,7 +66,7 @@ rule medaka_round_2:
         fastq = os.path.join(dir.out.qc,"{sample}_filt.fastq.gz")
     output:
         fasta = os.path.join(dir.out.medaka_rd_2,"{sample}", "consensus.fasta"),
-        copy_fasta = os.path.join(dir.out.intermediate_assemblies , "{sample}_medaka_rd_2.fasta")
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}",  "{sample}_medaka_rd_2.fasta")
     conda:
         os.path.join(dir.env,'medaka.yaml')
     params:

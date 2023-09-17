@@ -53,7 +53,7 @@ rule polypolish_incomplete:
         version = os.path.join(dir.out.versions, "{sample}", "polypolish_incomplete.version"),
         sam1 = os.path.join(dir.out.bwa_incomplete ,"{sample}_1.sam"),
         sam2 = os.path.join(dir.out.bwa_incomplete ,"{sample}_2.sam"),
-        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}_polypolish.fasta")
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta")
     conda:
         os.path.join(dir.env,'polypolish.yaml')
     resources:
