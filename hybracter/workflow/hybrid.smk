@@ -93,7 +93,7 @@ include: os.path.join("rules", "assess", "assess_complete.smk")
 include: os.path.join("rules", "assess", "assess_incomplete.smk")
 
 # finalse
-include: os.path.join("rules", "finalse", "select_best_assembly.smk")
+include: os.path.join("rules", "finalise", "select_best_assembly.smk")
 
 ### rule all
 rule all:
