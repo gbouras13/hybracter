@@ -44,6 +44,8 @@ rule select_best_chromosome_assembly_complete:
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.med.time
+    conda:
+        os.path.join(dir.env,'scripts.yaml')
     threads:
         config.resources.sml.cpu
     script:
@@ -68,6 +70,8 @@ rule select_best_chromosome_assembly_incomplete:
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.med.time
+    conda:
+        os.path.join(dir.env,'scripts.yaml')
     threads:
         config.resources.sml.cpu
     script:
