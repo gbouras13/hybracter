@@ -25,11 +25,11 @@ rule polca:
         os.path.join(dir.out.stderr, "polca", "{sample}.log")
     shell:
         """
-        CURR_DIR=$(pwd)
+        CURR_DIR=$(PWD)
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        cd $CURR_DIR
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
+        cd $CURR_DIR
         masurca --version > {params.version}
         cp {output.fasta} {params.copy_fasta} 
         """
