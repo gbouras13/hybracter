@@ -7,15 +7,11 @@ rule polca:
         version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
         polca_input_fasta = os.path.join(dir.out.polca, "{sample}", "{sample}.fasta"),
     params:
-        #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
-        #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
         polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
-        version = '../../../../../' + os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
-        copy_fasta = "{sample}.fasta.PolcaCorrected.fa", # need this as you have cd into the polca dir,
-        intermediate_dir = os.path.join(dir.out.intermediate_assemblies ,"{sample}"),
-        copy_intermediate_fasta = '../../../../../'+ os.path.join(dir.out.intermediate_assemblies ,"{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir - also needs to be param not output. mkidr in case
+        version = + os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_polca.fasta")
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -31,14 +27,26 @@ rule polca:
         """
         # real struggle running polca honestly
         # need these workaround with '../../' etc
-        mkdir -p {params.intermediate_dir}
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
-        cp {params.copy_fasta} {params.copy_intermediate_fasta}
         masurca --version > {params.version}
         """
 
+rule copy_polca:
+    input:
+        fasta = os.path.join(dir.out.polca,"{sample}", "{sample}.fasta.PolcaCorrected.fa")
+    output:
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_polca.fasta")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        cp {input.fasta} {output.copy_fasta}
+        """
 
 rule polca_incomplete:
     input:
@@ -46,18 +54,13 @@ rule polca_incomplete:
     output:
         fasta = os.path.join(dir.out.polca_incomplete,"{sample}", "{sample}.fasta.PolcaCorrected.fa"),
         version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
-        polca_input_fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta"),
-        copy_fasta = '../../../../../'+ os.path.join(dir.out.intermediate_assemblies, "{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir
+        polca_input_fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta")
     params:
-        #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
-        #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
         polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
-        version = '../../../../../'+ os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
-        copy_fasta = "{sample}.fasta.PolcaCorrected.fa", # need this as you have cd into the polca dir
-        intermediate_dir = os.path.join(dir.out.intermediate_assemblies ,"{sample}"),
-        copy_intermediate_fasta = '../../../../../'+ os.path.join(dir.out.intermediate_assemblies ,"{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir - also needs to be param not output. mkidr in case
+        version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_polca.fasta")
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -73,16 +76,28 @@ rule polca_incomplete:
         """
         # real struggle running polca honestly
         # need these workaround with '../../' etc
+        CURR_DIR=PWD
         mkdir -p {params.intermediate_dir}
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
-        cp {params.copy_fasta} {params.copy_intermediate_fasta}
+        cd $CURR_DIR
         masurca --version > {params.version}
+        cp {output.fasta} {params.copy_fasta} 
+
         """
 
-
-
-
-
-
+rule copy_polca_incomplete:
+    input:
+        fasta = os.path.join(dir.out.polca_incomplete,"{sample}", "{sample}.fasta.PolcaCorrected.fa")
+    output:
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_polca.fasta")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        cp {input.fasta} {output.copy_fasta}
+        """
