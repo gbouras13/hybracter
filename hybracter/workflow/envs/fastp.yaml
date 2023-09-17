@@ -1,9 +1,7 @@
-name: assemble
+name: fastp
 channels:
     - conda-forge
     - bioconda
     - defaults
 dependencies:
-    - pandas
-    - numpy
-    - biopython >=1.78
+    - fastp >=0.23.4
