@@ -125,6 +125,9 @@ def select_best_chromosome_assembly_complete(hybracter_summary, ale_dir, input_p
     # instantiate longest contig length
     longest_contig_length = 0
 
+    # total assembly length 
+    total_assembly_length = 0
+
     # Open the output file in write mode
     with open(output_chromosome_fasta, "w") as output_handle:
         with open(overall_output_fasta, "w") as output_handle_overall:
@@ -137,6 +140,9 @@ def select_best_chromosome_assembly_complete(hybracter_summary, ale_dir, input_p
                 
                 # Calculate the length of the sequence
                 sequence_length = len(record.seq)
+
+                # total assembly length
+                total_assembly_length += sequence_length
 
                 # to get longest contig
                 if chromosomes == 1:
@@ -173,10 +179,13 @@ def select_best_chromosome_assembly_complete(hybracter_summary, ale_dir, input_p
                     # usually there will be 1 chromosome of course!
                     record.id = f"plasmid{plasmids:05}" 
 
+                    # add record length
+                    total_assembly_length += len(record.seq)
+
                     # get rid off the contig id (1, 2, 3) etc from plassembler
                     record.description = record.description.split(' ', 1)[1]
 
-                    if 'circular=True' in record.description:
+                    if 'circular=true' in record.description:
                         circular_plasmids += 1
                     
                     # take description from plassembler (length and copy number)
@@ -192,10 +201,11 @@ def select_best_chromosome_assembly_complete(hybracter_summary, ale_dir, input_p
     summary_dict = {
         'Sample': sample,
         'Complete': 'True',
+        'Total_assembly_length': total_assembly_length,
         'Number_of_contigs': number_of_contigs,
         'Most_accurate_polishing_round': best_round,
         'Longest_contig_length': longest_contig_length,
-        'Number_circular_plasmids': circular_plasmids}
+        'Number_circular_plasmids': int(circular_plasmids)}
 
     # Create a DataFrame from the dictionary
     summary_df = pd.DataFrame([summary_dict])

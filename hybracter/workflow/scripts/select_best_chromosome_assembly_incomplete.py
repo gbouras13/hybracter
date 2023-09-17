@@ -90,6 +90,8 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
     # instantiate longest contig length
     longest_contig_length = 0
 
+    total_assembly_length = 0 
+
     # Open the output file in write mode
     with open(output_fasta, "w") as output_handle:
         # Iterate through the records in the best assembly FASTA file and write them to the output file
@@ -101,6 +103,9 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
             
             # Calculate the length of the sequence
             sequence_length = len(record.seq)
+
+            # total assembly length
+            total_assembly_length += sequence_length
             
             # to get longest contig
             if number_of_contigs == 1:
@@ -120,10 +125,11 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
     summary_dict = {
         'Sample': sample,
         'Complete': 'False',
+        'Total_assembly_length': total_assembly_length,
         'Number_of_contigs': number_of_contigs,
         'Most_accurate_polishing_round': best_round,
         'Longest_contig_length': longest_contig_length,
-        'Number_circular_plasmids': 'NA'}
+        'Number_circular_plasmids': 'Unknown'}
 
     # Create a DataFrame from the dictionary
     summary_df = pd.DataFrame([summary_dict])
