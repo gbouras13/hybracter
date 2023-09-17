@@ -3,13 +3,30 @@ aggregate the ALE scores and pick the best one
 """
 
 # to import aggregate_ale_input
-include: os.path.join("..", "completeness", "aggregate.smk")
+
+# input function for the rule aggregate polca
+def aggregate_ale_input_finalise(wildcards):
+    # decision based on content of output file
+    # Important: use the method open() of the returned file!
+    # This way, Snakemake is able to automatically download the file if it is generated in
+    # a cloud environment without a shared filesystem.
+    with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
+        if f.read().strip() == "C": # complete
+            if config.args.no_polca is False: # with polca
+                return os.path.join(dir.out.ale_scores_complete ,"{sample}", "polca.score")
+            else: # with polca, best is polypolish
+                return os.path.join(dir.out.ale_scores_complete ,"{sample}", "polypolish.score")
+        else: # incomplete
+            if config.args.no_polca is False: # with polca
+                return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polca_incomplete.score")
+            else:
+                return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polypolish_incomplete.score")
 
 
 ### from the aggregate_ale_input function - so it dynamic whether or not polca is selected
 rule select_best_chromosome_assembly_complete:
     input:
-        ale_input = aggregate_ale_input,
+        ale_input = aggregate_ale_input_finalise,
         aggr_ale_flag = os.path.join(dir.out.aggr_ale,"{sample}.txt"), # to make sure ale has finished
         plassembler_fasta = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_plasmids.fasta")
     output:
