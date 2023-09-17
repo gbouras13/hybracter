@@ -6,7 +6,7 @@ rule polca:
         fasta = os.path.join(dir.out.polca,"{sample}", "{sample}.fasta.PolcaCorrected.fa"),
         version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
         polca_input_fasta = os.path.join(dir.out.polca, "{sample}", "{sample}.fasta"),
-        copy_fasta = '../../../../../' + os.path.join(dir.out.intermediate_assemblies ,"{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir
+        copy_fasta = '../../../../../'+ os.path.join(dir.out.intermediate_assemblies ,"{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
@@ -45,7 +45,7 @@ rule polca_incomplete:
         fasta = os.path.join(dir.out.polca_incomplete,"{sample}", "{sample}.fasta.PolcaCorrected.fa"),
         version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
         polca_input_fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta"),
-        copy_fasta = '../../../../../' + os.path.join(dir.out.intermediate_assemblies, "{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir
+        copy_fasta = '../../../../../'+ os.path.join(dir.out.intermediate_assemblies, "{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir
     params:
         #r1 = os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"),
         #r2 = os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"),
@@ -53,7 +53,8 @@ rule polca_incomplete:
         dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
         version = '../../../../../'+ os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
-        copy_fasta = "{sample}.fasta.PolcaCorrected.fa" # need this as you have cd into the polca dir
+        copy_fasta = "{sample}.fasta.PolcaCorrected.fa" # need this as you have cd into the polca dir,
+        base_dir = dir.out.base
     conda:
         os.path.join(dir.env,'polca.yaml')
     resources:
@@ -73,6 +74,7 @@ rule polca_incomplete:
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
         cp {params.copy_fasta} {output.copy_fasta}
+
         masurca --version > {params.version}
         """
 
