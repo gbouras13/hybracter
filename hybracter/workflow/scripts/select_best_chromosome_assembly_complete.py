@@ -37,6 +37,7 @@ def select_best_chromosome_assembly_complete(ale_dir, input_plassember_fasta, ou
 
     # Use glob to find files with the .score extension in the directory
     file_list = glob.glob(os.path.join(ale_dir, '*.score'))
+    print(file_list)
 
     # Create an empty dictionary to store the results
     score_dict = {}
