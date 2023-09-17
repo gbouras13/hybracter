@@ -31,6 +31,7 @@ rule polca:
         cd $CURR_DIR
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
         masurca --version > {params.version}
+        cp {output.fasta} {params.copy_fasta} 
         """
 
 
