@@ -53,7 +53,7 @@ rule polca_incomplete:
         dir = os.path.join(dir.out.polca_incomplete, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
         version = '../../../../../'+ os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
-        copy_fasta = "{sample}.fasta.PolcaCorrected.fa" # need this as you have cd into the polca dir,
+        copy_fasta = "{sample}.fasta.PolcaCorrected.fa", # need this as you have cd into the polca dir
         base_dir = dir.out.base
     conda:
         os.path.join(dir.env,'polca.yaml')
