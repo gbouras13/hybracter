@@ -329,6 +329,8 @@ rule create_final_summary:
         time=config.resources.sml.time
     threads:
         config.resources.sml.cpu
+    conda:
+        os.path.join(dir.env,'scripts.yaml')
     script:
         os.path.join(dir.scripts,  'create_final_hybracter_summary.py')
 
