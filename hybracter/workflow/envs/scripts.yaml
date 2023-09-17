@@ -1,8 +1,9 @@
-name: short_read_polish
+name: scripts
 channels:
     - conda-forge
     - bioconda
     - defaults
 dependencies:
-    - fastp >=0.23.4
-    - bwa >=0.7.17
+    - pandas
+    - numpy
+    - biopython >=1.78
