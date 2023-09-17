@@ -8,7 +8,8 @@ rule assemble:
     output:
         fasta = os.path.join(dir.out.assemblies ,"{sample}", "assembly.fasta"),
         info = os.path.join(dir.out.assemblies ,"{sample}", "assembly_info.txt"),
-        version = os.path.join(dir.out.versions, "{sample}", "flye.version")
+        version = os.path.join(dir.out.versions, "{sample}", "flye.version"),
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies , "{sample}_flye.fasta")
     conda:
         os.path.join(dir.env,'flye.yaml')
     resources:
@@ -28,6 +29,7 @@ rule assemble:
         flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir} 2> {log}
         rm {log}
         flye --version > {output.version}
+        cp {output.fasta} {output.copy_fasta}
         """
 
 rule extract_flye_assembly_info:

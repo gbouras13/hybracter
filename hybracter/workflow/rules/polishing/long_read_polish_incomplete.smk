@@ -4,7 +4,8 @@ rule medaka_incomplete:
         fastq = os.path.join(dir.out.qc,"{sample}_filt.fastq.gz")
     output:
         fasta = os.path.join(dir.out.medaka_incomplete,"{sample}", "consensus.fasta"),
-        version = os.path.join(dir.out.versions, "{sample}", "medaka_incomplete.version")
+        version = os.path.join(dir.out.versions, "{sample}", "medaka_incomplete.version"),
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies , "{sample}_medaka.fasta")
     conda:
         os.path.join(dir.env,'medaka.yaml')
     params:
@@ -23,6 +24,7 @@ rule medaka_incomplete:
         """
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         medaka --version > {output.version}
+        cp {output.fasta} {output.copy_fasta}
         rm {log}
         """
 

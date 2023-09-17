@@ -7,7 +7,8 @@ rule medaka_round_1:
         fastq = os.path.join(dir.out.qc,"{sample}_filt.fastq.gz")
     output:
         fasta = os.path.join(dir.out.medaka_rd_1 ,"{sample}", "consensus.fasta"),
-        version = os.path.join(dir.out.versions, "{sample}", "medaka_complete.version")
+        version = os.path.join(dir.out.versions, "{sample}", "medaka_complete.version"),
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies , "{sample}_medaka_rd_1.fasta")
     conda:
         os.path.join(dir.env,'medaka.yaml')
     params:
@@ -26,6 +27,7 @@ rule medaka_round_1:
         """
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         medaka --version > {output.version}
+        cp {output.fasta} {output.copy_fasta}
         rm {log}
         """
 
@@ -63,7 +65,8 @@ rule medaka_round_2:
         fasta = os.path.join(dir.out.dnaapler , "{sample}", "{sample}_reoriented.fasta"),
         fastq = os.path.join(dir.out.qc,"{sample}_filt.fastq.gz")
     output:
-        fasta = os.path.join(dir.out.medaka_rd_2,"{sample}", "consensus.fasta")
+        fasta = os.path.join(dir.out.medaka_rd_2,"{sample}", "consensus.fasta"),
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies , "{sample}_medaka_rd_2.fasta")
     conda:
         os.path.join(dir.env,'medaka.yaml')
     params:
@@ -81,6 +84,7 @@ rule medaka_round_2:
     shell:
         """
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
+        cp {output.fasta} {output.copy_fasta}
         rm {log}
         """
 

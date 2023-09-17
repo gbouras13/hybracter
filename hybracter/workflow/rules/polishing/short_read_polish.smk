@@ -58,7 +58,8 @@ rule polypolish:
         fasta = os.path.join(dir.out.polypolish,"{sample}.fasta"),
         version = os.path.join(dir.out.versions, "{sample}", "polypolish_incomplete.version"),
         sam1 = temp(os.path.join(dir.out.bwa ,"{sample}_1.sam")),
-        sam2 = temp(os.path.join(dir.out.bwa ,"{sample}_2.sam"))
+        sam2 = temp(os.path.join(dir.out.bwa ,"{sample}_2.sam")).
+        copy_fasta = os.path.join(dir.out.intermediate_assemblies , "{sample}_polypolish.fasta")
     conda:
         os.path.join(dir.env,'polypolish.yaml')
     resources:
@@ -75,6 +76,8 @@ rule polypolish:
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2} 2> {log}
         polypolish {input.fasta} {output.sam1} {output.sam2} > {output.fasta} 2> {log}
+        cp {output.fasta} {output.copy_fasta}
         polypolish --version > {output.version}
+        rm {log}
         """
 

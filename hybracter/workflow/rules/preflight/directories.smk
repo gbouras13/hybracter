@@ -94,6 +94,9 @@ dir.out.ale_sams =  os.path.join(dir.out.processing, 'ale_sams')
 dir.out.ale_out_files =  os.path.join(dir.out.processing, 'ale_out_files')
 dir.out.ale_summary =  os.path.join(dir.out.results, 'ale_score_summaries')
 
+# intermediate assemblies
+dir.out.intermediate_assemblies =  os.path.join(dir.out.results, 'intermediate_assemblies')
+
 # final contigs
 dir.out.final_contigs =  os.path.join(dir.out.base, 'final_contigs')
 dir.out.final_contigs_complete =  os.path.join(dir.out.final_contigs, 'complete')
