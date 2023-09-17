@@ -15,7 +15,7 @@ def select_best_chromosome_assembly_incomplete(ale_dir, output_fasta, ale_summar
     """
 
     # Use glob to find files with the .score extension in the directory
-    file_list = glob.glob(os.path.join(ale_dir, '*.score'))
+    file_list = glob.glob(os.path.join(ale_dir, '*score'))
     print(file_list)
 
     # Create an empty dictionary to store the results
@@ -42,11 +42,11 @@ def select_best_chromosome_assembly_incomplete(ale_dir, output_fasta, ale_summar
         score_dict[file_name] = score
 
     
-    print(score_dict)
+    #print(score_dict)
     # Filter out None values from the score_dict
     filtered_score_dict = {k: v for k, v in score_dict.items() if v is not None}
 
-    print(filtered_score_dict)
+    #print(filtered_score_dict)
 
     # Check if there are any valid scores left
     if filtered_score_dict:
