@@ -1,11 +1,9 @@
-rule plassembler_hybrid:
+rule plassembler_long:
     """
-    runs plassembler for hybrid
+    runs plassembler for long
     """
     input:
         l = os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz"),
-        r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
-        r2 = os.path.join(dir.out.fastp ,"{sample}_2.fastq.gz")
     output:
         fasta = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_plasmids.fasta"),
         summary = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_summary.tsv"),
@@ -23,12 +21,12 @@ rule plassembler_hybrid:
     threads:
         config.resources.big.cpu
     benchmark:
-        os.path.join(dir.out.bench, "plassembler_hybrid", "{sample}.txt")
+        os.path.join(dir.out.bench, "plassembler_long", "{sample}.txt")
     log:
-        os.path.join(dir.out.stderr, "plassembler_hybrid", "{sample}.log")
+        os.path.join(dir.out.stderr, "plassembler_long", "{sample}.log")
     shell:
         """
-        plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+        plassembler long -l {input.l} -o {params.outdir} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
         touch {output.fasta}
         touch {output.summary}
         plassembler --version > > {output.version}
