@@ -120,6 +120,8 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
             # Write the modified record to the output file
             SeqIO.write(record, output_handle, "fasta")
 
+            number_of_contigs +=1
+
 
     # to get the summary df
     summary_dict = {
