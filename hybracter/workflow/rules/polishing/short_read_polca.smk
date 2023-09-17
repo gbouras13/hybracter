@@ -13,7 +13,7 @@ rule polca:
         dir = os.path.join(dir.out.polca, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
         version = '../../../../../' + os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
-        copy_fasta = "{sample}.fasta.PolcaCorrected.fa" # need this as you have cd into the polca dir,
+        copy_fasta = "{sample}.fasta.PolcaCorrected.fa", # need this as you have cd into the polca dir,
         intermediate_dir = os.path.join(dir.out.intermediate_assemblies ,"{sample}"),
         copy_intermediate_fasta = '../../../../../'+ os.path.join(dir.out.intermediate_assemblies ,"{sample}",  "{sample}_polca.fasta") # need ../.. etc as you have cd into the polca dir - also needs to be param not output. mkidr in case
     conda:
