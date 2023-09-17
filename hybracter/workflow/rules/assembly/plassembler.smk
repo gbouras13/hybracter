@@ -31,7 +31,7 @@ rule plassembler_hybrid:
         plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
         touch {output.fasta}
         touch {output.summary}
-        plassembler --version > > {output.version}
+        plassembler --version > {output.version}
         rm {log}
         """
 
