@@ -10,7 +10,7 @@ rule polca:
         polca_input_fasta = "{sample}.fasta",
         dir = os.path.join(dir.out.polca, "{sample}"),
         reads = ' '.join(['"../../../../../'+ os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), '../../../../../'+os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"+'"')]),
-        version = + os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
+        version = os.path.join(dir.out.versions, "{sample}", "polca_complete_masurca.version"),
         copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_polca.fasta")
     conda:
         os.path.join(dir.env,'polca.yaml')
