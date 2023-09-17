@@ -23,7 +23,6 @@ hybrid
 TargetFilesHybrid = [
     os.path.join(dir.out.flags, "aggr_qc.flag"),
     os.path.join(dir.out.flags, "aggr_assemble.flag"),
-    os.path.join(dir.out.flags, "aggr_assembly_statistics.flag"),
     os.path.join(dir.out.flags, "aggr_short_read_polish.flag"),
     os.path.join(dir.out.flags, "aggr_long_read_polish.flag"),
     polca_files,

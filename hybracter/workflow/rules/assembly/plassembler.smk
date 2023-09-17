@@ -36,26 +36,11 @@ rule plassembler_hybrid:
         """
 
         
-rule plassembler_move_summaries:
-    input:
-        tsv = os.path.join(dir.out.plassembler,"{sample}", "plassembler_summary.tsv")
-    output:
-        tsv = os.path.join(dir.out.plassembler_individual_summaries, "{sample}.tsv")
-    resources:
-        mem_mb=config.resources.sml.mem,
-        time=config.resources.sml.time
-    threads:
-        config.resources.sml.cpu
-    shell:
-        """
-        cp {input.tsv} {output.tsv}
-        """
-
 rule add_sample_plassembler:
     input:
-        inp = os.path.join(dir.out.plassembler_individual_summaries , "{sample}.tsv")
+        inp = os.path.join(dir.out.plassembler,"{sample}", "plassembler_summary.tsv")
     output:
-        out = os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_with_sample.tsv")
+        out = os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_plassembler_summary.tsv")
     conda:
         os.path.join(dir.env,'scripts.yaml')
     resources:

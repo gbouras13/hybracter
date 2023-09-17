@@ -23,7 +23,8 @@ def aggregate_ale_input_finalise(wildcards):
                 return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polypolish_incomplete.score")
 
 
-### from the aggregate_ale_input function - so it dynamic whether or not polca is selected
+### from the aggregate_ale_input function - so it dynamic
+# also calculates the summary
 rule select_best_chromosome_assembly_complete:
     input:
         ale_input = aggregate_ale_input_finalise,
@@ -33,7 +34,8 @@ rule select_best_chromosome_assembly_complete:
         chromosome_fasta = os.path.join(dir.out.final_contigs_complete,"{sample}_chromosome.fasta"),
         plasmid_fasta = os.path.join(dir.out.final_contigs_complete,"{sample}_plasmid.fasta"),
         total_fasta = os.path.join(dir.out.final_contigs_complete,"{sample}_final.fasta"),
-        ale_summary = os.path.join(dir.out.ale_summary,"complete","{sample}.csv")
+        ale_summary = os.path.join(dir.out.ale_summary,"complete","{sample}.tsv"),
+        hybracter_summary = (dir.out.final_summaries_complete, "{sample}.tsv")
     params:
         ale_dir = os.path.join(dir.out.ale_scores_complete, "{sample}"),
         chrom_pre_polish_fasta = os.path.join(dir.out.chrom_pre_polish,"{sample}.fasta"),
@@ -53,14 +55,16 @@ rule select_best_chromosome_assembly_complete:
 
 
 
-### from the aggregate_ale_input function - so it dynamic whether or not polca is selected
+### from the aggregate_ale_input function - so it dynamic 
+#  also calculates the summary
 rule select_best_chromosome_assembly_incomplete:
     input:
         aggregate_ale_input,
         os.path.join(dir.out.aggr_ale,"{sample}.txt") # to make sure ale has finished
     output:
         fasta = os.path.join(dir.out.final_contigs_incomplete,"{sample}_final.fasta"),
-        ale_summary = os.path.join(dir.out.ale_summary, "incomplete", "{sample}.csv")
+        ale_summary = os.path.join(dir.out.ale_summary, "incomplete", "{sample}.tsv"),
+        hybracter_summary = (dir.out.final_summaries_incomplete, "{sample}.tsv")
     params:
         ale_dir = os.path.join(dir.out.ale_scores_incomplete, "{sample}"),
         pre_polish_fasta = os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta"),

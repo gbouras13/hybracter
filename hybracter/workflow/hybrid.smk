@@ -62,8 +62,6 @@ include: os.path.join("rules", "processing", "qc.smk")
 # assembly
 include: os.path.join("rules", "assembly", "assemble.smk")
 
-# get flye stats and combine across all runs
-include: os.path.join("rules", "processing", "assembly_statistics.smk")
 # extract chrom
 include: os.path.join("rules", "processing", "extract_fastas.smk")
 

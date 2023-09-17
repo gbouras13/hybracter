@@ -33,8 +33,8 @@ dir.out.results  = os.path.join(dir.out.base, "results")
 dir.out.flags  = os.path.join(dir.out.base, "flags")
 dir.out.versions  = os.path.join(dir.out.base, "versions")
 dir.out.processing  = os.path.join(dir.out.base, "processing")
-dir.out.complete  = os.path.join(dir.out.results, "complete")
-dir.out.incomplete  = os.path.join(dir.out.results, "incomplete")
+dir.out.complete  = os.path.join(dir.out.processing, "complete")
+dir.out.incomplete  = os.path.join(dir.out.processing, "incomplete")
 dir.out.qc  = os.path.join(dir.out.processing, "qc")
 
 # logs and benchmarks
@@ -43,12 +43,12 @@ dir.out.stderr  = os.path.join(dir.out.base, "stderr")
 
 # assemble.smk and assembly_statistics.smk
 dir.out.assemblies  = os.path.join(dir.out.processing, "assemblies")
-dir.out.assembly_statistics  = os.path.join(dir.out.results, "assembly_statistics")
-dir.out.assembly_summary  = os.path.join(dir.out.results, "assembly_summary")
+dir.out.assembly_statistics  = os.path.join(dir.out.results, "flye_individual_summaries")
+dir.out.assembly_summary  = os.path.join(dir.out.results, "flye_all_assembly_summary")
 
 #extract_fastas.smk
-dir.out.chrom_pre_polish  = os.path.join(dir.out.results, "chrom_pre_polish")
-dir.out.incomp_pre_polish  = os.path.join(dir.out.results, "incomp_pre_polish")
+dir.out.chrom_pre_polish  = os.path.join(dir.out.processing, "chrom_pre_polish")
+dir.out.incomp_pre_polish  = os.path.join(dir.out.processing, "incomp_pre_polish")
 dir.out.completeness  = os.path.join(dir.out.base, "completeness")
 
 # aggregation dirs
@@ -83,9 +83,9 @@ dir.out.polca_incomplete  = os.path.join(dir.out.incomplete, "polca")
 # plassembler dirs
 dir.out.plassembler =  os.path.join(dir.out.processing, 'plassembler')
 dir.out.plassembler_incomplete =  os.path.join(dir.out.processing, 'plassembler_incomplete')
-dir.out.plassembler_fastas =  os.path.join(dir.out.results, 'plassembler_fastas')
+dir.out.plassembler_fastas =  os.path.join(dir.out.processing, 'plassembler_fastas')
 dir.out.plassembler_individual_summaries =  os.path.join(dir.out.results, 'plassembler_individual_summaries')
-dir.out.plassembler_all_summary =  os.path.join(dir.out.results, 'plassembler_all_summary')
+dir.out.plassembler_all_summary =  os.path.join(dir.out.results, 'plassembler_all_assembly_summary')
 
 # ale
 dir.out.ale_scores_complete =  os.path.join(dir.out.processing, 'ale_scores_complete')
@@ -98,3 +98,9 @@ dir.out.ale_summary =  os.path.join(dir.out.results, 'ale_score_summaries')
 dir.out.final_contigs =  os.path.join(dir.out.base, 'final_contigs')
 dir.out.final_contigs_complete =  os.path.join(dir.out.final_contigs, 'complete')
 dir.out.final_contigs_incomplete =  os.path.join(dir.out.final_contigs, 'incomplete')
+
+# final summaries
+dir.out.final_summaries =  os.path.join(dir.out.base, 'final_summaries')
+dir.out.final_summaries_complete =  os.path.join(dir.out.final_summaries, 'complete')
+dir.out.final_summaries_incomplete =  os.path.join(dir.out.final_summaries, 'incomplete')
+

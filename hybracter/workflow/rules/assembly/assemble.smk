@@ -30,10 +30,26 @@ rule assemble:
         flye --version > {output.version}
         """
 
+rule extract_flye_assembly_info:
+    input:
+        info = os.path.join(dir.out.assemblies,"{sample}", "assembly_info.txt")
+    output:
+        info = os.path.join(dir.out.assembly_statistics,"{sample}_assembly_info.txt")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        cp {input.info} {output.info}
+        """
+
 rule aggr_assemble:
     input:
         expand(os.path.join(dir.out.assemblies,"{sample}", "assembly.fasta"), sample = SAMPLES),
         expand(os.path.join(dir.out.assemblies,"{sample}", "assembly_info.txt"), sample = SAMPLES),
+        expand(os.path.join(dir.out.assembly_statistics,"{sample}_assembly_info.txt"), sample = SAMPLES),
         expand(os.path.join(dir.out.versions, "{sample}", "flye.version"), sample = SAMPLES)
     output:
         flag = os.path.join(dir.out.flags, "aggr_assemble.flag")

@@ -17,7 +17,7 @@ def aggregate_plassembler_input(wildcards):
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
         if f.read().strip() == "C":
-            return os.path.join(dir.out.plassembler_individual_summaries , "{sample}_with_sample.tsv")
+            return os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_plassembler_summary.tsv")
         else: # if incomplete  
             return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
 
@@ -312,10 +312,32 @@ rule aggregate_finalised_assemblies_rule:
         touch {output}
         """
 
+"""
+to create the very final summaries
+"""
+
+rule create_final_summary:
+    input:
+        expand(os.path.join(dir.out.aggr_final,"{sample}.txt"), sample = SAMPLES)
+    output:
+        hybracter_summary = os.path.join(dir.out.final_summaries, "hybracter_summary.tsv")
+    params:
+        complete_summaries_dir = dir.out.final_summaries_complete
+        incomplete_summaries_dir = dir.out.final_summaries_incomplete
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts,  'create_final_hybracter_summary.py')
+
+
+
 rule aggr_final_flag:
     """Aggregate."""
     input:
-        expand(os.path.join(dir.out.aggr_final,"{sample}.txt"), sample = SAMPLES)
+        hybracter_summary = os.path.join(dir.out.final_summaries, "hybracter_summary.tsv")
     output:
         flag = os.path.join(dir.out.flags, "aggr_final.flag")
     resources:
@@ -327,3 +349,4 @@ rule aggr_final_flag:
         """
         touch {output.flag}
         """
+

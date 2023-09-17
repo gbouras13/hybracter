@@ -9,7 +9,7 @@ def combine_sample_plassembler(summary_dir, output):
     # read into list
 
     # Specify a pattern to match files (e.g., all .txt files)
-    pattern = "*.txt"
+    pattern = "*.tsv"
 
     # Get a list of files that match the pattern in the directory
     summary_list = glob.glob(os.path.join(summary_dir, pattern))
