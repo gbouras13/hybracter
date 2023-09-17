@@ -12,8 +12,8 @@ rule assemble:
     conda:
         os.path.join(dir.env,'flye.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
-        time=config.resources.big.time
+        mem_mb=config.resources.big.mem,
+        time=config.resources.med.time
     params:
         model = FLYE_MODEL,
         dir = os.path.join(dir.out.assemblies ,"{sample}")
