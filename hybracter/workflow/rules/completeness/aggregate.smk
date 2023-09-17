@@ -322,7 +322,7 @@ rule create_final_summary:
     output:
         hybracter_summary = os.path.join(dir.out.final_summaries, "hybracter_summary.tsv")
     params:
-        complete_summaries_dir = dir.out.final_summaries_complete
+        complete_summaries_dir = dir.out.final_summaries_complete,
         incomplete_summaries_dir = dir.out.final_summaries_incomplete
     resources:
         mem_mb=config.resources.sml.mem,
