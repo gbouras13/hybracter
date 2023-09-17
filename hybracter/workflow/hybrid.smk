@@ -59,7 +59,7 @@ wildcard_constraints:
 
 # qc
 # depends on skipqc flag
-if args.skip_qc is true:
+if args.skip_qc is True:
     include: os.path.join("rules", "processing", "skip_qc.smk")
 else:
     include: os.path.join("rules", "processing", "qc.smk")
