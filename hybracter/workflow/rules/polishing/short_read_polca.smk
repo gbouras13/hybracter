@@ -31,10 +31,10 @@ rule polca:
         """
         # real struggle running polca honestly
         # need these workaround with '../../' etc
+        mkdir -p {params.intermediate_dir}
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
-        mkdir -p {params.intermediate_dir}
         cp {params.copy_fasta} {params.copy_intermediate_fasta}
         masurca --version > {params.version}
         """
@@ -73,10 +73,10 @@ rule polca_incomplete:
         """
         # real struggle running polca honestly
         # need these workaround with '../../' etc
+        mkdir -p {params.intermediate_dir}
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
         polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
-        mkdir -p {params.intermediate_dir}
         cp {params.copy_fasta} {params.copy_intermediate_fasta}
         masurca --version > {params.version}
         """
