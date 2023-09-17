@@ -30,7 +30,6 @@ rule combine_summary_stats:
     script:
         os.path.join(dir.scripts,  'combine_summary_assembly_stats.py')
 
-
 rule aggr_statistics:
     """Aggregate."""
     input:

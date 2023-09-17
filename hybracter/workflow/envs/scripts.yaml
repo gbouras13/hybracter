@@ -6,4 +6,4 @@ channels:
 dependencies:
     - pandas
     - numpy
-    - biopython
+    - biopython >=1.78

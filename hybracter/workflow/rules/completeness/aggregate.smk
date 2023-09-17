@@ -19,7 +19,7 @@ def aggregate_plassembler_input(wildcards):
         if f.read().strip() == "C":
             return os.path.join(dir.out.plassembler_individual_summaries , "{sample}_with_sample.tsv")
         else: # if incomplete  
-                return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
+            return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
 
 ### from the long_read_polishing 
 
@@ -217,6 +217,9 @@ rule aggr_polca_flag:
 
 """
 ale
+
+hybrid
+
 """
 
 
@@ -227,13 +230,19 @@ def aggregate_ale_input(wildcards):
     # This way, Snakemake is able to automatically download the file if it is generated in
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
-        if f.read().strip() == "C":
-            return os.path.join(dir.out.ale_scores_complete ,"{sample}", "medaka_rd_1.score")
-        else:
-            return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "medaka_incomplete.score")
+        if f.read().strip() == "C": # complete
+            if config.args.no_polca is False: # with polca
+                return os.path.join(dir.out.ale_scores_complete ,"{sample}", "polca.score")
+            else: # with polca, best is polypolish
+                return os.path.join(dir.out.ale_scores_complete ,"{sample}", "polypolish.score")
+        else: # incomplete
+            if config.args.no_polca is False: # with polca
+                return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polca_incomplete.score")
+            else:
+                return os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polypolish_incomplete.score")
 
 
-### from the short_read_polishing 
+### from the aggregate_ale_input 
 rule aggregate_ale_input_files:
     input:
         aggregate_ale_input
@@ -255,6 +264,60 @@ rule aggr_ale_flag:
         expand(os.path.join(dir.out.aggr_ale,"{sample}.txt"), sample = SAMPLES)
     output:
         flag = os.path.join(dir.out.flags, "aggr_ale.flag")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        touch {output.flag}
+        """
+
+
+"""
+finalise
+
+hybrid
+
+"""
+
+
+# input function for the rule aggregate polca
+def aggregate_finalised_assemblies(wildcards):
+    # decision based on content of output file
+    # Important: use the method open() of the returned file!
+    # This way, Snakemake is able to automatically download the file if it is generated in
+    # a cloud environment without a shared filesystem.
+    with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
+        if f.read().strip() == "C": # complete
+            return os.path.join(dir.out.final_contigs_complete,"{sample}_final.fasta")
+        else: # incomplete
+            return os.path.join(dir.out.final_contigs_incomplete,"{sample}_final.fasta")
+
+
+### from the aggregate_ale_input 
+rule aggregate_finalised_assemblies_rule:
+    input:
+        aggregate_finalised_assemblies
+    output:
+        os.path.join(dir.out.aggr_final,"{sample}.txt")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        touch {output}
+        """
+
+rule aggr_final_flag:
+    """Aggregate."""
+    input:
+        expand(os.path.join(dir.out.aggr_final,"{sample}.txt"), sample = SAMPLES)
+    output:
+        flag = os.path.join(dir.out.flags, "aggr_final.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time

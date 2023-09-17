@@ -32,20 +32,6 @@ rule plassembler_hybrid:
         rm {log}
         """
 
-rule plassembler_move_fastas:
-    input:
-        fasta = os.path.join(dir.out.plassembler,"{sample}", "plassembler_plasmids.fasta")
-    output:
-        fasta = os.path.join(dir.out.plassembler_fastas, "{sample}.fasta")
-    resources:
-        mem_mb=config.resources.sml.mem,
-        time=config.resources.sml.time
-    threads:
-        config.resources.sml.cpu
-    shell:
-        """
-        cp {input.fasta} {output.fasta}
-        """
         
 rule plassembler_move_summaries:
     input:

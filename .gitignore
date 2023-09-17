@@ -7,6 +7,12 @@ __pycache__/
 *.so
 
 .DS_Store
+*/.DS_Store
+*/*/*/.DS_Store
+*/*/.DS_Store
+*/*/*/*/*/.DS_Store
+*/*/*/*/.DS_Store
+
 
 # dont include conda envs locally
 hybracter/workflow/conda/*

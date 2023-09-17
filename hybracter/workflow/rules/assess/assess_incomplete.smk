@@ -1,9 +1,12 @@
+"""
+scores need to be sequential so that it can easily be aggregated based on a polca flag or not - otherwise I need another rule
+"""
+
 rule assess_incomp_pre_polish:
     """
     Run ALE on incomp_pre_polish
     """
     input:
-        ALE = os.path.join(dir.env, "ALE-master", "src", "ALE"),
         r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
         fasta = os.path.join(dir.out.incomp_pre_polish,"{sample}.fasta")
     output:
@@ -11,7 +14,7 @@ rule assess_incomp_pre_polish:
         sam1 = temp(os.path.join(dir.out.ale_sams ,"{sample}_incomp_pre_polish_1.sam")),
         score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "incomp_pre_polish.score")
     conda:
-        os.path.join(dir.env,'polca.yaml')
+        os.path.join(dir.env,'ale.yaml')
     resources:
         mem_mb=config.resources.med.cpu,
         time=config.resources.big.time
@@ -26,7 +29,7 @@ rule assess_incomp_pre_polish:
 
         bwa index {input.fasta}
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
-        {input.ALE} {output.sam1} {input.fasta} {output.ale} 2> {log}
+        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         """
 
@@ -35,7 +38,6 @@ rule assess_medaka_incomplete:
     Run ALE on medaka_incomplete
     """
     input:
-        ALE = os.path.join(dir.env, "ALE-master", "src", "ALE"),
         r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
         fasta = os.path.join(dir.out.medaka_incomplete,"{sample}", "consensus.fasta"),
         score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "incomp_pre_polish.score")
@@ -44,22 +46,85 @@ rule assess_medaka_incomplete:
         sam1 = temp(os.path.join(dir.out.ale_sams ,"{sample}_medaka_incomplete_1.sam")),
         score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "medaka_incomplete.score")
     conda:
-        os.path.join(dir.env,'polca.yaml')
+        os.path.join(dir.env,'ale.yaml')
     resources:
         mem_mb=config.resources.med.cpu,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
     benchmark:
-        os.path.join(dir.out.bench, "ale", "{sample}_incomp_pre_polish.txt")
+        os.path.join(dir.out.bench, "ale", "{sample}_incomp_medaka.txt")
     log:
-        os.path.join(dir.out.stderr, "ale", "{sample}_incomp_pre_polish.log")
+        os.path.join(dir.out.stderr, "ale", "{sample}_incomp_medaka.log")
     shell:
         """
 
         bwa index {input.fasta}
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
-        {input.ALE} {output.sam1} {input.fasta} {output.ale} 2> {log}
+        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         """
 
+rule assess_polypolish_incomplete:
+    """
+    Run ALE on polyplosh incomplete
+    """
+    input:
+        r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
+        fasta = os.path.join(dir.out.polypolish_incomplete,"{sample}.fasta"),
+        score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "medaka_incomplete.score")
+    output:
+        ale = temp(os.path.join(dir.out.ale_out_files ,"{sample}", "polypolish_incomplete.ale")),
+        sam1 = temp(os.path.join(dir.out.ale_sams ,"{sample}_polypolish_incomplete_1.sam")),
+        score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polypolish_incomplete.score")
+    conda:
+        os.path.join(dir.env,'ale.yaml')
+    resources:
+        mem_mb=config.resources.med.cpu,
+        time=config.resources.big.time
+    threads:
+        config.resources.big.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "ale", "{sample}_incomp_polypolish.txt")
+    log:
+        os.path.join(dir.out.stderr, "ale", "{sample}_incomp_polypolish.log")
+    shell:
+        """
+
+        bwa index {input.fasta}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        """
+
+rule assess_polca_incomplete:
+    """
+    Run ALE on polca incomplete
+    """
+    input:
+        r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
+        fasta = os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta"),
+        score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polca_incomplete.score")
+    output:
+        ale = temp(os.path.join(dir.out.ale_out_files ,"{sample}", "polca_incomplete.ale")),
+        sam1 = temp(os.path.join(dir.out.ale_sams ,"{sample}_polca_incomplete_1.sam")),
+        score = os.path.join(dir.out.ale_scores_incomplete ,"{sample}", "polca_incomplete.score")
+    conda:
+        os.path.join(dir.env,'ale.yaml')
+    resources:
+        mem_mb=config.resources.med.cpu,
+        time=config.resources.big.time
+    threads:
+        config.resources.big.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "ale", "{sample}_incomp_polca.txt")
+    log:
+        os.path.join(dir.out.stderr, "ale", "{sample}_incomp_polca.log")
+    shell:
+        """
+
+        bwa index {input.fasta}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        """

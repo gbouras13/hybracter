@@ -5,7 +5,6 @@ A lot taken and modified from hecatomb
 """
 
 import attrmap as ap
-
 dir = ap.AttrMap()
 
 ### DATABASE LOCATION
@@ -58,6 +57,7 @@ dir.out.aggr_sr_polish  = os.path.join(dir.out.flags, "aggr_short_read_polish")
 dir.out.aggr_polca_polish  = os.path.join(dir.out.flags, "aggr_polca_polish")
 dir.out.aggr_plassembler = os.path.join(dir.out.flags, "aggr_plassembler")
 dir.out.aggr_ale = os.path.join(dir.out.flags, "aggr_ale")
+dir.out.aggr_final = os.path.join(dir.out.flags, "aggr_final")
 
 # long_read_polish.smk
 dir.out.medaka_rd_1  = os.path.join(dir.out.complete, "medaka_rd_1")
@@ -88,13 +88,13 @@ dir.out.plassembler_individual_summaries =  os.path.join(dir.out.results, 'plass
 dir.out.plassembler_all_summary =  os.path.join(dir.out.results, 'plassembler_all_summary')
 
 # ale
-dir.out.ale_scores_complete =  os.path.join(dir.out.results, 'ale_scores_complete')
-dir.out.ale_scores_incomplete =  os.path.join(dir.out.results, 'ale_scores_incomplete')
+dir.out.ale_scores_complete =  os.path.join(dir.out.processing, 'ale_scores_complete')
+dir.out.ale_scores_incomplete =  os.path.join(dir.out.processing, 'ale_scores_incomplete')
 dir.out.ale_sams =  os.path.join(dir.out.processing, 'ale_sams')
 dir.out.ale_out_files =  os.path.join(dir.out.processing, 'ale_out_files')
+dir.out.ale_summary =  os.path.join(dir.out.results, 'ale_score_summaries')
 
-
-
-
-
-
+# final contigs
+dir.out.final_contigs =  os.path.join(dir.out.base, 'final_contigs')
+dir.out.final_contigs_complete =  os.path.join(dir.out.final_contigs, 'complete')
+dir.out.final_contigs_incomplete =  os.path.join(dir.out.final_contigs, 'incomplete')

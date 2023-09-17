@@ -38,7 +38,8 @@ TargetFilesHybrid = [
     os.path.join(dir.out.flags, "aggr_long_read_polish.flag"),
     polca_files,
     plassembler_files,
-    os.path.join(dir.out.flags, "aggr_ale.flag") # ale
+    os.path.join(dir.out.flags, "aggr_ale.flag"), 
+    flag = os.path.join(dir.out.flags, "aggr_final.flag")
 ]
 
 

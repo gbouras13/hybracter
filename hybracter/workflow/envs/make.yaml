@@ -1,8 +1,0 @@
-name: make
-channels:
-    - anaconda 
-    - conda-forge
-dependencies:
-    - make
-    - git
-    - zlib

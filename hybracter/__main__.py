@@ -351,43 +351,6 @@ def download( databases, log,output,  **kwargs):
         merge_config=merge_config,
         **kwargs)
 
-"""
-ale
-"""
-
-@click.command(
-    epilog=help_msg_ale,
-    context_settings=dict(
-        help_option_names=["-h", "--help"], ignore_unknown_options=True
-    ))
-@click.option(
-            "--use-conda/--no-use-conda",
-            default=True,
-            help="Use conda for Snakemake rules",
-            show_default=True,
-        )
-@click.option(
-            "--snake-default",
-            multiple=True,
-            default=[
-                "--rerun-incomplete",
-                "--printshellcmds",
-                "--nolock",
-                "--show-failed-logs",
-                "--conda-frontend conda"
-            ],
-            help="Customise Snakemake runtime args",
-            show_default=True,
-        )
-@common_options
-def ale(  log, output,  **kwargs):
-    # install ale
-    merge_config = { "output": output, "log": log }
-    """installs ale"""
-    run_snakemake(
-        snakefile_path=snake_base(os.path.join('workflow','ale.smk')),
-        merge_config=merge_config,
-        **kwargs)
 
 @click.command()
 @common_options
@@ -403,7 +366,6 @@ def citation(**kwargs):
 
 cli.add_command(download)
 cli.add_command(hybrid)
-cli.add_command(ale)
 cli.add_command(long)
 cli.add_command(config)
 cli.add_command(citation)
