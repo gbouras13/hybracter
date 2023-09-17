@@ -33,7 +33,7 @@ def make_final_summary(hybracter_summary, complete_summary_dir, incomplete_summa
 
     combined_df.to_csv(hybracter_summary, index=False, sep = "\t")
 
-make_final_summary(snakemake.output.hybracter_summary, snakemake.params.complete_summaries_dir, snakemake.input.incomplete_summaries_dir  )
+make_final_summary(snakemake.output.hybracter_summary, snakemake.params.complete_summaries_dir, snakemake.params.incomplete_summaries_dir  )
 
 
 
