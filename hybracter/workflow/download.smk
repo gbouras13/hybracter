@@ -29,7 +29,7 @@ config = ap.AttrMap(config)
 # directories
 include: os.path.join("rules", "preflight", "directories.smk")
 # targets
-include: os.path.join("rules", "preflight", "targets.smk")
+include: os.path.join("rules", "preflight", "targets_download.smk")
 # plassembler
 include: os.path.join("rules", "download", "download_plassembler_db.smk")
 

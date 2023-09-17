@@ -32,7 +32,7 @@ include: os.path.join("rules", "preflight", "functions.smk")
 # samples
 include: os.path.join("rules", "preflight", "samples.smk")
 # targets
-include: os.path.join("rules", "preflight", "targets.smk")
+include: os.path.join("rules", "preflight", "targets_hybrid.smk")
 
 
 ### from config files
