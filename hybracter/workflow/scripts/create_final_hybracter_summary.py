@@ -3,10 +3,6 @@
 import pandas as pd
 import glob
 import os 
-import sys
-from Bio import SeqIO
-
-
 
 def make_final_summary(hybracter_summary, complete_summary_dir, incomplete_summary_dir ):
     """
@@ -37,7 +33,7 @@ def make_final_summary(hybracter_summary, complete_summary_dir, incomplete_summa
 
     combined_df.to_csv(hybracter_summary, index=False, sep = "\t")
 
-select_best_chromosome_assembly_complete(snakemake.output.hybracter_summary, snakemake.params.complete_summaries_dir, snakemake.input.incomplete_summaries_dir  )
+make_final_summary(snakemake.output.hybracter_summary, snakemake.params.complete_summaries_dir, snakemake.input.incomplete_summaries_dir  )
 
 
 
