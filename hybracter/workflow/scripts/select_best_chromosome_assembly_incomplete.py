@@ -41,9 +41,11 @@ def select_best_chromosome_assembly_incomplete(ale_dir, output_fasta, ale_summar
         score_dict[file_name] = score
 
     
-
+    print(score_dict)
     # Filter out None values from the score_dict
     filtered_score_dict = {k: v for k, v in score_dict.items() if v is not None}
+
+    print(filtered_score_dict)
 
     # Check if there are any valid scores left
     if filtered_score_dict:
@@ -51,6 +53,8 @@ def select_best_chromosome_assembly_incomplete(ale_dir, output_fasta, ale_summar
         # this will be the best score from ALE
         closest_to_zero_key = min(filtered_score_dict, key=lambda k: abs(filtered_score_dict[k] - 0))
         closest_score = filtered_score_dict[closest_to_zero_key]
+
+    print(closest_to_zero_key)
 
     # df with scores and files
     scores_df = pd.DataFrame(list(score_dict.items()), columns=['Key', 'Score'])
