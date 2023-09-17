@@ -57,8 +57,6 @@ wildcard_constraints:
 # Import rules and functions
 ##############################
 
-### targets
-include: os.path.join("rules", "preflight", "targets.smk")
 # qc
 include: os.path.join("rules", "processing", "qc.smk")
 # assembly

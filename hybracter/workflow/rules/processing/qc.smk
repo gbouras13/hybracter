@@ -44,7 +44,7 @@ rule porechop:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time
     threads:
-        config.resources.sml.cpu
+        config.resources.med.cpu
     benchmark:
         os.path.join(dir.out.bench, "porechop", "{sample}.txt")
     log:
