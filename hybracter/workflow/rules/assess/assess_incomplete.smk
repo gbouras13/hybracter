@@ -48,7 +48,7 @@ rule assess_medaka_incomplete:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
@@ -80,7 +80,7 @@ rule assess_polypolish_incomplete:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
@@ -112,7 +112,7 @@ rule assess_polca_incomplete:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu

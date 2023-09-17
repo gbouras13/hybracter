@@ -16,7 +16,7 @@ rule assess_chrom_pre_polish:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
@@ -48,7 +48,7 @@ rule assess_medaka_rd_1:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
@@ -81,7 +81,7 @@ rule assess_medaka_rd_2:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
@@ -114,7 +114,7 @@ rule assess_polypolish:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
@@ -146,7 +146,7 @@ rule assess_polca:
     conda:
         os.path.join(dir.env,'ale.yaml')
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.big.time
     threads:
         config.resources.big.cpu
