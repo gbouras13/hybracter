@@ -59,7 +59,7 @@ rule aggregate_finalise_incomplete:
         medaka_fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
     output:
         total_fasta=os.path.join(dir.out.final_contigs_incomplete, "{sample}_final.fasta"),
-        pyrodigal_summary=os.path.join(dir.out.pyrodigal_summary, "complete", "{sample}.tsv"),
+        pyrodigal_summary=os.path.join(dir.out.pyrodigal_summary, "incomplete", "{sample}.tsv"),
         hybracter_summary=os.path.join(dir.out.final_summaries_incomplete, "{sample}.tsv")
     params:
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),

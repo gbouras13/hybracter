@@ -35,10 +35,9 @@ def calculate_mean_CDS_length(filepath_in):
 
         for i, record in enumerate(SeqIO.parse(filepath_in, "fasta")):
             genes = orf_finder.find_genes(str(record.seq))
-
-        for gene in genes:
-            total_genes += 1
-            total_length += len(gene.seq)  # add the length of the gene called
+            for gene in genes:
+                total_genes += 1
+                total_length += len(gene.sequence)  # add the length of the gene called
 
         mean_cds_len = float(total_length / total_genes)
 
