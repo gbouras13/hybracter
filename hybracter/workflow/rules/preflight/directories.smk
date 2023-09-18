@@ -94,7 +94,9 @@ dir.out.ale_sams =  os.path.join(dir.out.processing, 'ale_sams')
 dir.out.ale_out_files =  os.path.join(dir.out.processing, 'ale_out_files')
 dir.out.ale_summary =  os.path.join(dir.out.results, 'ale_score_summaries')
 
-# 
+# pyrodigal
+dir.out.pyrodigal_mean_lengths_complete = os.path.join(dir.out.processing, 'pyrodigal_mean_lengths_complete')
+dir.out.pyrodigal_mean_lengths_incomplete = os.path.join(dir.out.processing, 'pyrodigal_mean_lengths_incomplete')
 dir.out.pyrodigal_summary =  os.path.join(dir.out.results, 'pyrodigal_mean_length_summaries')
 
 # intermediate assemblies
