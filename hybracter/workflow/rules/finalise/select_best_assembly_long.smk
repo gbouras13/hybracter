@@ -55,22 +55,17 @@ rule aggregate_finalise_complete:
 ### from the aggregate_finalise function - so it dynamic
 rule aggregate_finalise_incomplete:
     input:
-        pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta")
+        pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
         medaka_fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
     output:
         total_fasta=os.path.join(dir.out.final_contigs_incomplete, "{sample}_final.fasta"),
-        ale_summary=os.path.join(dir.out.ale_summary, "incomplete", "{sample}.tsv"),
-        hybracter_summary=os.path.join(
-            dir.out.final_summaries_incomplete, "{sample}.tsv"
-        ),
+        pyrodigal_summary=os.path.join(dir.out.pyrodigal_summary, "complete", "{sample}.tsv"),
+        hybracter_summary=os.path.join(dir.out.final_summaries_incomplete, "{sample}.tsv")
     params:
-        ale_dir=os.path.join(dir.out.ale_scores_incomplete, "{sample}"),
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
         medaka_fasta=os.path.join(
             dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
-        ),
-        polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
-        polca_fasta=os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta"),
+        )
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.med.time,
