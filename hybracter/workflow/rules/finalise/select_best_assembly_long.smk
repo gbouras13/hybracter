@@ -49,7 +49,7 @@ rule aggregate_finalise_complete:
         os.path.join(dir.env, "scripts.yaml")
     threads: config.resources.sml.cpu
     script:
-        os.path.join(dir.scripts, "select_best_chromosome_assembly_complete.py")
+        os.path.join(dir.scripts, "select_best_chromosome_assembly_long_complete.py")
 
 
 ### from the aggregate_finalise function - so it dynamic
@@ -73,4 +73,4 @@ rule aggregate_finalise_incomplete:
         os.path.join(dir.env, "scripts.yaml")
     threads: config.resources.sml.cpu
     script:
-        os.path.join(dir.scripts, "select_best_chromosome_assembly_incomplete.py")
+        os.path.join(dir.scripts, "select_best_chromosome_assembly_long_incomplete.py")
