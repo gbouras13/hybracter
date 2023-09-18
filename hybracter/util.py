@@ -7,7 +7,10 @@ import subprocess
 import sys
 from shutil import copyfile
 from time import localtime, strftime
-
+import pyrodigal
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 import click
 import yaml
 

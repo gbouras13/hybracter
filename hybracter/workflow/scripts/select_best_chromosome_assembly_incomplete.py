@@ -3,7 +3,6 @@
 import pandas as pd
 import glob
 import os
-import sys
 from Bio import SeqIO
 
 
@@ -26,9 +25,7 @@ def select_best_chromosome_assembly_incomplete(
     """
 
     # Use glob to find files with the .score extension in the directory
-    print(ale_dir)
     file_list = glob.glob(os.path.join(ale_dir, "*.score"))
-    print(file_list)
 
     # Create an empty dictionary to store the results
     score_dict = {}
@@ -53,7 +50,6 @@ def select_best_chromosome_assembly_incomplete(
         # Store the score (None if it wasn't a valid float)
         score_dict[file_name] = score
 
-    # print(score_dict)
     # Filter out None values from the score_dict
     filtered_score_dict = {k: v for k, v in score_dict.items() if v is not None}
 
@@ -69,12 +65,6 @@ def select_best_chromosome_assembly_incomplete(
         )
         best_score = filtered_score_dict[closest_to_zero_key]
 
-    for key, score in filtered_score_dict.items():
-        if score == best_score:
-            # get the one with the best key
-            best_round = key
-            break
-
     # output df with scores and round
     scores_df = pd.DataFrame(list(score_dict.items()), columns=["Key", "Score"])
     # sorts ascending - worst top, best bottom
@@ -86,12 +76,16 @@ def select_best_chromosome_assembly_incomplete(
     best_assembly = polca_fasta
     if "incomp_pre_polish" in closest_to_zero_key:
         best_assembly = pre_polish_fasta
+        best_round = "pre_polish"
     elif "medaka" in closest_to_zero_key:
         best_assembly = medaka_fasta
+        best_round = "medaka"
     elif "polypolish" in closest_to_zero_key:
         best_assembly = polypolish_fasta
+        best_round = "polypolish"
     else:  # polca
         best_assembly = polca_fasta
+        best_round = "polca"
 
     # count contigs
     number_of_contigs = 1

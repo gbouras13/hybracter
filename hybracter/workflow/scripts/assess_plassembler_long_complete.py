@@ -1,13 +1,8 @@
 #!/usr/bin/env python3
 
 import pandas as pd
-import os
 from util import calculate_mean_CDS_length, is_file_empty, touch_file
-
 from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
-import pyrodigal
 
 
 def determine_best_plassembler_assembly(
@@ -29,9 +24,15 @@ def determine_best_plassembler_assembly(
 
         dict = {
             "Sample": sample,
-            "plassembler_raw_mean_cds": plassembler_mean_cds,
-            "plassembler_polished_mean_cds": medaka_mean_cds,
+            "plassembler_raw_mean_cds_length": plassembler_mean_cds,
+            "plassembler_polished_mean_cds_length": medaka_mean_cds,
         }
+
+        # Convert the dictionary to a DataFrame
+        summary_df = pd.DataFrame([dict])
+
+        # Write to a CSV file
+        summary_df.to_csv(plassembler_prodigal_summary, index=False)
 
         # determine the best assembly
         if plassembler_mean_cds > medaka_mean_cds:

@@ -1,8 +1,8 @@
-import os
 import glob
 import attrmap as ap
 import attrmap.utils as au
 from pathlib import Path
+import os
 
 
 # Concatenate Snakemake's own log file with the master log file

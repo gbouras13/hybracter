@@ -63,7 +63,8 @@ rule plassembler_polish_medaka:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
         individual_summary=os.path.join(
             dir.out.plassembler_individual_summaries, "{sample}_with_sample.tsv"
-        ),  # to make it sequential for the aggregate step
+        ),
+        # to make it sequential for the aggregate step
     output:
         fasta=os.path.join(dir.out.plassembler, "{sample}", "medaka", "consensus.fasta"),
     conda:
@@ -108,7 +109,10 @@ rule plassembler_assess_polish:
             dir.out.final_contigs_complete, "{sample}_plasmid.fasta"
         ),
         plassembler_prodigal_summary=os.path.join(
-            dir.out.pyrodigal_summary, "complete", "plassembler", "{sample}.tsv"
+            dir.out.pyrodigal_summary_plassembler,
+            "complete",
+            "plassembler",
+            "{sample}.tsv",
         ),
     conda:
         os.path.join(dir.env, "pyrodigal.yaml")
@@ -124,7 +128,7 @@ rule plassembler_assess_polish:
         os.path.join(dir.scripts, "assess_plassembler_long_complete.py")
 
 
-# aggr rule in the aggregate.smk rule - because don't run plassembler on incomplete samples
+# aggr rule in the aggregate_long.smk - because don't run plassembler on incomplete samples
 
 
 rule plassembler_incomplete:
@@ -140,4 +144,5 @@ rule plassembler_incomplete:
     shell:
         """
         touch {output.flag}
+        touch {output.plassembler_prodigal_summary}
         """

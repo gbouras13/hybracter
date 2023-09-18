@@ -58,6 +58,7 @@ dir.out.aggr_sr_polish = os.path.join(dir.out.flags, "aggr_short_read_polish")
 dir.out.aggr_polca_polish = os.path.join(dir.out.flags, "aggr_polca_polish")
 dir.out.aggr_plassembler = os.path.join(dir.out.flags, "aggr_plassembler")
 dir.out.aggr_ale = os.path.join(dir.out.flags, "aggr_ale")
+dir.out.aggr_pyrodigal = os.path.join(dir.out.flags, "aggr_pyrodigal")
 dir.out.aggr_final = os.path.join(dir.out.flags, "aggr_final")
 
 # long_read_polish.smk
@@ -112,6 +113,9 @@ dir.out.pyrodigal_mean_lengths_incomplete = os.path.join(
 )
 dir.out.pyrodigal_summary = os.path.join(
     dir.out.results, "pyrodigal_mean_length_summaries"
+)
+dir.out.pyrodigal_summary_plassembler = os.path.join(
+    dir.out.results, "pyrodigal_mean_length_summaries_plassembler"
 )
 
 # intermediate assemblies

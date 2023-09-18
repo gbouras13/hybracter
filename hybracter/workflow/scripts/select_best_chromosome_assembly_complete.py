@@ -97,12 +97,6 @@ def select_best_chromosome_assembly_complete(
         )
         best_score = filtered_score_dict[closest_to_zero_key]
 
-    for key, score in filtered_score_dict.items():
-        if score == best_score:
-            # get the one with the best key
-            best_round = key
-            break
-
     # df with scores and files
     scores_df = pd.DataFrame(list(score_dict.items()), columns=["Key", "Score"])
     # sorts ascending - worst top, best bottom
@@ -112,16 +106,22 @@ def select_best_chromosome_assembly_complete(
     # by default the best assembly is the polca fasta
     # check that the best assembly wasn't something else
     best_assembly = polca_fasta
+    best_round = "polca"
     if "chrom_pre_polish" in closest_to_zero_key:
         best_assembly = chrom_pre_polish_fasta
+        best_round = "pre_polish"
     elif "medaka_rd_1" in closest_to_zero_key:
         best_assembly = medaka_rd_1_fasta
+        best_round = "medaka_rd_1"
     elif "medaka_rd_2" in closest_to_zero_key:
         best_assembly = medaka_rd_2_fasta
+        best_round = "medaka_rd_2"
     elif "polypolish" in closest_to_zero_key:
         best_assembly = polypolish_fasta
+        best_round = "polypolish"
     else:  # polca
         best_assembly = polca_fasta
+        best_round = "polca"
 
     # write the chromosome(s)
     # usually should be 1!

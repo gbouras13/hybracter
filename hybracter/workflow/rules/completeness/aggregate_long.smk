@@ -126,7 +126,7 @@ hybrid
 
 
 # input function for the rule aggregate polca
-def aggregate_ale_input(wildcards):
+def aggregate_pyrodigal_plassembler_input(wildcards):
     # decision based on content of output file
     # Important: use the method open() of the returned file!
     # This way, Snakemake is able to automatically download the file if it is generated in
@@ -135,33 +135,22 @@ def aggregate_ale_input(wildcards):
         0
     ].open() as f:
         if f.read().strip() == "C":  # complete
-            if config.args.no_polca is False:  # with polca
-                return os.path.join(
-                    dir.out.ale_scores_complete, "{sample}", "polca.score"
-                )
-            else:  # with polca, best is polypolish
-                return os.path.join(
-                    dir.out.ale_scores_complete, "{sample}", "polypolish.score"
-                )
+            return os.path.join(
+                dir.out.pyrodigal_summary_plassembler,
+                "complete",
+                "plassembler",
+                "{sample}.tsv",
+            )
         else:  # incomplete
-            if config.args.no_polca is False:  # with polca
-                return os.path.join(
-                    dir.out.ale_scores_incomplete, "{sample}", "polca_incomplete.score"
-                )
-            else:
-                return os.path.join(
-                    dir.out.ale_scores_incomplete,
-                    "{sample}",
-                    "polypolish_incomplete.score",
-                )
+            return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
 
 
-### from the aggregate_ale_input
-rule aggregate_ale_input_files:
+### from the aggregate_pyrodigal_plassembler_input
+rule aggregate_pyrodigal_plassembler_input_rule:
     input:
-        aggregate_ale_input,
+        aggregate_pyrodigal_plassembler_input,
     output:
-        os.path.join(dir.out.aggr_ale, "{sample}.txt"),
+        os.path.join(dir.out.aggr_pyrodigal_plassembler, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time,
@@ -172,12 +161,15 @@ rule aggregate_ale_input_files:
         """
 
 
-rule aggr_ale_flag:
+rule aggr_pyrodigal_plassembler_flag:
     """Aggregate."""
     input:
-        expand(os.path.join(dir.out.aggr_ale, "{sample}.txt"), sample=SAMPLES),
+        expand(
+            os.path.join(dir.out.aggr_pyrodigal_plassembler, "{sample}.txt"),
+            sample=SAMPLES,
+        ),
     output:
-        flag=os.path.join(dir.out.flags, "aggr_ale.flag"),
+        flag=os.path.join(dir.out.flags, "aggr_pyrodigal_plassembler.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time,
