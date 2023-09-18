@@ -87,13 +87,10 @@ include: os.path.join("rules", "completeness", "aggregate_long.smk")
 # need long read polish files regardless
 include: os.path.join("rules", "polishing", "long_read_polish.smk")
 include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
-# plassembler
+# plassembler  & pyrodigal
 include: os.path.join("rules", "assembly", "plassembler_long.smk")
 include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
-# pyrodigal
-include: os.path.join("rules", "assess", "assess_complete_long.smk")
-include: os.path.join("rules", "assess", "assess_incomplete_long.smk")
-# finalse
+# finalse & pyrodigal
 include: os.path.join("rules", "finalise", "select_best_assembly_long.smk")
 
 
