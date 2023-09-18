@@ -144,5 +144,4 @@ rule plassembler_incomplete:
     shell:
         """
         touch {output.flag}
-        touch {output.plassembler_prodigal_summary}
         """
