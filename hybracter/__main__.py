@@ -352,6 +352,7 @@ def long(
     flyeModel,
     min_length,
     output,
+    min_quality,
     log,
     **kwargs
 ):
@@ -363,6 +364,7 @@ def long(
             "output": output,
             "log": log,
             "min_length": min_length,
+            "min_quality": min_quality,
             "skip_qc": skip_qc,
             "databases": databases,
             "medakaModel": medakaModel,
