@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import pandas as pd
-import pyrodigal_helpers 
 from Bio import SeqIO
 
 
@@ -22,8 +21,8 @@ def select_best_chromosome_assembly_long_incomplete(
     """
 
     # get mean CDS lengths
-    pre_polish_mean_cds = pyrodigal_helpers.calculate_mean_CDS_length(pre_polish_fasta)
-    medaka_mean_cds = pyrodigal_helpers.calculate_mean_CDS_length(medaka_fasta)
+    pre_polish_mean_cds = calculate_mean_CDS_length(pre_polish_fasta)
+    medaka_mean_cds = calculate_mean_CDS_length(medaka_fasta)
 
     # create dict with mean CDS lengths
     dict = {
