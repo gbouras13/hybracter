@@ -262,12 +262,12 @@ def long(_input, medakaModel, plasmids, no_polish, flyeModel, min_length, output
             help="Customise Snakemake runtime args",
             show_default=True,
         )
-@click.option('-d','--databases','databases',  help='Plassembler databases Directory', show_default=True,  default='plassembler_DB')
+@click.option('-d','--databases','databases',  help='Directory where the Plassembler Database will be downloaded to.', show_default=True,  default='plassembler_DB')
 @common_options
-def download( databases, log,output,  **kwargs):
+def download( databases, log,  **kwargs):
     # Config to add or update in configfile
     merge_config = { 
-         'args': { "databases": databases, "output": output, "log": log } }
+         'args': { "databases": databases, "log": log } }
     """Downloads the plassembler database"""
     run_snakemake(
         snakefile_path=snake_base(os.path.join('workflow','download.smk')),

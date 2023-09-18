@@ -21,7 +21,8 @@ hybrid
 """
 
 TargetFilesHybrid = [
-    os.path.join(dir.out.flags, "aggr_qc.flag"),
+    os.path.join(dir.out.flags, "aggr_long_qc.flag"),
+    os.path.join(dir.out.flags, "aggr_short_qc.flag"),
     os.path.join(dir.out.flags, "aggr_assemble.flag"),
     os.path.join(dir.out.flags, "aggr_short_read_polish.flag"),
     os.path.join(dir.out.flags, "aggr_long_read_polish.flag"),
@@ -30,16 +31,5 @@ TargetFilesHybrid = [
     os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag"),
     os.path.join(dir.out.flags, "aggr_ale.flag"), 
     os.path.join(dir.out.flags, "aggr_final.flag")
-]
-
-
-
-"""
-download 
-"""
-
-TargetFilesDownload = [
-    os.path.join(dir.plassemblerdb,'plsdb.msh'),
-    os.path.join(dir.plassemblerdb, 'plsdb.tsv')
 ]
 

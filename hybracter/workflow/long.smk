@@ -32,7 +32,7 @@ include: os.path.join("rules", "preflight", "functions.smk")
 # samples
 include: os.path.join("rules", "preflight", "samples.smk")
 # targets
-include: os.path.join("rules", "preflight", "targets.smk")
+include: os.path.join("rules", "preflight", "targets_long.smk")
 
 
 ### from config files
@@ -48,7 +48,7 @@ FLYE_MODEL = config.args.flyeModel
 
 # Parse the samples and read files
 
-dictReads = parseSamples(INPUT, True) # long flag is True
+dictReads = parseSamples(INPUT, False) # long flag false
 SAMPLES = list(dictReads.keys())
 wildcard_constraints:
     sample= '|'.join([re.escape(x) for x in SAMPLES])
@@ -58,37 +58,39 @@ wildcard_constraints:
 ##############################
 
 # qc
-include: os.path.join("rules", "processing", "qc.smk")
+# depends on skipqc flag
+if config.args.skip_qc is True:
+    include: os.path.join("rules", "processing", "skip_qc.smk")
+else:
+    include: os.path.join("rules", "processing", "qc.smk")
+
 # assembly
 include: os.path.join("rules", "assembly", "assemble.smk")
 
-# get flye stats and combine across all runs
-include: os.path.join("rules", "processing", "assembly_statistics.smk")
 # extract chrom
 include: os.path.join("rules", "processing", "extract_fastas.smk")
 
 # checkpoint
-include: os.path.join("rules", "completeness", "aggregate.smk")
+# needs its own rules for long
+include: os.path.join("rules", "completeness", "aggregate_long.smk")
 
 # checkpoint here for completeness
 # need long read polish files regardless
 include: os.path.join("rules", "polishing", "long_read_polish.smk")
 include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
 
-
 # plassembler 
 include: os.path.join("rules", "assembly", "plassembler_long.smk")
 include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 
-
-# ale
-include: os.path.join("rules", "assess", "assess_complete.smk")
-include: os.path.join("rules", "assess", "assess_incomplete.smk")
+# pyrodigal
+include: os.path.join("rules", "assess", "assess_complete_long.smk")
+include: os.path.join("rules", "assess", "assess_incomplete_long.smk")
 
 # finalse
-include: os.path.join("rules", "finalse", "select_best_assembly.smk")
+include: os.path.join("rules", "finalise", "select_best_assembly_long.smk")
 
 ### rule all
 rule all:
     input:
-        TargetFilesHybrid
+        TargetFilesLong

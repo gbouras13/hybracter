@@ -39,16 +39,33 @@ rule skip_qc_short:
         cp {input.r2} {output.r2}
         """
 
-rule aggr_skip_qc:
+rule aggr_long_skip_qc:
     """
-    aggregates over all samples
+    aggregates over all samples long
     """
     input:
         expand(os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz"), sample = SAMPLES),
+    output:
+        flag = os.path.join(dir.out.flags, "aggr_long_qc.flag")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        touch {output.flag}
+        """
+
+rule aggr_short_skip_qc:
+    """ 
+    aggregates over all samples short
+    """
+    input:
         expand(os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"), sample = SAMPLES)
     output:
-        flag = os.path.join(dir.out.flags, "aggr_qc.flag")
+        flag = os.path.join(dir.out.flags, "aggr_short_qc.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time

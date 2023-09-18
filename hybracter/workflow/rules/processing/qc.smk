@@ -89,18 +89,35 @@ rule fastp:
         rm {log}
         """
 
-rule aggr_qc:
+rule aggr_long_qc:
     """
-    aggregates over all samples
+    aggregates over all samples for long read qc
     """
     input:
         expand(os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(dir.out.versions, "{sample}", "filtlong.version"), sample = SAMPLES),
-        expand(os.path.join(dir.out.versions, "{sample}", "porechop.version"), sample = SAMPLES),
+        expand(os.path.join(dir.out.versions, "{sample}", "porechop.version"), sample = SAMPLES)
+    output:
+        flag = os.path.join(dir.out.flags, "aggr_long_qc.flag")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    shell:
+        """
+        touch {output.flag}
+        """
+
+rule aggr_short_qc:
+    """
+    aggregates over all samples
+    """
+    input:
         expand(os.path.join(dir.out.fastp,"{sample}_1.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(dir.out.fastp,"{sample}_2.fastq.gz"), sample = SAMPLES)
     output:
-        flag = os.path.join(dir.out.flags, "aggr_qc.flag")
+        flag = os.path.join(dir.out.flags, "aggr_short_qc.flag")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time

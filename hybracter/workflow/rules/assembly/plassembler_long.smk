@@ -33,25 +33,9 @@ rule plassembler_long:
         rm {log}
         """
 
-        
-rule plassembler_move_summaries:
-    input:
-        tsv = os.path.join(dir.out.plassembler,"{sample}", "plassembler_summary.tsv")
-    output:
-        tsv = os.path.join(dir.out.plassembler_individual_summaries, "{sample}.tsv")
-    resources:
-        mem_mb=config.resources.sml.mem,
-        time=config.resources.sml.time
-    threads:
-        config.resources.sml.cpu
-    shell:
-        """
-        cp {input.tsv} {output.tsv}
-        """
-
 rule add_sample_plassembler:
     input:
-        inp = os.path.join(dir.out.plassembler_individual_summaries , "{sample}.tsv")
+        inp = os.path.join(dir.out.plassembler,"{sample}", "plassembler_summary.tsv")
     output:
         out = os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_with_sample.tsv")
     conda:
@@ -64,6 +48,66 @@ rule add_sample_plassembler:
     script:
         os.path.join(dir.scripts,  'add_sample_plassembler.py')
 
+
+rule plassembler_polish_medaka:
+    """
+    runs 1 round of medaka on plassembler output to polish them up
+    """
+    input:
+        fasta = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_plasmids.fasta"),
+        fastq = os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz"),
+        os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_with_sample.tsv") # to make it sequential for the aggregate step
+    output:
+        fasta = os.path.join(dir.out.plassembler,"{sample}", "medaka", "consensus.fasta"),
+    conda:
+        os.path.join(dir.env,'medaka.yaml')
+    params:
+        model = MEDAKA_MODEL,
+        dir = os.path.join(dir.out.plassembler,"{sample}", "medaka")
+    resources:
+        mem_mb=config.resources.med.mem,
+        time=config.resources.med.time
+    threads:
+        config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "medaka_plassembler", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "medaka_plassembler", "{sample}.log")
+    shell:
+        """
+        plass_out={input.fasta}
+        if [ -s "$plass_out" ]
+        then
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
+        else
+            touch {output.fasta} 2> {log}
+        fi
+        rm {log}
+        """
+
+rule plassembler_assess_polish:
+    """
+    runs pyrodigal to check
+    """
+    input:
+        plassembler_fasta = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_plasmids.fasta"),
+        medaka_fasta = os.path.join(dir.out.plassembler,"{sample}", "medaka", "consensus.fasta")
+    output:
+        final_plasmid_fasta = os.path.join(dir.out.final_contigs_complete,"{sample}_plasmid.fasta"), 
+        plassembler_prodigal_summary = os.path.join(dir.out.pyrodigal_summary, "complete", "plassembler", "{sample}.tsv")
+    conda:
+        os.path.join(dir.env,'pyrodigal.yaml')
+    resources:
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "pyrodigal_plassembler", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "pyrodigal_plassembler", "{sample}.log")
+    script:
+        os.path.join(dir.scripts,  'assess_plassembler_long_complete.py')
 
 # aggr rule in the aggregate.smk rule - because don't run plassembler on incomplete samples
 
