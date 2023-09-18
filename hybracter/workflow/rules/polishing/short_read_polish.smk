@@ -1,43 +1,46 @@
 rule bwa_index:
     input:
-        fasta = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta")
+        fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
     output:
-        index = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt")
+        index=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta.bwt"),
     conda:
-        os.path.join(dir.env,'polypolish.yaml')
+        os.path.join(dir.env, "polypolish.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.sml.time
-    threads:
-        config.resources.sml.cpu
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
     shell:
         """
         bwa index {input.fasta}
         """
 
+
 rule polypolish:
     input:
-        fasta = os.path.join(dir.out.medaka_rd_2,"{sample}", "consensus.fasta"),
-        r1 = os.path.join(dir.out.fastp ,"{sample}_1.fastq.gz"),
-        r2 = os.path.join(dir.out.fastp ,"{sample}_2.fastq.gz"),
-        index = os.path.join(dir.out.medaka_rd_2 ,"{sample}", "consensus.fasta.bwt")
+        fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
+        r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
+        index=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta.bwt"),
     output:
-        fasta = os.path.join(dir.out.polypolish,"{sample}.fasta"),
-        version = os.path.join(dir.out.versions, "{sample}", "polypolish_incomplete.version"),
-        sam1 = temp(os.path.join(dir.out.bwa ,"{sample}_1.sam")),
-        sam2 = temp(os.path.join(dir.out.bwa ,"{sample}_2.sam")),
-        copy_fasta = os.path.join(dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta")
+        fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
+        version=os.path.join(
+            dir.out.versions, "{sample}", "polypolish_incomplete.version"
+        ),
+        sam1=temp(os.path.join(dir.out.bwa, "{sample}_1.sam")),
+        sam2=temp(os.path.join(dir.out.bwa, "{sample}_2.sam")),
+        copy_fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
+        ),
     conda:
-        os.path.join(dir.env,'polypolish.yaml')
+        os.path.join(dir.env, "polypolish.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.med.time
-    threads:
-        config.resources.med.cpu
+        time=config.resources.med.time,
+    threads: config.resources.med.cpu
     benchmark:
         os.path.join(dir.out.bench, "polypolish", "{sample}.txt")
     log:
-        os.path.join(dir.out.stderr, "polypolish", "{sample}.log")
+        os.path.join(dir.out.stderr, "polypolish", "{sample}.log"),
     shell:
         """
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
@@ -47,4 +50,3 @@ rule polypolish:
         polypolish --version > {output.version}
         rm {log}
         """
-

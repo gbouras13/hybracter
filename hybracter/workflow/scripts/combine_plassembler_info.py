@@ -16,11 +16,10 @@ def combine_sample_plassembler(summary_dir, output):
 
     # write all the summary dfs to a list
     summaries = []
-    
-    complete_sample_no = len(summary_list) 
+
+    complete_sample_no = len(summary_list)
 
     if complete_sample_no > 0:
-  
         for a in summary_list:
             # only if > 0
             if os.path.getsize(a) > 0:
@@ -31,9 +30,9 @@ def combine_sample_plassembler(summary_dir, output):
         # make into combined dataframe
         total_summary_df = pd.concat(summaries, ignore_index=True)
         total_summary_df.to_csv(output, sep=",", index=False)
-    elif complete_sample_no == 1: # just print the first
+    elif complete_sample_no == 1:  # just print the first
         summaries[0].to_csv(output, sep=",", index=False)
-    else: # touch the output 
+    else:  # touch the output
         with open(output, "a"):
             os.utime(output, None)
 

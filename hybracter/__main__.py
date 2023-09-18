@@ -9,8 +9,16 @@ import os
 
 import click
 
-from .util import (OrderedCommands, copy_config, default_to_ouput,
-                   print_citation, print_version, run_snakemake, snake_base, all_medaka_models)
+from .util import (
+    OrderedCommands,
+    copy_config,
+    default_to_ouput,
+    print_citation,
+    print_version,
+    run_snakemake,
+    snake_base,
+    all_medaka_models,
+)
 
 
 def common_options(func):
@@ -34,25 +42,77 @@ def common_options(func):
             help="Custom config file [default: (outputDir)/config.yaml]",
         ),
         click.option(
-            "-t", 
-            "--threads", 
+            "-t",
+            "--threads",
             help="Number of threads to use",
-            default=1, 
-            show_default=True
+            default=1,
+            show_default=True,
+        ),
+        click.option(
+            "--min_length",
+            "min_length",
+            help="min read length for long reads",
+            type=int,
+            default=1000,
+        ),
+        click.option(
+            "--min_quality",
+            "min_quality",
+            help="min read quality for long reads",
+            type=int,
+            default=9,
+        ),
+        click.option(
+            "--skip_qc",
+            help="Do not run porechop, filtlong and fastp to QC the reads",
+            is_flag=True,
+            default=False,
+        ),
+        click.option(
+            "-d",
+            "--databases",
+            help="Plassembler Databases directory.",
+            type=click.Path(dir_okay=True, readable=True),
+            default="plassembler_DB",
+        ),
+        click.option(
+            "--medakaModel",
+            "medakaModel",
+            help="Medaka Model.",
+            default="r1041_e82_400bps_sup_v4.2.0",
+            show_default=True,
+            type=click.Choice(all_medaka_models),
+        ),
+        click.option(
+            "--flyeModel",
+            "flyeModel",
+            help="Flye Assembly Parameter",
+            show_default=True,
+            default="--nano-hq",
+            type=click.Choice(
+                [
+                    "--nano-hq",
+                    "--nano-corr",
+                    "--nano-raw",
+                    "--pacbio-raw",
+                    "--pacbio-corr",
+                    "--pacbio-hifi",
+                ]
+            ),
         ),
         click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
-            show_default=True
+            show_default=True,
         ),
         click.option(
             "--conda-prefix",
             default=snake_base(os.path.join("workflow", "conda")),
             help="Custom conda env directory",
             type=click.Path(),
-            show_default=False
-        ),   
+            show_default=False,
+        ),
         click.option(
             "--snake-default",
             multiple=True,
@@ -61,7 +121,7 @@ def common_options(func):
                 "--printshellcmds",
                 "--nolock",
                 "--show-failed-logs",
-                "--conda-frontend mamba"
+                "--conda-frontend mamba",
             ],
             help="Customise Snakemake runtime args",
             show_default=True,
@@ -87,8 +147,10 @@ def cli():
     hybracter command --help"""
     pass
 
+
 def print_splash():
-    click.echo("""\b
+    click.echo(
+        """\b
 
  _           _                    _            
 | |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
@@ -97,7 +159,8 @@ def print_splash():
 |_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
        |___/
 
-""")
+"""
+    )
 
 
 help_hybrid_msg_extra = """
@@ -155,10 +218,10 @@ hybracter ale
 """
 
 
-
 """
 hybrid
 """
+
 
 @click.command(
     epilog=help_hybrid_msg_extra,
@@ -167,29 +230,42 @@ hybrid
     ),
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
-@click.option('--no_polca',  help='Do not use Polca to polish assemblies with short reads', is_flag=True,  default=False)
-@click.option('--min_length', 'min_length',  help='min read length for long reads', type=int,  default=1000)
-@click.option('--min_quality', 'min_quality',  help='min read quality for long reads', type=int,  default=9)
-@click.option('--skip_qc',  help='Do not run porechop, filtlong and fastp to QC the reads', is_flag=True,  default=False)
-@click.option('-d','--databases',  help='Plassembler Databases directory.', type=click.Path(dir_okay=True, readable=True),  default='plassembler_DB')
-@click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r1041_e82_400bps_sup_v4.2.0', show_default=True, type=click.Choice(all_medaka_models) )
-@click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq', type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
+@click.option(
+    "--no_polca",
+    help="Do not use Polca to polish assemblies with short reads",
+    is_flag=True,
+    default=False,
+)
 @common_options
-def hybrid(_input,  no_polca, skip_qc, medakaModel, databases, min_quality, flyeModel, min_length, output, log, **kwargs):
+def hybrid(
+    _input,
+    no_polca,
+    skip_qc,
+    medakaModel,
+    databases,
+    min_quality,
+    flyeModel,
+    min_length,
+    output,
+    log,
+    **kwargs
+):
     """Run hybracter with hybrid long and paired end short reads"""
     # Config to add or update in configfile
     merge_config = {
-        'args': {
-        "input": _input, 
-        "output": output, 
-        "log": log, 
-        "min_length": min_length,
-        "databases": databases,
-        "min_quality": min_quality,
-        "no_polca": no_polca, 
-        "skip_qc": skip_qc,
-        "medakaModel": medakaModel, 
-        "flyeModel": flyeModel } }
+        "args": {
+            "input": _input,
+            "output": output,
+            "log": log,
+            "min_length": min_length,
+            "databases": databases,
+            "min_quality": min_quality,
+            "no_polca": no_polca,
+            "skip_qc": skip_qc,
+            "medakaModel": medakaModel,
+            "flyeModel": flyeModel,
+        }
+    }
 
     # run!
     run_snakemake(
@@ -201,7 +277,6 @@ def hybrid(_input,  no_polca, skip_qc, medakaModel, databases, min_quality, flye
     )
 
 
-
 @click.command(
     epilog=help_long_msg_extra,
     context_settings=dict(
@@ -209,25 +284,91 @@ def hybrid(_input,  no_polca, skip_qc, medakaModel, databases, min_quality, flye
     ),
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
-@click.option('--min_length',  help='min read length for long reads', type=int,  default=False)
-@click.option('--skip_qc',  help='Do not run porechop, filtlong and fastp to QC the reads', is_flag=True,  default=False)
-@click.option('-d','--databases',  help='Plassembler Databases directory.', type=click.Path(dir_okay=True, readable=True),  default='plassembler_DB')
-@click.option('--medakaModel','medakaModel',  help='Medaka Model.', default='r941_min_sup_g507', show_default=True, type=click.Choice(['r941_min_sup_g507', 'r941_min_hac_g507', 'r941_e81_fast_g514', 'r1041_e82_400bps_sup_g615']) )
-@click.option('--flyeModel','flyeModel',  help='Flye Assembly Parameter', show_default=True,  default='--nano-hq',type=click.Choice(['--nano-hq', '--nano-corr', '--nano-raw', "--pacbio-raw", "--pacbio-corr", "--pacbio-hifi"]))
+@click.option(
+    "--min_length",
+    "min_length",
+    help="min read length for long reads",
+    type=int,
+    default=1000,
+)
+@click.option(
+    "--min_quality",
+    "min_quality",
+    help="min read quality for long reads",
+    type=int,
+    default=9,
+)
+@click.option(
+    "--skip_qc",
+    help="Do not run porechop, filtlong and fastp to QC the reads",
+    is_flag=True,
+    default=False,
+)
+@click.option(
+    "-d",
+    "--databases",
+    help="Plassembler Databases directory.",
+    type=click.Path(dir_okay=True, readable=True),
+    default="plassembler_DB",
+)
+@click.option(
+    "--medakaModel",
+    "medakaModel",
+    help="Medaka Model.",
+    default="r941_min_sup_g507",
+    show_default=True,
+    type=click.Choice(
+        [
+            "r941_min_sup_g507",
+            "r941_min_hac_g507",
+            "r941_e81_fast_g514",
+            "r1041_e82_400bps_sup_g615",
+        ]
+    ),
+)
+@click.option(
+    "--flyeModel",
+    "flyeModel",
+    help="Flye Assembly Parameter",
+    show_default=True,
+    default="--nano-hq",
+    type=click.Choice(
+        [
+            "--nano-hq",
+            "--nano-corr",
+            "--nano-raw",
+            "--pacbio-raw",
+            "--pacbio-corr",
+            "--pacbio-hifi",
+        ]
+    ),
+)
 @common_options
-def long(_input, medakaModel, databases, skip_qc, flyeModel, min_length, output, log, **kwargs):
+def long(
+    _input,
+    medakaModel,
+    databases,
+    skip_qc,
+    flyeModel,
+    min_length,
+    output,
+    log,
+    **kwargs
+):
     """Run hybracter"""
     # Config to add or update in configfile
     merge_config = {
-         'args': {
-        "input": _input, 
-        "output": output, 
-        "log": log, 
-        "min_length": min_length,
-        "skip_qc": skip_qc,
-        "databases": databases,
-        "medakaModel": medakaModel, 
-        "flyeModel": flyeModel } }
+        "args": {
+            "input": _input,
+            "output": output,
+            "log": log,
+            "min_length": min_length,
+            "skip_qc": skip_qc,
+            "databases": databases,
+            "medakaModel": medakaModel,
+            "flyeModel": flyeModel,
+        }
+    }
 
     # run!
     run_snakemake(
@@ -238,41 +379,49 @@ def long(_input, medakaModel, databases, skip_qc, flyeModel, min_length, output,
         **kwargs
     )
 
+
 @click.command(
     epilog=help_msg_download,
     context_settings=dict(
         help_option_names=["-h", "--help"], ignore_unknown_options=True
-    ))
+    ),
+)
 @click.option(
-            "--use-conda/--no-use-conda",
-            default=True,
-            help="Use conda for Snakemake rules",
-            show_default=True,
-        )
+    "--use-conda/--no-use-conda",
+    default=True,
+    help="Use conda for Snakemake rules",
+    show_default=True,
+)
 @click.option(
-            "--snake-default",
-            multiple=True,
-            default=[
-                "--rerun-incomplete",
-                "--printshellcmds",
-                "--nolock",
-                "--show-failed-logs",
-                "--conda-frontend conda"
-            ],
-            help="Customise Snakemake runtime args",
-            show_default=True,
-        )
-@click.option('-d','--databases','databases',  help='Directory where the Plassembler Database will be downloaded to.', show_default=True,  default='plassembler_DB')
-@common_options
-def download( databases, log,  **kwargs):
+    "--snake-default",
+    multiple=True,
+    default=[
+        "--rerun-incomplete",
+        "--printshellcmds",
+        "--nolock",
+        "--show-failed-logs",
+        "--conda-frontend conda",
+    ],
+    help="Customise Snakemake runtime args",
+    show_default=True,
+)
+@click.option(
+    "-d",
+    "--databases",
+    "databases",
+    help="Directory where the Plassembler Database will be downloaded to.",
+    show_default=True,
+    default="plassembler_DB",
+)
+def download(databases, log, **kwargs):
     # Config to add or update in configfile
-    merge_config = { 
-         'args': { "databases": databases, "log": log } }
+    merge_config = {"args": {"databases": databases, "log": log}}
     """Downloads the plassembler database"""
     run_snakemake(
-        snakefile_path=snake_base(os.path.join('workflow','download.smk')),
+        snakefile_path=snake_base(os.path.join("workflow", "download.smk")),
         merge_config=merge_config,
-        **kwargs)
+        **kwargs
+    )
 
 
 @click.command()
@@ -286,6 +435,7 @@ def config(configfile, **kwargs):
 def citation(**kwargs):
     """Print the citation(s) for this tool"""
     print_citation()
+
 
 cli.add_command(download)
 cli.add_command(hybrid)

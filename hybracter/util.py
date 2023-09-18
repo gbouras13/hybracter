@@ -183,46 +183,71 @@ def run_snakemake(
         msg("Snakemake finished successfully", log=log)
     return 0
 
+
 """
 list of all available medaka models
 """
 
-# from medaka models.py 
+# from medaka models.py
 # https://github.com/nanoporetech/medaka/blob/938167e2ff804899d578d04388ba5c15ab339316/medaka/models.py
 
 all_medaka_models = [
     # r1041 e82 (kit14) consensus
-    'r1041_e82_400bps_hac_v4.2.0',
-    'r1041_e82_400bps_sup_v4.2.0',
+    "r1041_e82_400bps_hac_v4.2.0",
+    "r1041_e82_400bps_sup_v4.2.0",
     # r1041 variant calling
     # 'r1041_e82_400bps_hac_variant_v4.2.0',
     # 'r1041_e82_400bps_sup_variant_v4.2.0',
     # r9 consensus
-    'r941_sup_plant_g610',
-    'r941_min_fast_g507', 'r941_prom_fast_g507',
-    'r941_min_fast_g303', 'r941_min_high_g303', 'r941_min_high_g330',
-    'r941_prom_fast_g303', 'r941_prom_high_g303', 'r941_prom_high_g330',
-    'r941_min_high_g344', 'r941_min_high_g351', 'r941_min_high_g360',
-    'r941_prom_high_g344', 'r941_prom_high_g360', 'r941_prom_high_g4011',
+    "r941_sup_plant_g610",
+    "r941_min_fast_g507",
+    "r941_prom_fast_g507",
+    "r941_min_fast_g303",
+    "r941_min_high_g303",
+    "r941_min_high_g330",
+    "r941_prom_fast_g303",
+    "r941_prom_high_g303",
+    "r941_prom_high_g330",
+    "r941_min_high_g344",
+    "r941_min_high_g351",
+    "r941_min_high_g360",
+    "r941_prom_high_g344",
+    "r941_prom_high_g360",
+    "r941_prom_high_g4011",
     # r10 consensus
-    'r10_min_high_g303', 'r10_min_high_g340',
-    'r103_min_high_g345', 'r103_min_high_g360', 'r103_prom_high_g360',
-    'r103_fast_g507', 'r103_hac_g507', 'r103_sup_g507',
+    "r10_min_high_g303",
+    "r10_min_high_g340",
+    "r103_min_high_g345",
+    "r103_min_high_g360",
+    "r103_prom_high_g360",
+    "r103_fast_g507",
+    "r103_hac_g507",
+    "r103_sup_g507",
     # r104 e81 consensus
-    'r104_e81_fast_g5015', 'r104_e81_sup_g5015', 'r104_e81_hac_g5015',
-    'r104_e81_sup_g610',
+    "r104_e81_fast_g5015",
+    "r104_e81_sup_g5015",
+    "r104_e81_hac_g5015",
+    "r104_e81_sup_g610",
     # r104 e81 variant calling
     # 'r104_e81_fast_variant_g5015', 'r104_e81_hac_variant_g5015',
     # 'r104_e81_sup_variant_g610',
     # r1041 e82 consensus
-    'r1041_e82_400bps_hac_g615',  'r1041_e82_400bps_fast_g615',
-    'r1041_e82_400bps_fast_g632', 'r1041_e82_260bps_fast_g632',
-    'r1041_e82_400bps_hac_g632', 'r1041_e82_400bps_sup_g615',
-    'r1041_e82_260bps_hac_g632', 'r1041_e82_260bps_sup_g632',
-    'r1041_e82_400bps_hac_v4.0.0', 'r1041_e82_400bps_sup_v4.0.0',
-    'r1041_e82_260bps_hac_v4.0.0', 'r1041_e82_260bps_sup_v4.0.0',
-    'r1041_e82_260bps_hac_v4.1.0', 'r1041_e82_260bps_sup_v4.1.0',
-    'r1041_e82_400bps_hac_v4.1.0', 'r1041_e82_400bps_sup_v4.1.0',
+    "r1041_e82_400bps_hac_g615",
+    "r1041_e82_400bps_fast_g615",
+    "r1041_e82_400bps_fast_g632",
+    "r1041_e82_260bps_fast_g632",
+    "r1041_e82_400bps_hac_g632",
+    "r1041_e82_400bps_sup_g615",
+    "r1041_e82_260bps_hac_g632",
+    "r1041_e82_260bps_sup_g632",
+    "r1041_e82_400bps_hac_v4.0.0",
+    "r1041_e82_400bps_sup_v4.0.0",
+    "r1041_e82_260bps_hac_v4.0.0",
+    "r1041_e82_260bps_sup_v4.0.0",
+    "r1041_e82_260bps_hac_v4.1.0",
+    "r1041_e82_260bps_sup_v4.1.0",
+    "r1041_e82_400bps_hac_v4.1.0",
+    "r1041_e82_400bps_sup_v4.1.0",
     # r1041 e82 variant calling
     # 'r1041_e82_400bps_hac_variant_g615',
     # 'r1041_e82_400bps_fast_variant_g615',
@@ -253,15 +278,19 @@ all_medaka_models = [
     # 'r103_hac_snp_g507', 'r103_hac_variant_g507',
     # 'r103_sup_snp_g507', 'r103_sup_variant_g507',
     # rle consensus
-    'r941_min_high_g340_rle',
+    "r941_min_high_g340_rle",
     # r9 consensus
-    'r941_min_hac_g507', 'r941_min_sup_g507',
-    'r941_prom_hac_g507', 'r941_prom_sup_g507',
+    "r941_min_hac_g507",
+    "r941_min_sup_g507",
+    "r941_prom_hac_g507",
+    "r941_prom_sup_g507",
     # r9 variant calling
     # 'r941_min_hac_variant_g507',
     # 'r941_prom_hac_variant_g507',
     # r941 e81 consensus
-    'r941_e81_fast_g514', 'r941_e81_hac_g514', 'r941_e81_sup_g514',
+    "r941_e81_fast_g514",
+    "r941_e81_hac_g514",
+    "r941_e81_sup_g514",
     # r941 e81 variant calling
     # 'r941_e81_fast_variant_g514', 'r941_e81_hac_variant_g514',
     # 'r941_e81_sup_variant_g514',
@@ -270,6 +299,7 @@ all_medaka_models = [
 """
 util functions for scripts
 """
+
 
 # determines whether a file is empty
 def is_file_empty(file):
@@ -283,11 +313,11 @@ def is_file_empty(file):
         empty = True
     return empty
 
+
 # touches an empty file
 def touch_file(path):
     with open(path, "a"):
         os.utime(path, None)
-
 
 
 def calculate_mean_CDS_length(filepath_in):
@@ -297,7 +327,7 @@ def calculate_mean_CDS_length(filepath_in):
     :param filepath_in: The path to the input FASTA file.
     :return: The mean length of sequences in the FASTA file as a float.
     """
-    
+
     prodigal_metamode = False
     coding_table = 11
 
@@ -312,7 +342,7 @@ def calculate_mean_CDS_length(filepath_in):
         orf_finder = pyrodigal.GeneFinder(trainings_info, meta=prodigal_metamode)
 
         # run pyrodigal
-        
+
         total_genes = 0
         total_length = 0
 
@@ -321,11 +351,11 @@ def calculate_mean_CDS_length(filepath_in):
 
         for gene in genes:
             total_genes += 1
-            total_length += len(gene.seq) # add the length of the gene called
+            total_length += len(gene.seq)  # add the length of the gene called
 
-        mean_cds_len = float(total_length/total_genes)
-    
-    except Exception: # in case there are no genes called or some other error
+        mean_cds_len = float(total_length / total_genes)
+
+    except Exception:  # in case there are no genes called or some other error
         mean_cds_len = 0
-    
+
     return mean_cds_len

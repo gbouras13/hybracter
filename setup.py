@@ -43,6 +43,7 @@ setup(
         "pyyaml>=6.0",
         "Click>=8.1.3",
         "attrmap>=0.0.5",
+        "snakefmt>=0.8.4",
     ],
     entry_points={"console_scripts": ["hybracter=hybracter.__main__:main"]},
     include_package_data=True,

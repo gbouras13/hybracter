@@ -2,22 +2,32 @@
 
 import pandas as pd
 import glob
-import os 
+import os
 import sys
 from Bio import SeqIO
 
 
-def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, output_fasta, ale_summary, pre_polish_fasta, medaka_fasta, polypolish_fasta, polca_fasta, sample):
+def select_best_chromosome_assembly_incomplete(
+    hybracter_summary,
+    ale_dir,
+    output_fasta,
+    ale_summary,
+    pre_polish_fasta,
+    medaka_fasta,
+    polypolish_fasta,
+    polca_fasta,
+    sample,
+):
     """
-    reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length 
-    statistics similar to unicycler 
+    reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
+    statistics similar to unicycler
     instead of 1,2,3 etc we will use 'contig00001', 'contig00002' etc as more parsable (lessons from dragonflye)
     Then creates hybracter_summary tsv
     """
 
     # Use glob to find files with the .score extension in the directory
     print(ale_dir)
-    file_list = glob.glob(os.path.join(ale_dir, '*.score'))
+    file_list = glob.glob(os.path.join(ale_dir, "*.score"))
     print(file_list)
 
     # Create an empty dictionary to store the results
@@ -29,22 +39,21 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
 
         # Initialize the score as None (in case the file doesn't contain a valid score)
         score = None
-        
+
         # Read the first line of the file
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             first_line = file.readline().strip()
-        
+
         # Check if the first line is a valid float
         try:
             score = float(first_line)
         except ValueError:
             pass  # If it's not a valid float, score remains None
-        
+
         # Store the score (None if it wasn't a valid float)
         score_dict[file_name] = score
 
-    
-    #print(score_dict)
+    # print(score_dict)
     # Filter out None values from the score_dict
     filtered_score_dict = {k: v for k, v in score_dict.items() if v is not None}
 
@@ -55,7 +64,9 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
     if filtered_score_dict:
         # Find the key with the score closest to 0
         # this will be the best score from ALE
-        closest_to_zero_key = min(filtered_score_dict, key=lambda k: abs(filtered_score_dict[k] - 0))
+        closest_to_zero_key = min(
+            filtered_score_dict, key=lambda k: abs(filtered_score_dict[k] - 0)
+        )
         best_score = filtered_score_dict[closest_to_zero_key]
 
     for key, score in filtered_score_dict.items():
@@ -65,11 +76,10 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
             break
 
     # output df with scores and round
-    scores_df = pd.DataFrame(list(score_dict.items()), columns=['Key', 'Score'])
+    scores_df = pd.DataFrame(list(score_dict.items()), columns=["Key", "Score"])
     # sorts ascending - worst top, best bottom
-    scores_df.sort_values(by='Score', ascending=True, inplace=True)
-    scores_df.to_csv(ale_summary, index=False, sep = "\t")
-
+    scores_df.sort_values(by="Score", ascending=True, inplace=True)
+    scores_df.to_csv(ale_summary, index=False, sep="\t")
 
     # by default the best assembly is the polca fasta
     # check that the best assembly wasn't something else
@@ -80,9 +90,8 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
         best_assembly = medaka_fasta
     elif "polypolish" in closest_to_zero_key:
         best_assembly = polypolish_fasta
-    else: # polca 
+    else:  # polca
         best_assembly = polca_fasta
-
 
     # count contigs
     number_of_contigs = 1
@@ -90,55 +99,61 @@ def select_best_chromosome_assembly_incomplete(hybracter_summary, ale_dir, outpu
     # instantiate longest contig length
     longest_contig_length = 0
 
-    total_assembly_length = 0 
+    total_assembly_length = 0
 
     # Open the output file in write mode
     with open(output_fasta, "w") as output_handle:
         # Iterate through the records in the best assembly FASTA file and write them to the output file
         for record in SeqIO.parse(best_assembly, "fasta"):
-
             # to match the 00001 output favoured generally for parsing
             # usually there will be 1 chromosome of course!
-            record.id = f"contig{number_of_contigs:05}" 
-            
+            record.id = f"contig{number_of_contigs:05}"
+
             # Calculate the length of the sequence
             sequence_length = len(record.seq)
 
             # total assembly length
             total_assembly_length += sequence_length
-            
+
             # to get longest contig
             if number_of_contigs == 1:
                 longest_contig_length = sequence_length
             else:
                 if sequence_length > longest_contig_length:
                     longest_contig_length = sequence_length
-            
+
             # Update the description (header) with the length information
             record.description = f"len={sequence_length}"
-            
+
             # Write the modified record to the output file
             SeqIO.write(record, output_handle, "fasta")
 
-            number_of_contigs +=1
-
+            number_of_contigs += 1
 
     # to get the summary df
     summary_dict = {
-        'Sample': sample,
-        'Complete': 'False',
-        'Total_assembly_length': total_assembly_length,
-        'Number_of_contigs': number_of_contigs,
-        'Most_accurate_polishing_round': best_round,
-        'Longest_contig_length': longest_contig_length,
-        'Number_circular_plasmids': 'Unknown'}
+        "Sample": sample,
+        "Complete": "False",
+        "Total_assembly_length": total_assembly_length,
+        "Number_of_contigs": number_of_contigs,
+        "Most_accurate_polishing_round": best_round,
+        "Longest_contig_length": longest_contig_length,
+        "Number_circular_plasmids": "Unknown",
+    }
 
     # Create a DataFrame from the dictionary
     summary_df = pd.DataFrame([summary_dict])
-    summary_df.to_csv(hybracter_summary, index=False, sep = "\t")
+    summary_df.to_csv(hybracter_summary, index=False, sep="\t")
 
 
-select_best_chromosome_assembly_incomplete(snakemake.output.hybracter_summary, snakemake.params.ale_dir, snakemake.output.fasta, snakemake.output.ale_summary, snakemake.params.pre_polish_fasta, snakemake.params.medaka_fasta, snakemake.params.polypolish_fasta, snakemake.params.polca_fasta, snakemake.wildcards.sample   )
-
-
-
+select_best_chromosome_assembly_incomplete(
+    snakemake.output.hybracter_summary,
+    snakemake.params.ale_dir,
+    snakemake.output.fasta,
+    snakemake.output.ale_summary,
+    snakemake.params.pre_polish_fasta,
+    snakemake.params.medaka_fasta,
+    snakemake.params.polypolish_fasta,
+    snakemake.params.polca_fasta,
+    snakemake.wildcards.sample,
+)

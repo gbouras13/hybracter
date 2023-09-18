@@ -2,7 +2,7 @@
 All target output files are declared here
 """
 
-# need long read polish aggr file regardless even if no polish selected 
+# need long read polish aggr file regardless even if no polish selected
 # because of dnaapler
 """
 polca depends on --no_polca flag
@@ -11,7 +11,7 @@ polca depends on --no_polca flag
 # Polca
 if config.args.no_polca == True:
     polca_files = []
-    
+
 else:
     polca_files = os.path.join(dir.out.flags, "aggr_polca.flag")
 
@@ -29,7 +29,6 @@ TargetFilesHybrid = [
     polca_files,
     os.path.join(dir.out.flags, "aggr_plassembler.flag"),
     os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag"),
-    os.path.join(dir.out.flags, "aggr_ale.flag"), 
-    os.path.join(dir.out.flags, "aggr_final.flag")
+    os.path.join(dir.out.flags, "aggr_ale.flag"),
+    os.path.join(dir.out.flags, "aggr_final.flag"),
 ]
-
