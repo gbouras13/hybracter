@@ -43,7 +43,7 @@ def samplesFromCsvLong(csvFile):
                         f"    does not have 3 columns. \n"
                         f"    Please check the formatting of {csvFile}. \n"
                     )
-                    sys.exit(1)
+                sys.exit(1)
     return outDict
 
 
