@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pandas as pd
-from util import calculate_mean_CDS_length, is_file_empty, touch_file
+import pyrodigal_helpers
 from Bio import SeqIO
 
 
@@ -12,15 +12,15 @@ def determine_best_plassembler_assembly(
     plassembler_prodigal_summary,
     sample,
 ):
-    if is_file_empty(plassembler_fasta) is True:  # if empty, just create empty outputs
-        touch_file(plassembler_prodigal_summary)
-        touch_file(final_plasmid_fasta)
+    if pyrodigal_helpers.is_file_empty(plassembler_fasta) is True:  # if empty, just create empty outputs
+        pyrodigal_helpers.touch_file(plassembler_prodigal_summary)
+        pyrodigal_helpers.touch_file(final_plasmid_fasta)
 
     else:  # plassembler not empty
         best_assembly = medaka_fasta
 
-        plassembler_mean_cds = calculate_mean_CDS_length(plassembler_fasta)
-        medaka_mean_cds = calculate_mean_CDS_length(medaka_fasta)
+        plassembler_mean_cds = pyrodigal_helpers.calculate_mean_CDS_length(plassembler_fasta)
+        medaka_mean_cds = pyrodigal_helpers.calculate_mean_CDS_length(medaka_fasta)
 
         dict = {
             "Sample": sample,
