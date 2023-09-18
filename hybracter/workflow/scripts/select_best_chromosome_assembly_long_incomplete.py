@@ -2,7 +2,7 @@
 
 import sys
 import pandas as pd
-from util import calculate_mean_CDS_length
+from pyrodigal_helpers import calculate_mean_CDS_length
 from Bio import SeqIO
 
 
