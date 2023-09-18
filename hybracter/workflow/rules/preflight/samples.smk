@@ -19,7 +19,6 @@ def samplesFromCsvLong(csvFile):
     """
     outDict = {}
     with open(csvFile, "r") as csv:
-        print(line)
         for line in csv:
             l = line.strip().split(",")
             if len(l) == 3:
@@ -35,6 +34,14 @@ def samplesFromCsvLong(csvFile):
                         "    Check formatting, and that \n"
                         "    file names and file paths are correct.\n"
                         "\n"
+                    )
+                    sys.exit(1)
+            else:
+                sys.stderr.write(
+                        "\n"
+                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                        f"    does not have 3 columns. \n"
+                        f"    Please check the formatting of {csvFile}. \n"
                     )
                     sys.exit(1)
     return outDict
