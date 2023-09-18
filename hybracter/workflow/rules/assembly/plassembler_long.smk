@@ -56,14 +56,14 @@ rule plassembler_polish_medaka:
     input:
         fasta = os.path.join(dir.out.plassembler ,"{sample}", "plassembler_plasmids.fasta"),
         fastq = os.path.join(dir.out.qc,"{sample}_filt_trim.fastq.gz"),
-        os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_with_sample.tsv") # to make it sequential for the aggregate step
+        individual_summary = os.path.join(dir.out.plassembler_individual_summaries ,"{sample}_with_sample.tsv") # to make it sequential for the aggregate step
     output:
         fasta = os.path.join(dir.out.plassembler,"{sample}", "medaka", "consensus.fasta"),
     conda:
         os.path.join(dir.env,'medaka.yaml')
     params:
         model = MEDAKA_MODEL,
-        dir = os.path.join(dir.out.plassembler,"{sample}", "medaka")
+        medaka_dir = os.path.join(dir.out.plassembler,"{sample}", "medaka")
     resources:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time
@@ -78,7 +78,7 @@ rule plassembler_polish_medaka:
         plass_out={input.fasta}
         if [ -s "$plass_out" ]
         then
-            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.medaka_dir} -m {params.model}  -t {threads} 2> {log}
         else
             touch {output.fasta} 2> {log}
         fi
