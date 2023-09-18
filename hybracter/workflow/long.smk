@@ -55,8 +55,6 @@ FLYE_MODEL = config.args.flyeModel
 
 dictReads = parseSamples(INPUT, False)  # long flag false
 SAMPLES = list(dictReads.keys())
-print(SAMPLES)
-print(dictReads)
 wildcard_constraints:
     sample="|".join([re.escape(x) for x in SAMPLES]),
 

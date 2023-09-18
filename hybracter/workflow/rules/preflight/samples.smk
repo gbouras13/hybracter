@@ -19,6 +19,7 @@ def samplesFromCsvLong(csvFile):
     """
     outDict = {}
     with open(csvFile, "r") as csv:
+        print(line)
         for line in csv:
             l = line.strip().split(",")
             if len(l) == 3:
@@ -47,7 +48,7 @@ short
 def samplesFromCsvShort(csvFile):
     """
     Read samples and files from a CSV Hybrid
-    3 cols
+    5 cols
     1 = sample
     2 = Long read
     3 = MinChromLength
