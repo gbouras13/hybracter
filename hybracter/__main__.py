@@ -284,65 +284,6 @@ def hybrid(
     ),
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
-@click.option(
-    "--min_length",
-    "min_length",
-    help="min read length for long reads",
-    type=int,
-    default=1000,
-)
-@click.option(
-    "--min_quality",
-    "min_quality",
-    help="min read quality for long reads",
-    type=int,
-    default=9,
-)
-@click.option(
-    "--skip_qc",
-    help="Do not run porechop, filtlong and fastp to QC the reads",
-    is_flag=True,
-    default=False,
-)
-@click.option(
-    "-d",
-    "--databases",
-    help="Plassembler Databases directory.",
-    type=click.Path(dir_okay=True, readable=True),
-    default="plassembler_DB",
-)
-@click.option(
-    "--medakaModel",
-    "medakaModel",
-    help="Medaka Model.",
-    default="r941_min_sup_g507",
-    show_default=True,
-    type=click.Choice(
-        [
-            "r941_min_sup_g507",
-            "r941_min_hac_g507",
-            "r941_e81_fast_g514",
-            "r1041_e82_400bps_sup_g615",
-        ]
-    ),
-)
-@click.option(
-    "--flyeModel",
-    "flyeModel",
-    help="Flye Assembly Parameter",
-    show_default=True,
-    default="--nano-hq",
-    type=click.Choice(
-        [
-            "--nano-hq",
-            "--nano-corr",
-            "--nano-raw",
-            "--pacbio-raw",
-            "--pacbio-corr",
-            "--pacbio-hifi",
-        ]
-    ),
-)
 @common_options
 def long(
     _input,
@@ -356,7 +297,7 @@ def long(
     log,
     **kwargs
 ):
-    """Run hybracter"""
+    """Run hybracter long"""
     # Config to add or update in configfile
     merge_config = {
         "args": {
