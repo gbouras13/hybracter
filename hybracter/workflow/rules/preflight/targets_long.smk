@@ -12,8 +12,8 @@ TargetFilesLong = [
     os.path.join(dir.out.flags, "aggr_long_read_polish.flag"),
     os.path.join(dir.out.flags, "aggr_plassembler.flag"),
     os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag"),
-    os.path.join(dir.out.flags, "aggr_ale.flag"), 
-    os.path.join(dir.out.flags, "aggr_final.flag")
+    #os.path.join(dir.out.flags, "aggr_ale.flag"), 
+    #os.path.join(dir.out.flags, "aggr_final.flag")
 ]
 
 
