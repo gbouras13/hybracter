@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-import sys
 import pandas as pd
-from pyrodigal_helpers import calculate_mean_CDS_length
+from .pyrodigal_helpers import calculate_mean_CDS_length
 from Bio import SeqIO
 
 
