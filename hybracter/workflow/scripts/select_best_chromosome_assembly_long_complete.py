@@ -172,7 +172,7 @@ def select_best_chromosome_assembly_long_complete(
                 # add record length
                 total_assembly_length += len(record.seq)
 
-                if "circular=true" in record.description:
+                if "circular" in record.description:
                     circular_plasmids += 1
 
                 # take description from plassembler (length and copy number)

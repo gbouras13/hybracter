@@ -96,12 +96,18 @@ def determine_best_plassembler_assembly(
         if plassembler_mean_cds > medaka_mean_cds:
             best_assembly = plassembler_fasta
 
+
+        # dict to store headers for the original plassembler assembly to get copy number info
+        header_mapping = {}
+        # read in headers in plassembler_fasta
+        i = 1
+        for record in SeqIO.parse(plassembler_fasta, "fasta"):
+            header_mapping[i] = record.description
+            i =+ 1
+
+
         # set counter to 0 for number of plasmids
         plasmids = 0
-
-        ###########################
-        # need to read in headers for the original plassembler assembly to avoid the out of range erro
-        ###########################
 
         # Open the output file in write mode
         with open(final_plasmid_fasta, "w") as output_handle:
@@ -115,7 +121,7 @@ def determine_best_plassembler_assembly(
 
                 # get rid off the contig id (1, 2, 3) and len from plassembler
                 # extra)description will keep the circularity and copy number info
-                extra_description = record.description.split(" ", 2)[2]
+                extra_description = header_mapping[i].split(" ", 2)[2]
 
                 # Calculate the length of the sequence
                 sequence_length = len(record.seq)
