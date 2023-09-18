@@ -59,6 +59,7 @@ dir.out.aggr_polca_polish = os.path.join(dir.out.flags, "aggr_polca_polish")
 dir.out.aggr_plassembler = os.path.join(dir.out.flags, "aggr_plassembler")
 dir.out.aggr_ale = os.path.join(dir.out.flags, "aggr_ale")
 dir.out.aggr_pyrodigal = os.path.join(dir.out.flags, "aggr_pyrodigal")
+dir.out.aggr_pyrodigal_plassembler = os.path.join(dir.out.flags, "aggr_pyrodigal_plassembler")
 dir.out.aggr_final = os.path.join(dir.out.flags, "aggr_final")
 
 # long_read_polish.smk
