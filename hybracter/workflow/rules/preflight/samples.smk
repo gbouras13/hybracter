@@ -21,7 +21,6 @@ def samplesFromCsvLong(csvFile):
     with open(csvFile, "r") as csv:
         for line in csv:
             l = line.strip().split(",")
-            sys.stderr.write(f"line is {l}")
             if len(l) == 3:
                 outDict[l[0]] = {}
                 if os.path.isfile(l[1]) and l[2].isnumeric():
@@ -92,6 +91,14 @@ def samplesFromCsvShort(csvFile):
                         "\n"
                     )
                     sys.exit(1)
+            else:
+                sys.stderr.write(
+                        "\n"
+                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                        f"    does not have 5 columns. \n"
+                        f"    Please check the formatting of {csvFile}. \n"
+                    )
+                sys.exit(1)
     return outDict
 
 
