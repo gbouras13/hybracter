@@ -16,32 +16,30 @@ def calculate_mean_CDS_length(filepath_in):
     prodigal_metamode = False
     coding_table = 11
 
-    try:
-        # for training if you want different coding table
-        seqs = [bytes(record.seq) for record in SeqIO.parse(filepath_in, "fasta")]
-        record = SeqIO.parse(filepath_in, "fasta")
 
-        # train pyrodigal
-        orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
-        trainings_info = orf_finder.train(*seqs, translation_table=int(coding_table))
-        orf_finder = pyrodigal.GeneFinder(trainings_info, meta=prodigal_metamode)
+    # for training if you want different coding table
+    seqs = [bytes(record.seq) for record in SeqIO.parse(filepath_in, "fasta")]
+    record = SeqIO.parse(filepath_in, "fasta")
 
-        # run pyrodigal
+    # train pyrodigal
+    orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
+    trainings_info = orf_finder.train(*seqs, translation_table=int(coding_table))
+    orf_finder = pyrodigal.GeneFinder(trainings_info, meta=prodigal_metamode)
 
-        total_genes = 0
-        total_length = 0
+    # run pyrodigal
 
-        for i, record in enumerate(SeqIO.parse(filepath_in, "fasta")):
-            genes = orf_finder.find_genes(str(record.seq))
-            for gene in genes:
-                total_genes += 1
-                total_length += len(gene.sequence() )  # add the length of the gene called
+    total_genes = 0
+    total_length = 0
 
-        mean_cds_len = float(total_length / total_genes)
-        mean_cds_len = float("{:.2f}".format(mean_cds_len))
+    for i, record in enumerate(SeqIO.parse(filepath_in, "fasta")):
+        genes = orf_finder.find_genes(str(record.seq))
+        for gene in genes:
+            total_genes += 1
+            total_length += len(gene.sequence() )  # add the length of the gene called
 
-    except Exception:  # in case there are no genes called or some other error
-        mean_cds_len = 0
+    mean_cds_len = float(total_length / total_genes)
+    mean_cds_len = float("{:.2f}".format(mean_cds_len))
+
 
     return mean_cds_len
 

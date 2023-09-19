@@ -47,7 +47,7 @@ def calculate_mean_CDS_length(filepath_in):
     # https://github.com/hyattpd/prodigal/wiki/Advice-by-Input-Type#plasmids-phages-viruses-and-other-short-sequences
     # https://github.com/hyattpd/Prodigal/issues/51
     # so make sure of this 
-    # try: 
+
     if total_length < 20001:
         prodigal_metamode = True
         orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
@@ -75,9 +75,6 @@ def calculate_mean_CDS_length(filepath_in):
 
     mean_cds_len = float(total_length / total_genes)
     mean_cds_len = float("{:.2f}".format(mean_cds_len))
-
-    # except Exception:  # in case there are no genes called or some other error
-    #     mean_cds_len = 0
 
     return mean_cds_len
 
