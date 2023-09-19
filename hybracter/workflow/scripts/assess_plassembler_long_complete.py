@@ -50,7 +50,7 @@ def calculate_mean_CDS_length(filepath_in):
     # try: 
     if total_length < 20001:
         prodigal_metamode = True
-        orf_finder = pyrodigal.OrfFinder(meta=prodigal_metamode)
+        orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
     else: # plasmids over 20000 in length
         # try:
         # for training if you want different coding table
