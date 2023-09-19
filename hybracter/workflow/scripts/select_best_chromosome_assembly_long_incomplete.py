@@ -87,7 +87,7 @@ def select_best_chromosome_assembly_long_incomplete(
         best_round = "pre_polish"
 
     # count contigs
-    number_of_contigs = 1
+    number_of_contigs = 0
 
     # instantiate longest contig length
     longest_contig_length = 0
@@ -98,6 +98,9 @@ def select_best_chromosome_assembly_long_incomplete(
     with open(output_fasta, "w") as output_handle:
         # Iterate through the records in the best assembly FASTA file and write them to the output file
         for record in SeqIO.parse(best_assembly, "fasta"):
+            
+            number_of_contigs += 1
+
             # to match the 00001 output favoured generally for parsing
             # usually there will be 1 chromosome of course!
             record.id = f"contig{number_of_contigs:05}"
@@ -121,7 +124,7 @@ def select_best_chromosome_assembly_long_incomplete(
             # Write the modified record to the output file
             SeqIO.write(record, output_handle, "fasta")
 
-            number_of_contigs += 1
+            
 
     # to get the summary df
     summary_dict = {
