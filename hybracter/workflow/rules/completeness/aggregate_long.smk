@@ -138,7 +138,6 @@ def aggregate_pyrodigal_plassembler_input(wildcards):
             return os.path.join(
                 dir.out.pyrodigal_summary_plassembler,
                 "complete",
-                "plassembler",
                 "{sample}.tsv",
             )
         else:  # incomplete

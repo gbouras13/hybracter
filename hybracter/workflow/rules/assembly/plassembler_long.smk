@@ -111,7 +111,6 @@ rule plassembler_assess_polish:
         plassembler_prodigal_summary=os.path.join(
             dir.out.pyrodigal_summary_plassembler,
             "complete",
-            "plassembler",
             "{sample}.tsv",
         ),
     conda:
