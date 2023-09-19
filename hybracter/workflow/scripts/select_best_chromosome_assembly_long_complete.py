@@ -5,6 +5,18 @@ import pandas as pd
 import pyrodigal
 from Bio import SeqIO
 
+# determines whether a file is empty
+def is_file_empty(file):
+    """
+    Determines if file is empty
+    :param file: file path
+    :return: empty Boolean
+    """
+    empty = False
+    if os.stat(file).st_size == 0:
+        empty = True
+    return empty
+
 
 
 def calculate_mean_CDS_length(filepath_in):
