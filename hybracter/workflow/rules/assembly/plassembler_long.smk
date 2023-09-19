@@ -115,7 +115,7 @@ rule plassembler_assess_polish:
             "{sample}.tsv",
         ),
     conda:
-        os.path.join(dir.env, "scripts.yaml")
+        os.path.join(dir.env, "pyrodigal.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time,

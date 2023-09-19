@@ -46,7 +46,7 @@ rule aggregate_finalise_complete:
         mem_mb=config.resources.sml.mem,
         time=config.resources.med.time,
     conda:
-        os.path.join(dir.env, "scripts.yaml")
+        os.path.join(dir.env, "pyrodigal.yaml")
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "select_best_chromosome_assembly_long_complete.py")
@@ -70,7 +70,7 @@ rule aggregate_finalise_incomplete:
         mem_mb=config.resources.sml.mem,
         time=config.resources.med.time,
     conda:
-        os.path.join(dir.env, "scripts.yaml")
+        os.path.join(dir.env, "pyrodigal.yaml")
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "select_best_chromosome_assembly_long_incomplete.py")

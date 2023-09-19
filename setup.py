@@ -44,8 +44,6 @@ setup(
         "Click>=8.1.3",
         "attrmap>=0.0.5",
         "snakefmt>=0.8.4",
-        "pyrodigal>=3.0.0",
-        "biopython>=1.78"
     ],
     entry_points={"console_scripts": ["hybracter=hybracter.__main__:main"]},
     include_package_data=True,
