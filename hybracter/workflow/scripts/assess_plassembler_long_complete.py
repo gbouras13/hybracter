@@ -4,6 +4,7 @@ import pandas as pd
 import os 
 import pyrodigal
 from Bio import SeqIO
+import sys
 
 # determines whether a file is empty
 def is_file_empty(file):
@@ -80,6 +81,12 @@ def determine_best_plassembler_assembly(
 
         plassembler_mean_cds = calculate_mean_CDS_length(plassembler_fasta)
         medaka_mean_cds = calculate_mean_CDS_length(medaka_fasta)
+
+        sys.stderr.write(
+                        f" mean cds raw is {plassembler_mean_cds}"
+                        f" mean cds medaka is {medaka_mean_cds}"
+                        "\n"
+                    )
 
         dict = {
             "Sample": sample,
