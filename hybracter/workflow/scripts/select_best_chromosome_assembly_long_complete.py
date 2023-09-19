@@ -206,8 +206,8 @@ select_best_chromosome_assembly_long_complete(
     snakemake.input.final_plasmid_fasta,
     snakemake.output.chromosome_fasta,
     snakemake.output.total_fasta,
-    snakemake.params.chrom_pre_polish_fasta,
-    snakemake.params.medaka_rd_1_fasta,
-    snakemake.params.medaka_rd_2_fasta,
+    snakemake.input.chrom_pre_polish_fasta,
+    snakemake.input.medaka_rd_1_fasta,
+    snakemake.input.medaka_rd_2_fasta,
     snakemake.wildcards.sample,
 )
