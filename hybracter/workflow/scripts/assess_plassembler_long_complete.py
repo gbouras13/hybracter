@@ -47,37 +47,37 @@ def calculate_mean_CDS_length(filepath_in):
     # https://github.com/hyattpd/prodigal/wiki/Advice-by-Input-Type#plasmids-phages-viruses-and-other-short-sequences
     # https://github.com/hyattpd/Prodigal/issues/51
     # so make sure of this 
-    try: 
-        if total_length < 20000:
-            prodigal_metamode = True
-            orf_finder = pyrodigal.OrfFinder(meta=prodigal_metamode)
-        else: # plasmids over 20000 in length
-            # try:
-            # for training if you want different coding table
-            seqs = [bytes(record.seq) for record in SeqIO.parse(filepath_in, "fasta")]
-            record = SeqIO.parse(filepath_in, "fasta")
+    # try: 
+    if total_length < 20001:
+        prodigal_metamode = True
+        orf_finder = pyrodigal.OrfFinder(meta=prodigal_metamode)
+    else: # plasmids over 20000 in length
+        # try:
+        # for training if you want different coding table
+        seqs = [bytes(record.seq) for record in SeqIO.parse(filepath_in, "fasta")]
+        record = SeqIO.parse(filepath_in, "fasta")
 
-            # train pyrodigal
-            orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
-            trainings_info = orf_finder.train(*seqs, translation_table=int(coding_table))
-            orf_finder = pyrodigal.GeneFinder(trainings_info, meta=prodigal_metamode)
+        # train pyrodigal
+        orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
+        trainings_info = orf_finder.train(*seqs, translation_table=int(coding_table))
+        orf_finder = pyrodigal.GeneFinder(trainings_info, meta=prodigal_metamode)
 
-        # run pyrodigal
+    # run pyrodigal
 
-        total_genes = 0
-        total_length = 0
+    total_genes = 0
+    total_length = 0
 
-        for i, record in enumerate(SeqIO.parse(filepath_in, "fasta")):
-            genes = orf_finder.find_genes(str(record.seq))
-            for gene in genes:
-                total_genes += 1
-                total_length += len(gene.sequence() )  # add the length of the gene called
+    for i, record in enumerate(SeqIO.parse(filepath_in, "fasta")):
+        genes = orf_finder.find_genes(str(record.seq))
+        for gene in genes:
+            total_genes += 1
+            total_length += len(gene.sequence() )  # add the length of the gene called
 
-        mean_cds_len = float(total_length / total_genes)
-        mean_cds_len = float("{:.2f}".format(mean_cds_len))
+    mean_cds_len = float(total_length / total_genes)
+    mean_cds_len = float("{:.2f}".format(mean_cds_len))
 
-    except Exception:  # in case there are no genes called or some other error
-        mean_cds_len = 0
+    # except Exception:  # in case there are no genes called or some other error
+    #     mean_cds_len = 0
 
     return mean_cds_len
 
