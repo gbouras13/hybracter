@@ -358,7 +358,7 @@ def long(
 )
 def download(databases, log, **kwargs):
     # Config to add or update in configfile
-    merge_config = {"args": {"databases": databases, "log": log}}
+    merge_config = {"args": {"databases": databases}}
     """Downloads the plassembler database"""
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "download.smk")),
