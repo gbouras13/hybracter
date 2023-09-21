@@ -85,7 +85,7 @@ rule fastp:
     shell:
         """
         fastp --in1 {input.r1} --in2 {input.r2} --out1 {output.r1} --out2 {output.r2}  2> {log}
-        fastp --version > {output.version}
+        fastp --version 2> {output.version}
         rm {log}
         """
 
