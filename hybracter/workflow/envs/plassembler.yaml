@@ -1,7 +1,7 @@
 name: plassembler
 channels:
-    - bioconda 
     - conda-forge
-    - defaults  
+    - bioconda
+    - defaults
 dependencies:
-     - plassembler >=1.2.0
+    - plassembler >=1.2.0
