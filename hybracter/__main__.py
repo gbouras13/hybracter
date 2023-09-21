@@ -356,7 +356,7 @@ def long(
     show_default=True,
     default="plassembler_DB",
 )
-def download(databases, log, **kwargs):
+def download(databases, **kwargs):
     # Config to add or update in configfile
     merge_config = {"args": {"databases": databases}}
     """Downloads the plassembler database"""
