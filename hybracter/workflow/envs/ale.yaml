@@ -1,7 +1,7 @@
 name: ale
 channels:
-    - bioconda 
     - conda-forge
+    - bioconda
     - defaults
 dependencies:
      - ale-core ==20220503
