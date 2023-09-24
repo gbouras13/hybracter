@@ -5,7 +5,6 @@ channels:
     - defaults
 dependencies:
     - plassembler >=1.2.0
-    - unicycler >=0.4.8
     # - pip
     # - pip:
     #     - git+https://github.com/rrwick/Unicycler.git

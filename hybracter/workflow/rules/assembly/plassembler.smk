@@ -1,6 +1,9 @@
 rule plassembler_hybrid:
     """
     runs plassembler for hybrid
+    need the if statement due to unicycler conda installation being a bit broken.
+    if unicycler --version works, then all good
+    otherwise will install unicycler from pip
     """
     input:
         l=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
@@ -30,7 +33,12 @@ rule plassembler_hybrid:
         os.path.join(dir.out.stderr, "plassembler_hybrid", "{sample}.log"),
     shell:
         """
-        plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+        if unicycler --version ; then
+            plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+        else
+            pip install git+https://github.com/rrwick/Unicycler.git
+            plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+        fi
         touch {output.fasta}
         touch {output.summary}
         plassembler --version > {output.version}
