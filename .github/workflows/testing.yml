@@ -30,7 +30,6 @@ jobs:
           auto-activate-base: false
           miniforge-variant: Mambaforge
           channels: conda-forge,bioconda,defaults,anaconda
-          channel-priority: strict
           auto-update-conda: true
 
       - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"

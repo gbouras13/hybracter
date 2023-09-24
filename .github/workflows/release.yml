@@ -20,7 +20,6 @@ jobs:
         auto-activate-base: false
         miniforge-variant: Mambaforge
         channels: conda-forge,bioconda,defaults
-        channel-priority: strict
         auto-update-conda: true
     - name: Install dependencies
       run: |
