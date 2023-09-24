@@ -2,6 +2,7 @@
 aggregate the pyrdigal mean length cds and finalise
 """
 
+
 def aggregate_finalise(wildcards):
     # decision based on content of output file
     # Important: use the method open() of the returned file!
@@ -11,13 +12,11 @@ def aggregate_finalise(wildcards):
         0
     ].open() as f:
         if f.read().strip() == "C":  # complete
-                return os.path.join(
-                    dir.out.ale_scores_complete, "{sample}", "polca.score"
-                )
+            return os.path.join(dir.out.ale_scores_complete, "{sample}", "polca.score")
         else:  # incomplete
-                return os.path.join(
-                    dir.out.ale_scores_incomplete, "{sample}", "polca_incomplete.score"
-                )
+            return os.path.join(
+                dir.out.ale_scores_incomplete, "{sample}", "polca_incomplete.score"
+            )
 
 
 ### from the aggregate_finalise function - so it dynamic
@@ -32,16 +31,18 @@ rule aggregate_finalise_complete:
         ),
         final_plasmid_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_plasmid.fasta"
-        )
+        ),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
         ),
         total_fasta=os.path.join(dir.out.final_contigs_complete, "{sample}_final.fasta"),
-        pyrodigal_summary=os.path.join(dir.out.pyrodigal_summary, "complete", "{sample}.tsv"),
-        hybracter_summary=os.path.join(dir.out.final_summaries_complete, "{sample}.tsv")
+        pyrodigal_summary=os.path.join(
+            dir.out.pyrodigal_summary, "complete", "{sample}.tsv"
+        ),
+        hybracter_summary=os.path.join(dir.out.final_summaries_complete, "{sample}.tsv"),
     params:
-        complete_flag = True
+        complete_flag=True,
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.med.time,
@@ -56,16 +57,24 @@ rule aggregate_finalise_complete:
 rule aggregate_finalise_incomplete:
     input:
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
-        medaka_fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
+        medaka_fasta=os.path.join(
+            dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
+        ),
     output:
-        total_fasta=os.path.join(dir.out.final_contigs_incomplete, "{sample}_final.fasta"),
-        pyrodigal_summary=os.path.join(dir.out.pyrodigal_summary, "incomplete", "{sample}.tsv"),
-        hybracter_summary=os.path.join(dir.out.final_summaries_incomplete, "{sample}.tsv")
+        total_fasta=os.path.join(
+            dir.out.final_contigs_incomplete, "{sample}_final.fasta"
+        ),
+        pyrodigal_summary=os.path.join(
+            dir.out.pyrodigal_summary, "incomplete", "{sample}.tsv"
+        ),
+        hybracter_summary=os.path.join(
+            dir.out.final_summaries_incomplete, "{sample}.tsv"
+        ),
     params:
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
         medaka_fasta=os.path.join(
             dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
-        )
+        ),
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.med.time,

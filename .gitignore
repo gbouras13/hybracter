@@ -21,6 +21,9 @@ fastp.json
 .snakemake
 .snakemake/*
 
+# egg
+hybracter.egg-info
+hybracter.egg-info/*
 
 # dont include conda envs locally
 hybracter/workflow/conda/*

@@ -4,12 +4,13 @@ first 2 functions taken from and modified from trimnami  https://github.com/bear
 didn't just use trimnami as I don't want snaketool-ception
 """
 
+
 rule index_host_genome:
     """Pre-index the host genome for mapping with minimap2"""
     input:
-        CONTAM
+        CONTAM,
     output:
-        index=os.path.join(dir.out.contaminant_index, "host.index")
+        index=os.path.join(dir.out.contaminant_index, "host.index"),
     resources:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time,
@@ -30,23 +31,39 @@ rule host_removal_mapping_single:
     """Map reads to host and return unmapped reads"""
     input:
         index=os.path.join(dir.out.contaminant_index, "host.index"),
-        fastq=get_input_lr_fastqs
+        fastq=get_input_lr_fastqs,
     output:
-        r1=temp(os.path.join(dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz")),
-        s=temp(os.path.join(dir.out.contaminant_removal, "{sample}", "{sample}_s.host_rm.fastq.gz")),
-        o=temp(os.path.join(dir.out.contaminant_removal, "{sample}", "{sample}_o.host_rm.fastq.gz")),
+        r1=temp(
+            os.path.join(
+                dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
+            )
+        ),
+        s=temp(
+            os.path.join(
+                dir.out.contaminant_removal, "{sample}", "{sample}_s.host_rm.fastq.gz"
+            )
+        ),
+        o=temp(
+            os.path.join(
+                dir.out.contaminant_removal, "{sample}", "{sample}_o.host_rm.fastq.gz"
+            )
+        ),
         minimap2_version=os.path.join(dir.out.versions, "{sample}", "minimap2.version"),
-        samtools_version=os.path.join(dir.out.versions, "{sample}", "samtools.version")
+        samtools_version=os.path.join(dir.out.versions, "{sample}", "samtools.version"),
     params:
         compression=config.qc.compression,
         minimap_mode=config.qc.minimapModel,
-        flagFilt=config.qc.hostRemoveFlagstat
+        flagFilt=config.qc.hostRemoveFlagstat,
     benchmark:
         os.path.join(dir.out.bench, "host_removal_mapping", "{sample}.txt")
     log:
-        mm=os.path.join(dir.out.stderr,"host_removal_mapping", "{sample}.minimap.log"),
-        sv=os.path.join(dir.out.stderr,"host_removal_mapping", "{sample}.samtoolsView.log"),
-        fq=os.path.join(dir.out.stderr,"host_removal_mapping", "{sample}.samtoolsFastq.log")
+        mm=os.path.join(dir.out.stderr, "host_removal_mapping", "{sample}.minimap.log"),
+        sv=os.path.join(
+            dir.out.stderr, "host_removal_mapping", "{sample}.samtoolsView.log"
+        ),
+        fq=os.path.join(
+            dir.out.stderr, "host_removal_mapping", "{sample}.samtoolsFastq.log"
+        ),
     resources:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time,
@@ -54,32 +71,37 @@ rule host_removal_mapping_single:
     conda:
         os.path.join(dir.env, "contaminants.yaml")
     shell:
-        ("minimap2 "
+        (
+            "minimap2 "
             "-ax {params.minimap_mode} "
             "-t {threads} "
             "--secondary=no "
             "{input.index} "
             "{input.fastq} "
             "2> {log.mm} "
-        "| samtools view "
+            "| samtools view "
             "-h {params.flagFilt} "
-        "2> {log.sv} "
-        "| samtools fastq "
+            "2> {log.sv} "
+            "| samtools fastq "
             "-n -O -c 1 "
             "-o {output.r1} "
             "-0 {output.o} "
             "-s {output.s} "
             "2> {log.fq}; "
-        "cat {output.o} {output.s} >> {output.r1}; "
-        "minimap2 --version > {output.minimap2_version} "
-        "samtools --version  > {output.samtools_version} ")
+            "cat {output.o} {output.s} >> {output.r1}; "
+            "minimap2 --version > {output.minimap2_version} "
+            "samtools --version  > {output.samtools_version} "
+        )
+
 
 rule filtlong:
     """
     runs filtlong to filter quality and length
     """
     input:
-        fastq=os.path.join(dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"),
+        fastq=os.path.join(
+            dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
+        ),
     output:
         fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),

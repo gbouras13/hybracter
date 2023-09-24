@@ -59,7 +59,9 @@ dir.out.aggr_polca_polish = os.path.join(dir.out.flags, "aggr_polca_polish")
 dir.out.aggr_plassembler = os.path.join(dir.out.flags, "aggr_plassembler")
 dir.out.aggr_ale = os.path.join(dir.out.flags, "aggr_ale")
 dir.out.aggr_pyrodigal = os.path.join(dir.out.flags, "aggr_pyrodigal")
-dir.out.aggr_pyrodigal_plassembler = os.path.join(dir.out.flags, "aggr_pyrodigal_plassembler")
+dir.out.aggr_pyrodigal_plassembler = os.path.join(
+    dir.out.flags, "aggr_pyrodigal_plassembler"
+)
 dir.out.aggr_final = os.path.join(dir.out.flags, "aggr_final")
 
 # long_read_polish.smk
@@ -135,13 +137,13 @@ dir.out.final_summaries_complete = os.path.join(dir.out.final_summaries, "comple
 dir.out.final_summaries_incomplete = os.path.join(dir.out.final_summaries, "incomplete")
 
 # Test dirs
-dir.test = os.path.join(workflow.basedir, "../" , "test_data" )
+dir.test = os.path.join(workflow.basedir, "../", "test_data")
 dir.test_fastqs = os.path.join(dir.test, "Fastqs")
 dir.env = os.path.join(workflow.basedir, "envs")
 
 # contaminants
-dir.contaminant_genomes = os.path.join(workflow.basedir, "../" , "contaminant_genomes" )
+dir.contaminant_genomes = os.path.join(workflow.basedir, "../", "contaminant_genomes")
 
-dir.contaminant_genomes = os.path.join(workflow.basedir, "../" , "contaminant_genomes" )
+dir.contaminant_genomes = os.path.join(workflow.basedir, "../", "contaminant_genomes")
 dir.out.contaminant_index = os.path.join(dir.out.processing, "contaminant_index")
 dir.out.contaminant_removal = os.path.join(dir.out.processing, "contaminant_removal")

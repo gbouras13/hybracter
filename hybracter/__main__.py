@@ -105,7 +105,7 @@ def common_options(func):
             help="Contaminants FASTA file to map long readsagainst to filter out. Choose --contaminants lambda to filter out phage lambda long reads.",
             type=click.Path(),
             default="none",
-            required=False
+            required=False,
         ),
         click.option(
             "--use-conda/--no-use-conda",
@@ -299,7 +299,7 @@ def hybrid(
             "skip_qc": skip_qc,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
-            "contaminants": contaminants
+            "contaminants": contaminants,
         }
     }
 
@@ -347,7 +347,7 @@ def long(
             "databases": databases,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
-            "contaminants": contaminants
+            "contaminants": contaminants,
         }
     }
 
@@ -360,9 +360,11 @@ def long(
         **kwargs
     )
 
+
 """
 download
 """
+
 
 @click.command(
     epilog=help_msg_download,
@@ -407,9 +409,11 @@ def download(databases, **kwargs):
         **kwargs
     )
 
+
 """
 test hybrid
 """
+
 
 # Test command
 @click.command(
@@ -425,7 +429,19 @@ test hybrid
     is_flag=True,
     default=False,
 )
-def test_hybrid(output, log, min_length,min_quality,skip_qc,medakaModel,flyeModel, databases, no_polca, contaminants, **kwargs):
+def test_hybrid(
+    output,
+    log,
+    min_length,
+    min_quality,
+    skip_qc,
+    medakaModel,
+    flyeModel,
+    databases,
+    no_polca,
+    contaminants,
+    **kwargs
+):
     """Test hybracter hybrid"""
     # Config to add or update in configfile
     merge_config = {
@@ -439,7 +455,7 @@ def test_hybrid(output, log, min_length,min_quality,skip_qc,medakaModel,flyeMode
             "flyeModel": flyeModel,
             "databases": databases,
             "no_polca": no_polca,
-            "contaminants": contaminants
+            "contaminants": contaminants,
         }
     }
     run_snakemake(
@@ -453,6 +469,7 @@ def test_hybrid(output, log, min_length,min_quality,skip_qc,medakaModel,flyeMode
 test long
 """
 
+
 # Test command
 @click.command(
     epilog=help_msg_test_long,
@@ -461,7 +478,18 @@ test long
     ),
 )
 @common_options
-def test_long(output, log,min_length,min_quality,skip_qc,medakaModel, databases, flyeModel,contaminants, **kwargs):
+def test_long(
+    output,
+    log,
+    min_length,
+    min_quality,
+    skip_qc,
+    medakaModel,
+    databases,
+    flyeModel,
+    contaminants,
+    **kwargs
+):
     """Test hybracter long"""
     # Config to add or update in configfile
     merge_config = {
@@ -474,7 +502,7 @@ def test_long(output, log,min_length,min_quality,skip_qc,medakaModel, databases,
             "medakaModel": medakaModel,
             "databases": databases,
             "flyeModel": flyeModel,
-            "contaminants": contaminants
+            "contaminants": contaminants,
         }
     }
     run_snakemake(

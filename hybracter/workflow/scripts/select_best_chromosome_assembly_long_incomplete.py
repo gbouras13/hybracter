@@ -16,7 +16,6 @@ def calculate_mean_CDS_length(filepath_in):
     prodigal_metamode = False
     coding_table = 11
 
-
     # for training if you want different coding table
     seqs = [bytes(record.seq) for record in SeqIO.parse(filepath_in, "fasta")]
     record = SeqIO.parse(filepath_in, "fasta")
@@ -35,13 +34,13 @@ def calculate_mean_CDS_length(filepath_in):
         genes = orf_finder.find_genes(str(record.seq))
         for gene in genes:
             total_genes += 1
-            total_length += len(gene.sequence() )  # add the length of the gene called
+            total_length += len(gene.sequence())  # add the length of the gene called
 
     mean_cds_len = float(total_length / total_genes)
     mean_cds_len = float("{:.2f}".format(mean_cds_len))
 
-
     return mean_cds_len
+
 
 def select_best_chromosome_assembly_long_incomplete(
     hybracter_summary,
@@ -96,7 +95,6 @@ def select_best_chromosome_assembly_long_incomplete(
     with open(output_fasta, "w") as output_handle:
         # Iterate through the records in the best assembly FASTA file and write them to the output file
         for record in SeqIO.parse(best_assembly, "fasta"):
-            
             number_of_contigs += 1
 
             # to match the 00001 output favoured generally for parsing
@@ -121,8 +119,6 @@ def select_best_chromosome_assembly_long_incomplete(
 
             # Write the modified record to the output file
             SeqIO.write(record, output_handle, "fasta")
-
-            
 
     # to get the summary df
     summary_dict = {

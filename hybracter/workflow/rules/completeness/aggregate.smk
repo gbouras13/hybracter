@@ -81,7 +81,6 @@ def aggregate_long_read_polish_input(wildcards):
             return os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta")
 
 
-
 ### from the long_read_polishing
 
 

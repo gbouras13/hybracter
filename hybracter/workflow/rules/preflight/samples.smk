@@ -38,11 +38,11 @@ def samplesFromCsvLong(csvFile):
                     sys.exit(1)
             else:
                 sys.stderr.write(
-                        "\n"
-                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
-                        f"    does not have 3 columns. \n"
-                        f"    Please check the formatting of {csvFile}. \n"
-                    )
+                    "\n"
+                    f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                    f"    does not have 3 columns. \n"
+                    f"    Please check the formatting of {csvFile}. \n"
+                )
                 sys.exit(1)
     return outDict
 
@@ -93,11 +93,11 @@ def samplesFromCsvShort(csvFile):
                     sys.exit(1)
             else:
                 sys.stderr.write(
-                        "\n"
-                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
-                        f"    does not have 5 columns. \n"
-                        f"    Please check the formatting of {csvFile}. \n"
-                    )
+                    "\n"
+                    f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                    f"    does not have 5 columns. \n"
+                    f"    Please check the formatting of {csvFile}. \n"
+                )
                 sys.exit(1)
     return outDict
 

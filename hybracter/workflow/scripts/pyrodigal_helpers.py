@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import os 
+import os
 import pyrodigal
 from Bio import SeqIO
+
 
 # determines whether a file is empty
 def is_file_empty(file):

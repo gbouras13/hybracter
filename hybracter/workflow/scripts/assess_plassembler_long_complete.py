@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
 import pandas as pd
-import os 
+import os
 import pyrodigal
 from Bio import SeqIO
 import sys
+
 
 # determines whether a file is empty
 def is_file_empty(file):
@@ -36,7 +37,7 @@ def calculate_mean_CDS_length(filepath_in):
     prodigal_metamode = False
     coding_table = 11
 
-    # get total length of plasmids 
+    # get total length of plasmids
     total_length = 0
 
     with open(filepath_in, "r") as handle:
@@ -46,12 +47,12 @@ def calculate_mean_CDS_length(filepath_in):
     # if under 20000, pyrodigal will only work in meta mode
     # https://github.com/hyattpd/prodigal/wiki/Advice-by-Input-Type#plasmids-phages-viruses-and-other-short-sequences
     # https://github.com/hyattpd/Prodigal/issues/51
-    # so make sure of this 
+    # so make sure of this
 
     if total_length < 20001:
         prodigal_metamode = True
         orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
-    else: # plasmids over 20000 in length
+    else:  # plasmids over 20000 in length
         # try:
         # for training if you want different coding table
         seqs = [bytes(record.seq) for record in SeqIO.parse(filepath_in, "fasta")]
@@ -71,12 +72,13 @@ def calculate_mean_CDS_length(filepath_in):
         genes = orf_finder.find_genes(str(record.seq))
         for gene in genes:
             total_genes += 1
-            total_length += len(gene.sequence() )  # add the length of the gene called
+            total_length += len(gene.sequence())  # add the length of the gene called
 
     mean_cds_len = float(total_length / total_genes)
     mean_cds_len = float("{:.2f}".format(mean_cds_len))
 
     return mean_cds_len
+
 
 def determine_best_plassembler_assembly(
     plassembler_fasta,
@@ -111,15 +113,13 @@ def determine_best_plassembler_assembly(
         if plassembler_mean_cds > medaka_mean_cds:
             best_assembly = plassembler_fasta
 
-
         # dict to store headers for the original plassembler assembly to get copy number info
         header_mapping = {}
         # read in headers in plassembler_fasta
         i = 1
         for record in SeqIO.parse(plassembler_fasta, "fasta"):
             header_mapping[i] = record.description
-            i =+ 1
-
+            i = +1
 
         # set counter to 0 for number of plasmids
         plasmids = 0
