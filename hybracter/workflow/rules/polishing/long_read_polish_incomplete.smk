@@ -1,7 +1,7 @@
 rule medaka_incomplete:
     input:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
-        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
+        fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "medaka_incomplete.version"),

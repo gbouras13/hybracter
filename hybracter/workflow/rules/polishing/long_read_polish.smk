@@ -4,7 +4,7 @@ rule medaka_round_1:
     """
     input:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
-        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
+        fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "medaka_complete.version"),
@@ -85,7 +85,7 @@ rule medaka_round_2:
     """
     input:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
-        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
+        fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         copy_fasta=os.path.join(
