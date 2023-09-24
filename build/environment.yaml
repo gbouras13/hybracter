@@ -1,0 +1,14 @@
+name: hybracterENV
+channels:
+  - conda-forge
+  - anaconda
+  - bioconda
+  - defaults
+dependencies:
+  - python>=3.9
+  - snakemake>=7.14.0
+  - pyyaml>=6.0
+  - click>=8.1.3
+  - jinja2>=3.0.2
+  - attrmap>=0.0.5
+  - biopython>=1.76

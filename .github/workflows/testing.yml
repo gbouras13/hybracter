@@ -1,0 +1,58 @@
+name: CI
+
+on: [push,pull_request]
+
+
+
+jobs:
+  tests:
+    name: "Python ${{ matrix.python-version }}"
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: "actions/checkout@v3"
+        with:
+          fetch-depth: 0
+
+      # Setup env
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: hybracterENV
+          environment-file: build/environment.yml
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
+          miniforge-variant: Mambaforge
+          channels: conda-forge,bioconda,defaults,anaconda
+          channel-priority: strict
+          auto-update-conda: true
+
+      - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
+        shell: bash -l {0}
+        run: |
+          mamba install python=${{ matrix.python-version }}
+          python -m pip install --upgrade pip
+          pip install .
+      
+      - name: "Generate coverage report on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
+        run: |
+          pip install pytest pytest-cov
+          pytest --cov=./ --cov-report xml --cov-report lcov --cov-append
+          
+      - name: Run tests and collect coverage
+        run: pytest --cov=./ --cov-report=xml
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    
+
