@@ -29,9 +29,25 @@ rule medaka_round_1:
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         medaka --version > {output.version}
         cp {output.fasta} {output.copy_fasta}
-        rm {log}
         """
 
+rule compare_assemblies_medaka_round_1:
+    """
+    compare assemblies between medaka and pre-polished chromosome
+    """
+    input:
+        reference=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        assembly=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta")
+    output:
+        diffs=os.path.join(dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"),
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.med.mem,
+        time=config.resources.med.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "compare_assemblies.py")
 
 rule dnaapler:
     """
@@ -58,11 +74,14 @@ rule dnaapler:
         """
         dnaapler chromosome -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -a nearest -f 2> {log}
         dnaapler --version > {output.version}
-        rm {log}
         """
 
 
 rule medaka_round_2:
+    """
+    runs medaka round 2 on the reoriented genome
+    note: can't run compare_assemblies.py as the order of the genome has completely changed.
+    """
     input:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
         fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
@@ -88,5 +107,4 @@ rule medaka_round_2:
         """
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         cp {output.fasta} {output.copy_fasta}
-        rm {log}
         """

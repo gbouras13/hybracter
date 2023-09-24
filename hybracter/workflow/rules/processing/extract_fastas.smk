@@ -4,9 +4,11 @@ checkpoint check_completeness:
     adds checkpoint to determine whether the Flye assembly recovered the complete chromosome (or not)
     """
     input:
-        fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
+        fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
+        )
     output:
-        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt")
     params:
         min_chrom_length=getMinChromLength,
     conda:
@@ -17,7 +19,6 @@ checkpoint check_completeness:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "check_completeness.py")
-
 
 rule extract_chromosome_complete:
     """

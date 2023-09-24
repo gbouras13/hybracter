@@ -38,7 +38,6 @@ rule bwa_mem_incomplete:
         """
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         bwa mem -t {threads} -a {input.fasta} {input.r2} > {output.sam2} 2> {log}
-        rm {log}
         """
 
 
@@ -75,5 +74,4 @@ rule polypolish_incomplete:
         polypolish {input.fasta} {output.sam1} {output.sam2} > {output.fasta} 2> {log}
         polypolish --version > {output.version}
         cp {output.fasta} {output.copy_fasta}
-        rm {log}
         """

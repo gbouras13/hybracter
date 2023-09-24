@@ -3,7 +3,7 @@
 
 # `hybracter`
 
-Hybrid (and long-only) bacterial assembly pipeline for many isolates using Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
+A modern hybrid (and long-only) bacterial assembly pipeline for many isolates using Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
 
 ## Quick Start
 
@@ -21,12 +21,16 @@ hybracter run --help
 
 `hybracter` is designed for assembling many bacterial isolate genomes using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have a number of isolates with ONT long reads and optionally matched paired end short reads for polishing.
 
-It is largely based off Ryan Wick's[magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). I have added some additional steps regarding targetted plasmid assembly and contig reorientation.
+`hybracter`  requires ONT long-only or hybrid ONT long-only & paired end short reads datasets. If you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler)) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler). See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details.
+
+`hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter`  adds some additional steps regarding targetted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientatio with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
+
+`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible, while also being a one-line automated program.
 
 ## Why Would You Run Hybracter?
 
 * If you want the best possible _automated_ long read only or hybrid bacterial isolate genome assembly.
-* If you need to assembly many (10+) bacterial isolates as efficiently as possible.
+* If you need to assembly many (e.g. 10+) bacterial isolates as efficiently as possible.
 
 ## Other Options
 
@@ -43,10 +47,12 @@ If you are looking for the best possible (manual) bacterial assembly on a single
 [Dragonflye](https://github.com/rpetit3/dragonflye) is a good alternative to `hybracter` for automated assembly, particuarly if you are familiar with [Shovill](https://github.com/tseemann/shovill). Some pros and cons between `hybracter` and `dragonflye` are listed below.
 
   * `dragonflye` allows for more options with regards to assemblers (it supports [Miniasm](https://github.com/lh3/miniasm) or [Raven](https://github.com/lbcb-sci/raven) as well as Flye).
-  * On a single isolate, `dragonflye` should be faster (benchmarking coming but the plassembler, assessment and extra polishing steps of hybracter should make it slower).
+  * On a single isolate, `dragonflye` should be faster (benchmarking coming but the Plassembler, assessment and extra polishing steps of hybracter should make it slower).
+  * `hybracter` should be more accurate, due to the extra round of polishing following reorientation, and integration of Plassembler (benchmarking coming).
   * `hybracter` has the advantage of scalability across multiple samples due to its Snakemake and Snaketool implementation. So if you have access to a cluster, `hybracter` is for you and likely faster.
   * `hybracter` gives more accurate plasmid assemblies because it uses [plassembler](https://github.com/gbouras13/plassembler)
   * `hybracter` will suggest automatically whether an assembly is 'complete' or 'incomplete'
+  * `hybracter` will assess each polishing step and choose the genome most likely to be the best quality.
 
 
 ## Pipeline
@@ -68,12 +74,14 @@ If you are looking for the best possible (manual) bacterial assembly on a single
 ## Commands
 
 * `hybracter hybrid`: Assembles genomes from isolates that have long-reads and paired-end short reads.
+* `hybracter hybrid-single`: Assembles a single genome from an isolate with long-reads and paired-end short reads. Takes similar parameters to [Unicycler](https://github.com/rrwick/Unicycler).
 * `hybracter long`: Assembles genomes from isolates that have long-reads only.
-* `hybracter download`: Downloads the required `plassembler` database.
+* `hybracter long-single`: Assembles a single genome from an isolate with long-reads only.
+* `hybracter install`: Downloads and installs the required `plassembler` database.
 
 ## Input
 
-* hybracter requires an input csv file to be specified with `--input`. No other inputs are required.
+* `hybracter hybrid` requires an input csv file to be specified with `--input`. No other inputs are required.
 * This file requires no headers.
 * Other than the reads, `hybracter` requires a value for a lower bound the minimum chromosome length for each isolate in base pairs.
 * It must be an integer.

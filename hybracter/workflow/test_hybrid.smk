@@ -30,7 +30,6 @@ configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 config = ap.AttrMap(config)
 
 
-
 # directories
 include: os.path.join("rules", "preflight", "directories.smk")
 # functions

@@ -190,6 +190,28 @@ Available targets:
     print_targets   List available targets
 """
 
+help_hybrid_single_msg_extra = """
+\b
+CLUSTER EXECUTION:
+hybracter hybrid-single ... --profile [profile]
+For information on Snakemake profiles see:
+https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+\b
+RUN EXAMPLES:
+Required:           hybracter hybrid-single -l [FASTQ file of longreads]
+Required:           hybracter hybrid-single -1 [R1 FASTQ file of paired end short reads]
+Required:           hybracter hybrid-single -2 [R2 FASTQ file of paired end short reads]
+Specify output directory:    hybracter hybrid-single  ... --output [directory]
+Specify threads:    hybracter hybrid-single  ... --threads [threads]
+Disable conda:      hybracter hybrid-single  ... --no-use-conda 
+Change defaults:    hybracter hybrid-single  ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter hybrid-single  ... --dry-run --keep-going --touch
+Specify targets:    hybracter hybrid-single  ... all print_targets
+Available targets:
+    all             Run everything (default)
+    print_targets   List available targets
+"""
+
 help_long_msg_extra = """
 \b
 CLUSTER EXECUTION:
@@ -210,13 +232,33 @@ Available targets:
     print_targets   List available targets
 """
 
-help_msg_download = """
+help_long_single_msg_extra = """
 \b
-Downloads the plassembler database
-hybracter download ... 
+CLUSTER EXECUTION:
+hybracter long-single ... --profile [profile]
+For information on Snakemake profiles see:
+https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
 \b
 RUN EXAMPLES:
-Database:           hybracter install --download [directory]
+Required:           hybracter long-single -l [FASTQ file of longreads]
+Specify output directory:    hybracter long-single  ... --output [directory]
+Specify threads:    hybracter long-single  ... --threads [threads]
+Disable conda:      hybracter long-single  ... --no-use-conda 
+Change defaults:    hybracter long-single  ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter long-single  ... --dry-run --keep-going --touch
+Specify targets:    hybracter long-single  ... all print_targets
+Available targets:
+    all             Run everything (default)
+    print_targets   List available targets
+"""
+
+help_msg_install = """
+\b
+installs the plassembler database
+hybracter install ... 
+\b
+RUN EXAMPLES:
+Database:           hybracter install -d [directory]
 """
 
 
@@ -300,6 +342,7 @@ def hybrid(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "single": False,
         }
     }
 
@@ -311,6 +354,109 @@ def hybrid(
         log=log,
         **kwargs
     )
+
+
+"""
+hybrid single
+"""
+
+
+@click.command(
+    epilog=help_hybrid_single_msg_extra,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@click.option(
+    "-l", "--longreads", help="FASTQ file of longreads", type=str, required=True
+)
+@click.option(
+    "-1",
+    "--short_one",
+    help="R1 FASTQ file of paired end short reads",
+    type=str,
+    required=True,
+)
+@click.option(
+    "-2",
+    "--short_two",
+    help="R2 FASTQ file of paired end short reads",
+    type=str,
+    required=True,
+)
+@click.option(
+    "-s", "--sample", help="Sample name.", 
+    type=str,
+    default="sample",
+    show_default=True
+)
+@click.option(
+    "-c", "--chromosome", help="Approximate lower-bound chromosome length (in base pairs).", 
+    type=int,
+    default=1000000,
+    show_default=True
+)
+@click.option(
+    "--no_polca",
+    help="Do not use Polca to polish assemblies with short reads",
+    is_flag=True,
+    default=False,
+)
+@common_options
+def hybrid_single(
+    longreads,
+    chromosome,
+    sample,
+    short_one,
+    short_two,
+    no_polca,
+    skip_qc,
+    medakaModel,
+    databases,
+    min_quality,
+    flyeModel,
+    min_length,
+    output,
+    contaminants,
+    log,
+    **kwargs
+):
+    """Run hybracter hybrid on 1 isolate"""
+    # Config to add or update in configfile
+    merge_config = {
+        "args": {
+            "longreads": longreads,
+            "short_one": short_one,
+            "short_two": short_two,
+            "sample": sample,
+            "chromosome": chromosome,
+            "output": output,
+            "log": log,
+            "min_length": min_length,
+            "databases": databases,
+            "min_quality": min_quality,
+            "no_polca": no_polca,
+            "skip_qc": skip_qc,
+            "medakaModel": medakaModel,
+            "flyeModel": flyeModel,
+            "contaminants": contaminants,
+            "single": True,
+        }
+    }
+
+    # run!
+    run_snakemake(
+        # Full path to Snakefile
+        snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
+        merge_config=merge_config,
+        log=log,
+        **kwargs
+    )
+
+
+"""
+long
+"""
 
 
 @click.command(
@@ -348,6 +494,7 @@ def long(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "single": False,
         }
     }
 
@@ -362,12 +509,84 @@ def long(
 
 
 """
-download
+long single
 """
 
 
 @click.command(
-    epilog=help_msg_download,
+    epilog=help_long_single_msg_extra,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@click.option(
+    "-l", "--longreads", help="FASTQ file of longreads", type=str, required=True
+)
+@click.option(
+    "-s", "--sample", help="Sample name.", 
+    type=str,
+    default="sample",
+    show_default=True
+)
+@click.option(
+    "-c", "--chromosome", help="FApproximate lower-bound chromosome length (in base pairs).", 
+    type=int,
+    default=1000000,
+    show_default=True
+)
+@common_options
+def long_single(
+    longreads,
+    sample,
+    chromosome,
+    medakaModel,
+    databases,
+    skip_qc,
+    flyeModel,
+    min_length,
+    output,
+    min_quality,
+    contaminants,
+    log,
+    **kwargs
+):
+    """Run hybracter long on 1 isolate"""
+    # Config to add or update in configfile
+    merge_config = {
+        "args": {
+            "longreads": longreads,
+            "sample": sample,
+            "chromosome": chromosome,
+            "output": output,
+            "log": log,
+            "min_length": min_length,
+            "min_quality": min_quality,
+            "skip_qc": skip_qc,
+            "databases": databases,
+            "medakaModel": medakaModel,
+            "flyeModel": flyeModel,
+            "contaminants": contaminants,
+            "single": True,
+        }
+    }
+
+    # run!
+    run_snakemake(
+        # Full path to Snakefile
+        snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
+        merge_config=merge_config,
+        log=log,
+        **kwargs
+    )
+
+
+"""
+install
+"""
+
+
+@click.command(
+    epilog=help_msg_install,
     context_settings=dict(
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
@@ -386,7 +605,7 @@ download
         "--printshellcmds",
         "--nolock",
         "--show-failed-logs",
-        "--conda-frontend conda",
+        "--conda-frontend mamba",
     ],
     help="Customise Snakemake runtime args",
     show_default=True,
@@ -395,16 +614,15 @@ download
     "-d",
     "--databases",
     "databases",
-    help="Directory where the Plassembler Database will be downloaded to.",
+    help="Directory where the Plassembler Database will be installed to.",
     show_default=True,
     default="plassembler_DB",
 )
-def download(databases, **kwargs):
-    # Config to add or update in configfile
+def install(databases, **kwargs):
+    """Downloads and installs the plassembler database"""
     merge_config = {"args": {"databases": databases}}
-    """Downloads the plassembler database"""
     run_snakemake(
-        snakefile_path=snake_base(os.path.join("workflow", "download.smk")),
+        snakefile_path=snake_base(os.path.join("workflow", "install.smk")),
         merge_config=merge_config,
         **kwargs
     )
@@ -521,17 +739,25 @@ def config(configfile, **kwargs):
 
 @click.command()
 def citation(**kwargs):
-    """Print the citation(s) for this tool"""
+    """Print the citation(s) for hybracter"""
     print_citation()
 
 
-cli.add_command(download)
+@click.command()
+def version(**kwargs):
+    """Print the version for hybracter"""
+
+
+cli.add_command(install)
 cli.add_command(hybrid)
+cli.add_command(hybrid_single)
 cli.add_command(long)
+cli.add_command(long_single)
 cli.add_command(test_hybrid)
 cli.add_command(test_long)
 cli.add_command(config)
 cli.add_command(citation)
+cli.add_command(version)
 
 
 def main():

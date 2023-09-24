@@ -129,7 +129,7 @@ def aggregate_short_read_polish_input(wildcards):
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
         if f.read().strip() == "C":
-            return os.path.join(dir.out.polypolish, "{sample}.fasta")
+            return os.path.join(dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt")
         else:
             return os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta")
 

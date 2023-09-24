@@ -28,7 +28,6 @@ rule assemble:
     shell:
         """
         flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir} 2> {log}
-        rm {log}
         flye --version > {output.version}
         cp {output.fasta} {output.copy_fasta}
         """

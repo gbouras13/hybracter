@@ -48,5 +48,23 @@ rule polypolish:
         polypolish {input.fasta} {output.sam1} {output.sam2} > {output.fasta} 2> {log}
         cp {output.fasta} {output.copy_fasta}
         polypolish --version > {output.version}
-        rm {log}
         """
+
+
+rule compare_assemblies_polypolish_vs_medaka_round_2:
+    """
+    compare assemblies 
+    """
+    input:
+        reference=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
+        assembly=os.path.join(dir.out.polypolish, "{sample}.fasta")
+    output:
+        diffs=os.path.join(dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"),
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.med.mem,
+        time=config.resources.med.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "compare_assemblies.py")

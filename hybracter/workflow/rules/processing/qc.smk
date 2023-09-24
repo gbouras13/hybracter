@@ -6,7 +6,7 @@ rule filtlong:
     input:
         fastq=get_input_lr_fastqs,
     output:
-        fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
+        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),
     conda:
         os.path.join(dir.env, "filtlong.yaml")
@@ -25,7 +25,6 @@ rule filtlong:
         """
         filtlong --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq} 2> {log}
         filtlong --version > {output.version}
-        rm {log}
         """
 
 
@@ -52,7 +51,6 @@ rule porechop_abi:
         """
         porechop_abi -i {input.fastq}  -o {output.fastq} -t {threads} 2> {log}
         porechop_abi --version > {output.version}
-        rm {log}
         """
 
 
@@ -86,7 +84,6 @@ rule fastp:
         """
         fastp --in1 {input.r1} --in2 {input.r2} --out1 {output.r1} --out2 {output.r2}  2> {log}
         fastp --version 2> {output.version}
-        rm {log}
         """
 
 

@@ -54,12 +54,19 @@ FLYE_MODEL = config.args.flyeModel
 
 # Parse the samples and read files
 
-dictReads = parseSamples(INPUT, False)  # long flag false
-SAMPLES = list(dictReads.keys())
-
-
-wildcard_constraints:
-    sample="|".join([re.escape(x) for x in SAMPLES]),
+# for hybracter hybrid
+if config.args.single is False:
+    dictReads = parseSamples(INPUT, False)  # long flag false
+    SAMPLES = list(dictReads.keys())
+# for hybracter hybrid-single
+else:
+    dictReads = {}
+    dictReads[config.args.sample] = {}
+    dictReads[config.args.sample]["LR"] = config.args.longreads
+    dictReads[config.args.sample]["MinChromLength"] = config.args.chromosome
+    dictReads[config.args.sample]["R1"] = config.args.short_one
+    dictReads[config.args.sample]["R2"] = config.args.short_two
+    SAMPLES = [config.args.sample]
 
 
 ##############################
@@ -118,4 +125,4 @@ include: os.path.join("rules", "finalise", "select_best_assembly.smk")
 ### rule all
 rule all:
     input:
-        TargetFilesHybrid,
+        TargetFilesHybrid

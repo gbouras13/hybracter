@@ -33,21 +33,15 @@ rule host_removal_mapping_single:
         index=os.path.join(dir.out.contaminant_index, "host.index"),
         fastq=get_input_lr_fastqs,
     output:
-        r1=temp(
-            os.path.join(
+        r1=os.path.join(
                 dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
-            )
-        ),
-        s=temp(
-            os.path.join(
+            ),
+        s=os.path.join(
                 dir.out.contaminant_removal, "{sample}", "{sample}_s.host_rm.fastq.gz"
-            )
-        ),
-        o=temp(
-            os.path.join(
+            ),
+        o=os.path.join(
                 dir.out.contaminant_removal, "{sample}", "{sample}_o.host_rm.fastq.gz"
-            )
-        ),
+            ),
         minimap2_version=os.path.join(dir.out.versions, "{sample}", "minimap2.version"),
         samtools_version=os.path.join(dir.out.versions, "{sample}", "samtools.version"),
     params:
@@ -103,7 +97,7 @@ rule filtlong:
             dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
         ),
     output:
-        fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
+        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),
     conda:
         os.path.join(dir.env, "filtlong.yaml")

@@ -15,7 +15,6 @@ try:
 except (KeyError, AssertionError):
     dir.plassemblerdb = os.path.join(workflow.basedir, "..", "databases")
 
-
 ### OUTPUT LOCATION
 try:
     assert (ap.utils.to_dict(config.args)["output"]) is not None
@@ -143,7 +142,8 @@ dir.env = os.path.join(workflow.basedir, "envs")
 
 # contaminants
 dir.contaminant_genomes = os.path.join(workflow.basedir, "../", "contaminant_genomes")
-
-dir.contaminant_genomes = os.path.join(workflow.basedir, "../", "contaminant_genomes")
 dir.out.contaminant_index = os.path.join(dir.out.processing, "contaminant_index")
 dir.out.contaminant_removal = os.path.join(dir.out.processing, "contaminant_removal")
+
+# compare assemblies 
+dir.out.differences = os.path.join(dir.out.results, "comparisons")

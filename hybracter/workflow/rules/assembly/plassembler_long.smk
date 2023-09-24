@@ -31,7 +31,6 @@ rule plassembler_long:
         touch {output.fasta}
         touch {output.summary}
         plassembler --version > {output.version}
-        rm {log}
         """
 
 

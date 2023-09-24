@@ -6,6 +6,7 @@ rule plassembler_hybrid:
         l=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
+        
     output:
         fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
@@ -33,7 +34,6 @@ rule plassembler_hybrid:
         touch {output.fasta}
         touch {output.summary}
         plassembler --version > {output.version}
-        rm {log}
         """
 
 
