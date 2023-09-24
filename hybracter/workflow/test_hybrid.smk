@@ -29,8 +29,6 @@ configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 config = ap.AttrMap(config)
 
-# loguru
-logger.add(lambda _: sys.exit(1), level="ERROR")
 
 
 # directories
