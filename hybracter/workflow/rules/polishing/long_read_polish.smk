@@ -39,7 +39,7 @@ rule compare_assemblies_medaka_round_1:
         reference=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
         assembly=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta")
     output:
-        diffs=os.path.join(dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"),
+        diffs=os.path.join(dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt")
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -54,10 +54,11 @@ rule dnaapler:
     Runs dnaapler to begin chromosome with dnaa
     """
     input:
-        fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
+        diffs= os.path.join(dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"),
+        fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta")
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
-        version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version"),
+        version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version")
     conda:
         os.path.join(dir.env, "dnaapler.yaml")
     params:
