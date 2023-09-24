@@ -133,3 +133,15 @@ dir.out.final_contigs_incomplete = os.path.join(dir.out.final_contigs, "incomple
 dir.out.final_summaries = os.path.join(dir.out.base, "final_summaries")
 dir.out.final_summaries_complete = os.path.join(dir.out.final_summaries, "complete")
 dir.out.final_summaries_incomplete = os.path.join(dir.out.final_summaries, "incomplete")
+
+# Test dirs
+dir.test = os.path.join(workflow.basedir, "../" , "test_data" )
+dir.test_fastqs = os.path.join(dir.test, "Fastqs")
+dir.env = os.path.join(workflow.basedir, "envs")
+
+# contaminants
+dir.contaminant_genomes = os.path.join(workflow.basedir, "../" , "contaminant_genomes" )
+
+dir.contaminant_genomes = os.path.join(workflow.basedir, "../" , "contaminant_genomes" )
+dir.out.contaminant_index = os.path.join(dir.out.processing, "contaminant_index")
+dir.out.contaminant_removal = os.path.join(dir.out.processing, "contaminant_removal")

@@ -56,7 +56,7 @@ rule dnaapler:
         os.path.join(dir.out.stderr, "dnaapler", "{sample}.log"),
     shell:
         """
-        dnaapler chromosome -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -f 2> {log}
+        dnaapler chromosome -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -a nearest -f 2> {log}
         dnaapler --version > {output.version}
         rm {log}
         """

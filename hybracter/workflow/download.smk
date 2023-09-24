@@ -26,4 +26,4 @@ include: os.path.join("rules", "download", "download_plassembler_db.smk")
 # define the rule all
 rule all:
     input:
-        TargetFilesDownload,
+        TargetFilesDownload

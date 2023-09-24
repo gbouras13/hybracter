@@ -1,4 +1,4 @@
-name: scripts
+name: pyrodigal
 channels:
     - conda-forge
     - bioconda

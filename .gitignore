@@ -13,6 +13,14 @@ __pycache__/
 */*/*/*/*/.DS_Store
 */*/*/*/.DS_Store
 
+# fastp
+fastp.html
+fastp.json
+
+# snakemake
+.snakemake
+.snakemake/*
+
 
 # dont include conda envs locally
 hybracter/workflow/conda/*

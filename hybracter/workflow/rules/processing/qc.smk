@@ -6,10 +6,10 @@ rule filtlong:
     input:
         fastq=get_input_lr_fastqs,
     output:
-        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
+        fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),
     conda:
-        os.path.join(dir.env, "qc.yaml")
+        os.path.join(dir.env, "filtlong.yaml")
     resources:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time,
@@ -29,9 +29,9 @@ rule filtlong:
         """
 
 
-rule porechop:
+rule porechop_abi:
     """
-    runs porechop to trim adapters
+    runs porechop_abi to trim adapters
     """
     input:
         fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
@@ -39,7 +39,7 @@ rule porechop:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
         version=os.path.join(dir.out.versions, "{sample}", "porechop.version"),
     conda:
-        os.path.join(dir.env, "qc.yaml")
+        os.path.join(dir.env, "porechop_abi.yaml")
     resources:
         mem_mb=config.resources.med.mem,
         time=config.resources.med.time,
@@ -50,8 +50,8 @@ rule porechop:
         os.path.join(dir.out.stderr, "porechop", "{sample}.log"),
     shell:
         """
-        porechop -i {input.fastq}  -o {output.fastq} -t {threads} 2> {log}
-        porechop --version > {output.version}
+        porechop_abi -i {input.fastq}  -o {output.fastq} -t {threads} 2> {log}
+        porechop_abi --version > {output.version}
         rm {log}
         """
 

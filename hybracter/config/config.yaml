@@ -15,5 +15,18 @@ resources:
 
 
 
+qc:
+    compression:
+        5
+    minimapIndex:
+        -I 8G
+    hostRemoveFlagstat:
+        -f 4
+        -F 3584
+    minimapModel: #"sr", "map-pb", "map-ont", "map-hifi"
+        map-ont
+    
+    
+
 
 

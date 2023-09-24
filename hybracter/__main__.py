@@ -101,6 +101,13 @@ def common_options(func):
             ),
         ),
         click.option(
+            "--contaminants",
+            help="Contaminants FASTA file to map long readsagainst to filter out. Choose --contaminants lambda to filter out phage lambda long reads.",
+            type=click.Path(),
+            default="none",
+            required=False
+        ),
+        click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
@@ -172,6 +179,7 @@ https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
 \b
 RUN EXAMPLES:
 Required:           hybracter hybrid --input [file]
+Specify output directory:    hybracter hybrid ... --output [directory]
 Specify threads:    hybracter hybrid ... --threads [threads]
 Disable conda:      hybracter hybrid ... --no-use-conda 
 Change defaults:    hybracter hybrid ... --snake-default="-k --nolock"
@@ -190,12 +198,13 @@ For information on Snakemake profiles see:
 https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
 \b
 RUN EXAMPLES:
-Required:           hybracter hybrid --input [file]
-Specify threads:    hybracter hybrid ... --threads [threads]
-Disable conda:      hybracter hybrid ... --no-use-conda 
-Change defaults:    hybracter hybrid ... --snake-default="-k --nolock"
-Add Snakemake args: hybracter hybrid ... --dry-run --keep-going --touch
-Specify targets:    hybracter hybrid ... all print_targets
+Required:           hybracter long --input [file]
+Specify output directory:    hybracter long ... --output [directory]
+Specify threads:    hybracter long ... --threads [threads]
+Disable conda:      hybracter long ... --no-use-conda 
+Change defaults:    hybracter long ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter long ... --dry-run --keep-going --touch
+Specify targets:    hybracter long ... all print_targets
 Available targets:
     all             Run everything (default)
     print_targets   List available targets
@@ -210,13 +219,38 @@ RUN EXAMPLES:
 Database:           hybracter install --download [directory]
 """
 
-help_msg_ale = """
+
+help_msg_test_hybrid = """
 \b
-Compiles ale 
+hybracter test-hybrid  ...
+\b
 RUN EXAMPLES:
-hybracter ale
+Specify output directory:    hybracter test-hybrid  ... --output [directory]
+Specify threads:    hybracter test-hybrid  ... --threads [threads]
+Disable conda:      hybracter test-hybrid  ... --no-use-conda 
+Change defaults:    hybracter test-hybrid  ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter test-hybrid  ... --dry-run --keep-going --touch
+Specify targets:    hybracter test-hybrid  ... all print_targets
+Available targets:
+    all             Run everything (default)
+    print_targets   List available targets
 """
 
+help_msg_test_long = """
+\b
+hybracter test-long ...
+\b
+RUN EXAMPLES:
+Specify output directory:    hybracter test-long  ... --output [directory]
+Specify threads:    hybracter test-long  ... --threads [threads]
+Disable conda:      hybracter test-long  ... --no-use-conda 
+Change defaults:    hybracter test-long  ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter test-long  ... --dry-run --keep-going --touch
+Specify targets:    hybracter test-long  ... all print_targets
+Available targets:
+    all             Run everything (default)
+    print_targets   List available targets
+"""
 
 """
 hybrid
@@ -247,6 +281,7 @@ def hybrid(
     flyeModel,
     min_length,
     output,
+    contaminants,
     log,
     **kwargs
 ):
@@ -264,6 +299,7 @@ def hybrid(
             "skip_qc": skip_qc,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
+            "contaminants": contaminants
         }
     }
 
@@ -294,6 +330,7 @@ def long(
     min_length,
     output,
     min_quality,
+    contaminants,
     log,
     **kwargs
 ):
@@ -310,6 +347,7 @@ def long(
             "databases": databases,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
+            "contaminants": contaminants
         }
     }
 
@@ -322,6 +360,9 @@ def long(
         **kwargs
     )
 
+"""
+download
+"""
 
 @click.command(
     epilog=help_msg_download,
@@ -366,6 +407,82 @@ def download(databases, **kwargs):
         **kwargs
     )
 
+"""
+test hybrid
+"""
+
+# Test command
+@click.command(
+    epilog=help_msg_test_hybrid,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@common_options
+@click.option(
+    "--no_polca",
+    help="Do not use Polca to polish assemblies with short reads",
+    is_flag=True,
+    default=False,
+)
+def test_hybrid(output, log, min_length,min_quality,skip_qc,medakaModel,flyeModel, databases, no_polca, contaminants, **kwargs):
+    """Test hybracter hybrid"""
+    # Config to add or update in configfile
+    merge_config = {
+        "args": {
+            "output": output,
+            "log": log,
+            "min_length": min_length,
+            "min_quality": min_quality,
+            "skip_qc": skip_qc,
+            "medakaModel": medakaModel,
+            "flyeModel": flyeModel,
+            "databases": databases,
+            "no_polca": no_polca,
+            "contaminants": contaminants
+        }
+    }
+    run_snakemake(
+        snakefile_path=snake_base(os.path.join("workflow", "test_hybrid.smk")),
+        merge_config=merge_config,
+        **kwargs
+    )
+
+
+"""
+test long
+"""
+
+# Test command
+@click.command(
+    epilog=help_msg_test_long,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@common_options
+def test_long(output, log,min_length,min_quality,skip_qc,medakaModel, databases, flyeModel,contaminants, **kwargs):
+    """Test hybracter long"""
+    # Config to add or update in configfile
+    merge_config = {
+        "args": {
+            "output": output,
+            "log": log,
+            "min_length": min_length,
+            "min_quality": min_quality,
+            "skip_qc": skip_qc,
+            "medakaModel": medakaModel,
+            "databases": databases,
+            "flyeModel": flyeModel,
+            "contaminants": contaminants
+        }
+    }
+    run_snakemake(
+        snakefile_path=snake_base(os.path.join("workflow", "test_long.smk")),
+        merge_config=merge_config,
+        **kwargs
+    )
+
 
 @click.command()
 @common_options
@@ -383,6 +500,8 @@ def citation(**kwargs):
 cli.add_command(download)
 cli.add_command(hybrid)
 cli.add_command(long)
+cli.add_command(test_hybrid)
+cli.add_command(test_long)
 cli.add_command(config)
 cli.add_command(citation)
 

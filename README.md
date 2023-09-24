@@ -133,7 +133,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads> -d <Plassembler DB 
 ```
 
 * `hybracter hybrid` requires only a CSV file specified with `-i` or `--input`
-* `--no_polca` will turn off POLCA polishing.
+* `--no_polca` will turn off POLCA polishing. Must be used on MacOS.
 * `--min_length` will let the minimum long-read length for Filtlong.
 * `--min_quality` will let the minimum long-read quality for Filtlong.
 * `--skip_qc` will skip all read QC.
