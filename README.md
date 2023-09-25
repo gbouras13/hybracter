@@ -166,7 +166,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>
 #### `hybracter hybrid-single`
 
 ```
-hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 short reads FASTQ> -o <output_dir> -t <threads>  [other arguments]
+hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 short reads FASTQ> -s <sample name> -c <chromosome size> -o <output_dir> -t <threads>  [other arguments]
 ```
 
 #### `hybracter long`
@@ -190,7 +190,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 #### `hybracter long-single`
 
 ```
-hybracter long-single -l <longread FASTQ>  -o <output_dir> -t <threads>  [other arguments]
+hybracter long-single -l <longread FASTQ> -s <sample name> -c <chromosome size>  -o <output_dir> -t <threads>  [other arguments]
 ```
 
 ## Snakemake Profiles
