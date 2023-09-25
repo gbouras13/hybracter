@@ -33,7 +33,7 @@ Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](htt
 ## Why Would You Run Hybracter?
 
 * If you want the best possible _automated_ long read only or hybrid bacterial isolate genome assembly.
-* If you need to assembly many (e.g. 10+) bacterial isolates as efficiently as possible.
+* If you need to assemble many (e.g. 10+) bacterial isolates as efficiently as possible.
 * If you want all  information about from assembly pipeline such as whether your polishing probably improved the genome, whether your assembly was likely complete, and how many plasmids you probably assembled.
 
 ## Other Options

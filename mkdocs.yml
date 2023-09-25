@@ -1,0 +1,23 @@
+site_name: hybracter
+site_url: "https://github.com/gbouras13/hybracter"
+site_author: George Bouras
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+        - bash
+        - shell
+        - python
+nav:
+    - ABOUT:
+      - Overview: index.md
+      - Why Use hybracter?: reasons.md
+      - Citation: citation.md
+    - RUNNING:
+      - Install: install.md
+      - Usage: run.md
+      # - Benchmarking: benchmarking.md
+    - OUTPUT:
+      - Output: output.md
+
