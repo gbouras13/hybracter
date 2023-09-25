@@ -13,11 +13,11 @@ A modern hybrid (and long-only) bacterial assembly pipeline for many isolates us
 git clone "https://github.com/gbouras13/hybracter.git"
 cd hybracter/
 pip install -e .
+hybracter install
+hybracter hybrid-test
+hybracter long-test
 hybracter --help
-hybracter run --help
 ```
-
-
 
 ## Description
 
@@ -66,7 +66,7 @@ If you are looking for the best possible (manual) bacterial assembly on a single
   <img src="img/hybracter.png" alt="Hybracter" height=600>
 </p>
 
-1. QC with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop) and [fastp](https://github.com/OpenGene/fastp)
+1. QC with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop), [fastp](https://github.com/OpenGene/fastp) and optionally contaminant removal using modules from [trimnami](https://github.com/beardymcjohnface/Trimnami).
 2. Long-read assembly with [Flye](https://github.com/fenderglass/Flye). 
 3. Determine whether chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
 4. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
@@ -74,8 +74,8 @@ If you are looking for the best possible (manual) bacterial assembly on a single
 6. For complete isolates, chromosome reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
 7. If short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [Polca](https://github.com/alekseyzimin/masurca).
    * **Note: POLCA is not available on MacOS. You must use `--no_polca`**
-8. Assessment of all assemblies with [ALE](https://github.com/sc932/ALE).
-9.  Selection of the best assembly and output final assembly statistics.
+8. Assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
+9. Selection of the best assembly and output final assembly statistics.
 
 ## Commands
 
@@ -156,7 +156,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>
 * `--no_polca` will turn off POLCA polishing. **Must be used on MacOS.**
 * Use `--min_length` to specify the minimum long-read length for Filtlong.
 * Use `--min_quality` to specify the minimum long-read quality for Filtlong.
-* You can specify a FASTA file containing contaminants with `--contaminants`. All long reads that map to contaminants will be filtered.
+* You can specify a FASTA file containing contaminants with `--contaminants`. All long reads that map to contaminants will be filtered out.
   * You can specify Escherichia phage lambda (a common contaminant in Nanopore library preparation) using `--contaminants lambda`.
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
@@ -200,7 +200,7 @@ I would highly highly recommend running hybracter using a Snakemake profile. Ple
 
 
 ```
-hybracter run --input <input.csv> --output <output_dir> --threads <threads> --polca --profile profiles/hybracter
+hybracter run --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
 ```
 
 ## Version Log
@@ -210,7 +210,6 @@ A brief description of what is new in each update of `hybracter` can be found in
 ## System
 
 `hybracter` is tested on Linux and MacOS with `--no_polca`. 
-
 
 ## Bugs and Suggestions
 
