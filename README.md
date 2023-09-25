@@ -17,20 +17,24 @@ hybracter --help
 hybracter run --help
 ```
 
+
+
 ## Description
 
-`hybracter` is designed for assembling many bacterial isolate genomes using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have a number of isolates with ONT long reads and optionally matched paired end short reads for polishing.
+`hybracter` is designed for assembling many bacterial isolate genomes using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have a number of isolates with Oxford Nanopore Technologies (ONT) long reads and optionally matched paired-end short reads for polishing.
 
-`hybracter`  requires ONT long-only or hybrid ONT long-only & paired end short reads datasets. If you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler)) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler). See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details.
+`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible with as much information as you need to decide upon the best assembly, while also being a one-line automated program. Perfect for lazy people like myself :)
 
-`hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter`  adds some additional steps regarding targetted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientatio with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
+`hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targetted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
-`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible, while also being a one-line automated program.
+Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details.
+
 
 ## Why Would You Run Hybracter?
 
 * If you want the best possible _automated_ long read only or hybrid bacterial isolate genome assembly.
 * If you need to assembly many (e.g. 10+) bacterial isolates as efficiently as possible.
+* If you want all  information about from assembly pipeline such as whether your polishing probably improved the genome, whether your assembly was likely complete, and how many plasmids you probably assembled.
 
 ## Other Options
 
@@ -38,18 +42,19 @@ hybracter run --help
 
 If you are looking for the best possible (manual) bacterial assembly on a single isolate, please definitely use [Trycyler](https://github.com/rrwick/Trycycler). 
 
-  * `hybracter` will not give you better assemblies than Trycycler. Trycycler is the gold standard for a reason.
-  * Instead, `hybracter` is automated, scalable, faster and requires less bioinformatics/microbial genomics expertise to run. 
-  * I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) along side Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
+  * `hybracter` will almost certainly not give you better assemblies than Trycycler. Trycycler is the gold standard for a reason.
+  * `hybracter` is automated, scalable, faster and requires less bioinformatics/microbial genomics expertise to run. 
+  * If you use Trycler, I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) along side Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
 
 #### Dragonflye
 
-[Dragonflye](https://github.com/rpetit3/dragonflye) is a good alternative to `hybracter` for automated assembly, particuarly if you are familiar with [Shovill](https://github.com/tseemann/shovill). Some pros and cons between `hybracter` and `dragonflye` are listed below.
+[Dragonflye](https://github.com/rpetit3/dragonflye) by the awesome @[rpetit3](https://github.com/rpetit3) is a good alternative for automated assembly if `hybracter` doesn't fit your needs, particuarly if you are familiar with [Shovill](https://github.com/tseemann/shovill). Some pros and cons between `hybracter` and `dragonflye` are listed below.
 
   * `dragonflye` allows for more options with regards to assemblers (it supports [Miniasm](https://github.com/lh3/miniasm) or [Raven](https://github.com/lbcb-sci/raven) as well as Flye).
   * On a single isolate, `dragonflye` should be faster (benchmarking coming but the Plassembler, assessment and extra polishing steps of hybracter should make it slower).
   * `hybracter` should be more accurate, due to the extra round of polishing following reorientation, and integration of Plassembler (benchmarking coming).
-  * `hybracter` has the advantage of scalability across multiple samples due to its Snakemake and Snaketool implementation. So if you have access to a cluster, `hybracter` is for you and likely faster.
+  * `hybracter` has the advantage of scalability across multiple samples due to its Snakemake and Snaketool implementation. 
+  * So if you have access to a cluster, `hybracter` is for you and likely faster.
   * `hybracter` gives more accurate plasmid assemblies because it uses [plassembler](https://github.com/gbouras13/plassembler)
   * `hybracter` will suggest automatically whether an assembly is 'complete' or 'incomplete'
   * `hybracter` will assess each polishing step and choose the genome most likely to be the best quality.
@@ -68,23 +73,23 @@ If you are looking for the best possible (manual) bacterial assembly on a single
 5. Long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
 6. For complete isolates, chromosome reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
 7. If short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [Polca](https://github.com/alekseyzimin/masurca).
+   * **Note: POLCA is not available on MacOS. You must use `--no_polca`**
 8. Assessment of all assemblies with [ALE](https://github.com/sc932/ALE).
-9. Selection of the best assembly and output final assembly statistics.
+9.  Selection of the best assembly and output final assembly statistics.
 
 ## Commands
 
 * `hybracter hybrid`: Assembles genomes from isolates that have long-reads and paired-end short reads.
-* `hybracter hybrid-single`: Assembles a single genome from an isolate with long-reads and paired-end short reads. Takes similar parameters to [Unicycler](https://github.com/rrwick/Unicycler).
+* `hybracter hybrid-single`: Assembles a single genome from an isolate with long-reads and paired-end short reads. It takes similar parameters to [Unicycler](https://github.com/rrwick/Unicycler).
 * `hybracter long`: Assembles genomes from isolates that have long-reads only.
 * `hybracter long-single`: Assembles a single genome from an isolate with long-reads only.
 * `hybracter install`: Downloads and installs the required `plassembler` database.
 
-## Input
+## Input csv
 
-* `hybracter hybrid` requires an input csv file to be specified with `--input`. No other inputs are required.
+* `hybracter hybrid` and `hybracter long` require an input csv file to be specified with `--input`. No other inputs are required.
 * This file requires no headers.
-* Other than the reads, `hybracter` requires a value for a lower bound the minimum chromosome length for each isolate in base pairs.
-* It must be an integer.
+* Other than the reads, `hybracter` requires a value for a lower bound the minimum chromosome length for each isolate in base pairs. It must be an integer.
 * `hybracter` will denote contigs about this value as chromosome(s) and if it can recover a chromosome, it will denote the isolate as complete.
 * In practice, I suggest choosing 90% of the estimated chromosome size for this value.
 * e.g. for _S. aureus_, I'd choose 2500000, _E. coli_, 4000000, _P. aeruginosa_ 5500000.
@@ -108,6 +113,8 @@ p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000,sample2_SR_R1.fastq.gz,s
 
 #### `hybracter long`
 
+* It also required an input csv with no headers, but only 3 columns.
+
 * `hybracter long` requires an input csv file with 3 columns. 
 * Each row is a sample.
 * Column 1 is the sample name you want for this isolate. 
@@ -121,15 +128,20 @@ s_aureus_sample1,sample1_long_read.fastq.gz,2500000
 p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000
 ```
 
-
 ## Usage
 
-#### `hybracter download`
+#### `hybracter install`
 
-You will first need to download the Plassembler databases.
+You will first need to install the `hybracter` databases.
 
 ```
-hybracter download -d  <Plassembler DB directory>
+hybracter install
+```
+
+Alternatively, can also specify a particular directory to store them - you will need to specify this with `-d <databases directory>` when you run `hybracter`.
+
+```
+hybracter install -d  <databases directory>
 ```
 
 Once that is done, run `hybracter hybrid` or `hybracter long` as follows.
@@ -137,53 +149,49 @@ Once that is done, run `hybracter hybrid` or `hybracter long` as follows.
 #### `hybracter hybrid`
 
 ```
-hybracter hybrid -i <input.csv> -o <output_dir> -t <threads> -d <Plassembler DB directory>
+hybracter hybrid -i <input.csv> -o <output_dir> -t <threads> 
 ```
 
 * `hybracter hybrid` requires only a CSV file specified with `-i` or `--input`
-* `--no_polca` will turn off POLCA polishing. Must be used on MacOS.
-* `--min_length` will let the minimum long-read length for Filtlong.
-* `--min_quality` will let the minimum long-read quality for Filtlong.
-* `--skip_qc` will skip all read QC.
-* You can change the `--medakaModel` (all available options are listed)
-* You can change the `--flyeModel` (all available options are listed)
+* `--no_polca` will turn off POLCA polishing. **Must be used on MacOS.**
+* Use `--min_length` to specify the minimum long-read length for Filtlong.
+* Use `--min_quality` to specify the minimum long-read quality for Filtlong.
+* You can specify a FASTA file containing contaminants with `--contaminants`. All long reads that map to contaminants will be filtered.
+  * You can specify Escherichia phage lambda (a common contaminant in Nanopore library preparation) using `--contaminants lambda`.
+* `--skip_qc` will skip all read QC steps.
+* You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
+* You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
+
+
+#### `hybracter hybrid-single`
 
 ```
-hybracter hybrid --help
-...
-Usage: hybracter hybrid [OPTIONS] [SNAKE_ARGS]...
-
-  Run hybracter with hybrid long and paired end short reads
-
-Options:
-  -i, --input TEXT                Input csv  [required]
-  --no_polca                      Do not use Polca to polish assemblies with
-                                  short reads
-  --min_length INTEGER            min read length for long reads
-  --min_quality INTEGER           min read quality for long reads
-  --skip_qc                       Do not run porechop, filtlong and fastp to
-                                  QC the reads
-  -d, --databases PATH            Plassembler Databases directory.
-  --medakaModel [r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
-                                  Medaka Model.  [default:
-                                  r1041_e82_400bps_sup_v4.2.0]
-  --flyeModel [--nano-hq|--nano-corr|--nano-raw|--pacbio-raw|--pacbio-corr|--pacbio-hifi]
-                                  Flye Assembly Parameter  [default: --nano-
-                                  hq]
-  -o, --output PATH               Output directory  [default: hybracter.out]
-  --configfile TEXT               Custom config file [default:
-                                  (outputDir)/config.yaml]
-  -t, --threads INTEGER           Number of threads to use  [default: 1]
-  --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
-                                  use-conda]
-  --conda-prefix PATH             Custom conda env directory
-  --snake-default TEXT            Customise Snakemake runtime args  [default:
-                                  --rerun-incomplete, --printshellcmds,
-                                  --nolock, --show-failed-logs, --conda-
-                                  frontend mamba]
-  -h, --help                      Show this message and exit.
+hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 short reads FASTQ> -o <output_dir> -t <threads>  [other arguments]
 ```
 
+#### `hybracter long`
+
+```
+hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
+```
+
+##### Other Arguments 
+
+* `hybracter long` requires only a CSV file specified with `-i` or `--input`
+* Use `--min_length` to specify the minimum long-read length for Filtlong.
+* Use `--min_quality` to specify the minimum long-read quality for Filtlong.
+* You can specify a FASTA file containing contaminants with `--contaminants`. All long reads that map to contaminants will be filtered.
+  * You can specify Escherichia phage lambda (a common contaminant in Nanopore library preparation) using `--contaminants lambda`.
+* `--skip_qc` will skip all read QC steps.
+* You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
+* You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
+
+
+#### `hybracter long-single`
+
+```
+hybracter long-single -l <longread FASTQ>  -o <output_dir> -t <threads>  [other arguments]
+```
 
 ## Snakemake Profiles
 
@@ -195,37 +203,67 @@ I would highly highly recommend running hybracter using a Snakemake profile. Ple
 hybracter run --input <input.csv> --output <output_dir> --threads <threads> --polca --profile profiles/hybracter
 ```
 
+## Version Log
+
+A brief description of what is new in each update of `hybracter` can be found in the HISTORY.md file.
+
+## System
+
+`hybracter` is tested on Linux and MacOS with `--no_polca`. 
 
 
+## Bugs and Suggestions
 
+If you come across bugs with `hybracter`, or would like to make any suggestions to improve the program, please open an issue or email george.bouras@adelaide.edu.au.
 
+# Citation
 
+Bouras, G. (2023). Hybracter: a modern hybrid and long-only bacterial assembly pipeline for many isolates https://github.com/gbouras13/hybracter.  
 
+Please consider also citing the following dependencies, especially my own tools [plassembler](https://github.com/gbouras13/plassembler) and [dnaapler](https://github.com/gbouras13/dnaapler) :)
 
+Plassembler:
+https://doi.org/10.1093/bioinformatics/btad409
 
+Dnaapler:
+https://github.com/gbouras13/dnaapler
 
+Snaketool:
+https://doi.org/10.31219/osf.io/8w5j3
 
+[Wick](https://github.com/rrwick) et al.'s Assembling the perfect bacterial genome paper (provided the intellectual framework for hybracter):
+https://doi.org/10.1371/journal.pcbi.1010905
 
+Trimnami:
+https://github.com/beardymcjohnface/Trimnami
 
-Assessing Quality
-================
+Filtlong:
+https://github.com/rrwick/Filtlong
 
-https://github.com/rrwick/Perfect-bacterial-genome-tutorial/wiki/Assessing-quality-without-a-reference
+Porechop and Porechop_abi:
+https://doi.org/10.1093/bioadv/vbac085
+https://github.com/rrwick/Porechop
 
-Assessing with ALE
+fastp:
+https://doi.org/10.1093/bioinformatics/bty560
 
-If you have short reads, then running ALE to get an ALE score is the best option. Larger ALE scores are better, and since ALE scores are negative, 'larger' means scores with a smaller magnitude and are closer to zero.
+Flye:
+https://doi.org/10.1038/s41587-019-0072-8
 
-To make this easier, we have created the ale_score.sh script (which you can find in the scripts directory of this repo). Just give it the assembly, the two Illumina read files and a thread count like this:
+ALE:
+https://doi.org/10.1093/bioinformatics/bts723
 
-ale_score.sh assembly.fasta reads/illumina_1.fastq.gz reads/illumina_2.fastq.gz 16
-And it will produce a file (the assembly filename with .ale appended) which contains the ALE score.
+Medaka:
+https://github.com/nanoporetech/medaka
 
-Assessing with Prodigal
+Pyrodigal:
+https://doi.org/10.21105/joss.04296
 
-If you don't have short reads, then you can run Prodigal and calculate the mean length of predicted proteins. Larger is better because assembly errors (especially indels) often create stop codons.
+Polypolish:
+https://doi.org/10.1371/journal.pcbi.1009802
 
-To make this easier, we have created the mean_prodigal_length.sh script (which you can find in the scripts directory of this repo). Just give it the assembly like this:
+POLCA:
+https://doi.org/10.1093/bioinformatics/btt476
 
-mean_prodigal_length.sh assembly.fasta
-And it will produce a file (the assembly filename with .prod appended) which contains the mean Prodigal length
+Snakemake:
+https://doi.org/10.12688/f1000research.29032.1
