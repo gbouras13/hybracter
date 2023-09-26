@@ -65,8 +65,7 @@ def common_options(func):
             "-d",
             "--databases",
             help="Plassembler Databases directory.",
-            type=click.Path(dir_okay=True, readable=True),
-            default="plassembler_DB",
+            type=click.Path(dir_okay=True, readable=True)
         ),
         click.option(
             "--medakaModel",
@@ -606,8 +605,7 @@ install
     "--databases",
     "databases",
     help="Directory where the Plassembler Database will be installed to.",
-    show_default=True,
-    default="plassembler_DB",
+    show_default=True
 )
 def install(databases, **kwargs):
     """Downloads and installs the plassembler database"""
