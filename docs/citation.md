@@ -2,7 +2,7 @@
 
 Please cite hybracter in your paper using:
 
-* Bouras, G., Mallawaarachchi V., Roach M.J., Edwards R.A, Vreugde S.  (2023). Hybracter: a modern hybrid and long-only bacterial assembly pipeline for many isolates. https://github.com/gbouras13/hybracter
+* Bouras, G., Mallawaarachchi V., Roach M.J., Edwards R.A, Vreugde S.  (2023). Hybracter: a modern hybrid and long-only bacterial assembly pipeline for many isolates. https://github.com/gbouras13/hybracter.
 
 Please consider also citing these dependencies (especially my own tools Plassembler and Dnaapler :) ):
 

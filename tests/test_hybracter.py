@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-
+import unittest
 import pytest
 
 __author__ = "George Bouras"
@@ -11,6 +11,7 @@ __license__ = "MIT"
 __type__ = "Test Script"
 __maintainer__ = "George Bouras"
 __email__ = "george.bouras@adelaide.edu.au"
+
 
 
 @pytest.fixture(scope="session")
@@ -82,3 +83,16 @@ def test_version():
     """test hybracter version"""
     cmd = "hybracter version"
     exec_command(cmd)
+
+
+class errors(unittest.TestCase):
+
+    def test_no_db(self):
+        """test hybracter with no db"""
+        with self.assertRaises(RuntimeError):
+            threads = 4
+            outdir: Path = "test_hybracter_output"
+            empty_db: Path = "tests/empty_db"
+            cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_polca"
+            exec_command(cmd)
+            remove_directory(outdir)
