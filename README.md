@@ -272,14 +272,13 @@ A brief description of what is new in each update of `hybracter` can be found in
 
 ## System
 
-`hybracter` is tested on Linux and MacOS with `--no_polca`. 
+`hybracter` is tested on Linux, and on MacOS (with `--no_polca`). 
 
 ## Bugs and Suggestions
 
 If you come across bugs with `hybracter`, or would like to make any suggestions to improve the program, please open an issue or email george.bouras@adelaide.edu.au.
 
 # Citation
-
 
 Please consider also citing these dependencies (especially my own tools Plassembler and Dnaapler :) ):
 
