@@ -31,15 +31,18 @@ rule medaka_round_1:
         cp {output.fasta} {output.copy_fasta}
         """
 
+
 rule compare_assemblies_medaka_round_1:
     """
     compare assemblies between medaka and pre-polished chromosome
     """
     input:
         reference=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
-        assembly=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta")
+        assembly=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
     output:
-        diffs=os.path.join(dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt")
+        diffs=os.path.join(
+            dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
+        ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -49,16 +52,19 @@ rule compare_assemblies_medaka_round_1:
     script:
         os.path.join(dir.scripts, "compare_assemblies.py")
 
+
 rule dnaapler:
     """
     Runs dnaapler to begin chromosome with dnaa
     """
     input:
-        diffs= os.path.join(dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"),
-        fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta")
+        diffs=os.path.join(
+            dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
+        ),
+        fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
-        version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version")
+        version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version"),
     conda:
         os.path.join(dir.env, "dnaapler.yaml")
     params:

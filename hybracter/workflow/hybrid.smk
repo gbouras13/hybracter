@@ -30,7 +30,9 @@ configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 config = ap.AttrMap(config)
 
 
+
 # directories
+CHECKDB = True # to check db installations
 include: os.path.join("rules", "preflight", "directories.smk")
 # functions
 include: os.path.join("rules", "preflight", "functions.smk")
@@ -125,4 +127,4 @@ include: os.path.join("rules", "finalise", "select_best_assembly.smk")
 ### rule all
 rule all:
     input:
-        TargetFilesHybrid
+        TargetFilesHybrid,

@@ -54,6 +54,7 @@ rule polca:
         cp {output.fasta} {params.copy_fasta} 
         """
 
+
 rule compare_assemblies_polca_vs_polypolish:
     """
     compare assemblies 
@@ -62,9 +63,9 @@ rule compare_assemblies_polca_vs_polypolish:
         reference=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         assembly=os.path.join(
             dir.out.polca, "{sample}", "{sample}.fasta.PolcaCorrected.fa"
-        )
+        ),
     output:
-        diffs=os.path.join(dir.out.differences, "{sample}", "polca_vs_polypolish.txt")
+        diffs=os.path.join(dir.out.differences, "{sample}", "polca_vs_polypolish.txt"),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -73,6 +74,7 @@ rule compare_assemblies_polca_vs_polypolish:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "compare_assemblies.py")
+
 
 rule polca_incomplete:
     input:

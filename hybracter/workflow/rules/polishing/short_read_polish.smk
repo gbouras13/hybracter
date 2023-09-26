@@ -57,9 +57,11 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
     """
     input:
         reference=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
-        assembly=os.path.join(dir.out.polypolish, "{sample}.fasta")
+        assembly=os.path.join(dir.out.polypolish, "{sample}.fasta"),
     output:
-        diffs=os.path.join(dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"),
+        diffs=os.path.join(
+            dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"
+        ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

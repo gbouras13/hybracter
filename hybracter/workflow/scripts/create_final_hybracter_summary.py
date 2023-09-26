@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import pandas as pd
 import glob
 import os
+
+import pandas as pd
 
 
 def make_final_summary(hybracter_summary, complete_summary_dir, incomplete_summary_dir):

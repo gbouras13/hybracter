@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import pandas as pd
 import os
+
+import pandas as pd
 
 
 def add_sample_plassembler(input, output, sample):

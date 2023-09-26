@@ -9,16 +9,9 @@ import os
 
 import click
 
-from .util import (
-    OrderedCommands,
-    copy_config,
-    default_to_ouput,
-    print_citation,
-    print_version,
-    run_snakemake,
-    snake_base,
-    all_medaka_models,
-)
+from .util import (OrderedCommands, all_medaka_models, copy_config,
+                   default_to_ouput, print_citation, print_version,
+                   run_snakemake, snake_base)
 
 
 def common_options(func):
@@ -385,16 +378,15 @@ hybrid single
     required=True,
 )
 @click.option(
-    "-s", "--sample", help="Sample name.", 
-    type=str,
-    default="sample",
-    show_default=True
+    "-s", "--sample", help="Sample name.", type=str, default="sample", show_default=True
 )
 @click.option(
-    "-c", "--chromosome", help="Approximate lower-bound chromosome length (in base pairs).", 
+    "-c",
+    "--chromosome",
+    help="Approximate lower-bound chromosome length (in base pairs).",
     type=int,
     default=1000000,
-    show_default=True
+    show_default=True,
 )
 @click.option(
     "--no_polca",
@@ -523,16 +515,15 @@ long single
     "-l", "--longreads", help="FASTQ file of longreads", type=str, required=True
 )
 @click.option(
-    "-s", "--sample", help="Sample name.", 
-    type=str,
-    default="sample",
-    show_default=True
+    "-s", "--sample", help="Sample name.", type=str, default="sample", show_default=True
 )
 @click.option(
-    "-c", "--chromosome", help="FApproximate lower-bound chromosome length (in base pairs).", 
+    "-c",
+    "--chromosome",
+    help="FApproximate lower-bound chromosome length (in base pairs).",
     type=int,
     default=1000000,
-    show_default=True
+    show_default=True,
 )
 @common_options
 def long_single(

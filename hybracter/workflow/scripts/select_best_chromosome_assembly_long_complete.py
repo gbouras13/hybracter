@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
+import os
 import sys
+
 import pandas as pd
 import pyrodigal
 from Bio import SeqIO
-import os
 
 
 # determines whether a file is empty

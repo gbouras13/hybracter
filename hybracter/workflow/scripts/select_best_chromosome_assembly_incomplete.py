@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import pandas as pd
 import glob
 import os
+
+import pandas as pd
 from Bio import SeqIO
 
 

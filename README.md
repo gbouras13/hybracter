@@ -265,7 +265,7 @@ I would highly highly recommend running hybracter using a Snakemake profile. Ple
 
 
 ```
-hybracter run --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
+hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
 ```
 
 ## Version Log

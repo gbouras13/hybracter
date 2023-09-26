@@ -16,6 +16,7 @@ config = ap.AttrMap(config)
 
 
 # directories
+CHECKDB = False # to check db installations
 include: os.path.join("rules", "preflight", "directories.smk")
 # targets
 include: os.path.join("rules", "preflight", "targets_download.smk")

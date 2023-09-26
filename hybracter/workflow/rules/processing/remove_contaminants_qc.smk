@@ -34,14 +34,14 @@ rule host_removal_mapping_single:
         fastq=get_input_lr_fastqs,
     output:
         r1=os.path.join(
-                dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
-            ),
+            dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
+        ),
         s=os.path.join(
-                dir.out.contaminant_removal, "{sample}", "{sample}_s.host_rm.fastq.gz"
-            ),
+            dir.out.contaminant_removal, "{sample}", "{sample}_s.host_rm.fastq.gz"
+        ),
         o=os.path.join(
-                dir.out.contaminant_removal, "{sample}", "{sample}_o.host_rm.fastq.gz"
-            ),
+            dir.out.contaminant_removal, "{sample}", "{sample}_o.host_rm.fastq.gz"
+        ),
         minimap2_version=os.path.join(dir.out.versions, "{sample}", "minimap2.version"),
         samtools_version=os.path.join(dir.out.versions, "{sample}", "samtools.version"),
     params:

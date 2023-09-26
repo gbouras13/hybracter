@@ -1,7 +1,8 @@
-import subprocess
 import os
 import shutil
+import subprocess
 from pathlib import Path
+
 import pytest
 
 __author__ = "George Bouras"
@@ -10,7 +11,6 @@ __license__ = "MIT"
 __type__ = "Test Script"
 __maintainer__ = "George Bouras"
 __email__ = "george.bouras@adelaide.edu.au"
-
 
 
 @pytest.fixture(scope="session")
@@ -23,9 +23,11 @@ def workingdir(tmp_dir, monkeypatch):
     """set the working directory for all tests"""
     monkeypatch.chdir(tmp_dir)
 
+
 def remove_directory(dir_path):
     if os.path.exists(dir_path):
         shutil.rmtree(dir_path)
+
 
 def exec_command(cmnd, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
     """executes shell command and returns stdout if completes exit code 0
@@ -52,6 +54,7 @@ def test_hybracter_hybrid():
     exec_command(cmd)
     remove_directory(outdir)
 
+
 def test_hybracter_long():
     """test hybracter long"""
     threads = 4
@@ -60,6 +63,7 @@ def test_hybracter_long():
     exec_command(cmd)
     remove_directory(outdir)
 
+
 def test_hybracter_install():
     """test hybracter install"""
     outdir: Path = "plassembler_db"
@@ -67,10 +71,12 @@ def test_hybracter_install():
     exec_command(cmd)
     remove_directory(outdir)
 
+
 def test_citation():
     """test hybracter citation"""
     cmd = "hybracter citation"
     exec_command(cmd)
+
 
 def test_version():
     """test hybracter version"""

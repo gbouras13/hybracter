@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import pandas as pd
-import os
 import glob
+import os
+
+import pandas as pd
 
 
 def combine_sample_plassembler(summary_dir, output):

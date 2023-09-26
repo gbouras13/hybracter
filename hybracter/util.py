@@ -7,6 +7,7 @@ import subprocess
 import sys
 from shutil import copyfile
 from time import localtime, strftime
+
 import click
 import yaml
 
