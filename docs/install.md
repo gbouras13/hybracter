@@ -1,8 +1,8 @@
 # Installation
 
-You will need conda and ideally mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See below for steps on how to install conda and mamba.
+You will need conda and ideally mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install conda and mamba.
 
-## Conda
+## Installing `hybracter` with Conda
 
 The easiest way to install `hybracter` is via conda. For inexperienced command line users, this method is highly recommended.
 
@@ -24,7 +24,7 @@ mamba install -c bioconda hybracter
 You can also install `hybracter` with pip.
 
 ```
-pip install pharokka
+pip install hybracter
 ```
 
 ## Source
@@ -77,9 +77,6 @@ or
 ```
 hybracter long-test --threads 1
 ```
-
-
-
 
 # Beginner Conda Installation
 
