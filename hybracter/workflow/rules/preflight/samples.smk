@@ -3,6 +3,7 @@ Function for parsing the config and identifying samples and read files
 """
 
 from itertools import chain
+import sys
 
 """
 long
@@ -123,7 +124,6 @@ def parseSamples(csvfile, long_flag):
     has_duplicates = len(SAMPLES) != len(set(SAMPLES))
     
     # error out if dupes
-
     if has_duplicates if True:
         sys.stderr.write(
             f"Duplicates found in the SAMPLES list in column 1 of {csvfile}.\n"
