@@ -31,6 +31,7 @@ config = ap.AttrMap(config)
 
 
 # define plassembler db for test env
+dir.test = os.path.join(workflow.basedir, "../", "test_data")
 dir.plassemblerdb = os.path.join(dir.test, "Plassembler_DB_Test")
 
 # directories

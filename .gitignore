@@ -7,6 +7,11 @@ __pycache__/*
 # C extensions
 *.so
 
+# db
+hybracter/databases
+hybracter/databases/
+hybracter/databases/*
+
 # cach
 hybracter/__pycache__
 hybracter/__pycache__/*
