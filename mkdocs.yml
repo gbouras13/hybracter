@@ -16,6 +16,7 @@ nav:
       - Citation: citation.md
     - RUNNING:
       - Install: install.md
+      - Commands and Input: input.md
       - Usage: run.md
       # - Benchmarking: benchmarking.md
     - OUTPUT:
