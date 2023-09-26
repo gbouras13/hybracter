@@ -29,7 +29,7 @@ dir.rules = os.path.join(workflow.basedir, "rules")
 dir.scripts = os.path.join(workflow.basedir, "scripts")
 
 ### OUTPUT DIRs
-dir.out.results = os.path.join(dir.out.base, "other_results")
+dir.out.results = os.path.join(dir.out.base, "supplementary_results")
 dir.out.flags = os.path.join(dir.out.base, "flags")
 dir.out.versions = os.path.join(dir.out.base, "versions")
 dir.out.processing = os.path.join(dir.out.base, "processing")

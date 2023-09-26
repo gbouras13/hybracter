@@ -71,11 +71,11 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 2. Long-read assembly with [Flye](https://github.com/fenderglass/Flye). 
 3. Determine whether chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
 4. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
-5. Long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
-6. For complete isolates, chromosome reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
-7. If short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [Polca](https://github.com/alekseyzimin/masurca).
+5. For all isolates, long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
+6. For complete isolates, the chromosome is reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
+7. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [Polca](https://github.com/alekseyzimin/masurca).
    * **Note: POLCA is not available on MacOS. You must use `--no_polca`**
-8. Assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
+8. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 9. Selection of the best assembly and output final assembly statistics.
 
 ## Commands
@@ -193,6 +193,39 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 ```
 hybracter long-single -l <longread FASTQ> -s <sample name> -c <chromosome size>  -o <output_dir> -t <threads>  [other arguments]
 ```
+
+## Outputs 
+
+`hybracter` creates a number of output files in different formats. 
+
+For more information about all possible file outputs, please see the documentation.
+
+### Main Output Files
+
+The main outputs are in the `FINAL_OUTPUT` directory.
+
+This directory will include:
+
+1. `hybracter_summary.tsv` file. This gives the summary statistics for your assemblies with the following columns:
+
+```
+|Sample |Complete (True or False) | Total_assembly_length |	Number_of_contigs |	Most_accurate_polishing_round |	Longest_contig_length |	Number_circular_plasmids |
+|--------|-----------------------|-------------------------|-------------------|--------|--|--|
+```
+
+2. `complete` and `incomplete` directories.
+
+All samples that are denoted by hybracter to be complete will have 4 outputs:
+
+   * `sample`_summary.tsv containing the summary statistics for that sample.
+   * `sample`_final.fasta containing the final assembly for that sample.
+   * `sample`_chromosome.fasta containing only the final chromosome(s) assembly for that sample.
+   * `sample`_plasmid.fasta containing only the final plasmid(s) assembly for that sample. Note this may be empty. If this is empty, then that sample had no plasmids.
+
+All samples that are denoted by hybracter to be incomplete will have 2 outputs:
+
+   * `sample`.tsv containing the summary statistics for that sample.
+   * `sample`_final.fasta containing the final assembly for that sample.
 
 ## Snakemake Profiles
 

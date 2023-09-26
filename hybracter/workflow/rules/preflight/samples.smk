@@ -115,4 +115,19 @@ def parseSamples(csvfile, long_flag):
         )
         sys.exit(1)
 
+    # checks for dupes
+
+    SAMPLES = list(dictReads.keys())
+
+    # Check for duplicates
+    has_duplicates = len(SAMPLES) != len(set(SAMPLES))
+    
+    # error out if dupes
+
+    if has_duplicates if True:
+        sys.stderr.write(
+            f"Duplicates found in the SAMPLES list in column 1 of {csvfile}.\n"
+            f"Please check {csvfile} and give each sample a unique name!")
+        sys.exit(1)
+
     return sampleDict

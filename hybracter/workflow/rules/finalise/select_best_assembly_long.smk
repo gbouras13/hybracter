@@ -38,7 +38,7 @@ rule aggregate_finalise_complete:
         ),
         total_fasta=os.path.join(dir.out.final_contigs_complete, "{sample}_final.fasta"),
         pyrodigal_summary=os.path.join(
-            dir.out.pyrodigal_summary, "complete", "{sample}.tsv"
+            dir.out.pyrodigal_summary, "complete", "{sample}_summary.tsv"
         ),
         hybracter_summary=os.path.join(dir.out.final_summaries_complete, "{sample}.tsv"),
     params:
@@ -65,7 +65,7 @@ rule aggregate_finalise_incomplete:
             dir.out.final_contigs_incomplete, "{sample}_final.fasta"
         ),
         pyrodigal_summary=os.path.join(
-            dir.out.pyrodigal_summary, "incomplete", "{sample}.tsv"
+            dir.out.pyrodigal_summary, "incomplete", "{sample}_summary.tsv"
         ),
         hybracter_summary=os.path.join(
             dir.out.final_summaries_incomplete, "{sample}.tsv"

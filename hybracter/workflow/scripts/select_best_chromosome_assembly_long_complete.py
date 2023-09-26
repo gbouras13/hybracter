@@ -95,8 +95,8 @@ def select_best_chromosome_assembly_long_complete(
     # Convert the dictionary to a DataFrame
     summary_df = pd.DataFrame([dict])
 
-    # Write to a CSV file
-    summary_df.to_csv(pyrodigal_summary, index=False)
+    # Write to a tsv file
+    summary_df.to_csv(pyrodigal_summary, index=False, sep="\t")
 
     # determine the best assembly
     best_assembly = medaka_rd_2_fasta
