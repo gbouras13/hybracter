@@ -5,6 +5,37 @@
 
 An automated long-read first bacterial assembly pipeline implement Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
 
+## Table of Contents
+
+- [`hybracter`](#hybracter)
+  - [Table of Contents](#table-of-contents)
+  - [Quick Start](#quick-start)
+  - [Description](#description)
+  - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
+  - [Other Options](#other-options)
+      - [Trycycler](#trycycler)
+      - [Dragonflye](#dragonflye)
+  - [Pipeline](#pipeline)
+  - [Commands](#commands)
+  - [Input csv](#input-csv)
+      - [`hybracter hybrid`](#hybracter-hybrid)
+      - [`hybracter long`](#hybracter-long)
+  - [Usage](#usage)
+      - [`hybracter install`](#hybracter-install)
+      - [`hybracter hybrid`](#hybracter-hybrid-1)
+      - [`hybracter hybrid-single`](#hybracter-hybrid-single)
+      - [`hybracter long`](#hybracter-long-1)
+        - [Other Arguments](#other-arguments)
+      - [`hybracter long-single`](#hybracter-long-single)
+  - [Outputs](#outputs)
+    - [Main Output Files](#main-output-files)
+  - [Snakemake Profiles](#snakemake-profiles)
+  - [Version Log](#version-log)
+  - [System](#system)
+  - [Bugs and Suggestions](#bugs-and-suggestions)
+- [Citation](#citation)
+
+
 ## Quick Start
 
 `hybracter` is available to install from source only for now with `pip`.
@@ -60,7 +91,6 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
   * `hybracter` will suggest automatically whether an assembly is 'complete' or 'incomplete'
   * `hybracter` will assess each polishing step and choose the genome most likely to be the best quality.
 
-
 ## Pipeline
 
 <p align="center">
@@ -80,15 +110,16 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 
 ## Commands
 
-* `hybracter hybrid`: Assembles genomes from isolates that have long-reads and paired-end short reads.
+* `hybracter hybrid`: Assemble multiple genomes from isolates that have long-reads and paired-end short reads.
 * `hybracter hybrid-single`: Assembles a single genome from an isolate with long-reads and paired-end short reads. It takes similar parameters to [Unicycler](https://github.com/rrwick/Unicycler).
-* `hybracter long`: Assembles genomes from isolates that have long-reads only.
+* `hybracter long`: Assemble multiple genomes from isolates that have long-reads only.
 * `hybracter long-single`: Assembles a single genome from an isolate with long-reads only.
 * `hybracter install`: Downloads and installs the required `plassembler` database.
 
 ## Input csv
 
-* `hybracter hybrid` and `hybracter long` require an input csv file to be specified with `--input`. No other inputs are required.
+`hybracter hybrid` and `hybracter long` require an input csv file to be specified with `--input`. No other inputs are required.
+
 * This file requires no headers.
 * Other than the reads, `hybracter` requires a value for a lower bound the minimum chromosome length for each isolate in base pairs. It must be an integer.
 * `hybracter` will denote contigs about this value as chromosome(s) and if it can recover a chromosome, it will denote the isolate as complete.
@@ -114,7 +145,7 @@ p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000,sample2_SR_R1.fastq.gz,s
 
 #### `hybracter long`
 
-* It also required an input csv with no headers, but only 3 columns.
+`hybracter long` also requires an input csv with no headers, but only 3 columns.
 
 * `hybracter long` requires an input csv file with 3 columns. 
 * Each row is a sample.
@@ -198,7 +229,7 @@ hybracter long-single -l <longread FASTQ> -s <sample name> -c <chromosome size> 
 
 `hybracter` creates a number of output files in different formats. 
 
-For more information about all possible file outputs, please see the documentation.
+For more information about all possible file outputs, please see the documentation here.
 
 ### Main Output Files
 
@@ -227,8 +258,8 @@ All samples that are denoted by hybracter to be incomplete will have 2 outputs:
    * `sample`.tsv containing the summary statistics for that sample.
    * `sample`_final.fasta containing the final assembly for that sample.
 
-## Snakemake Profiles
 
+## Snakemake Profiles
 
 I would highly highly recommend running hybracter using a Snakemake profile. Please see this blog [post](https://fame.flinders.edu.au/blog/2021/08/02/snakemake-profiles-updated) for more details. I have included an example slurm profile in the profile directory, but check out this [link](https://github.com/Snakemake-Profiles) for more detail on other HPC job scheduler profiles.
 
@@ -251,52 +282,52 @@ If you come across bugs with `hybracter`, or would like to make any suggestions 
 
 # Citation
 
-Bouras, G. (2023). Hybracter: a modern hybrid and long-only bacterial assembly pipeline for many isolates https://github.com/gbouras13/hybracter.  
 
-Please consider also citing the following dependencies, especially my own tools [plassembler](https://github.com/gbouras13/plassembler) and [dnaapler](https://github.com/gbouras13/dnaapler) :)
+Please consider also citing these dependencies (especially my own tools Plassembler and Dnaapler :) ):
 
 Plassembler:
-https://doi.org/10.1093/bioinformatics/btad409
+* Bouras G., Sheppard A.E., Mallawaarachchi V., Vreugde S., Plassembler: an automated bacterial plasmid assembly tool, Bioinformatics, Volume 39, Issue 7, July 2023, btad409, https://doi.org/10.1093/bioinformatics/btad409. 
 
 Dnaapler:
-https://github.com/gbouras13/dnaapler
+* Bouras, G., Grigson., S., Papudeshi., B., Mallawaarachchi V., Roach, M. J. (2023) Dnaapler: A tool to reorient circular microbial genomes https://github.com/gbouras13/dnaapler.
 
 Snaketool:
-https://doi.org/10.31219/osf.io/8w5j3
+* Roach MJ, Pierce-Ward NT, Suchecki R, Mallawaarachchi V, Papudeshi B, Handley SA, et al. (2022) Ten simple rules and a template for creating workflows-as-applications. PLoS Comput Biol 18(12): e1010705. https://doi.org/10.1371/journal.pcbi.1010705
 
-[Wick](https://github.com/rrwick) et al.'s Assembling the perfect bacterial genome paper (provided the intellectual framework for hybracter):
-https://doi.org/10.1371/journal.pcbi.1010905
+Ryan Wick et al's Assembling the perfect bacterial genome paper, which provided the intellectual framework for hybracter:
+* Wick RR, Judd LM, Holt KE (2023) Assembling the perfect bacterial genome using Oxford Nanopore and Illumina sequencing. PLoS Comput Biol 19(3): e1010905. https://doi.org/10.1371/journal.pcbi.1010905
 
 Trimnami:
-https://github.com/beardymcjohnface/Trimnami
+* Roach MJ. (2023) Trimnami. https://github.com/beardymcjohnface/Trimnami.
 
 Filtlong:
-https://github.com/rrwick/Filtlong
+* Wick RR (2018) Filtlong. https://github.com/rrwick/Filtlong.
 
 Porechop and Porechop_abi:
-* https://doi.org/10.1093/bioadv/vbac085
-* https://github.com/rrwick/Porechop
+* Quentin Bonenfant, Laurent Noé, Hélène Touzet, Porechop_ABI: discovering unknown adapters in Oxford Nanopore Technology sequencing reads for downstream trimming, Bioinformatics Advances, Volume 3, Issue 1, 2023, vbac085, https://doi.org/10.1093/bioadv/vbac085
+* Wick RR (2017) https://github.com/rrwick/Porechop.
 
 fastp:
-https://doi.org/10.1093/bioinformatics/bty560
+* Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu, fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, September 2018, Pages i884–i890, https://doi.org/10.1093/bioinformatics/bty560. 
 
 Flye:
-https://doi.org/10.1038/s41587-019-0072-8
+* Kolmogorov, M., Yuan, J., Lin, Y. et al. Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol 37, 540–546 (2019). https://doi.org/10.1038/s41587-019-0072-8
 
 ALE:
-https://doi.org/10.1093/bioinformatics/bts723
+* Scott C. Clark, Rob Egan, Peter I. Frazier, Zhong Wang, ALE: a generic assembly likelihood evaluation framework for assessing the accuracy of genome and metagenome assemblies, Bioinformatics, Volume 29, Issue 4, February 2013, Pages 435–443, https://doi.org/10.1093/bioinformatics/bts723
 
 Medaka:
-https://github.com/nanoporetech/medaka
+* Oxford Nanopore Technologies, Medaka. https://github.com/nanoporetech/medaka.
 
 Pyrodigal:
-https://doi.org/10.21105/joss.04296
+* Larralde, M., (2022). Pyrodigal: Python bindings and interface to Prodigal, an efficient method for gene prediction in prokaryotes. Journal of Open Source Software, 7(72), 4296, https://doi.org/10.21105/joss.04296.
 
 Polypolish:
-https://doi.org/10.1371/journal.pcbi.1009802
+* Wick RR, Holt KE (2022) Polypolish: Short-read polishing of long-read bacterial genome assemblies. PLoS Comput Biol 18(1): e1009802. https://doi.org/10.1371/journal.pcbi.1009802.
 
 POLCA:
-https://doi.org/10.1093/bioinformatics/btt476
+* Aleksey V. Zimin, Guillaume Marçais, Daniela Puiu, Michael Roberts, Steven L. Salzberg, James A. Yorke, The MaSuRCA genome assembler, Bioinformatics, Volume 29, Issue 21, November 2013, Pages 2669–2677, https://doi.org/10.1093/bioinformatics/btt476.
 
 Snakemake:
-https://doi.org/10.12688/f1000research.29032.1
+* Mölder F, Jablonski KP, Letcher B et al. Sustainable data analysis with Snakemake [version 1; peer review: 1 approved, 1 approved with reservations]. F1000Research 2021, 10:33 (https://doi.org/10.12688/f1000research.29032.1).
+
