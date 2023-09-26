@@ -44,11 +44,12 @@ rule polca:
         cd {params.dir}
         if polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads}  ; then
             echo "POLCA SUCCEEDED"
+            cd $CURR_DIR
         else
             echo "POLCA DID NOT DETECT ANY VARIANTS vs POLYPOLISH. COPYING THE POLYPOLISH FASTA."
+            cd $CURR_DIR
             cp {input.polypolish_fasta} {output.fasta}
         fi  
-        cd $CURR_DIR
         masurca --version > {params.version}
         cp {output.fasta} {params.copy_fasta} 
         """
