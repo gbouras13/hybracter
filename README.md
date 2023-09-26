@@ -237,10 +237,10 @@ This directory will include:
 
 1. `hybracter_summary.tsv` file. This gives the summary statistics for your assemblies with the following columns:
 
-```
+
 |Sample |Complete (True or False) | Total_assembly_length |	Number_of_contigs |	Most_accurate_polishing_round |	Longest_contig_length |	Number_circular_plasmids |
 |--------|-----------------------|-------------------------|-------------------|--------|--|--|
-```
+
 
 2. `complete` and `incomplete` directories.
 
