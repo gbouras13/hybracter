@@ -77,16 +77,15 @@ def check_db(database_dir):
     db_files = ["plsdb.msh", "plsdb.tsv"]
 
     # Check for Database files
-    if CHECKDB is True:
-        dbFail = False
-        for f in db_files:
-            dbFile = os.path.join(database_dir, f)
-            if not os.path.isfile(dbFile):
-                dbFail = True
-                sys.stderr.write(f" ERROR: missing database file {dbFile}\n")
-        if dbFail:
-            sys.stderr.write("\n"
-                "    FATAL: One or more database files is missing.\n"
-                "    Please run 'hybracter install' to download and install the missing database files.\n"
-                "\n")
-            sys.exit(1)
+    dbFail = False
+    for f in db_files:
+        dbFile = os.path.join(database_dir, f)
+        if not os.path.isfile(dbFile):
+            dbFail = True
+            sys.stderr.write(f" ERROR: missing database file {dbFile}\n")
+    if dbFail:
+        sys.stderr.write("\n"
+            "    FATAL: One or more database files is missing.\n"
+            "    Please run 'hybracter install' to download and install the missing database files.\n"
+            "\n")
+        sys.exit(1)
