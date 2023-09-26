@@ -30,6 +30,9 @@ configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 config = ap.AttrMap(config)
 
 
+# define plassembler db for test env
+dir.plassemblerdb = os.path.join(dir.test, "Plassembler_DB_Test")
+
 # directories
 CHECKDB = True # to check db installations
 include: os.path.join("rules", "preflight", "directories.smk")
@@ -69,9 +72,6 @@ dictReads["Sample1"]["R2"] = os.path.join(dir.test_fastqs, "test_short_reads_R2.
 
 SAMPLES = ["Sample1"]
 
-
-# define plassembler db for test env
-dir.plassemblerdb = os.path.join(dir.test, "Plassembler_DB_Test")
 
 ##############################
 # Import rules and functions

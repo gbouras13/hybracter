@@ -26,12 +26,14 @@ onerror:
 # config file
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
-
 config = ap.AttrMap(config)
 
 
+# define plassembler db for test env
+dir.plassemblerdb = os.path.join(dir.test, "Plassembler_DB_Test")
+
 # directories
-CHECKDB = True # to check db installations
+CHECKDB = True # to check db installations inside directories.smk
 include: os.path.join("rules", "preflight", "directories.smk")
 # functions
 include: os.path.join("rules", "preflight", "functions.smk")
@@ -67,10 +69,6 @@ dictReads["Sample1"]["LR"] = os.path.join(dir.test_fastqs, "test_long_reads.fast
 dictReads["Sample1"]["MinChromLength"] = 50000
 
 SAMPLES = ["Sample1"]
-
-
-# define plassembler db for test env
-dir.plassemblerdb = os.path.join(dir.test, "Plassembler_DB_Test")
 
 ##############################
 # Import rules and functions

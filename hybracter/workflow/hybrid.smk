@@ -32,7 +32,7 @@ config = ap.AttrMap(config)
 
 
 # directories
-CHECKDB = True # to check db installations
+CHECKDB = True  # to check db installations inside directories.smk
 include: os.path.join("rules", "preflight", "directories.smk")
 # functions
 include: os.path.join("rules", "preflight", "functions.smk")
