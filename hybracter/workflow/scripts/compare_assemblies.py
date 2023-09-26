@@ -214,8 +214,16 @@ def output_differences(
     ) = get_aligned_seqs(assembly_1_seq, assembly_2_seq, aligner)
     if len(diff_pos) == 1:
         log(f"  1 difference")
+        with open(outputfile, "a") as out:
+            out.write(f"  1 difference")
+            out.write("\n")
+            out.close()
     else:
         log(f"  {len(diff_pos):,} differences")
+        with open(outputfile, "a") as out:
+            out.write(f"  {len(diff_pos):,} differences")
+            out.write("\n")
+            out.close()
     log()
 
     aligned_len = len(assembly_1_aligned)
@@ -255,6 +263,7 @@ def output_differences(
             out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
             out.write(" " * longest_label + differences[start:end] + "\n")
             out.write("\n")
+            out.close()
 
     log()
 
