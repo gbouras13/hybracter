@@ -1,0 +1,9 @@
+name: contaminants
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - minimap2>=2.20
+    - samtools>=1.13
+

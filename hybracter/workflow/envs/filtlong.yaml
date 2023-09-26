@@ -1,0 +1,8 @@
+name: filtlong
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - filtlong >=0.2.1
+    - pigz

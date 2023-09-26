@@ -1,0 +1,10 @@
+name: pyrodigal
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - pandas
+    - numpy
+    - biopython >=1.78
+    - pyrodigal >=3.0.0

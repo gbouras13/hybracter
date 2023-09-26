@@ -1,8 +1,0 @@
-Metadata-Version: 2.1
-Name: hybracter
-Version: 0.1.0
-Summary: Snakemake pipeline to assembly many hybrid Nanopore/Short read bacterial isolates
-Home-page: https://github.com/gbouras13/hybracter
-Author: George Bouras
-Author-email: george.bouras@adelaide.edu.au
-Requires-Python: >=3.9

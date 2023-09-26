@@ -1,4 +1,4 @@
-name: assemble
+name: scripts
 channels:
     - conda-forge
     - bioconda
@@ -6,4 +6,5 @@ channels:
 dependencies:
     - pandas
     - numpy
-    - biopython
+    - biopython >=1.78
+    - mappy >=2.26

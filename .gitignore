@@ -1,12 +1,44 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+__pycache__/*
 *.py[cod]
 *$py.class
 
 # C extensions
 *.so
 
+# db
+hybracter/databases
+hybracter/databases/
+hybracter/databases/*
+
+# cach
+hybracter/__pycache__
+hybracter/__pycache__/*
+hybracter/__pycache__/
+
 .DS_Store
+*/.DS_Store
+*/*/*/.DS_Store
+*/*/.DS_Store
+*/*/*/*/*/.DS_Store
+*/*/*/*/.DS_Store
+
+# fastp
+fastp.html
+fastp.json
+
+# snakemake
+.snakemake
+.snakemake/*
+
+# egg
+hybracter.egg-info
+hybracter.egg-info/*
+
+# dont include conda envs locally
+hybracter/workflow/conda/*
+hybracter/workflow/conda
 
 # Distribution / packaging
 .Python
