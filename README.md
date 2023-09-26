@@ -26,7 +26,6 @@ An automated long-read first bacterial assembly pipeline implement Snakemake and
       - [`hybracter hybrid`](#hybracter-hybrid-1)
       - [`hybracter hybrid-single`](#hybracter-hybrid-single)
       - [`hybracter long`](#hybracter-long-1)
-        - [Other Arguments](#other-arguments)
       - [`hybracter long-single`](#hybracter-long-single)
   - [Outputs](#outputs)
     - [Main Output Files](#main-output-files)
@@ -207,8 +206,6 @@ hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 sho
 ```
 hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 ```
-
-##### Other Arguments 
 
 * `hybracter long` requires only a CSV file specified with `-i` or `--input`
 * Use `--min_length` to specify the minimum long-read length for Filtlong.
