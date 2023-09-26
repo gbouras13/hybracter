@@ -5,7 +5,7 @@ Defines all functions used in hybracter
 import gzip
 from Bio import SeqIO
 import sys
-
+import os
 
 # define functions
 # get long reads
@@ -64,3 +64,29 @@ def check_host():
                 f"You have provided a host genome file {config.args.contaminants} that is not a FASTA file."
             )
     return CONTAM
+
+## database checks
+
+def check_db(database_dir):
+    """
+    database_dir = path to database directory
+    taken and adapted from hecatomb https://github.com/shandley/hecatomb/blob/main/hecatomb/snakemake/workflow/rules/preflight/validate.smk
+    returns nothing (will sys.exit if it fails)
+    """
+
+    db_files = ["plsdb.msh", "plsdb.tsv"]
+
+    # Check for Database files
+    if CHECKDB is True:
+        dbFail = False
+        for f in db_files:
+            dbFile = os.path.join(database_dir, f)
+            if not os.path.isfile(dbFile):
+                dbFail = True
+                sys.stderr.write(f" ERROR: missing database file {dbFile}\n")
+        if dbFail:
+            sys.stderr.write("\n"
+                "    FATAL: One or more database files is missing.\n"
+                "    Please run 'hybracter install' to download and install the missing database files.\n"
+                "\n")
+            sys.exit(1)

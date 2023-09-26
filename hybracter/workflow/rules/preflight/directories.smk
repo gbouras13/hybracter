@@ -4,8 +4,6 @@ Ensures consistent variable names and file locations for the pipeline.
 A lot taken and modified from hecatomb
 """
 
-
-
 import attrmap as ap
 
 dir = ap.AttrMap()
@@ -23,30 +21,6 @@ try:
     dir.out.base = config.args.output
 except (KeyError, AssertionError):
     dir.out.base = "hybracter.out"
-
-### database checks 
-
-db_files = ["plsdb.msh", "plsdb.tsv"]
-
-"""
-taken and adapted from hecatomb https://github.com/shandley/hecatomb/blob/main/hecatomb/snakemake/workflow/rules/preflight/validate.smk
-"""
-
-# Check for Database files
-if CHECKDB is True:
-    dbFail = False
-    for f in db_files:
-        dbFile = os.path.join(dir.plassemblerdb, f)
-        if not os.path.isfile(dbFile):
-            dbFail = True
-            sys.stderr.write(f" ERROR: missing database file {dbFile}\n")
-    if dbFail:
-        sys.stderr.write("\n"
-            "    FATAL: One or more database files is missing.\n"
-            "    Please run 'hybracter install' to download and install the missing database files.\n"
-            "\n")
-        sys.exit(1)
-
 
 
 ### WORKFLOW DIRs

@@ -35,6 +35,11 @@ CHECKDB = True  # to check db installations inside directories.smk
 include: os.path.join("rules", "preflight", "directories.smk")
 # functions
 include: os.path.join("rules", "preflight", "functions.smk")
+
+# check db
+# from functions.smk
+check_db(dir.plassemblerdb)
+
 # samples
 include: os.path.join("rules", "preflight", "samples.smk")
 # targets
