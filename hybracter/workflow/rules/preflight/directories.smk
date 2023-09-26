@@ -29,7 +29,7 @@ dir.rules = os.path.join(workflow.basedir, "rules")
 dir.scripts = os.path.join(workflow.basedir, "scripts")
 
 ### OUTPUT DIRs
-dir.out.results = os.path.join(dir.out.base, "results")
+dir.out.results = os.path.join(dir.out.base, "other_results")
 dir.out.flags = os.path.join(dir.out.base, "flags")
 dir.out.versions = os.path.join(dir.out.base, "versions")
 dir.out.processing = os.path.join(dir.out.base, "processing")
@@ -126,12 +126,12 @@ dir.out.intermediate_assemblies = os.path.join(
 )
 
 # final contigs
-dir.out.final_contigs = os.path.join(dir.out.base, "final_contigs")
+dir.out.final_contigs = os.path.join(dir.out.base, "FINAL_OUTPUT")
 dir.out.final_contigs_complete = os.path.join(dir.out.final_contigs, "complete")
 dir.out.final_contigs_incomplete = os.path.join(dir.out.final_contigs, "incomplete")
 
 # final summaries
-dir.out.final_summaries = os.path.join(dir.out.base, "final_summaries")
+dir.out.final_summaries = os.path.join(dir.out.base, "FINAL_OUTPUT")
 dir.out.final_summaries_complete = os.path.join(dir.out.final_summaries, "complete")
 dir.out.final_summaries_incomplete = os.path.join(dir.out.final_summaries, "incomplete")
 

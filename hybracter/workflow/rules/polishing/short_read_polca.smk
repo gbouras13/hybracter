@@ -42,7 +42,12 @@ rule polca:
         CURR_DIR=$(pwd)
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
+        if polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads}  ; then
+            echo "POLCA SUCCEEDED"
+        else
+            echo "POLCA DID NOT DETECT ANY VARIANTS vs POLYPOLISH. COPYING THE POLYPOLISH FASTA."
+            cp {input.polypolish_fasta} {output.fasta}
+        fi  
         cd $CURR_DIR
         masurca --version > {params.version}
         cp {output.fasta} {params.copy_fasta} 
@@ -113,7 +118,12 @@ rule polca_incomplete:
         CURR_DIR=$(pwd)
         cp {input.polypolish_fasta} {output.polca_input_fasta}
         cd {params.dir}
-        polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads} 
+        if polca.sh -a {params.polca_input_fasta}  -r {params.reads} -t {threads}  ; then
+            echo "POLCA SUCCEEDED"
+        else
+            echo "POLCA DID NOT DETECT ANY VARIANTS vs POLYPOLISH. COPYING THE POLYPOLISH FASTA."
+            cp {input.polypolish_fasta} {output.fasta}
+        fi  
         cd $CURR_DIR
         masurca --version > {params.version}
         cp {output.fasta} {params.copy_fasta} 

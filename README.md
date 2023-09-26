@@ -3,7 +3,7 @@
 
 # `hybracter`
 
-A modern hybrid (and long-only) bacterial assembly pipeline for many isolates using Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
+An automated long-read first bacterial assembly pipeline implement Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
 
 ## Quick Start
 
@@ -21,26 +21,27 @@ hybracter --help
 
 ## Description
 
-`hybracter` is designed for assembling many bacterial isolate genomes using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have a number of isolates with Oxford Nanopore Technologies (ONT) long reads and optionally matched paired-end short reads for polishing.
+`hybracter` is designed for assembling bacterial isolate genomes using a long read first assembly approach. 
+It scales massively using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have isolates with Oxford Nanopore Technologies (ONT) long reads and optionally matched paired-end short reads for polishing.
 
-`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible with as much information as you need to decide upon the best assembly, while also being a one-line automated program. Perfect for lazy people like myself :)
+`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible with as much information as you need to decide upon the best assembly, while also being a one-line automated program. In other words, Unicycler but for 2023. Perfect for lazy people like myself :)
 
-`hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targetted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
+`hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targeted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
-Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details.
-
+Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. Also, you probably still will get good results with hybracter, but the pre-polished genome will be the highest quality! If you really want this feature to be added, please reach out :)
 
 ## Why Would You Run Hybracter?
 
 * If you want the best possible _automated_ long read only or hybrid bacterial isolate genome assembly.
+* In other words, if you love Unicycler like I do, but want something faster and more accurate.
 * If you need to assemble many (e.g. 10+) bacterial isolates as efficiently as possible.
-* If you want all  information about from assembly pipeline such as whether your polishing probably improved the genome, whether your assembly was likely complete, and how many plasmids you probably assembled.
+* If you want all information about from assembly pipeline such as whether your polishing probably improved the genome, whether your assembly was likely complete, and how many plasmids you probably assembled.
 
 ## Other Options
 
 #### Trycycler
 
-If you are looking for the best possible (manual) bacterial assembly on a single isolate, please definitely use [Trycyler](https://github.com/rrwick/Trycycler). 
+If you are looking for the best possible (manual) bacterial assembly for a single isolate, please definitely use [Trycyler](https://github.com/rrwick/Trycycler). 
 
   * `hybracter` will almost certainly not give you better assemblies than Trycycler. Trycycler is the gold standard for a reason.
   * `hybracter` is automated, scalable, faster and requires less bioinformatics/microbial genomics expertise to run. 
@@ -240,8 +241,8 @@ Filtlong:
 https://github.com/rrwick/Filtlong
 
 Porechop and Porechop_abi:
-https://doi.org/10.1093/bioadv/vbac085
-https://github.com/rrwick/Porechop
+* https://doi.org/10.1093/bioadv/vbac085
+* https://github.com/rrwick/Porechop
 
 fastp:
 https://doi.org/10.1093/bioinformatics/bty560
