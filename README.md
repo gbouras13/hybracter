@@ -40,21 +40,19 @@
 
 ## Quick Start
 
-`hybracter` is available to install from source only for now with `pip`.
+`hybracter` is available to install with `pip`. It has no non-python dependencies. 
 
-You will also need conda or mamba available so `hybracter`` can install all the required dependencies. 
-
-I **highly highly** recommend mamba. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
+You will need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 ```
 mamba create -n hybracterENV pip
 conda activate hybracterENV
-git clone "https://github.com/gbouras13/hybracter.git"
-cd hybracter/
-pip install -e .
+pip install hybracter
 hybracter --help
 hybracter install
 ```
+
+Mamba is **highly highly** recommend. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
 
 When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
 

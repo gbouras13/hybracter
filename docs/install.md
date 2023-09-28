@@ -2,30 +2,22 @@
 
 You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install mamba.
 
-## Installing `hybracter` from Bioconda
-
-The easiest way to install `hybracter` is from bioconda. For inexperienced command line users, this method is highly recommended.
-
-```
-conda install -c bioconda hybracter
-```
-
-This will install all the dependencies along with `hybracter`. The dependencies are listed in `build/environment.yaml`.
-
-I would recommend using mamba:
-
-```
-conda install mamba
-mamba install -c bioconda hybracter
-```
-
 ## Pip
 
-You can also install `hybracter` with pip.
+The easiest way to install  `hybracter` is with `pip`. It has no non-python dependencies. 
+
+You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
+
 
 ```
+mamba create -n hybracterENV pip
+conda activate hybracterENV
 pip install hybracter
+hybracter --help
+hybracter install
 ```
+
+Mamba is **highly highly** recommend. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
 
 ## Source
 
