@@ -168,7 +168,7 @@ You only need to specify a input CSV to run  `hybracter long`. It is recommended
 hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 ```
 
-### Other Arguments
+### Arguments
 
 * `hybracter long` requires only a CSV file specified with `-i` or `--input`
 * Use `--min_length` to specify the minimum long-read length for Filtlong.

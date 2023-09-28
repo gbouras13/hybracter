@@ -12,12 +12,13 @@ An automated long-read first bacterial assembly pipeline implementing Snakemake 
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
   - [Description](#description)
+  - [Documentation](#documentation)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
   - [Other Options](#other-options)
       - [Trycycler](#trycycler)
       - [Dragonflye](#dragonflye)
   - [Pipeline](#pipeline)
-  - [Commands](#commands)
+  - [Main Commands](#main-commands)
   - [Input csv](#input-csv)
       - [`hybracter hybrid`](#hybracter-hybrid)
       - [`hybracter long`](#hybracter-long)
@@ -43,7 +44,7 @@ An automated long-read first bacterial assembly pipeline implementing Snakemake 
 
 You will also need conda or mamba available so `hybracter`` can install all the required dependencies. 
 
-I **highly highly** recommend mamba. Please see the [documentation]() for more details on how to install mamba.
+I **highly highly** recommend mamba. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
 
 ```
 mamba create -n hybracterENV pip
@@ -74,6 +75,10 @@ It scales massively using the embarassingly parallel power of HPC and Snakemake 
 `hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targeted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
 Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. Also, you probably still will get good results with hybracter, but the pre-polished genome will be the highest quality! If you really want this feature to be added, please reach out :)
+
+## Documentation
+
+Documentation for `hybracter` is available [here](https://hybracter.readthedocs.io/en/latest/).
 
 ## Why Would You Run Hybracter?
 
@@ -122,13 +127,42 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 8. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 9. Selection of the best assembly and output final assembly statistics.
 
-## Commands
+## Main Commands
 
 * `hybracter hybrid`: Assemble multiple genomes from isolates that have long-reads and paired-end short reads.
 * `hybracter hybrid-single`: Assembles a single genome from an isolate with long-reads and paired-end short reads. It takes similar parameters to [Unicycler](https://github.com/rrwick/Unicycler).
 * `hybracter long`: Assemble multiple genomes from isolates that have long-reads only.
 * `hybracter long-single`: Assembles a single genome from an isolate with long-reads only.
 * `hybracter install`: Downloads and installs the required `plassembler` database.
+
+```
+ _           _                    _            
+| |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
+| '_ \| | | | '_ \| '__/ _` |/ __| __/ _ \ '__|
+| | | | |_| | |_) | | | (_| | (__| ||  __/ |   
+|_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
+       |___/
+
+
+Usage: hybracter [OPTIONS] COMMAND [ARGS]...
+
+  For more options, run: hybracter command --help
+
+Options:
+  -h, --help  Show this message and exit.
+
+Commands:
+  install        Downloads and installs the plassembler database
+  hybrid         Run hybracter with hybrid long and paired end short reads
+  hybrid-single  Run hybracter hybrid on 1 isolate
+  long           Run hybracter with only long reads
+  long-single    Run hybracter long on 1 isolate
+  test-hybrid    Test hybracter hybrid
+  test-long      Test hybracter long
+  config         Copy the system default config file
+  citation       Print the citation(s) for hybracter
+  version        Print the version for hybracter
+```
 
 ## Input csv
 

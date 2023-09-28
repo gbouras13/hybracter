@@ -35,7 +35,7 @@ Commands:
   install        Downloads and installs the plassembler database
   hybrid         Run hybracter with hybrid long and paired end short reads
   hybrid-single  Run hybracter hybrid on 1 isolate
-  long           Run hybracter long
+  long           Run hybracter with only long reads
   long-single    Run hybracter long on 1 isolate
   test-hybrid    Test hybracter hybrid
   test-long      Test hybracter long
@@ -71,8 +71,9 @@ s_aureus_sample1,sample1_long_read.fastq.gz,2500000,sample1_SR_R1.fastq.gz,sampl
 p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000,sample2_SR_R1.fastq.gz,sample2_SR_R2.fastq.gz
 ```
 
-|s_aureus_sample1 |sample1_long_read.fastq.gz| 2500000 |sample1_SR_R1.fastq.gz| sample1_SR_R2.fastq.gz|
-|p_aeruginosa_sample2 |sample2_long_read.fastq.gz| 5500000 |sample2_SR_R1.fastq.gz| sample2_SR_R2.fastq.gz|
+| s_aureus_sample1     | sample1_long_read.fastq.gz | 2500000 | sample1_SR_R1.fastq.gz |  sample1_SR_R2.fastq.gz |
+| -------------------- | -------------------------- | ------- | ---------------------- | ----------------------- |
+| p_aeruginosa_sample2 | sample2_long_read.fastq.gz | 5500000 | sample2_SR_R1.fastq.gz |  sample2_SR_R2.fastq.gz |
 
 #### `hybracter long`
 
@@ -91,7 +92,8 @@ s_aureus_sample1,sample1_long_read.fastq.gz,2500000
 p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000
 ```
 
-|s_aureus_sample1 |sample1_long_read.fastq.gz| 2500000 |
-|p_aeruginosa_sample2 |sample2_long_read.fastq.gz| 5500000 |
+| s_aureus_sample1     | sample1_long_read.fastq.gz | 2500000 |
+| -------------------- | -------------------------- | ------- |
+| p_aeruginosa_sample2 | sample2_long_read.fastq.gz | 5500000 |
 
 
