@@ -1,6 +1,6 @@
 # History
 
-## v0.1.0 (28 Septemeber 2023)
+## v0.1.0 (28 September 2023)
 
 * Initial release.
 
