@@ -9,6 +9,8 @@ import attrmap as ap
 dir = ap.AttrMap()
 
 ### DATABASE LOCATION
+
+
 try:
     assert (ap.utils.to_dict(config.args)["databases"]) is not None
     dir.plassemblerdb = config.args.databases
@@ -20,7 +22,7 @@ try:
     assert (ap.utils.to_dict(config.args)["output"]) is not None
     dir.out.base = config.args.output
 except (KeyError, AssertionError):
-    dir.out.base = "hybracter.out"
+    dir.out.base = "hybracter_out"
 
 
 ### WORKFLOW DIRs

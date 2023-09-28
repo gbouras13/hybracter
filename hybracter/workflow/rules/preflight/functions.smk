@@ -7,6 +7,7 @@ from Bio import SeqIO
 import sys
 import os
 
+
 # define functions
 # get long reads
 def get_input_lr_fastqs(wildcards):
@@ -65,7 +66,9 @@ def check_host():
             )
     return CONTAM
 
+
 ## database checks
+
 
 def check_db(database_dir):
     """
@@ -84,8 +87,10 @@ def check_db(database_dir):
             dbFail = True
             sys.stderr.write(f" ERROR: missing database file {dbFile}\n")
     if dbFail:
-        sys.stderr.write("\n"
+        sys.stderr.write(
+            "\n"
             "    FATAL: One or more database files is missing.\n"
             "    Please run 'hybracter install' to download and install the missing database files.\n"
-            "\n")
+            "\n"
+        )
         sys.exit(1)

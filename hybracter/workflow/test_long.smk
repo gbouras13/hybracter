@@ -26,8 +26,8 @@ onerror:
 # config file
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
-config = ap.AttrMap(config)
 
+config = ap.AttrMap(config)
 
 
 # directories
@@ -35,12 +35,14 @@ include: os.path.join("rules", "preflight", "directories.smk")
 # functions
 include: os.path.join("rules", "preflight", "functions.smk")
 
+
 # set plassemblerdb as test
 dir.plassemblerdb = os.path.join(dir.test, "Plassembler_DB_Test")
 
 # check db
 # from functions.smk
 check_db(dir.plassemblerdb)
+
 
 # samples
 include: os.path.join("rules", "preflight", "samples.smk")

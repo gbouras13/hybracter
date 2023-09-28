@@ -44,7 +44,11 @@ def print_citation():
 
 def msg(err_message, log=None):
     tstamp = strftime("[%Y:%m:%d %H:%M:%S] ", localtime())
-    echo_click(tstamp + err_message + "\n", log=log)
+    try:
+        echo_click(tstamp + err_message + "\n", log=log)
+    except FileNotFoundError:
+        print("Cleaning up intermediate files.")
+
 
 
 def msg_box(splash, errmsg=None, log=None):
@@ -61,11 +65,12 @@ def default_to_ouput(ctx, param, value):
         return os.path.join(ctx.params["output"], value)
     return value
 
+def default_to_ouput(ctx, param, value):
+    """Callback for --configfile; place value in output directory unless specified"""
+    if param.default == value:
+        return os.path.join(ctx.params["output"], value)
+    return value
 
-def read_config(file):
-    with open(file, "r") as stream:
-        _config = yaml.safe_load(stream)
-    return _config
 
 
 def write_config(_config, file, log=None):
@@ -115,6 +120,19 @@ def copy_config(
             f"Config file {local_config} already exists. Using existing config file.",
             log=log,
         )
+
+def read_config(file):
+    """Read a config file to a dictionary
+
+    Args:
+        file (str): Filepath to config YAML file for reading
+
+    Returns (dict): Config read from YAML file
+    """
+
+    with open(file, "r") as stream:
+        config = yaml.safe_load(stream)
+    return config
 
 
 """RUN A SNAKEFILE

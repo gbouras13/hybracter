@@ -4,7 +4,7 @@
 
 # `hybracter`
 
-An automated long-read first bacterial assembly pipeline implement Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
+An automated long-read first bacterial assembly pipeline implementing Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
 
 ## Table of Contents
 
@@ -23,6 +23,7 @@ An automated long-read first bacterial assembly pipeline implement Snakemake and
       - [`hybracter long`](#hybracter-long)
   - [Usage](#usage)
       - [`hybracter install`](#hybracter-install)
+      - [Installing Dependencies](#installing-dependencies)
       - [`hybracter hybrid`](#hybracter-hybrid-1)
       - [`hybracter hybrid-single`](#hybracter-hybrid-single)
       - [`hybracter long`](#hybracter-long-1)
@@ -40,11 +41,24 @@ An automated long-read first bacterial assembly pipeline implement Snakemake and
 
 `hybracter` is available to install from source only for now with `pip`.
 
+You will also need conda or mamba available so `hybracter`` can install all the required dependencies. 
+
+I **highly highly** recommend mamba. Please see the [documentation]() for more details on how to install mamba.
+
 ```
+mamba create -n hybracterENV pip
+conda activate hybracterENV
 git clone "https://github.com/gbouras13/hybracter.git"
 cd hybracter/
 pip install -e .
 hybracter install
+```
+
+When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
+
+If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter hybrid-test` and/or `hybracter long-test` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes. If your computer/node has internet access, please skip this step.
+
+```
 hybracter hybrid-test
 hybracter long-test
 hybracter --help
@@ -76,7 +90,7 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 
   * `hybracter` will almost certainly not give you better assemblies than Trycycler. Trycycler is the gold standard for a reason.
   * `hybracter` is automated, scalable, faster and requires less bioinformatics/microbial genomics expertise to run. 
-  * If you use Trycler, I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) along side Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
+  * If you use Trycycler, I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) along side Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
 
 #### Dragonflye
 
@@ -174,6 +188,20 @@ Alternatively, can also specify a particular directory to store them - you will 
 
 ```
 hybracter install -d  <databases directory>
+```
+
+#### Installing Dependencies
+
+**If you have internet access on the machine or node where you are running hybracter, you can skip this step.**
+
+When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
+
+If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter hybrid-test` and/or `hybracter long-test` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes.
+
+```
+hybracter hybrid-test
+hybracter long-test
+hybracter --help
 ```
 
 Once that is done, run `hybracter hybrid` or `hybracter long` as follows.
