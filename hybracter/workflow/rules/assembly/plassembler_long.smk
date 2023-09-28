@@ -27,10 +27,16 @@ rule plassembler_long:
         os.path.join(dir.out.stderr, "plassembler_long", "{sample}.log"),
     shell:
         """
-        plassembler long -l {input.l} -o {params.outdir} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+        if unicycler --version ; then
+             plassembler long -l {input.l} -o {params.outdir} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+        else
+            pip install git+https://github.com/rrwick/Unicycler.git
+            plassembler long -l {input.l} -o {params.outdir} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+        fi
         touch {output.fasta}
         touch {output.summary}
         plassembler --version > {output.version}
+
         """
 
 
