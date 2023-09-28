@@ -611,7 +611,7 @@ install
     "-o",
     "--output",
     "output",
-    help="Temporary directory where some intermediate files will be stored for hybracter install. \n These can be ignored",
+    help="Temporary directory where intermediate files will be stored for hybracter install. \n This will be deleted.",
     type=click.Path(dir_okay=True, writable=True, readable=True),
     default="hybracter_install_intermediate_files",
     show_default=True,
