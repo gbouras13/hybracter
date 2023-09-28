@@ -18,6 +18,7 @@ nav:
       - Install: install.md
       - Commands and Input: input.md
       - Usage: run.md
+      - Snakemake Profiles: profiles.md
       # - Benchmarking: benchmarking.md
     - OUTPUT:
       - Output: output.md

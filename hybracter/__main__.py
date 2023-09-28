@@ -471,7 +471,7 @@ def long(
     log,
     **kwargs
 ):
-    """Run hybracter long"""
+    """Run hybracter with only long reads"""
     # Config to add or update in configfile
     merge_config = {
         "args": {
