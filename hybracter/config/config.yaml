@@ -1,13 +1,13 @@
 # Snakemake Params
 resources:
     big:
-        mem: 32000      # Memory for big (mostly mmseqs) jobs in megabytes (e.g 64GB = 64000, recommend >= 64000)
+        mem: 32000      # Memory for big  jobs in megabytes (e.g 64GB = 64000, recommend >= 64000)
         cpu: 16         # Threads (recommend >= 16)
         time: 2000      # Max runtime in minutes (allows to set max time for the scheduler via snakemake profiles)
     med:
-        mem: 8000      # Memory for most jobs in megabytes (recommend >= 32000)
-        cpu: 4         # CPUs for most jobs in megabytes (recommend >= 16)
-        time: 500        # Max runtime in minutes for medium jobs (relevant for scheduler)
+        mem: 16000      # Memory for most jobs in megabytes 
+        cpu: 8          # CPUs for most jobs in megabytes 
+        time: 500       # Max runtime in minutes for medium jobs (relevant for scheduler)
     sml:
         mem: 4000
         cpu: 1

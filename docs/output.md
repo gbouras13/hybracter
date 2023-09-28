@@ -32,103 +32,103 @@ All samples that are denoted by hybracter to be incomplete will have 2 outputs:
 
 # Other Outputs
 
-### `supplementary_results` directory
+## `supplementary_results` directory
 
 The `supplementary_results` directory contains a number of supplementary results that you might find useful:
 
-##### `comparisons` directory
+##### 1. `comparisons` directory
 
 * This directory contains visual representations comparing the effect of each polishing round for each sample using a modified version of Ryan Wick's [compare_assemblies.py script](https://github.com/rrwick/Perfect-bacterial-genome-tutorial/blob/main/scripts/compare_assemblies.py). An example is below 
 
 ```
     contig_1 37368-37398: ACCATTTTTGTTTTATTTTTTGTAAAGACAC
     contig_1 37368-37397: ACCATTTTTGTTTTA-TTTTTGTAAAGACAC
-                                        *               
+                                         *              
 
     contig_1 43247-43277: CAACGTTGTTTTCCCTGAGCCTAAATAACCA
     contig_1 43246-43276: CAACGTTGTTTTCCCCGAGCCTAAATAACCA
-                                        *               
+                                         *              
 
     contig_1 44658-44688: CTTGATCTTTATCTATGATTTCATTAATACT
     contig_1 44657-44687: CTTGATCTTTATCTACGATTTCATTAATACT
-                                        *               
+                                         *              
 ```
 
 * If this file is empty, there are no differences between assemblies
 
-##### `intermediate_assemblies` directory
+##### 2. `intermediate_assemblies` directory
 
 * This directory contains intermediate assemblies for all polishing rounds for each sample.
 
-##### `flye_individual_summaries` directory
+##### 3. `flye_individual_summaries` directory
 
 * This directory contains individual sample summaries from Flye for all samples.
 
-##### `plassembler_individual_summaries` directory
+##### 4. `plassembler_individual_summaries` directory
 
 * This directory contains individual sample summaries from Plassembler for each sample.
 
-##### `plassembler_all_assembly_summary` directory
+##### 5. `plassembler_all_assembly_summary` directory
 
 * This directory contains individual sample summaries from Plassembler for all samples.
 
-##### `pyrodigal_mean_length_summaries` directory
+##### 6. `pyrodigal_mean_length_summaries` directory
 
 *  For `long`, this directory contains pyrodigal mean CDS length summary files for each polishing round for each sample.
 
-##### `pyrodigal_mean_length_summaries_plassembler` directory
+##### 7. `pyrodigal_mean_length_summaries_plassembler` directory
 
 *  For `long`, this directory contains pyrodigal mean CDS length summary files for each polishing round for each sample for the plassembler assembled plasmids.
 
-### `processing` directory
+## `processing` directory
 
 The `processing` directory will contain a number of intermediate directories whose information you might find useful:
 
-##### `flye` directory
+##### 1. `flye` directory
 
 * This directory will contain the Flye assembly output and associated intermediate files for each sample
 
-##### `qc` directory
+##### 2. `qc` directory
 
  This directory will contain the filtered, trimmed and contaminant removed FASTQ reads (where applicable) for each sample
 
-##### `plassembler` directory
+##### 3. `plassembler` directory
 
 * This directory will contain the Plassembler assembly output and associated intermediate files for each sample
 
-##### `chrom_pre_polish` directory
+##### 4. `chrom_pre_polish` directory
 
   * This directory will contain the pre-polished chromosome assemblies for complete isolates
 
-##### `complete` and `incomplete` directories
+##### 5. `complete` and `incomplete` directories
 
   * These directories will contain the medaka, polypolish and polca polishing and dnaapler reorientation intermediate files for each sample
 
-##### `ale_out_files` directory
+##### 6. `ale_out_files` directory
 
   * For `hybrid`, this directory will intermediate ALE files for each assembly polishing round internal to `hybracter` (so can be ignored).
 
-##### `ale_scores_complete` and `ale_scores_incomplete`  directories
+##### 7. `ale_scores_complete` and `ale_scores_incomplete`  directories
 
   *  These directories will containin ALE scores for each assembly polishing round.
 
-### `stderr` directory
+## `stderr` directory
 
 * This will contain log files for each program in `hybracter`.
 
-### `versions` directory
+## `versions` directory
 
 * This will contain the specific versions used for each program in `hybracter`.
 
-### `flags` directory
+## `flags` directory
 
 * This will contain flag files internal to `hybracter` (so can be ignored).
 
-### `completeness` directory
+## `completeness` directory
 
 * This will contain flag files internal to determine completeness internal to `hybracter` (so can be ignored).
 
-### `benchmarks` directory
+## `benchmarks` directory
 
 * This will contain benchmarking time and memory usage statistics for each program in hybracter.
 

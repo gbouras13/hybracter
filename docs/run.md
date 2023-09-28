@@ -168,7 +168,7 @@ You only need to specify a input CSV to run  `hybracter long`. It is recommended
 hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 ```
 
-### Other Arguments
+### Arguments
 
 * `hybracter long` requires only a CSV file specified with `-i` or `--input`
 * Use `--min_length` to specify the minimum long-read length for Filtlong.
@@ -263,11 +263,3 @@ Options:
   -h, --help                      Show this message and exit.
 ```
 
-## Snakemake Profiles
-
-I would highly recommend running hybracter using a Snakemake profile. Please see this blog [post](https://fame.flinders.edu.au/blog/2021/08/02/snakemake-profiles-updated) for more details. I have included an example slurm profile in the `profile` [directory](https://github.com/gbouras13/hybracter/tree/main/profiles/hybracter), but check out this [link](https://github.com/Snakemake-Profiles) for more detail on other HPC job scheduler profiles.
-
-You can run `hybracter` with a profile using `--profile` e.g.:
-```
-hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
-```

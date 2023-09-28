@@ -33,7 +33,7 @@ setup(
     packages=find_packages(),
     url="https://github.com/gbouras13/hybracter",
     python_requires=">=3.9",
-    description="Snakemake pipeline to assembly many hybrid Nanopore/Short read bacterial isolates",
+    description="An automated long-read first bacterial genome assembly pipeline.",
     version=get_version(),
     author="George Bouras",
     author_email="george.bouras@adelaide.edu.au",
@@ -43,8 +43,7 @@ setup(
         "pyyaml>=6.0",
         "Click>=8.1.3",
         "attrmap>=0.0.5",
-        "snakefmt>=0.8.4",
-        "biopython>=1.76",
+        "biopython>=1.76"
     ],
     entry_points={"console_scripts": ["hybracter=hybracter.__main__:main"]},
     include_package_data=True,

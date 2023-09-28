@@ -24,7 +24,7 @@ def common_options(func):
             "--output",
             help="Output directory",
             type=click.Path(dir_okay=True, writable=True, readable=True),
-            default="hybracter.out",
+            default="hybracter_out",
             show_default=True,
         ),
         click.option(
@@ -471,7 +471,7 @@ def long(
     log,
     **kwargs
 ):
-    """Run hybracter long"""
+    """Run hybracter with only long reads"""
     # Config to add or update in configfile
     merge_config = {
         "args": {
@@ -604,15 +604,41 @@ install
     "-d",
     "--databases",
     "databases",
-    help="Directory where the Plassembler Database will be installed to.",
+    help="Directory where the Plassembler Database will be installed to (optional).",
     show_default=True
 )
-def install(databases, **kwargs):
+@click.option(
+    "-o",
+    "--output",
+    "output",
+    help="Temporary directory where intermediate files will be stored for hybracter install. \n This will be deleted.",
+    type=click.Path(dir_okay=True, writable=True, readable=True),
+    default="hybracter_install_intermediate_files",
+    show_default=True,
+)
+@click.option(
+            "--configfile",
+            default="config.yaml",
+            show_default=False,
+            callback=default_to_ouput,
+            help="Custom config file [default: (outputDir)/config.yaml]",
+        )
+@click.option(
+            "--log",
+            "log",
+            default="hybracter.log",
+            callback=default_to_ouput,
+            hidden=True,
+        )
+@click.argument("snake_args", nargs=-1)
+def install(databases,output, log, **kwargs):
+    # define both together
     """Downloads and installs the plassembler database"""
-    merge_config = {"args": {"databases": databases}}
+    merge_config = {"args": {"databases": databases, "output": output, "log": log}}
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "install.smk")),
         merge_config=merge_config,
+        log=log,
         **kwargs
     )
 

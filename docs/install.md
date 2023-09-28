@@ -1,18 +1,18 @@
 # Installation
 
-You will need conda and ideally mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install conda and mamba.
+You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install mamba.
 
-## Installing `hybracter` with Conda
+## Installing `hybracter` from Bioconda
 
-The easiest way to install `hybracter` is via conda. For inexperienced command line users, this method is highly recommended.
+The easiest way to install `hybracter` is from bioconda. For inexperienced command line users, this method is highly recommended.
 
 ```
 conda install -c bioconda hybracter
 ```
 
-This will install all the dependencies along with `hybracter`. The dependencies are listed in environment.yml.
+This will install all the dependencies along with `hybracter`. The dependencies are listed in `build/environment.yaml`.
 
-I would recommend using mamba :
+I would recommend using mamba:
 
 ```
 conda install mamba
@@ -60,42 +60,51 @@ The containerised environments will automatically be created as required when yo
 
 For users who will be running `hybracter` offline e.g. on a cluster, this means you should probably run a small test datasets like `hybracter hybrid-test` and `hybracter long-test` where internet is available online (such as on the head node) to ensure all required environments are installed. I am one of these people :)
 
-Finally, but default `hybracter` will use mamba to install your environments. If you must use conda not mamba, use `--conda-frontend conda` to force `hybracter` to use conda. 
+Finally, but default `hybracter` will use mamba to install your environments. If for some reason you must use conda not mamba, use `--conda-frontend conda` with your hybracter command to force `hybracter` to use conda. 
 
 # `hybracter` testing
 
-Once you have installed `hybracter` and run `hybracter install`, it is recommended to run a test to make sure hybracter installs all required compartmentalised environments.
+Once you have installed `hybracter` and run `hybracter install`, it is recommended to run a test to make sure hybracter installs all required dependencies. It should take 5-10 minutes.
 
 For example you can run
 
 ```
-hybracter hybrid-test --threads 1
+# linux
+hybracter hybrid-test --threads 8
+# macOS
+hybracter hybrid-test --threads 8 --no_polca
 ```
 
-or 
+and for long (same for Linux and MacOS)
 
 ```
 hybracter long-test --threads 1
 ```
 
-# Beginner Conda Installation
+# Beginner Conda and Mamba Installation
 
-If you are new to using the command-line, please install conda using the following instructions.
+If you are new to using the command-line, please install mamba or conda using either option detailed below.
 
-1. Install [Anaconda](https://www.anaconda.com/products/distribution). I would recommend [miniconda](https://docs.conda.io/en/latest/miniconda.html).
-2. Assuming you are using a Linux x86_64 machine (for other architectures, please replace the URL with the appropriate one on the [miniconda](https://docs.conda.io/en/latest/miniconda.html) website).
+I would prefer and recommend the miniforge option as it comes with mamba!
 
-`curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh`
+##  Install miniforge
+
+1. Install [miniforge](https://github.com/conda-forge/miniforge). This will automatically install conda.
+
+Assuming you are using a Linux x86_64 machine (for other architectures, please replace the URL with the appropriate [here](https://github.com/conda-forge/miniforge)
+
+`curl -O https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh`
 
 For Mac (Intel, will also work with M1):
 
-`curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh`
+`curl -O https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh`
 
-3. Install miniconda and follow the prompts.
+Install miniforge and follow the prompts.
 
-`sh Miniconda3-latest-Linux-x86_64.sh`
+`sh Miniforge3-Linux-x86_64.sh`
 
-4. After installation is complete, you should add the following channels to your conda configuration:
+
+2. After installation is complete, you should add the following channels to your conda configuration:
 
 ```
 conda config --add channels defaults
@@ -103,11 +112,7 @@ conda config --add channels bioconda
 conda config --add channels conda-forge
 ```
 
-5. After this, conda should be installed (you may need to restart your terminal). It is recommended that mamba is also installed, as it will solve the enviroment quicker than conda:
-
-`conda install mamba`
-
-6. Finally, I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
+3. Finally, I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
 
 ```
 mamba create -n hybracterENV hybracter
@@ -115,3 +120,41 @@ conda activate hybracterENV
 hybracter -h
 ```
 
+## Install Miniconda
+
+1. Install [Anaconda](https://www.anaconda.com/products/distribution). I would recommend [miniconda](https://docs.conda.io/en/latest/miniconda.html).
+
+Assuming you are using a Linux x86_64 machine (for other architectures, please replace the URL with the appropriate one on the [miniconda](https://docs.conda.io/en/latest/miniconda.html) website).
+
+`curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh`
+
+For Mac (Intel, will also work with M1):
+
+`curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh`
+
+Install miniconda and follow the prompts.
+
+`sh Miniconda3-latest-Linux-x86_64.sh`
+
+
+2. After installation is complete, you should add the following channels to your conda configuration:
+
+```
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+```
+
+3. After this, conda should be installed (you may need to restart your terminal). It is recommended that mamba is also installed, as it will solve the enviroment quicker than conda:
+
+```
+conda install mamba
+```
+
+4. Finally, I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
+
+```
+mamba create -n hybracterENV hybracter
+conda activate hybracterENV
+hybracter -h
+```

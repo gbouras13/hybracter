@@ -4,7 +4,7 @@
 
 # `hybracter`
 
-An automated long-read first bacterial assembly pipeline implement Snakemake and [Snaketool](https://github.com/beardymcjohnface/Snaketool).
+`hybracter` is an automated long-read first bacterial genome assembly pipeline implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool).
 
 ## Table of Contents
 
@@ -12,17 +12,19 @@ An automated long-read first bacterial assembly pipeline implement Snakemake and
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
   - [Description](#description)
+  - [Documentation](#documentation)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
   - [Other Options](#other-options)
       - [Trycycler](#trycycler)
       - [Dragonflye](#dragonflye)
   - [Pipeline](#pipeline)
-  - [Commands](#commands)
+  - [Main Commands](#main-commands)
   - [Input csv](#input-csv)
       - [`hybracter hybrid`](#hybracter-hybrid)
       - [`hybracter long`](#hybracter-long)
   - [Usage](#usage)
       - [`hybracter install`](#hybracter-install)
+      - [Installing Dependencies](#installing-dependencies)
       - [`hybracter hybrid`](#hybracter-hybrid-1)
       - [`hybracter hybrid-single`](#hybracter-hybrid-single)
       - [`hybracter long`](#hybracter-long-1)
@@ -40,14 +42,32 @@ An automated long-read first bacterial assembly pipeline implement Snakemake and
 
 `hybracter` is available to install from source only for now with `pip`.
 
+You will also need conda or mamba available so `hybracter`` can install all the required dependencies. 
+
+I **highly highly** recommend mamba. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
+
 ```
+mamba create -n hybracterENV pip
+conda activate hybracterENV
 git clone "https://github.com/gbouras13/hybracter.git"
 cd hybracter/
 pip install -e .
-hybracter install
-hybracter hybrid-test
-hybracter long-test
 hybracter --help
+hybracter install
+```
+
+When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
+
+If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter hybrid-test` and/or `hybracter long-test` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes. If your computer/node has internet access, please skip this step.
+
+```
+# linux
+hybracter hybrid-test --threads 8
+# macOS
+hybracter hybrid-test --threads 8 --no_polca
+
+# same for both linux and mac
+hybracter long-test --threads 8
 ```
 
 ## Description
@@ -55,11 +75,15 @@ hybracter --help
 `hybracter` is designed for assembling bacterial isolate genomes using a long read first assembly approach. 
 It scales massively using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have isolates with Oxford Nanopore Technologies (ONT) long reads and optionally matched paired-end short reads for polishing.
 
-`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible with as much information as you need to decide upon the best assembly, while also being a one-line automated program. In other words, Unicycler but for 2023. Perfect for lazy people like myself :)
+`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible with as much information as you need to decide upon the best assembly, while also being a one-line automated program. In other words, as awesome as Unicycler, but updated for 2023. Perfect for lazy people like myself.
 
 `hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targeted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
-Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. Also, you probably still will get good results with hybracter, but the pre-polished genome will be the highest quality! If you really want this feature to be added, please reach out :)
+Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. Also, you probably still will get good results with hybracter, but the pre-polished genome will be the highest quality! If you really want this feature to be added, please reach out.
+
+## Documentation
+
+Documentation for `hybracter` is available [here](https://hybracter.readthedocs.io/en/latest/).
 
 ## Why Would You Run Hybracter?
 
@@ -76,7 +100,7 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 
   * `hybracter` will almost certainly not give you better assemblies than Trycycler. Trycycler is the gold standard for a reason.
   * `hybracter` is automated, scalable, faster and requires less bioinformatics/microbial genomics expertise to run. 
-  * If you use Trycler, I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) along side Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
+  * If you use Trycycler, I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) along side Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
 
 #### Dragonflye
 
@@ -108,13 +132,42 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 8. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 9. Selection of the best assembly and output final assembly statistics.
 
-## Commands
+## Main Commands
 
 * `hybracter hybrid`: Assemble multiple genomes from isolates that have long-reads and paired-end short reads.
 * `hybracter hybrid-single`: Assembles a single genome from an isolate with long-reads and paired-end short reads. It takes similar parameters to [Unicycler](https://github.com/rrwick/Unicycler).
 * `hybracter long`: Assemble multiple genomes from isolates that have long-reads only.
 * `hybracter long-single`: Assembles a single genome from an isolate with long-reads only.
 * `hybracter install`: Downloads and installs the required `plassembler` database.
+
+```
+ _           _                    _            
+| |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
+| '_ \| | | | '_ \| '__/ _` |/ __| __/ _ \ '__|
+| | | | |_| | |_) | | | (_| | (__| ||  __/ |   
+|_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
+       |___/
+
+
+Usage: hybracter [OPTIONS] COMMAND [ARGS]...
+
+  For more options, run: hybracter command --help
+
+Options:
+  -h, --help  Show this message and exit.
+
+Commands:
+  install        Downloads and installs the plassembler database
+  hybrid         Run hybracter with hybrid long and paired end short reads
+  hybrid-single  Run hybracter hybrid on 1 isolate
+  long           Run hybracter with only long reads
+  long-single    Run hybracter long on 1 isolate
+  test-hybrid    Test hybracter hybrid
+  test-long      Test hybracter long
+  config         Copy the system default config file
+  citation       Print the citation(s) for hybracter
+  version        Print the version for hybracter
+```
 
 ## Input csv
 
@@ -174,6 +227,20 @@ Alternatively, can also specify a particular directory to store them - you will 
 
 ```
 hybracter install -d  <databases directory>
+```
+
+#### Installing Dependencies
+
+**If you have internet access on the machine or node where you are running hybracter, you can skip this step.**
+
+When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
+
+If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter hybrid-test` and/or `hybracter long-test` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes.
+
+```
+hybracter hybrid-test
+hybracter long-test
+hybracter --help
 ```
 
 Once that is done, run `hybracter hybrid` or `hybracter long` as follows.
