@@ -16,7 +16,7 @@ jobs:
       with:
         python-version: 3.11
         activate-environment: hybracterENV
-        environment-file: build/environment.yml
+        environment-file: build/environment.yaml
         auto-activate-base: false
         miniforge-variant: Mambaforge
         channels: conda-forge,bioconda,defaults
