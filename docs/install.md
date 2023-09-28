@@ -4,7 +4,7 @@ You will need conda and **highly recommended** mamba to run `hybracter`, because
 
 ## Pip
 
-The easiest way to install  `hybracter` is with `pip`. It has no non-python dependencies. 
+`hybracter` is available to install with `pip` (it will be on conda soon). 
 
 You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 

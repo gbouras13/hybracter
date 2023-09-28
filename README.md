@@ -3,6 +3,9 @@
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/gbouras13/hybracter/dev?color=8a35da)
 [![DOI](https://zenodo.org/badge/574521745.svg)](https://zenodo.org/badge/latestdoi/574521745)
 
+[![PyPI version](https://badge.fury.io/py/hybracter.svg)](https://badge.fury.io/py/hybracter)
+[![Downloads](https://static.pepy.tech/badge/hybracter)](https://pepy.tech/project/hybracter)
+
 # `hybracter`
 
 `hybracter` is an automated long-read first bacterial genome assembly pipeline implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool).
@@ -41,7 +44,7 @@
 
 ## Quick Start
 
-`hybracter` is available to install with `pip`. It has no non-python dependencies. 
+`hybracter` is available to install with `pip` (will be on conda soon). 
 
 You will need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
