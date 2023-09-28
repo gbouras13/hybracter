@@ -28,12 +28,18 @@ CLASSIFIERS = [
     "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 
+# read long description
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name="hybracter",
     packages=find_packages(),
     url="https://github.com/gbouras13/hybracter",
     python_requires=">=3.9",
     description="An automated long-read first bacterial genome assembly pipeline.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     version=get_version(),
     author="George Bouras",
     author_email="george.bouras@adelaide.edu.au",
