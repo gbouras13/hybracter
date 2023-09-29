@@ -32,6 +32,7 @@ rule aggregate_finalise_complete:
         final_plasmid_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_plasmid.fasta"
         ),
+        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt")
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
@@ -60,6 +61,7 @@ rule aggregate_finalise_incomplete:
         medaka_fasta=os.path.join(
             dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
         ),
+        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt")
     output:
         total_fasta=os.path.join(
             dir.out.final_contigs_incomplete, "{sample}_final.fasta"

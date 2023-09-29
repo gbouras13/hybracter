@@ -82,8 +82,8 @@ rule select_best_chromosome_assembly_complete:
 rule select_best_chromosome_assembly_incomplete:
     input:
         ale_input = aggregate_ale_input,
-        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ale_flag = os.path.join(dir.out.aggr_ale, "{sample}.txt"),  # to make sure ale has finished
+        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt")
     output:
         fasta=os.path.join(dir.out.final_contigs_incomplete, "{sample}_final.fasta"),
         ale_summary=os.path.join(dir.out.ale_summary, "incomplete", "{sample}.tsv"),
