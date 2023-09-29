@@ -127,7 +127,6 @@ def select_best_chromosome_assembly_incomplete(
             number_of_contigs += 1
 
     # read in the flye info and extract longest contig
-    # Read the TSV file into a Pandas DataFrame.
     flye_df = pd.read_csv(flye_info, sep='\t')
 
     # Find the row with the largest length.
