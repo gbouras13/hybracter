@@ -45,6 +45,7 @@ rule select_best_chromosome_assembly_complete:
         plassembler_fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
         ),
+        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt")
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
@@ -80,14 +81,15 @@ rule select_best_chromosome_assembly_complete:
 #  also calculates the summary
 rule select_best_chromosome_assembly_incomplete:
     input:
-        aggregate_ale_input,
-        os.path.join(dir.out.aggr_ale, "{sample}.txt"),  # to make sure ale has finished
+        ale_input = aggregate_ale_input,
+        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt"
+        ale_flag = os.path.join(dir.out.aggr_ale, "{sample}.txt"),  # to make sure ale has finished
     output:
         fasta=os.path.join(dir.out.final_contigs_incomplete, "{sample}_final.fasta"),
         ale_summary=os.path.join(dir.out.ale_summary, "incomplete", "{sample}.tsv"),
         hybracter_summary=os.path.join(
             dir.out.final_summaries_incomplete, "{sample}.tsv"
-        ),
+        )
     params:
         ale_dir=os.path.join(dir.out.ale_scores_incomplete, "{sample}"),
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
