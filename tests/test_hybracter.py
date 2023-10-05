@@ -45,7 +45,7 @@ def exec_command(cmnd, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
     return out.decode("utf8") if out is not None else None
 
 
-def test_hybracter_hybrid():
+def test_hybracter_t_hybrid():
     """hybracter test-hybrid"""
     threads = 4
     outdir: Path = "test_hybracter_output"
@@ -54,7 +54,7 @@ def test_hybracter_hybrid():
     remove_directory(outdir)
 
 
-def test_hybracter_long():
+def test_hybracter_t_long():
     """hybracter test-long"""
     threads = 4
     outdir: Path = "test_hybracter_output"
@@ -69,6 +69,7 @@ def test_hybracter_install():
     exec_command(cmd)
 
 
+@pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_hybrid_csv():
     """test hybracter hybrid"""
     threads = 4
@@ -78,7 +79,7 @@ def test_hybracter_hybrid_csv():
     exec_command(cmd)
     remove_directory(outdir)
 
-
+@pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_long():
     """test hybracter long"""
     threads = 4
@@ -88,6 +89,7 @@ def test_hybracter_long():
     exec_command(cmd)
     remove_directory(outdir)
 
+@pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_hybrid_single():
     """test hybracter hybrid w"""
     threads = 4
@@ -99,7 +101,7 @@ def test_hybracter_hybrid_single():
     exec_command(cmd)
     remove_directory(outdir)
 
-
+@pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_long_single():
     """test hybracter long"""
     threads = 4
