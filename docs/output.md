@@ -10,8 +10,8 @@ This directory will include:
 
 1. `hybracter_summary.tsv` file. This gives the summary statistics for your assemblies with the following columns:
 
-|Sample |Complete (True or False) | Total_assembly_length |	Number_of_contigs |	Most_accurate_polishing_round |	Longest_contig_length |	Number_circular_plasmids |
-|--------|-----------------------|-------------------------|-------------------|--------|--|--|
+|Sample |Complete (True or False) | Total_assembly_length |	Number_of_contigs |	Most_accurate_polishing_round |	Longest_contig_length | Longest_contig_coverage|	Number_circular_plasmids |
+|--------|-----------------------|-------------------------|-------------------|--------|--|--|--|
 
 
 ## Summary Assemblies
