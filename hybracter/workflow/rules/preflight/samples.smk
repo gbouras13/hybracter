@@ -118,7 +118,7 @@ def parseSamples(csvfile, long_flag):
 
     # checks for dupes
 
-    SAMPLES = list(dictReads.keys())
+    SAMPLES = list(sampleDict.keys())
 
     # Check for duplicates
     has_duplicates = len(SAMPLES) != len(set(SAMPLES))

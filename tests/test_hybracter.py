@@ -12,17 +12,15 @@ __type__ = "Test Script"
 __maintainer__ = "George Bouras"
 __email__ = "george.bouras@adelaide.edu.au"
 
+# test data
+test_data_path = Path("hybracter/test_data")
+db_dir: Path = "plassembler_db"
 
 
 @pytest.fixture(scope="session")
 def tmp_dir(tmpdir_factory):
     return tmpdir_factory.mktemp("tmp")
 
-
-@pytest.fixture(autouse=True)
-def workingdir(tmp_dir, monkeypatch):
-    """set the working directory for all tests"""
-    monkeypatch.chdir(tmp_dir)
 
 
 def remove_directory(dir_path):
@@ -47,8 +45,8 @@ def exec_command(cmnd, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
     return out.decode("utf8") if out is not None else None
 
 
-def test_hybracter_hybrid():
-    """test hybracter hybrid"""
+def test_hybracter_t_hybrid():
+    """hybracter test-hybrid"""
     threads = 4
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_polca"
@@ -56,8 +54,8 @@ def test_hybracter_hybrid():
     remove_directory(outdir)
 
 
-def test_hybracter_long():
-    """test hybracter long"""
+def test_hybracter_t_long():
+    """hybracter test-long"""
     threads = 4
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-long --threads {threads} --output {outdir}"
@@ -66,18 +64,57 @@ def test_hybracter_long():
 
 
 def test_hybracter_install():
-    """test hybracter install"""
-    outdir: Path = "plassembler_db"
-    cmd = f"hybracter install  --databases {outdir}"
+    """test hybracter install and install dirs for later tests"""
+    cmd = f"hybracter install  --databases {db_dir}"
+    exec_command(cmd)
+
+
+@pytest.mark.dependency(depends=['test_hybracter_install'])
+def test_hybracter_hybrid_csv():
+    """test hybracter hybrid"""
+    threads = 4
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --no_polca --databases {db_dir}"
     exec_command(cmd)
     remove_directory(outdir)
 
+@pytest.mark.dependency(depends=['test_hybracter_install'])
+def test_hybracter_long():
+    """test hybracter long"""
+    threads = 4
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_long_input.csv"
+    cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+@pytest.mark.dependency(depends=['test_hybracter_install'])
+def test_hybracter_hybrid_single():
+    """test hybracter hybrid w"""
+    threads = 4
+    outdir: Path = "test_hybracter_output"
+    longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
+    reads1: Path = test_data_path / "Fastqs/test_short_reads_R1.fastq.gz"
+    reads2: Path = test_data_path / "Fastqs/test_short_reads_R2.fastq.gz"
+    cmd = f"hybracter hybrid-single -l {longreads} -1 {reads1} -2 {reads2} -c 50000 -s Sample1 --threads {threads} --output {outdir} --no_polca --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+@pytest.mark.dependency(depends=['test_hybracter_install'])
+def test_hybracter_long_single():
+    """test hybracter long"""
+    threads = 4
+    outdir: Path = "test_hybracter_output"
+    longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
+    cmd = f"hybracter long-single -l {longreads} -c 50000 -s Sample1  --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_citation():
     """test hybracter citation"""
     cmd = "hybracter citation"
     exec_command(cmd)
-
 
 def test_version():
     """test hybracter version"""
@@ -96,3 +133,6 @@ class errors(unittest.TestCase):
             cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_polca"
             exec_command(cmd)
             remove_directory(outdir)
+
+# cleanup 
+remove_directory(db_dir)

@@ -1,0 +1,2 @@
+Sample1,hybracter/test_data/Fastqs/test_long_reads.fastq.gz,50000,hybracter/test_data/Fastqs/test_short_reads_R1.fastq.gz,hybracter/test_data/Fastqs/test_short_reads_R2.fastq.gz
+Sample2,hybracter/test_data/Fastqs/test_long_reads.fastq.gz,100000,hybracter/test_data/Fastqs/test_short_reads_R1.fastq.gz,hybracter/test_data/Fastqs/test_short_reads_R2.fastq.gz

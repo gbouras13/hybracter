@@ -41,6 +41,7 @@ def select_best_chromosome_assembly_complete(
     polypolish_fasta,
     polca_fasta,
     sample,
+    flye_info
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -210,6 +211,17 @@ def select_best_chromosome_assembly_complete(
 
     number_of_contigs = chromosomes + plasmids
 
+
+    # read in the flye info and extract longest contig
+    # Read the TSV file into a Pandas DataFrame.
+    flye_df = pd.read_csv(flye_info, sep='\t')
+
+    # Find the row with the largest length.
+    longest_contig_row = flye_df[flye_df['length'] == flye_df['length'].max()]
+
+    # Extract the coverage value from the longest contig row.
+    longest_contig_coverage = longest_contig_row['cov.'].values[0]
+
     # to get the summary df
     summary_dict = {
         "Sample": sample,
@@ -218,6 +230,7 @@ def select_best_chromosome_assembly_complete(
         "Number_of_contigs": number_of_contigs,
         "Most_accurate_polishing_round": best_round,
         "Longest_contig_length": longest_contig_length,
+        "Longest_contig_coverage": longest_contig_coverage,
         "Number_circular_plasmids": int(circular_plasmids),
     }
 
@@ -240,4 +253,5 @@ select_best_chromosome_assembly_complete(
     snakemake.params.polypolish_fasta,
     snakemake.params.polca_fasta,
     snakemake.wildcards.sample,
+    snakemake.input.flye_info
 )
