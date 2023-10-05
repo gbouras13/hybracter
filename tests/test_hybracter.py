@@ -22,11 +22,6 @@ def tmp_dir(tmpdir_factory):
     return tmpdir_factory.mktemp("tmp")
 
 
-@pytest.fixture(autouse=True)
-def workingdir(tmp_dir, monkeypatch):
-    """set the working directory for all tests"""
-    monkeypatch.chdir(tmp_dir)
-
 
 def remove_directory(dir_path):
     if os.path.exists(dir_path):
