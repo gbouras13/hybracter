@@ -31,9 +31,9 @@ rule bwa_mem:
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
-        os.path.join(dir.out.bench, "bwa_mem_incomplete", "{sample}.txt")
+        os.path.join(dir.out.bench, "bwa_mem", "{sample}.txt")
     log:
-        os.path.join(dir.out.stderr, "bwa_mem_incomplete", "{sample}.log"),
+        os.path.join(dir.out.stderr, "bwa_mem", "{sample}.log"),
     shell:
         """
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
@@ -49,7 +49,7 @@ rule polypolish:
     output:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         version=os.path.join(
-            dir.out.versions, "{sample}", "polypolish_incomplete.version"
+            dir.out.versions, "{sample}", "polypolish.version"
         ),
         copy_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
