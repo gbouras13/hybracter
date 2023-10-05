@@ -1,5 +1,11 @@
 # History
 
+
+## v0.1.1 (5 October 2023)
+
+* Fixes a small [bug](https://github.com/gbouras13/hybracter/issues/9) with samples.smk
+* Thanks @npbhavya and @simone-pignotti for detecting it.
+
 ## v0.1.0 (28 September 2023)
 
 * Initial release.
