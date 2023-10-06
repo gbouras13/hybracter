@@ -45,6 +45,7 @@ rule assess_medaka_incomplete:
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
+        index=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta.bwt"),
         score=os.path.join(
             dir.out.ale_scores_incomplete, "{sample}", "incomp_pre_polish.score"
         ),
@@ -68,8 +69,6 @@ rule assess_medaka_incomplete:
         os.path.join(dir.out.stderr, "ale", "{sample}_incomp_medaka.log"),
     shell:
         """
-
-        bwa index {input.fasta}
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
