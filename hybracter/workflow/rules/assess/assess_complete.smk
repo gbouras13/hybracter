@@ -51,7 +51,7 @@ rule assess_medaka_rd_1:
     output:
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "medaka_rd_1.score"),
         ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "medaka_rd_1.ale")),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}medaka_rd_1.sam")),
+        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_medaka_rd_1.sam")),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -79,11 +79,12 @@ rule assess_medaka_rd_2:
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
+        index=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta.bwt"),
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "medaka_rd_1.score"),
     output:
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "medaka_rd_2.score"),
         ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "medaka_rd_2.ale")),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}medaka_rd_2.sam")),
+        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_medaka_rd_2.sam")),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -96,7 +97,6 @@ rule assess_medaka_rd_2:
         os.path.join(dir.out.stderr, "ale", "{sample}_medaka_rd_2.log"),
     shell:
         """
-        bwa index {input.fasta}
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
@@ -115,7 +115,7 @@ rule assess_polypolish:
     output:
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "polypolish.score"),
         ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "polypolish.ale")),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}polypolish.sam")),
+        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_polypolish.sam")),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -149,7 +149,7 @@ rule assess_polca:
     output:
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "polca.score"),
         ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "polca.ale")),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}polca.sam")),
+        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_polca.sam")),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
