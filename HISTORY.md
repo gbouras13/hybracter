@@ -1,5 +1,10 @@
 # History
 
+## v0.1.2 (6 October 2023)
+
+* Fixes [bugs](https://github.com/gbouras13/hybracter/issues/13) with bwa index creation and typos in some output files.
+* Thanks  @simone-pignotti for detecting and fixing [it](https://github.com/gbouras13/hybracter/pull/14)
+
 
 ## v0.1.1 (5 October 2023)
 
