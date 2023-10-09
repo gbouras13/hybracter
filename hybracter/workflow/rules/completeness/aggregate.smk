@@ -130,7 +130,7 @@ def aggregate_short_read_polish_input(wildcards):
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
         if f.read().strip() == "C":
             return os.path.join(
-                dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"
+                dir.out.differences, "{sample}", "pypolca_vs_polypolish.txt"
             )
         else:
             return os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta")
@@ -187,12 +187,10 @@ def aggregate_polca_polish_input(wildcards):
         0
     ].open() as f:
         if f.read().strip() == "C":
-            return os.path.join(
-                dir.out.polca, "{sample}", "{sample}.fasta.PolcaCorrected.fa"
-            )
+            return os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta")
         else:
             return os.path.join(
-                dir.out.polca_incomplete, "{sample}", "{sample}.fasta.PolcaCorrected.fa"
+                dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
             )
 
 
@@ -201,7 +199,7 @@ rule aggregate_polca_polish_input:
     input:
         aggregate_polca_polish_input,
     output:
-        os.path.join(dir.out.aggr_polca_polish, "{sample}.txt"),
+        os.path.join(dir.out.aggr_pypolca_polish, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time,
@@ -215,9 +213,11 @@ rule aggregate_polca_polish_input:
 rule aggr_polca_flag:
     """Aggregate."""
     input:
-        expand(os.path.join(dir.out.aggr_polca_polish, "{sample}.txt"), sample=SAMPLES),
+        expand(
+            os.path.join(dir.out.aggr_pypolca_polish, "{sample}.txt"), sample=SAMPLES
+        ),
     output:
-        flag=os.path.join(dir.out.flags, "aggr_polca.flag"),
+        flag=os.path.join(dir.out.flags, "aggr_pypolca.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
         time=config.resources.sml.time,
@@ -248,18 +248,20 @@ def aggregate_ale_input(wildcards):
         0
     ].open() as f:
         if f.read().strip() == "C":  # complete
-            if config.args.no_polca is False:  # with polca
+            if config.args.no_pypolca is False:  # with pypolca
                 return os.path.join(
-                    dir.out.ale_scores_complete, "{sample}", "polca.score"
+                    dir.out.ale_scores_complete, "{sample}", "pypolca.score"
                 )
             else:  # with polca, best is polypolish
                 return os.path.join(
                     dir.out.ale_scores_complete, "{sample}", "polypolish.score"
                 )
         else:  # incomplete
-            if config.args.no_polca is False:  # with polca
+            if config.args.no_pypolca is False:  # with pypolca
                 return os.path.join(
-                    dir.out.ale_scores_incomplete, "{sample}", "polca_incomplete.score"
+                    dir.out.ale_scores_incomplete,
+                    "{sample}",
+                    "pypolca_incomplete.score",
                 )
             else:
                 return os.path.join(

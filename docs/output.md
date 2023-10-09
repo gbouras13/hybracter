@@ -102,7 +102,7 @@ The `processing` directory will contain a number of intermediate directories who
 
 ##### 5. `complete` and `incomplete` directories
 
-  * These directories will contain the medaka, polypolish and polca polishing and dnaapler reorientation intermediate files for each sample
+  * These directories will contain the medaka, polypolish and pypolca polishing and dnaapler reorientation intermediate files for each sample
 
 ##### 6. `ale_out_files` directory
 

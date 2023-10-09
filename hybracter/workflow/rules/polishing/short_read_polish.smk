@@ -48,9 +48,7 @@ rule polypolish:
         sam2=os.path.join(dir.out.bwa, "{sample}_2.sam"),
     output:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
-        version=os.path.join(
-            dir.out.versions, "{sample}", "polypolish.version"
-        ),
+        version=os.path.join(dir.out.versions, "{sample}", "polypolish.version"),
         copy_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
@@ -79,6 +77,9 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
     input:
         reference=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         assembly=os.path.join(dir.out.polypolish, "{sample}.fasta"),
+        diffs=os.path.join(
+            dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
+        )
     output:
         diffs=os.path.join(
             dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"

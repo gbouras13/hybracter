@@ -75,7 +75,17 @@ def test_hybracter_hybrid_csv():
     threads = 4
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_hybrid_input.csv"
-    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --no_polca --databases {db_dir}"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+@pytest.mark.dependency(depends=['test_hybracter_install'])
+def test_hybracter_no_pypolca():
+    """test hybracter hybrid no pypolca"""
+    threads = 4
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --no_pypolca --databases {db_dir}"
     exec_command(cmd)
     remove_directory(outdir)
 
