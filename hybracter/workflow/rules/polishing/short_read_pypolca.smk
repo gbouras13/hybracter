@@ -25,7 +25,7 @@ rule pypolca:
         os.path.join(dir.out.stderr, "pypolca", "{sample}.log"),
     shell:
         """
-        pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t 8 -f -p {wildcards.sample} 2> {log}
+        pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t {threads} -f -p {wildcards.sample} 2> {log}
         pypolca --version > {params.version}
         cp {output.fasta} {params.copy_fasta} 
         """
@@ -81,7 +81,7 @@ rule pypolca_incomplete:
         os.path.join(dir.out.stderr, "pypolca_incomplete", "{sample}.log"),
     shell:
         """
-        pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t 8 -f -p {wildcards.sample} 2> {log}
+        pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t {threads} -f -p {wildcards.sample} 2> {log}
         pypolca --version > {params.version}
         cp {output.fasta} {params.copy_fasta} 
         """
