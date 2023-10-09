@@ -12,7 +12,9 @@ def aggregate_finalise(wildcards):
         0
     ].open() as f:
         if f.read().strip() == "C":  # complete
-            return os.path.join(dir.out.ale_scores_complete, "{sample}", "pypolca.score")
+            return os.path.join(
+                dir.out.ale_scores_complete, "{sample}", "pypolca.score"
+            )
         else:  # incomplete
             return os.path.join(
                 dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"

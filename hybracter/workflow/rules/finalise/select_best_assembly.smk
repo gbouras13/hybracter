@@ -26,7 +26,9 @@ def aggregate_ale_input_finalise(wildcards):
         else:  # incomplete
             if config.args.no_pypolca is False:  # with pypolca
                 return os.path.join(
-                    dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"
+                    dir.out.ale_scores_incomplete,
+                    "{sample}",
+                    "pypolca_incomplete.score",
                 )
             else:
                 return os.path.join(

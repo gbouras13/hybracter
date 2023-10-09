@@ -135,7 +135,7 @@ rule assess_polca_incomplete:
         ),
         sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_pypolca_incomplete_1.sam")),
         score=os.path.join(
-                    dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"
+            dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"
         ),
     conda:
         os.path.join(dir.env, "ale.yaml")

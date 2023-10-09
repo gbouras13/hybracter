@@ -40,7 +40,7 @@ rule compare_assemblies_pypolca_vs_polypolish:
         assembly=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         diffs=os.path.join(
             dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"
-        )
+        ),
     output:
         diffs=os.path.join(dir.out.differences, "{sample}", "pypolca_vs_polypolish.txt"),
     conda:
@@ -162,8 +162,6 @@ rule pypolca_incomplete:
 #     threads: config.resources.sml.cpu
 #     script:
 #         os.path.join(dir.scripts, "compare_assemblies.py")
-
-
 # rule polca_incomplete:
 #     input:
 #         polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
