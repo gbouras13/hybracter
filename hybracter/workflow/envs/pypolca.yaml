@@ -1,8 +1,7 @@
-name: polca
+name: pypolca
 channels:
     - conda-forge
     - bioconda
     - defaults
 dependencies:
-    - masurca >=4.1.0
-    - bwa >=0.7.17
+    - pypolca >=0.1.1

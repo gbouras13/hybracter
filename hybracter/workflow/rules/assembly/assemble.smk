@@ -16,6 +16,7 @@ rule assemble:
         os.path.join(dir.env, "flye.yaml")
     resources:
         mem_mb=config.resources.big.mem,
+        mem = str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     params:
         model=FLYE_MODEL,
@@ -40,6 +41,7 @@ rule extract_flye_assembly_info:
         info=os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -68,8 +70,9 @@ rule aggr_assemble:
     output:
         flag=os.path.join(dir.out.flags, "aggr_assemble.flag"),
     resources:
-        mem_mb=config.resources.big.mem,
-        time=config.resources.big.time,
+        mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
         """

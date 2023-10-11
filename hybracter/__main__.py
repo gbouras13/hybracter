@@ -299,15 +299,15 @@ hybrid
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @click.option(
-    "--no_polca",
-    help="Do not use Polca to polish assemblies with short reads",
+    "--no_pypolca",
+    help="Do not use pypolca to polish assemblies with short reads",
     is_flag=True,
     default=False,
 )
 @common_options
 def hybrid(
     _input,
-    no_polca,
+    no_pypolca,
     skip_qc,
     medakaModel,
     databases,
@@ -329,7 +329,7 @@ def hybrid(
             "min_length": min_length,
             "databases": databases,
             "min_quality": min_quality,
-            "no_polca": no_polca,
+            "no_pypolca": no_pypolca,
             "skip_qc": skip_qc,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
@@ -388,8 +388,8 @@ hybrid single
     show_default=True,
 )
 @click.option(
-    "--no_polca",
-    help="Do not use Polca to polish assemblies with short reads",
+    "--no_pypolca",
+    help="Do not use pypolca to polish assemblies with short reads",
     is_flag=True,
     default=False,
 )
@@ -400,7 +400,7 @@ def hybrid_single(
     sample,
     short_one,
     short_two,
-    no_polca,
+    no_pypolca,
     skip_qc,
     medakaModel,
     databases,
@@ -426,7 +426,7 @@ def hybrid_single(
             "min_length": min_length,
             "databases": databases,
             "min_quality": min_quality,
-            "no_polca": no_polca,
+            "no_pypolca": no_pypolca,
             "skip_qc": skip_qc,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
@@ -657,8 +657,8 @@ test hybrid
 )
 @common_options
 @click.option(
-    "--no_polca",
-    help="Do not use Polca to polish assemblies with short reads",
+    "--no_pypolca",
+    help="Do not use pypolca to polish assemblies with short reads",
     is_flag=True,
     default=False,
 )
@@ -671,7 +671,7 @@ def test_hybrid(
     medakaModel,
     flyeModel,
     databases,
-    no_polca,
+    no_pypolca,
     contaminants,
     **kwargs
 ):
@@ -687,7 +687,7 @@ def test_hybrid(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "databases": databases,
-            "no_polca": no_polca,
+            "no_pypolca": no_pypolca,
             "contaminants": contaminants,
         }
     }

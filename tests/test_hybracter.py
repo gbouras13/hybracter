@@ -21,7 +21,7 @@ db_dir: Path = "plassembler_db"
 def tmp_dir(tmpdir_factory):
     return tmpdir_factory.mktemp("tmp")
 
-
+threads = 2
 
 def remove_directory(dir_path):
     if os.path.exists(dir_path):
@@ -47,16 +47,14 @@ def exec_command(cmnd, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
 
 def test_hybracter_t_hybrid():
     """hybracter test-hybrid"""
-    threads = 4
     outdir: Path = "test_hybracter_output"
-    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_polca"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir}"
     exec_command(cmd)
     remove_directory(outdir)
 
 
 def test_hybracter_t_long():
     """hybracter test-long"""
-    threads = 4
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-long --threads {threads} --output {outdir}"
     exec_command(cmd)
@@ -72,17 +70,24 @@ def test_hybracter_install():
 @pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_hybrid_csv():
     """test hybracter hybrid"""
-    threads = 4
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_hybrid_input.csv"
-    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --no_polca --databases {db_dir}"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+@pytest.mark.dependency(depends=['test_hybracter_install'])
+def test_hybracter_no_pypolca():
+    """test hybracter hybrid no pypolca"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --no_pypolca --databases {db_dir}"
     exec_command(cmd)
     remove_directory(outdir)
 
 @pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_long():
     """test hybracter long"""
-    threads = 4
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_long_input.csv"
     cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
@@ -91,20 +96,18 @@ def test_hybracter_long():
 
 @pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_hybrid_single():
-    """test hybracter hybrid w"""
-    threads = 4
+    """test hybracter hybrid single"""
     outdir: Path = "test_hybracter_output"
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
     reads1: Path = test_data_path / "Fastqs/test_short_reads_R1.fastq.gz"
     reads2: Path = test_data_path / "Fastqs/test_short_reads_R2.fastq.gz"
-    cmd = f"hybracter hybrid-single -l {longreads} -1 {reads1} -2 {reads2} -c 50000 -s Sample1 --threads {threads} --output {outdir} --no_polca --databases {db_dir}"
+    cmd = f"hybracter hybrid-single -l {longreads} -1 {reads1} -2 {reads2} -c 50000 -s Sample1 --threads {threads} --output {outdir} --databases {db_dir}"
     exec_command(cmd)
     remove_directory(outdir)
 
 @pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_long_single():
     """test hybracter long"""
-    threads = 4
     outdir: Path = "test_hybracter_output"
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
     cmd = f"hybracter long-single -l {longreads} -c 50000 -s Sample1  --threads {threads} --output {outdir} --databases {db_dir}"
@@ -127,10 +130,9 @@ class errors(unittest.TestCase):
     def test_no_db(self):
         """test hybracter with no db"""
         with self.assertRaises(RuntimeError):
-            threads = 4
             outdir: Path = "test_hybracter_output"
             empty_db: Path = "tests/empty_db"
-            cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_polca"
+            cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_pypolca"
             exec_command(cmd)
             remove_directory(outdir)
 

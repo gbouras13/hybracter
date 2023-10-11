@@ -26,7 +26,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 ### Arguments
 
 * `hybracter hybrid` requires only a CSV file specified with `-i` or `--input`
-* `--no_polca` will turn off POLCA polishing. **Must be used on MacOS.**
+* `--no_polca` will turn off POLCA polishing with [pypolca](https://github.com/gbouras13/pypolca). 
 * Use `--min_length` to specify the minimum long-read length for Filtlong.
 * Use `--min_quality` to specify the minimum long-read quality for Filtlong.
 * You can specify a FASTA file containing contaminants with `--contaminants`. All long reads that map to contaminants will be filtered out.
@@ -73,7 +73,7 @@ Usage: hybracter hybrid [OPTIONS] [SNAKE_ARGS]...
 
 Options:
   -i, --input TEXT                Input csv  [required]
-  --no_polca                      Do not use Polca to polish assemblies with
+  --no_polca                      Do not use pypolca to polish assemblies with
                                   short reads
   -o, --output PATH               Output directory  [default: hybracter.out]
   --configfile TEXT               Custom config file [default:
@@ -128,7 +128,7 @@ Options:
   -s, --sample TEXT               Sample name.  [default: sample]
   -c, --chromosome INTEGER        Approximate lower-bound chromosome length
                                   (in base pairs).  [default: 1000000]
-  --no_polca                      Do not use Polca to polish assemblies with
+  --no_polca                      Do not use pypolca to polish assemblies with
                                   short reads
   -o, --output PATH               Output directory  [default: hybracter.out]
   --configfile TEXT               Custom config file [default:

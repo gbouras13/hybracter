@@ -56,7 +56,8 @@ dir.out.completeness = os.path.join(dir.out.base, "completeness")
 # aggregation dirs
 dir.out.aggr_lr_polish = os.path.join(dir.out.flags, "aggr_long_read_polish")
 dir.out.aggr_sr_polish = os.path.join(dir.out.flags, "aggr_short_read_polish")
-dir.out.aggr_polca_polish = os.path.join(dir.out.flags, "aggr_polca_polish")
+# dir.out.aggr_polca_polish = os.path.join(dir.out.flags, "aggr_polca_polish")
+dir.out.aggr_pypolca_polish = os.path.join(dir.out.flags, "aggr_pypolca_polish")
 dir.out.aggr_plassembler = os.path.join(dir.out.flags, "aggr_plassembler")
 dir.out.aggr_ale = os.path.join(dir.out.flags, "aggr_ale")
 dir.out.aggr_pyrodigal = os.path.join(dir.out.flags, "aggr_pyrodigal")
@@ -82,9 +83,12 @@ dir.out.polypolish = os.path.join(dir.out.complete, "polypolish")
 dir.out.bwa_incomplete = os.path.join(dir.out.complete, "bwa_incomplete")
 dir.out.polypolish_incomplete = os.path.join(dir.out.complete, "polypolish_incomplete")
 
-# short_read_polca.smk (has complete and incomplete)
-dir.out.polca = os.path.join(dir.out.complete, "polca")
-dir.out.polca_incomplete = os.path.join(dir.out.incomplete, "polca")
+# short_read_pypolca.smk (has complete and incomplete)
+# dir.out.polca = os.path.join(dir.out.complete, "polca")
+# dir.out.polca_incomplete = os.path.join(dir.out.incomplete, "polca")
+dir.out.pypolca = os.path.join(dir.out.complete, "pypolca")
+dir.out.pypolca_incomplete = os.path.join(dir.out.incomplete, "pypolca")
+
 
 # plassembler dirs
 dir.out.plassembler = os.path.join(dir.out.processing, "plassembler")

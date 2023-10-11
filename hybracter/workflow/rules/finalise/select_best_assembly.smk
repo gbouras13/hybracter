@@ -15,18 +15,20 @@ def aggregate_ale_input_finalise(wildcards):
         0
     ].open() as f:
         if f.read().strip() == "C":  # complete
-            if config.args.no_polca is False:  # with polca
+            if config.args.no_pypolca is False:  # with pypolca
                 return os.path.join(
-                    dir.out.ale_scores_complete, "{sample}", "polca.score"
+                    dir.out.ale_scores_complete, "{sample}", "pypolca.score"
                 )
             else:  # with polca, best is polypolish
                 return os.path.join(
                     dir.out.ale_scores_complete, "{sample}", "polypolish.score"
                 )
         else:  # incomplete
-            if config.args.no_polca is False:  # with polca
+            if config.args.no_pypolca is False:  # with pypolca
                 return os.path.join(
-                    dir.out.ale_scores_incomplete, "{sample}", "polca_incomplete.score"
+                    dir.out.ale_scores_incomplete,
+                    "{sample}",
+                    "pypolca_incomplete.score",
                 )
             else:
                 return os.path.join(
@@ -45,7 +47,9 @@ rule select_best_chromosome_assembly_complete:
         plassembler_fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
         ),
-        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt")
+        flye_info=os.path.join(
+            dir.out.assembly_statistics, "{sample}_assembly_info.txt"
+        ),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
@@ -66,10 +70,13 @@ rule select_best_chromosome_assembly_complete:
             dir.out.medaka_rd_2, "{sample}", "consensus.fasta"
         ),
         polypolish_fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
-        polca_fasta=os.path.join(dir.out.polca, "{sample}", "{sample}.fasta"),
+        polca_fasta=os.path.join(
+            dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"
+        ),
     resources:
         mem_mb=config.resources.sml.mem,
-        time=config.resources.med.time,
+        mem = str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     threads: config.resources.sml.cpu
@@ -81,15 +88,17 @@ rule select_best_chromosome_assembly_complete:
 #  also calculates the summary
 rule select_best_chromosome_assembly_incomplete:
     input:
-        ale_input = aggregate_ale_input,
-        ale_flag = os.path.join(dir.out.aggr_ale, "{sample}.txt"),  # to make sure ale has finished
-        flye_info = os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt")
+        ale_input=aggregate_ale_input,
+        ale_flag=os.path.join(dir.out.aggr_ale, "{sample}.txt"),  # to make sure ale has finished
+        flye_info=os.path.join(
+            dir.out.assembly_statistics, "{sample}_assembly_info.txt"
+        ),
     output:
         fasta=os.path.join(dir.out.final_contigs_incomplete, "{sample}_final.fasta"),
         ale_summary=os.path.join(dir.out.ale_summary, "incomplete", "{sample}.tsv"),
         hybracter_summary=os.path.join(
             dir.out.final_summaries_incomplete, "{sample}.tsv"
-        )
+        ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_incomplete, "{sample}"),
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
@@ -97,10 +106,13 @@ rule select_best_chromosome_assembly_incomplete:
             dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
         ),
         polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
-        polca_fasta=os.path.join(dir.out.polca_incomplete, "{sample}", "{sample}.fasta"),
+        polca_fasta=os.path.join(
+            dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
+        ),
     resources:
         mem_mb=config.resources.sml.mem,
-        time=config.resources.med.time,
+        mem = str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     threads: config.resources.sml.cpu

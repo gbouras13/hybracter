@@ -18,6 +18,7 @@ rule medaka_round_1:
         dir=os.path.join(dir.out.medaka_rd_1, "{sample}"),
     resources:
         mem_mb=config.resources.big.mem,
+        mem = str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -47,6 +48,7 @@ rule compare_assemblies_medaka_round_1:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:
@@ -71,6 +73,7 @@ rule dnaapler:
         dir=os.path.join(dir.out.dnaapler, "{sample}"),
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -104,6 +107,7 @@ rule medaka_round_2:
         dir=os.path.join(dir.out.medaka_rd_2, "{sample}"),
     resources:
         mem_mb=config.resources.big.mem,
+        mem = str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:

@@ -120,9 +120,9 @@ include: os.path.join("rules", "assembly", "plassembler.smk")
 include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 
 
-if config.args.no_polca is False:
+if config.args.no_pypolca is False:
 
-    include: os.path.join("rules", "polishing", "short_read_polca.smk")
+    include: os.path.join("rules", "polishing", "short_read_pypolca.smk")
 
 
 # ale

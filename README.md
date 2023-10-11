@@ -63,12 +63,7 @@ When you run `hybracter` for the first time, all the required dependencies will 
 If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter hybrid-test` and/or `hybracter long-test` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes. If your computer/node has internet access, please skip this step.
 
 ```
-# linux
 hybracter hybrid-test --threads 8
-# macOS
-hybracter hybrid-test --threads 8 --no_polca
-
-# same for both linux and mac
 hybracter long-test --threads 8
 ```
 
@@ -129,8 +124,7 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 4. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
 5. For all isolates, long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
 6. For complete isolates, the chromosome is reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
-7. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [Polca](https://github.com/alekseyzimin/masurca).
-   * **Note: POLCA is not available on MacOS. You must use `--no_polca`**
+7. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
 8. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 9. Selection of the best assembly and output final assembly statistics.
 
@@ -254,7 +248,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>
 ```
 
 * `hybracter hybrid` requires only a CSV file specified with `-i` or `--input`
-* `--no_polca` will turn off POLCA polishing. **Must be used on MacOS.**
+* `--no_pypolca` will turn off pypolca polishing.
 * Use `--min_length` to specify the minimum long-read length for Filtlong.
 * Use `--min_quality` to specify the minimum long-read quality for Filtlong.
 * You can specify a FASTA file containing contaminants with `--contaminants`. All long reads that map to contaminants will be filtered out.
@@ -341,7 +335,7 @@ A brief description of what is new in each update of `hybracter` can be found in
 
 ## System
 
-`hybracter` is tested on Linux, and on MacOS (with `--no_polca`). 
+`hybracter` is tested on Linux, and on MacOS.
 
 ## Bugs and Suggestions
 
@@ -391,7 +385,8 @@ Pyrodigal:
 Polypolish:
 * Wick RR, Holt KE (2022) Polypolish: Short-read polishing of long-read bacterial genome assemblies. PLoS Comput Biol 18(1): e1009802. https://doi.org/10.1371/journal.pcbi.1009802.
 
-POLCA:
+Pypolca:
+* George Bouras, Aleksey V. Zimin (2023) pypolca: Standalone Python reimplementation of the genome polishing tool POLCA. https://github.com/gbouras13/pypolca. 
 * Aleksey V. Zimin, Guillaume Marçais, Daniela Puiu, Michael Roberts, Steven L. Salzberg, James A. Yorke, The MaSuRCA genome assembler, Bioinformatics, Volume 29, Issue 21, November 2013, Pages 2669–2677, https://doi.org/10.1093/bioinformatics/btt476.
 
 Snakemake:

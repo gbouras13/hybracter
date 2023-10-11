@@ -3,15 +3,15 @@ resources:
     big:
         mem: 32000      # Memory for big  jobs in megabytes (e.g 64GB = 64000, recommend >= 64000)
         cpu: 16         # Threads (recommend >= 16)
-        time: 2000      # Max runtime in minutes (allows to set max time for the scheduler via snakemake profiles)
+        time: "23:59:00"      # Max runtime  (allows to set max time for the scheduler via snakemake profiles)
     med:
         mem: 16000      # Memory for most jobs in megabytes 
         cpu: 8          # CPUs for most jobs in megabytes 
-        time: 500       # Max runtime in minutes for medium jobs (relevant for scheduler)
+        time: "08:00:00"       # Max runtime for medium jobs (relevant for scheduler)
     sml:
         mem: 4000
         cpu: 1
-        time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
+        time: "00:00:05"   # Max runtime for small jobs (used for grouped jobs; relevant for scheduler)
 
 
 
