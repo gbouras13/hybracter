@@ -50,7 +50,8 @@ rule aggregate_finalise_complete:
         complete_flag=True,
     resources:
         mem_mb=config.resources.sml.mem,
-        time=config.resources.med.time,
+        mem = str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "pyrodigal.yaml")
     threads: config.resources.sml.cpu
@@ -85,7 +86,8 @@ rule aggregate_finalise_incomplete:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        time=config.resources.med.time,
+        mem = str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "pyrodigal.yaml")
     threads: config.resources.sml.cpu

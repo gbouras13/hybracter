@@ -7,6 +7,7 @@ rule bwa_index:
         os.path.join(dir.env, "bwa.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -28,6 +29,7 @@ rule bwa_mem:
         os.path.join(dir.env, "bwa.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -56,6 +58,7 @@ rule polypolish:
         os.path.join(dir.env, "polypolish.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -88,6 +91,7 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:

@@ -38,6 +38,7 @@ rule aggregate_plassembler_input_rule:
         os.path.join(dir.out.aggr_plassembler, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -55,6 +56,7 @@ rule aggr_plassembler_flag:
         flag=os.path.join(dir.out.flags, "aggr_plassembler.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -91,6 +93,7 @@ rule aggregate_long_read_polish_input_rule:
         os.path.join(dir.out.aggr_lr_polish, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -108,6 +111,7 @@ rule aggr_long_read_polish_flag:
         flag=os.path.join(dir.out.flags, "aggr_long_read_polish.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -151,6 +155,7 @@ rule aggregate_short_read_polish_input:
         os.path.join(dir.out.aggr_sr_polish, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -167,6 +172,7 @@ rule aggr_short_read_polish_flag:
         flag=os.path.join(dir.out.flags, "aggr_short_read_polish.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -207,6 +213,7 @@ rule aggregate_polca_polish_input:
         os.path.join(dir.out.aggr_pypolca_polish, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -225,6 +232,7 @@ rule aggr_polca_flag:
         flag=os.path.join(dir.out.flags, "aggr_pypolca.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -284,6 +292,7 @@ rule aggregate_ale_input_files:
         os.path.join(dir.out.aggr_ale, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -300,6 +309,7 @@ rule aggr_ale_flag:
         flag=os.path.join(dir.out.flags, "aggr_ale.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -336,6 +346,7 @@ rule aggregate_finalised_assemblies_rule:
         os.path.join(dir.out.aggr_final, "{sample}.txt"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -359,6 +370,7 @@ rule create_final_summary:
         incomplete_summaries_dir=dir.out.final_summaries_incomplete,
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     conda:
@@ -375,6 +387,7 @@ rule aggr_final_flag:
         flag=os.path.join(dir.out.flags, "aggr_final.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:

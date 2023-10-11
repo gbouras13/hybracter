@@ -22,7 +22,8 @@ rule assess_chrom_pre_polish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem = str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_chrom_pre_polish.txt")
@@ -56,7 +57,8 @@ rule assess_medaka_rd_1:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem = str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_medaka_rd_1.txt")
@@ -89,7 +91,8 @@ rule assess_medaka_rd_2:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem = str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_medaka_rd_2.txt")
@@ -120,7 +123,8 @@ rule assess_polypolish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem = str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_polypolish.txt")
@@ -152,6 +156,7 @@ rule assess_pypolca:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.big.time,
     threads: config.resources.big.cpu
     benchmark:
