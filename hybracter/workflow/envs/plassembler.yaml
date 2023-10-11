@@ -4,9 +4,17 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - plassembler >=1.2.0
-    - mash ==2.2
-    # - pip
-    # - pip:
-    #     - git+https://github.com/rrwick/Unicycler.git
+    - flye >=2.9
+    - minimap2 >=2.11
+    - fastp >=0.18.0
+    - chopper >=0.5.0
+    - mash >=2.2
+    - raven-assembler >=1.8
+    - samtools >=0.15.0
+    - canu >=2.2
+    - dnaapler >= 0.3.1
+    - pip
+    - pip:
+        - plassembler >=1.2.0
+        - git+https://github.com/rrwick/Unicycler.git
 
