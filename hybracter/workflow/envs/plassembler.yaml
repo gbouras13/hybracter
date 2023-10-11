@@ -13,6 +13,7 @@ dependencies:
     - samtools >=0.15.0
     - canu >=2.2
     - dnaapler >= 0.3.1
+    - python >=3.8,<3.10
     - pip
     - pip:
         - plassembler >=1.2.0

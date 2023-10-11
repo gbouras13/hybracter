@@ -81,6 +81,7 @@ rule plassembler_polish_medaka:
         medaka_dir=os.path.join(dir.out.plassembler, "{sample}", "medaka"),
     resources:
         mem_mb=config.resources.med.mem,
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -124,6 +125,7 @@ rule plassembler_assess_polish:
         os.path.join(dir.env, "pyrodigal.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     benchmark:
@@ -145,6 +147,7 @@ rule plassembler_incomplete:
         flag=os.path.join(dir.out.plassembler_incomplete, "{sample}.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem = str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
