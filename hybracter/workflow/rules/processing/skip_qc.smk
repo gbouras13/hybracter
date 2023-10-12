@@ -9,7 +9,7 @@ rule skip_qc_long:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -30,7 +30,7 @@ rule skip_qc_short:
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -50,7 +50,7 @@ rule aggr_long_skip_qc:
         flag=os.path.join(dir.out.flags, "aggr_long_qc.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -70,7 +70,7 @@ rule aggr_short_skip_qc:
         flag=os.path.join(dir.out.flags, "aggr_short_qc.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:

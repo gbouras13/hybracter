@@ -15,7 +15,7 @@ checkpoint check_completeness:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -37,7 +37,7 @@ rule extract_chromosome_complete:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -59,7 +59,7 @@ rule extract_incomplete:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:

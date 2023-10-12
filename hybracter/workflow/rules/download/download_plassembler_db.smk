@@ -12,7 +12,7 @@ rule download_db:
         flag=os.path.join(dir.plassemblerdb, "cleanup.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     shell:

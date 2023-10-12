@@ -109,6 +109,18 @@ include: os.path.join("rules", "completeness", "aggregate_long.smk")
 # need long read polish files regardless
 include: os.path.join("rules", "polishing", "long_read_polish.smk")
 include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
+
+
+# dnaapler or dnaapler custom
+if config.args.dnaapler_custom_db == "none":  # standard - no custom
+
+    include: os.path.join("rules", "polishing", "dnaapler.smk")
+
+else:
+
+    include: os.path.join("rules", "polishing", "dnaapler_custom.smk")
+
+
 # plassembler  & pyrodigal
 include: os.path.join("rules", "assembly", "plassembler_long.smk")
 include: os.path.join("rules", "processing", "combine_plassembler_info.smk")

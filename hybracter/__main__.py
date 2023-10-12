@@ -100,6 +100,13 @@ def common_options(func):
             required=False,
         ),
         click.option(
+            "--dnaapler_custom_db",
+            help="Custom amino acid FASTA file of sequences to be used as a database with dnaapler custom.",
+            type=click.Path(),
+            default="none",
+            required=False,
+        ),
+        click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
@@ -316,6 +323,7 @@ def hybrid(
     min_length,
     output,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -334,6 +342,7 @@ def hybrid(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": False,
         }
     }
@@ -409,6 +418,7 @@ def hybrid_single(
     min_length,
     output,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -431,6 +441,7 @@ def hybrid_single(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": True,
         }
     }
@@ -468,6 +479,7 @@ def long(
     output,
     min_quality,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -485,6 +497,7 @@ def long(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": False,
         }
     }
@@ -537,6 +550,7 @@ def long_single(
     output,
     min_quality,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -556,6 +570,7 @@ def long_single(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": True,
         }
     }
@@ -673,6 +688,7 @@ def test_hybrid(
     databases,
     no_pypolca,
     contaminants,
+    dnaapler_custom_db,
     **kwargs
 ):
     """Test hybracter hybrid"""
@@ -689,6 +705,7 @@ def test_hybrid(
             "databases": databases,
             "no_pypolca": no_pypolca,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db
         }
     }
     run_snakemake(
@@ -721,6 +738,7 @@ def test_long(
     databases,
     flyeModel,
     contaminants,
+    dnaapler_custom_db,
     **kwargs
 ):
     """Test hybracter long"""
@@ -736,6 +754,7 @@ def test_long(
             "databases": databases,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db
         }
     }
     run_snakemake(

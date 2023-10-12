@@ -12,7 +12,7 @@ rule filtlong:
         os.path.join(dir.env, "filtlong.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem = str(config.resources.med.mem) + "MB",
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     params:
@@ -42,7 +42,7 @@ rule porechop_abi:
         os.path.join(dir.env, "porechop_abi.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem = str(config.resources.med.mem) + "MB",
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -78,7 +78,7 @@ rule fastp:
         os.path.join(dir.env, "fastp.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem = str(config.resources.med.mem) + "MB",
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     benchmark:
@@ -110,7 +110,7 @@ rule aggr_long_qc:
         flag=os.path.join(dir.out.flags, "aggr_long_qc.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -130,7 +130,7 @@ rule aggr_short_qc:
         flag=os.path.join(dir.out.flags, "aggr_short_qc.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem = str(config.resources.sml.mem) + "MB",
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:

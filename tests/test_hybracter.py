@@ -97,7 +97,7 @@ def test_hybracter_long():
 @pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_hybrid_single():
     """test hybracter hybrid single"""
-    outdir: Path = "test_hybracter_output"
+    outdir: Path = "test_hybracter_output_hybr_single"
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
     reads1: Path = test_data_path / "Fastqs/test_short_reads_R1.fastq.gz"
     reads2: Path = test_data_path / "Fastqs/test_short_reads_R2.fastq.gz"
@@ -108,9 +108,21 @@ def test_hybracter_hybrid_single():
 @pytest.mark.dependency(depends=['test_hybracter_install'])
 def test_hybracter_long_single():
     """test hybracter long"""
-    outdir: Path = "test_hybracter_output"
+    outdir: Path = "test_hybracter_output_long_single"
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
     cmd = f"hybracter long-single -l {longreads} -c 50000 -s Sample1  --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+@pytest.mark.dependency(depends=['test_hybracter_install'])
+def test_hybracter_dnaapler_custom_db():
+    """test hybracter hybrid-single with custom_db"""
+    outdir: Path = "test_hybracter_output_custom_db"
+    longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
+    reads1: Path = test_data_path / "Fastqs/test_short_reads_R1.fastq.gz"
+    reads2: Path = test_data_path / "Fastqs/test_short_reads_R2.fastq.gz"
+    dnaapler_custom_db: Path = test_data_path / "dnaapler_custom_db/dnaA.faa"
+    cmd = f"hybracter hybrid-single -l {longreads} -1 {reads1} -2 {reads2} -c 50000 -s Sample1 --threads {threads} --output {outdir} --databases {db_dir} --dnaapler_custom_db {dnaapler_custom_db}"
     exec_command(cmd)
     remove_directory(outdir)
 

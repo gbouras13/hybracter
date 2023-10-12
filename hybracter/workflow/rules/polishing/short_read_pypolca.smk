@@ -17,7 +17,7 @@ rule pypolca:
         os.path.join(dir.env, "pypolca.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem = str(config.resources.med.mem) + "MB",
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -48,7 +48,7 @@ rule compare_assemblies_pypolca_vs_polypolish:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem = str(config.resources.med.mem) + "MB",
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:
@@ -75,7 +75,7 @@ rule pypolca_incomplete:
         os.path.join(dir.env, "pypolca.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem = str(config.resources.med.mem) + "MB",
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -144,8 +144,6 @@ rule pypolca_incomplete:
 #         masurca --version > {params.version}
 #         cp {output.fasta} {params.copy_fasta}
 #         """
-
-
 # rule compare_assemblies_polca_vs_polypolish:
 #     """
 #     compare assemblies
