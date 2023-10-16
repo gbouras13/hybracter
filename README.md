@@ -3,6 +3,8 @@
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/gbouras13/hybracter/dev?color=8a35da)
 [![DOI](https://zenodo.org/badge/574521745.svg)](https://zenodo.org/badge/latestdoi/574521745)
 
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/hybracter/badges/version.svg)](https://anaconda.org/bioconda/hybracter)
+[![Bioconda Downloads](https://img.shields.io/conda/dn/bioconda/hybracter)](https://img.shields.io/conda/dn/bioconda/hybracter)
 [![PyPI version](https://badge.fury.io/py/hybracter.svg)](https://badge.fury.io/py/hybracter)
 [![Downloads](https://static.pepy.tech/badge/hybracter)](https://pepy.tech/project/hybracter)
 
