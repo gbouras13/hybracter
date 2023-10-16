@@ -3,6 +3,8 @@
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/gbouras13/hybracter/dev?color=8a35da)
 [![DOI](https://zenodo.org/badge/574521745.svg)](https://zenodo.org/badge/latestdoi/574521745)
 
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/hybracter/badges/version.svg)](https://anaconda.org/bioconda/hybracter)
+[![Bioconda Downloads](https://img.shields.io/conda/dn/bioconda/hybracter)](https://img.shields.io/conda/dn/bioconda/hybracter)
 [![PyPI version](https://badge.fury.io/py/hybracter.svg)](https://badge.fury.io/py/hybracter)
 [![Downloads](https://static.pepy.tech/badge/hybracter)](https://pepy.tech/project/hybracter)
 
@@ -22,6 +24,10 @@
       - [Trycycler](#trycycler)
       - [Dragonflye](#dragonflye)
   - [Pipeline](#pipeline)
+  - [Installation](#installation)
+    - [Conda](#conda)
+    - [Pip](#pip)
+    - [Source](#source)
   - [Main Commands](#main-commands)
   - [Input csv](#input-csv)
       - [`hybracter hybrid`](#hybracter-hybrid)
@@ -44,14 +50,15 @@
 
 ## Quick Start
 
-`hybracter` is available to install with `pip` (will be on conda soon). 
+`hybracter` is available to install with `pip` or `conda`.
 
-You will need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
+You will need conda or mamba available so `hybracter` can install all the required dependencies. 
+
+Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 ```
-mamba create -n hybracterENV pip
+mamba create -n hybracterENV hybracter
 conda activate hybracterENV
-pip install hybracter
 hybracter --help
 hybracter install
 ```
@@ -126,6 +133,48 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 - F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
 - G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 - H. The best assembly is selected and and output along with final assembly statistics.
+
+## Installation
+
+You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
+
+### Conda
+
+`hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
+
+```
+mamba create -n hybracterENV hybracter
+conda activate hybracterENV
+hybracter --help
+hybracter install
+```
+
+### Pip
+
+`hybracter` is available to install with `pip` . 
+
+You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
+
+
+```
+mamba create -n hybracterENV pip
+conda activate hybracterENV
+pip install hybracter
+hybracter --help
+hybracter install
+```
+
+
+### Source
+
+Alternatively, the development version of `hybracter` (which may include new, untested features) can be installed manually via github. 
+
+```
+git clone https://github.com/gbouras13/hybracter.git
+cd hybracter
+pip install -e .
+hybracter --help
+```
 
 ## Main Commands
 
