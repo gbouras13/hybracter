@@ -164,7 +164,6 @@ hybracter --help
 hybracter install
 ```
 
-
 ### Source
 
 Alternatively, the development version of `hybracter` (which may include new, untested features) can be installed manually via github. 
