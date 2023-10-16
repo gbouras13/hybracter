@@ -13,4 +13,12 @@ It scales massively using the embarassingly parallel power of HPC and Snakemake 
 
 ![Image](hybracter.png)
 
+A. Reads are quality controlled with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop), [fastp](https://github.com/OpenGene/fastp) and optionally contaminant removal using modules from [trimnami](https://github.com/beardymcjohnface/Trimnami).
+B. Long-read assembly is conducted with [Flye](https://github.com/fenderglass/Flye). Each sample is clssified if the chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
+C. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
+D. For all isolates, long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
+E. For complete isolates, the chromosome is reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
+F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
+G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
+H. The best assembly is selected and and output along with final assembly statistics.
 

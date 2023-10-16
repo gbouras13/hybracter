@@ -56,7 +56,7 @@ Commands:
   version        Print the version for hybracter
 (hybracter) a1667917@LY0TWV6HTW2 hybracter % hybracter hybrid -h
 
-hybracter version 0.1.0
+hybracter version 0.2.0
 
 
  _           _                    _            
