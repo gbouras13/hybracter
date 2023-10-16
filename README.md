@@ -136,7 +136,7 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 
 ## Installation
 
-You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install mamba.
+You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
 
 ### Conda
 
@@ -164,7 +164,6 @@ hybracter --help
 hybracter install
 ```
 
-Mamba is **highly highly** recommend. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
 
 ### Source
 
