@@ -100,6 +100,13 @@ def common_options(func):
             required=False,
         ),
         click.option(
+            "--dnaapler_custom_db",
+            help="Custom amino acid FASTA file of sequences to be used as a database with dnaapler custom.",
+            type=click.Path(),
+            default="none",
+            required=False,
+        ),
+        click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
@@ -299,15 +306,15 @@ hybrid
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @click.option(
-    "--no_polca",
-    help="Do not use Polca to polish assemblies with short reads",
+    "--no_pypolca",
+    help="Do not use pypolca to polish assemblies with short reads",
     is_flag=True,
     default=False,
 )
 @common_options
 def hybrid(
     _input,
-    no_polca,
+    no_pypolca,
     skip_qc,
     medakaModel,
     databases,
@@ -316,6 +323,7 @@ def hybrid(
     min_length,
     output,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -329,11 +337,12 @@ def hybrid(
             "min_length": min_length,
             "databases": databases,
             "min_quality": min_quality,
-            "no_polca": no_polca,
+            "no_pypolca": no_pypolca,
             "skip_qc": skip_qc,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": False,
         }
     }
@@ -388,8 +397,8 @@ hybrid single
     show_default=True,
 )
 @click.option(
-    "--no_polca",
-    help="Do not use Polca to polish assemblies with short reads",
+    "--no_pypolca",
+    help="Do not use pypolca to polish assemblies with short reads",
     is_flag=True,
     default=False,
 )
@@ -400,7 +409,7 @@ def hybrid_single(
     sample,
     short_one,
     short_two,
-    no_polca,
+    no_pypolca,
     skip_qc,
     medakaModel,
     databases,
@@ -409,6 +418,7 @@ def hybrid_single(
     min_length,
     output,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -426,11 +436,12 @@ def hybrid_single(
             "min_length": min_length,
             "databases": databases,
             "min_quality": min_quality,
-            "no_polca": no_polca,
+            "no_pypolca": no_pypolca,
             "skip_qc": skip_qc,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": True,
         }
     }
@@ -468,6 +479,7 @@ def long(
     output,
     min_quality,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -485,6 +497,7 @@ def long(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": False,
         }
     }
@@ -537,6 +550,7 @@ def long_single(
     output,
     min_quality,
     contaminants,
+    dnaapler_custom_db,
     log,
     **kwargs
 ):
@@ -556,6 +570,7 @@ def long_single(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
             "single": True,
         }
     }
@@ -657,8 +672,8 @@ test hybrid
 )
 @common_options
 @click.option(
-    "--no_polca",
-    help="Do not use Polca to polish assemblies with short reads",
+    "--no_pypolca",
+    help="Do not use pypolca to polish assemblies with short reads",
     is_flag=True,
     default=False,
 )
@@ -671,8 +686,9 @@ def test_hybrid(
     medakaModel,
     flyeModel,
     databases,
-    no_polca,
+    no_pypolca,
     contaminants,
+    dnaapler_custom_db,
     **kwargs
 ):
     """Test hybracter hybrid"""
@@ -687,8 +703,9 @@ def test_hybrid(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "databases": databases,
-            "no_polca": no_polca,
+            "no_pypolca": no_pypolca,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db
         }
     }
     run_snakemake(
@@ -721,6 +738,7 @@ def test_long(
     databases,
     flyeModel,
     contaminants,
+    dnaapler_custom_db,
     **kwargs
 ):
     """Test hybracter long"""
@@ -736,6 +754,7 @@ def test_long(
             "databases": databases,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db
         }
     }
     run_snakemake(

@@ -1,8 +1,0 @@
-name: polca
-channels:
-    - conda-forge
-    - bioconda
-    - defaults
-dependencies:
-    - masurca >=4.1.0
-    - bwa >=0.7.17

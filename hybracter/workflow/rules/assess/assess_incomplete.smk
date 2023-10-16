@@ -22,7 +22,8 @@ rule assess_incomp_pre_polish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.cpu,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_incomp_pre_polish.txt")
@@ -61,7 +62,8 @@ rule assess_medaka_incomplete:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_incomp_medaka.txt")
@@ -101,7 +103,8 @@ rule assess_polypolish_incomplete:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_incomp_polypolish.txt")
@@ -124,29 +127,30 @@ rule assess_polca_incomplete:
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         fasta=os.path.join(
-            dir.out.polca_incomplete, "{sample}", "{sample}.fasta.PolcaCorrected.fa"
+            dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
         ),
         score=os.path.join(
             dir.out.ale_scores_incomplete, "{sample}", "polypolish_incomplete.score"
         ),
     output:
         ale=temp(
-            os.path.join(dir.out.ale_out_files, "{sample}", "polca_incomplete.ale")
+            os.path.join(dir.out.ale_out_files, "{sample}", "pypolca_incomplete.ale")
         ),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_polca_incomplete_1.sam")),
+        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_pypolca_incomplete_1.sam")),
         score=os.path.join(
-            dir.out.ale_scores_incomplete, "{sample}", "polca_incomplete.score"
+            dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"
         ),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
-        os.path.join(dir.out.bench, "ale", "{sample}_incomp_polca.txt")
+        os.path.join(dir.out.bench, "ale", "{sample}_incomp_pypolca.txt")
     log:
-        os.path.join(dir.out.stderr, "ale", "{sample}_incomp_polca.log"),
+        os.path.join(dir.out.stderr, "ale", "{sample}_incomp_pypolca.log"),
     shell:
         """
 

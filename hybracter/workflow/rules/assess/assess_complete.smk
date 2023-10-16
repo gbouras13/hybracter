@@ -22,7 +22,8 @@ rule assess_chrom_pre_polish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_chrom_pre_polish.txt")
@@ -56,7 +57,8 @@ rule assess_medaka_rd_1:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_medaka_rd_1.txt")
@@ -89,7 +91,8 @@ rule assess_medaka_rd_2:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_medaka_rd_2.txt")
@@ -120,7 +123,8 @@ rule assess_polypolish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        time=config.resources.big.time,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "ale", "{sample}_polypolish.txt")
@@ -136,30 +140,29 @@ rule assess_polypolish:
         """
 
 
-rule assess_polca:
+rule assess_pypolca:
     """
-    Run ALE on polypolish
+    Run ALE on pypolca
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
-        fasta=os.path.join(
-            dir.out.polca, "{sample}", "{sample}.fasta.PolcaCorrected.fa"
-        ),
+        fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "polypolish.score"),
     output:
-        score=os.path.join(dir.out.ale_scores_complete, "{sample}", "polca.score"),
-        ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "polca.ale")),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_polca.sam")),
+        score=os.path.join(dir.out.ale_scores_complete, "{sample}", "pypolca.score"),
+        ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "pypolca.ale")),
+        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_pypolca.sam")),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.big.time,
     threads: config.resources.big.cpu
     benchmark:
-        os.path.join(dir.out.bench, "ale", "{sample}_polca.txt")
+        os.path.join(dir.out.bench, "ale", "{sample}_pypolca.txt")
     log:
-        os.path.join(dir.out.stderr, "ale", "{sample}_polca.log"),
+        os.path.join(dir.out.stderr, "ale", "{sample}_pypolca.log"),
     shell:
         """
         bwa index {input.fasta}

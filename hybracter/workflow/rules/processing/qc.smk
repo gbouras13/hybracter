@@ -12,6 +12,7 @@ rule filtlong:
         os.path.join(dir.env, "filtlong.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     params:
@@ -41,6 +42,7 @@ rule porechop_abi:
         os.path.join(dir.env, "porechop_abi.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -69,11 +71,14 @@ rule fastp:
     output:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
+        html=os.path.join(dir.out.fastp, "{sample}.html"),
+        json=os.path.join(dir.out.fastp, "{sample}.json"),
         version=os.path.join(dir.out.versions, "{sample}", "fastp.version"),
     conda:
         os.path.join(dir.env, "fastp.yaml")
     resources:
         mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     benchmark:
@@ -82,7 +87,7 @@ rule fastp:
         os.path.join(dir.out.stderr, "fastp", "{sample}.log"),
     shell:
         """
-        fastp --in1 {input.r1} --in2 {input.r2} --out1 {output.r1} --out2 {output.r2}  2> {log}
+        fastp --in1 {input.r1} --in2 {input.r2} --out1 {output.r1} --out2 {output.r2} --html {output.html} --json {output.json} --thread {threads} 2> {log}
         fastp --version 2> {output.version}
         """
 
@@ -105,6 +110,7 @@ rule aggr_long_qc:
         flag=os.path.join(dir.out.flags, "aggr_long_qc.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -124,6 +130,7 @@ rule aggr_short_qc:
         flag=os.path.join(dir.out.flags, "aggr_short_qc.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:

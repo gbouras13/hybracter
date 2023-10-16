@@ -61,10 +61,7 @@ Once you have installed `hybracter` and run `hybracter install`, it is recommend
 For example you can run
 
 ```
-# linux
 hybracter hybrid-test --threads 8
-# macOS
-hybracter hybrid-test --threads 8 --no_polca
 ```
 
 and for long (same for Linux and MacOS)
