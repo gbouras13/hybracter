@@ -5,10 +5,12 @@ import os
 
 import pandas as pd
 from Bio import SeqIO
+from Bio.SeqUtils import gc_fraction
 
 
 def select_best_chromosome_assembly_incomplete(
     hybracter_summary,
+    per_conting_summary,
     ale_dir,
     output_fasta,
     ale_summary,
@@ -17,7 +19,7 @@ def select_best_chromosome_assembly_incomplete(
     polypolish_fasta,
     polca_fasta,
     sample,
-    flye_info
+    flye_info,
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -89,6 +91,8 @@ def select_best_chromosome_assembly_incomplete(
         best_assembly = polca_fasta
         best_round = "polca"
 
+    stats_dict = {}
+
     # count contigs
     number_of_contigs = 1
 
@@ -111,6 +115,9 @@ def select_best_chromosome_assembly_incomplete(
             # total assembly length
             total_assembly_length += sequence_length
 
+            # gc
+            gc_content = round(gc_fraction(record.seq), 2)
+
             # to get longest contig
             if number_of_contigs == 1:
                 longest_contig_length = sequence_length
@@ -126,14 +133,20 @@ def select_best_chromosome_assembly_incomplete(
 
             number_of_contigs += 1
 
+            # append for stats dict
+
+            stats_dict[record.id] = {}
+            stats_dict[record.id]["length"] = sequence_length
+            stats_dict[record.id]["gc"] = gc_content
+
     # read in the flye info and extract longest contig
-    flye_df = pd.read_csv(flye_info, sep='\t')
+    flye_df = pd.read_csv(flye_info, sep="\t")
 
     # Find the row with the largest length.
-    longest_contig_row = flye_df[flye_df['length'] == flye_df['length'].max()]
+    longest_contig_row = flye_df[flye_df["length"] == flye_df["length"].max()]
 
     # Extract the coverage value from the longest contig row.
-    longest_contig_coverage = longest_contig_row['cov.'].values[0]
+    longest_contig_coverage = longest_contig_row["cov."].values[0]
 
     # to get the summary df
     summary_dict = {
@@ -151,9 +164,20 @@ def select_best_chromosome_assembly_incomplete(
     summary_df = pd.DataFrame([summary_dict])
     summary_df.to_csv(hybracter_summary, index=False, sep="\t")
 
+    # stats dict
+    stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
+    stats_df["contig_name"] = stats_df.index
+    # Reorder the columns with 'contig_name' as the first column
+    stats_df = stats_df[
+        ["contig_name"] + [col for col in stats_df.columns if col != "contig_name"]
+    ]
+
+    stats_df.to_csv(per_conting_summary, index=False, sep="\t")
+
 
 select_best_chromosome_assembly_incomplete(
     snakemake.output.hybracter_summary,
+    snakemake.output.per_conting_summary,
     snakemake.params.ale_dir,
     snakemake.output.fasta,
     snakemake.output.ale_summary,
@@ -162,5 +186,5 @@ select_best_chromosome_assembly_incomplete(
     snakemake.params.polypolish_fasta,
     snakemake.params.polca_fasta,
     snakemake.wildcards.sample,
-    snakemake.input.flye_info
+    snakemake.input.flye_info,
 )

@@ -50,7 +50,6 @@ def msg(err_message, log=None):
         print("Cleaning up intermediate files.")
 
 
-
 def msg_box(splash, errmsg=None, log=None):
     msg("-" * (len(splash) + 4), log=log)
     msg(f"| {splash} |", log=log)
@@ -65,12 +64,12 @@ def default_to_ouput(ctx, param, value):
         return os.path.join(ctx.params["output"], value)
     return value
 
+
 def default_to_ouput(ctx, param, value):
     """Callback for --configfile; place value in output directory unless specified"""
     if param.default == value:
         return os.path.join(ctx.params["output"], value)
     return value
-
 
 
 def write_config(_config, file, log=None):
@@ -120,6 +119,7 @@ def copy_config(
             f"Config file {local_config} already exists. Using existing config file.",
             log=log,
         )
+
 
 def read_config(file):
     """Read a config file to a dictionary

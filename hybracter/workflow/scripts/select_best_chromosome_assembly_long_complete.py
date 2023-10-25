@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
 
-import os
-import sys
-
-import pandas as pd
-import pyrodigal
-from Bio import SeqIO
-
 import hashlib
+import os
 import shlex
 import subprocess
 import sys
@@ -15,11 +9,16 @@ from pathlib import Path
 from typing import List, Optional
 
 import click
+import pandas as pd
+import pyrodigal
+from Bio import SeqIO
 from loguru import logger
+from Bio.SeqUtils import gc_fraction
 
 """
 define the external tool class in case we need to run dnaapler
 """
+
 
 class ExternalTool:
     def __init__(self, tool: str, input: str, output: str, params: str, logdir: Path):
@@ -125,6 +124,7 @@ def calculate_mean_CDS_length(filepath_in):
 
 def select_best_chromosome_assembly_long_complete(
     hybracter_summary,
+    per_conting_summary,
     pyrodigal_summary,
     final_plasmid_fasta,
     output_chromosome_fasta,
@@ -134,11 +134,11 @@ def select_best_chromosome_assembly_long_complete(
     medaka_rd_2_fasta,
     sample,
     flye_info,
-    dnaapler_directory
+    dnaapler_directory,
 ):
     """
     get prodigal mean length for each chromosome
-    
+
     if prepolish is best, it will run dnaapler all to reorient the chromosome(s)
 
     Then creates summary tsv
@@ -162,6 +162,9 @@ def select_best_chromosome_assembly_long_complete(
         "medaka_rd_1_mean_cds_length": medaka_rd_1_mean_cds,
         "medaka_rd_2_mean_cds_length": medaka_rd_2_mean_cds,
     }
+
+    # stats per contig dict
+    stats_dict = {}
 
     # Convert the dictionary to a DataFrame
     summary_df = pd.DataFrame([dict])
@@ -187,26 +190,22 @@ def select_best_chromosome_assembly_long_complete(
         best_assembly = chrom_pre_polish_fasta
         best_round = "pre_polish"
 
-    
     # if best assembly is prepolish - run dnaapler to reorient the chromosome(s)!
     logdir = Path(dnaapler_directory) / "logs"
 
     if best_round == "pre_polish":
-    
         dnaapler = ExternalTool(
-        tool="dnaapler all",
-        input="",
-        output="",
-        params=f" -i {chrom_pre_polish_fasta} -o {dnaapler_directory} -t 1 -f",
-        logdir=logdir
+            tool="dnaapler all",
+            input="",
+            output="",
+            params=f" -i {chrom_pre_polish_fasta} -o {dnaapler_directory} -t 1 -f",
+            logdir=logdir,
         )
-        
+
         ExternalTool.run_tool(dnaapler)
-        
+
         # best assembly
-        best_assembly: Path = (
-            Path(dnaapler_directory) / "dnaapler_reoriented.fasta"
-        )
+        best_assembly: Path = Path(dnaapler_directory) / "dnaapler_reoriented.fasta"
 
     # write the chromosome(s)
     # usually should be 1!
@@ -235,6 +234,9 @@ def select_best_chromosome_assembly_long_complete(
                 # Calculate the length of the sequence
                 sequence_length = len(record.seq)
 
+                # gc
+                gc_content = round(gc_fraction(record.seq), 2)
+
                 # total assembly length
                 total_assembly_length += sequence_length
 
@@ -251,6 +253,14 @@ def select_best_chromosome_assembly_long_complete(
                 # Write the modified record to the output file
                 SeqIO.write(record, output_handle, "fasta")
                 SeqIO.write(record, output_handle_overall, "fasta")
+
+                # append for stats dict
+
+                stats_dict[record.id] = {}
+                stats_dict[record.id]["contig_type"] = "chromosome"
+                stats_dict[record.id]["length"] = sequence_length
+                stats_dict[record.id]["gc"] = gc_content
+                stats_dict[record.id]["circular"] = "True"
 
     #######################
     # plasmid
@@ -272,15 +282,31 @@ def select_best_chromosome_assembly_long_complete(
                 plasmids += 1
 
                 # the header is already done
+                sequence_len = len(record.seq)
+
                 # add record length
-                total_assembly_length += len(record.seq)
+                total_assembly_length += sequence_len
+
+                # gc
+                gc_content = round(gc_fraction(record.seq), 2)
 
                 if "circular" in record.description:
+                    circular_plasmids += 1
+
+                completeness_flag = False
+                if "circular" in record.description:
+                    completeness_flag = True
                     circular_plasmids += 1
 
                 # take description from plassembler (length and copy number)
                 # Write the modified record to the output file
                 SeqIO.write(record, output_handle_overall, "fasta")
+
+                stats_dict[record.id] = {}
+                stats_dict[record.id]["contig_type"] = "plasmid"
+                stats_dict[record.id]["length"] = sequence_length
+                stats_dict[record.id]["gc"] = gc_content
+                stats_dict[record.id]["circular"] = str(completeness_flag)
     else:
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
@@ -288,13 +314,13 @@ def select_best_chromosome_assembly_long_complete(
     number_of_contigs = chromosomes + plasmids
 
     # read in the flye info and extract longest contig
-    flye_df = pd.read_csv(flye_info, sep='\t')
+    flye_df = pd.read_csv(flye_info, sep="\t")
 
     # Find the row with the largest length.
-    longest_contig_row = flye_df[flye_df['length'] == flye_df['length'].max()]
+    longest_contig_row = flye_df[flye_df["length"] == flye_df["length"].max()]
 
     # Extract the coverage value from the longest contig row.
-    longest_contig_coverage = longest_contig_row['cov.'].values[0]
+    longest_contig_coverage = longest_contig_row["cov."].values[0]
 
     # to get the summary df
     summary_dict = {
@@ -313,8 +339,20 @@ def select_best_chromosome_assembly_long_complete(
     summary_df.to_csv(hybracter_summary, index=False, sep="\t")
 
 
+    # stats dict
+    stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
+    stats_df["contig_name"] = stats_df.index
+    # Reorder the columns with 'contig_name' as the first column
+    stats_df = stats_df[
+        ["contig_name"] + [col for col in stats_df.columns if col != "contig_name"]
+    ]
+
+    stats_df.to_csv(per_conting_summary, index=False, sep="\t")
+
+
 select_best_chromosome_assembly_long_complete(
     snakemake.output.hybracter_summary,
+    snakemake.output.per_conting_summary,
     snakemake.output.pyrodigal_summary,
     snakemake.input.final_plasmid_fasta,
     snakemake.output.chromosome_fasta,
@@ -324,5 +362,5 @@ select_best_chromosome_assembly_long_complete(
     snakemake.input.medaka_rd_2_fasta,
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
-    snakemake.params.dnaapler_dir
+    snakemake.params.dnaapler_dir,
 )

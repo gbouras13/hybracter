@@ -9,9 +9,16 @@ import os
 
 import click
 
-from .util import (OrderedCommands, all_medaka_models, copy_config,
-                   default_to_ouput, print_citation, print_version,
-                   run_snakemake, snake_base)
+from .util import (
+    OrderedCommands,
+    all_medaka_models,
+    copy_config,
+    default_to_ouput,
+    print_citation,
+    print_version,
+    run_snakemake,
+    snake_base,
+)
 
 
 def common_options(func):
@@ -65,7 +72,7 @@ def common_options(func):
             "-d",
             "--databases",
             help="Plassembler Databases directory.",
-            type=click.Path(dir_okay=True, readable=True)
+            type=click.Path(dir_okay=True, readable=True),
         ),
         click.option(
             "--medakaModel",
@@ -620,7 +627,7 @@ install
     "--databases",
     "databases",
     help="Directory where the Plassembler Database will be installed to (optional).",
-    show_default=True
+    show_default=True,
 )
 @click.option(
     "-o",
@@ -632,21 +639,21 @@ install
     show_default=True,
 )
 @click.option(
-            "--configfile",
-            default="config.yaml",
-            show_default=False,
-            callback=default_to_ouput,
-            help="Custom config file [default: (outputDir)/config.yaml]",
-        )
+    "--configfile",
+    default="config.yaml",
+    show_default=False,
+    callback=default_to_ouput,
+    help="Custom config file [default: (outputDir)/config.yaml]",
+)
 @click.option(
-            "--log",
-            "log",
-            default="hybracter.log",
-            callback=default_to_ouput,
-            hidden=True,
-        )
+    "--log",
+    "log",
+    default="hybracter.log",
+    callback=default_to_ouput,
+    hidden=True,
+)
 @click.argument("snake_args", nargs=-1)
-def install(databases,output, log, **kwargs):
+def install(databases, output, log, **kwargs):
     # define both together
     """Downloads and installs the plassembler database"""
     merge_config = {"args": {"databases": databases, "output": output, "log": log}}
@@ -705,7 +712,7 @@ def test_hybrid(
             "databases": databases,
             "no_pypolca": no_pypolca,
             "contaminants": contaminants,
-            "dnaapler_custom_db": dnaapler_custom_db
+            "dnaapler_custom_db": dnaapler_custom_db,
         }
     }
     run_snakemake(
@@ -754,7 +761,7 @@ def test_long(
             "databases": databases,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
-            "dnaapler_custom_db": dnaapler_custom_db
+            "dnaapler_custom_db": dnaapler_custom_db,
         }
     }
     run_snakemake(

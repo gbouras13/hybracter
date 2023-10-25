@@ -6,6 +6,7 @@ import sys
 
 import pandas as pd
 from Bio import SeqIO
+from Bio.SeqUtils import gc_fraction
 
 
 # determines whether a file is empty
@@ -29,6 +30,7 @@ def touch_file(path):
 
 def select_best_chromosome_assembly_complete(
     hybracter_summary,
+    per_conting_summary,
     ale_dir,
     input_plassember_fasta,
     output_chromosome_fasta,
@@ -41,7 +43,7 @@ def select_best_chromosome_assembly_complete(
     polypolish_fasta,
     polca_fasta,
     sample,
-    flye_info
+    flye_info,
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -125,6 +127,8 @@ def select_best_chromosome_assembly_complete(
         best_assembly = polca_fasta
         best_round = "polca"
 
+    stats_dict = {}
+
     # write the chromosome(s)
     # usually should be 1!
     number_of_chromosomes = sum(1 for _ in SeqIO.parse(best_assembly, "fasta"))
@@ -152,6 +156,9 @@ def select_best_chromosome_assembly_complete(
                 # Calculate the length of the sequence
                 sequence_length = len(record.seq)
 
+                # gc
+                gc_content = round(gc_fraction(record.seq), 2)
+
                 # total assembly length
                 total_assembly_length += sequence_length
 
@@ -168,6 +175,14 @@ def select_best_chromosome_assembly_complete(
                 # Write the modified record to the output file
                 SeqIO.write(record, output_handle, "fasta")
                 SeqIO.write(record, output_handle_overall, "fasta")
+
+                # append for stats dict
+
+                stats_dict[record.id] = {}
+                stats_dict[record.id]["contig_type"] = "chromosome"
+                stats_dict[record.id]["length"] = sequence_length
+                stats_dict[record.id]["gc"] = gc_content
+                stats_dict[record.id]["circular"] = "True"
 
     #######################
     # plasmid
@@ -193,34 +208,47 @@ def select_best_chromosome_assembly_complete(
                     # usually there will be 1 chromosome of course!
                     record.id = f"plasmid{plasmids:05}"
 
+                    sequence_len = len(record.seq)
+
                     # add record length
-                    total_assembly_length += len(record.seq)
+                    total_assembly_length += sequence_len
+
+                    # gc
+                    gc_content = round(gc_fraction(record.seq), 2)
 
                     # get rid off the contig id (1, 2, 3) etc from plassembler
                     record.description = record.description.split(" ", 1)[1]
 
+                    completeness_flag = False
                     if "circular=true" in record.description:
+                        completeness_flag = True
                         circular_plasmids += 1
 
                     # take description from plassembler (length and copy number)
                     # Write the modified record to the output file
                     SeqIO.write(record, output_handle, "fasta")
                     SeqIO.write(record, output_handle_overall, "fasta")
+
+                    stats_dict[record.id] = {}
+                    stats_dict[record.id]["contig_type"] = "plasmid"
+                    stats_dict[record.id]["length"] = sequence_length
+                    stats_dict[record.id]["gc"] = gc_content
+                    stats_dict[record.id]["circular"] = str(completeness_flag)
+
     else:
         touch_file(output_plasmid_fasta)
 
     number_of_contigs = chromosomes + plasmids
 
-
     # read in the flye info and extract longest contig
     # Read the TSV file into a Pandas DataFrame.
-    flye_df = pd.read_csv(flye_info, sep='\t')
+    flye_df = pd.read_csv(flye_info, sep="\t")
 
     # Find the row with the largest length.
-    longest_contig_row = flye_df[flye_df['length'] == flye_df['length'].max()]
+    longest_contig_row = flye_df[flye_df["length"] == flye_df["length"].max()]
 
     # Extract the coverage value from the longest contig row.
-    longest_contig_coverage = longest_contig_row['cov.'].values[0]
+    longest_contig_coverage = longest_contig_row["cov."].values[0]
 
     # to get the summary df
     summary_dict = {
@@ -238,9 +266,20 @@ def select_best_chromosome_assembly_complete(
     summary_df = pd.DataFrame([summary_dict])
     summary_df.to_csv(hybracter_summary, index=False, sep="\t")
 
+    # stats dict
+    stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
+    stats_df["contig_name"] = stats_df.index
+    # Reorder the columns with 'contig_name' as the first column
+    stats_df = stats_df[
+        ["contig_name"] + [col for col in stats_df.columns if col != "contig_name"]
+    ]
+
+    stats_df.to_csv(per_conting_summary, index=False, sep="\t")
+
 
 select_best_chromosome_assembly_complete(
     snakemake.output.hybracter_summary,
+    snakemake.output.per_conting_summary,
     snakemake.params.ale_dir,
     snakemake.input.plassembler_fasta,
     snakemake.output.chromosome_fasta,
@@ -253,5 +292,5 @@ select_best_chromosome_assembly_complete(
     snakemake.params.polypolish_fasta,
     snakemake.params.polca_fasta,
     snakemake.wildcards.sample,
-    snakemake.input.flye_info
+    snakemake.input.flye_info,
 )

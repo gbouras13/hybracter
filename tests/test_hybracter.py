@@ -1,8 +1,9 @@
 import os
 import shutil
 import subprocess
-from pathlib import Path
 import unittest
+from pathlib import Path
+
 import pytest
 
 __author__ = "George Bouras"
@@ -21,7 +22,9 @@ db_dir: Path = "plassembler_db"
 def tmp_dir(tmpdir_factory):
     return tmpdir_factory.mktemp("tmp")
 
+
 threads = 2
+
 
 def remove_directory(dir_path):
     if os.path.exists(dir_path):
@@ -67,7 +70,7 @@ def test_hybracter_install():
     exec_command(cmd)
 
 
-@pytest.mark.dependency(depends=['test_hybracter_install'])
+@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_hybrid_csv():
     """test hybracter hybrid"""
     outdir: Path = "test_hybracter_output"
@@ -76,7 +79,8 @@ def test_hybracter_hybrid_csv():
     exec_command(cmd)
     remove_directory(outdir)
 
-@pytest.mark.dependency(depends=['test_hybracter_install'])
+
+@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_no_pypolca():
     """test hybracter hybrid no pypolca"""
     outdir: Path = "test_hybracter_output"
@@ -85,7 +89,8 @@ def test_hybracter_no_pypolca():
     exec_command(cmd)
     remove_directory(outdir)
 
-@pytest.mark.dependency(depends=['test_hybracter_install'])
+
+@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_long():
     """test hybracter long"""
     outdir: Path = "test_hybracter_output"
@@ -94,7 +99,8 @@ def test_hybracter_long():
     exec_command(cmd)
     remove_directory(outdir)
 
-@pytest.mark.dependency(depends=['test_hybracter_install'])
+
+@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_hybrid_single():
     """test hybracter hybrid single"""
     outdir: Path = "test_hybracter_output_hybr_single"
@@ -105,7 +111,8 @@ def test_hybracter_hybrid_single():
     exec_command(cmd)
     remove_directory(outdir)
 
-@pytest.mark.dependency(depends=['test_hybracter_install'])
+
+@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_long_single():
     """test hybracter long"""
     outdir: Path = "test_hybracter_output_long_single"
@@ -114,7 +121,8 @@ def test_hybracter_long_single():
     exec_command(cmd)
     remove_directory(outdir)
 
-@pytest.mark.dependency(depends=['test_hybracter_install'])
+
+@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_dnaapler_custom_db():
     """test hybracter hybrid-single with custom_db"""
     outdir: Path = "test_hybracter_output_custom_db"
@@ -126,10 +134,12 @@ def test_hybracter_dnaapler_custom_db():
     exec_command(cmd)
     remove_directory(outdir)
 
+
 def test_citation():
     """test hybracter citation"""
     cmd = "hybracter citation"
     exec_command(cmd)
+
 
 def test_version():
     """test hybracter version"""
@@ -138,7 +148,6 @@ def test_version():
 
 
 class errors(unittest.TestCase):
-
     def test_no_db(self):
         """test hybracter with no db"""
         with self.assertRaises(RuntimeError):
@@ -148,5 +157,6 @@ class errors(unittest.TestCase):
             exec_command(cmd)
             remove_directory(outdir)
 
-# cleanup 
+
+# cleanup
 remove_directory(db_dir)

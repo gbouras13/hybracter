@@ -45,7 +45,8 @@ rule aggregate_finalise_complete:
         pyrodigal_summary=os.path.join(
             dir.out.pyrodigal_summary, "complete", "{sample}_summary.tsv"
         ),
-        hybracter_summary=os.path.join(dir.out.final_summaries_complete, "{sample}.tsv"),
+        hybracter_summary=os.path.join(dir.out.final_summaries_complete, "{sample}_summary.tsv"),
+        per_conting_summary=os.path.join(dir.out.final_summaries_complete, "{sample}_per_contig_stats.tsv")
     params:
         complete_flag=True,
         dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly")
@@ -77,9 +78,8 @@ rule aggregate_finalise_incomplete:
         pyrodigal_summary=os.path.join(
             dir.out.pyrodigal_summary, "incomplete", "{sample}_summary.tsv"
         ),
-        hybracter_summary=os.path.join(
-            dir.out.final_summaries_incomplete, "{sample}.tsv"
-        ),
+        hybracter_summary=os.path.join(dir.out.final_summaries_incomplete, "{sample}_summary.tsv"),
+        per_conting_summary=os.path.join(dir.out.final_summaries_incomplete, "{sample}_per_contig_stats.tsv")
     params:
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
         medaka_fasta=os.path.join(

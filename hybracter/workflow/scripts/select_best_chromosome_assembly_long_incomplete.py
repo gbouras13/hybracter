@@ -3,7 +3,8 @@
 import pandas as pd
 import pyrodigal
 from Bio import SeqIO
-
+from Bio.SeqUtils import gc_fraction
+ 
 
 def calculate_mean_CDS_length(filepath_in):
     """
@@ -44,12 +45,13 @@ def calculate_mean_CDS_length(filepath_in):
 
 def select_best_chromosome_assembly_long_incomplete(
     hybracter_summary,
+    per_conting_summary,
     pyrodigal_summary,
     output_fasta,
     pre_polish_fasta,
     medaka_fasta,
     sample,
-    flye_info
+    flye_info,
 ):
     """
     get prodigal mean length for each assembly
@@ -84,6 +86,9 @@ def select_best_chromosome_assembly_long_incomplete(
         best_assembly = pre_polish_fasta
         best_round = "pre_polish"
 
+
+    stats_dict = {}
+    
     # count contigs
     number_of_contigs = 0
 
@@ -108,6 +113,10 @@ def select_best_chromosome_assembly_long_incomplete(
             # total assembly length
             total_assembly_length += sequence_length
 
+            # gc
+            gc_content = round(gc_fraction(record.seq), 2)
+
+
             # to get longest contig
             if number_of_contigs == 1:
                 longest_contig_length = sequence_length
@@ -121,15 +130,19 @@ def select_best_chromosome_assembly_long_incomplete(
             # Write the modified record to the output file
             SeqIO.write(record, output_handle, "fasta")
 
-    
+            # append for stats dict
+            stats_dict[record.id] = {}
+            stats_dict[record.id]["length"] = sequence_length
+            stats_dict[record.id]["gc"] = gc_content
+
     # read in the flye info and extract longest contig
-    flye_df = pd.read_csv(flye_info, sep='\t')
+    flye_df = pd.read_csv(flye_info, sep="\t")
 
     # Find the row with the largest length.
-    longest_contig_row = flye_df[flye_df['length'] == flye_df['length'].max()]
+    longest_contig_row = flye_df[flye_df["length"] == flye_df["length"].max()]
 
     # Extract the coverage value from the longest contig row.
-    longest_contig_coverage = longest_contig_row['cov.'].values[0]
+    longest_contig_coverage = longest_contig_row["cov."].values[0]
 
     # to get the summary df
     summary_dict = {
@@ -139,7 +152,7 @@ def select_best_chromosome_assembly_long_incomplete(
         "Number_of_contigs": number_of_contigs,
         "Most_accurate_polishing_round": best_round,
         "Longest_contig_length": longest_contig_length,
-         "Longest_contig_coverage": longest_contig_coverage,
+        "Longest_contig_coverage": longest_contig_coverage,
         "Number_circular_plasmids": "Unknown",
     }
 
@@ -147,13 +160,23 @@ def select_best_chromosome_assembly_long_incomplete(
     summary_df = pd.DataFrame([summary_dict])
     summary_df.to_csv(hybracter_summary, index=False, sep="\t")
 
+    # stats dict
+    stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
+    stats_df["contig_name"] = stats_df.index
+    # Reorder the columns with 'contig_name' as the first column
+    stats_df = stats_df[
+        ["contig_name"] + [col for col in stats_df.columns if col != "contig_name"]
+    ]
+
+    stats_df.to_csv(per_conting_summary, index=False, sep="\t")
 
 select_best_chromosome_assembly_long_incomplete(
     snakemake.output.hybracter_summary,
+    snakemake.output.per_conting_summary,
     snakemake.output.pyrodigal_summary,
     snakemake.output.total_fasta,
     snakemake.params.pre_polish_fasta,
     snakemake.params.medaka_fasta,
     snakemake.wildcards.sample,
-    snakemake.input.flye_info
+    snakemake.input.flye_info,
 )
