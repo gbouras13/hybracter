@@ -2,7 +2,6 @@
 dnaapler
 """
 
-
 rule dnaapler:
     """
     Runs dnaapler to begin chromosome with dnaa
@@ -21,7 +20,7 @@ rule dnaapler:
         dir=os.path.join(dir.out.dnaapler, "{sample}"),
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
+        mem = str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -30,6 +29,6 @@ rule dnaapler:
         os.path.join(dir.out.stderr, "dnaapler", "{sample}.log"),
     shell:
         """
-        dnaapler chromosome -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -a nearest -f 2> {log}
+        dnaapler all -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -a nearest -f 2> {log}
         dnaapler --version > {output.version}
         """
