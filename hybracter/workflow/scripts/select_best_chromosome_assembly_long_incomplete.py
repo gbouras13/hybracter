@@ -114,7 +114,7 @@ def select_best_chromosome_assembly_long_incomplete(
             total_assembly_length += sequence_length
 
             # gc
-            gc_content = round(gc_fraction(record.seq), 2)
+            gc_content = round(gc_fraction(record.seq)*100, 2)
 
 
             # to get longest contig

@@ -157,7 +157,7 @@ def select_best_chromosome_assembly_complete(
                 sequence_length = len(record.seq)
 
                 # gc
-                gc_content = round(gc_fraction(record.seq), 2)
+                gc_content = round(gc_fraction(record.seq)*100, 2)
 
                 # total assembly length
                 total_assembly_length += sequence_length
@@ -214,7 +214,7 @@ def select_best_chromosome_assembly_complete(
                     total_assembly_length += sequence_len
 
                     # gc
-                    gc_content = round(gc_fraction(record.seq), 2)
+                    gc_content = round(gc_fraction(record.seq)*100, 2)
 
                     # get rid off the contig id (1, 2, 3) etc from plassembler
                     record.description = record.description.split(" ", 1)[1]

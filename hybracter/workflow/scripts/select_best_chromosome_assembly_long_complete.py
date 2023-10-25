@@ -235,7 +235,7 @@ def select_best_chromosome_assembly_long_complete(
                 sequence_length = len(record.seq)
 
                 # gc
-                gc_content = round(gc_fraction(record.seq), 2)
+                gc_content = round(gc_fraction(record.seq)*100, 2)
 
                 # total assembly length
                 total_assembly_length += sequence_length
@@ -288,7 +288,7 @@ def select_best_chromosome_assembly_long_complete(
                 total_assembly_length += sequence_len
 
                 # gc
-                gc_content = round(gc_fraction(record.seq), 2)
+                gc_content = round(gc_fraction(record.seq)*100, 2)
 
                 if "circular" in record.description:
                     circular_plasmids += 1
