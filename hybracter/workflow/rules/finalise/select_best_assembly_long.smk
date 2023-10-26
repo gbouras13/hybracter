@@ -45,17 +45,21 @@ rule aggregate_finalise_complete:
         pyrodigal_summary=os.path.join(
             dir.out.pyrodigal_summary, "complete", "{sample}_summary.tsv"
         ),
-        hybracter_summary=os.path.join(dir.out.final_summaries_complete, "{sample}_summary.tsv"),
-        per_conting_summary=os.path.join(dir.out.final_summaries_complete, "{sample}_per_contig_stats.tsv")
+        hybracter_summary=os.path.join(
+            dir.out.final_summaries_complete, "{sample}_summary.tsv"
+        ),
+        per_conting_summary=os.path.join(
+            dir.out.final_summaries_complete, "{sample}_per_contig_stats.tsv"
+        ),
     params:
         complete_flag=True,
-        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly")
+        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly"),
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
-        os.path.join(dir.env, "dnaapler.yaml") # will contain pyrodigal but dnaapler needed if the best hit is pre-polish (based on Ryan wick's 24-10-23 blogpost medaka might make long only assemblies worse)
+        os.path.join(dir.env, "dnaapler.yaml")  # will contain pyrodigal but dnaapler needed if the best hit is pre-polish (based on Ryan wick's 24-10-23 blogpost medaka might make long only assemblies worse)
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "select_best_chromosome_assembly_long_complete.py")
@@ -78,8 +82,12 @@ rule aggregate_finalise_incomplete:
         pyrodigal_summary=os.path.join(
             dir.out.pyrodigal_summary, "incomplete", "{sample}_summary.tsv"
         ),
-        hybracter_summary=os.path.join(dir.out.final_summaries_incomplete, "{sample}_summary.tsv"),
-        per_conting_summary=os.path.join(dir.out.final_summaries_incomplete, "{sample}_per_contig_stats.tsv")
+        hybracter_summary=os.path.join(
+            dir.out.final_summaries_incomplete, "{sample}_summary.tsv"
+        ),
+        per_conting_summary=os.path.join(
+            dir.out.final_summaries_incomplete, "{sample}_per_contig_stats.tsv"
+        ),
     params:
         pre_polish_fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
         medaka_fasta=os.path.join(
