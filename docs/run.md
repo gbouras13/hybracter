@@ -94,6 +94,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -149,6 +153,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -186,7 +194,7 @@ Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
 
 Options:
   -i, --input TEXT                Input csv  [required]
-  -o, --output PATH               Output directory  [default: hybracter.out]
+  -o, --output PATH               Output directory  [default: hybracter_out]
   --configfile TEXT               Custom config file [default:
                                   (outputDir)/config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
@@ -205,6 +213,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -253,6 +265,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory

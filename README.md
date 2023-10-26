@@ -88,15 +88,17 @@ Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](htt
 
 ## v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`
 
-Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html) on 24 October 2023 suggests that if you have new 5Hz SUP or Res (bacterial specific) ONT reads, Medaka polishing often makes things worse! It also implies that Nanopore reads are almost good enough to assemble perfect genomes (with Trycycler) which is pretty awesome.
+Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html) on 24 October 2023 suggests that if you have new 5Hz SUP or Res (bacterial model specific) ONT reads, Medaka polishing often makes things worse! It also implies that Nanopore reads are almost good enough to assemble perfect bacterial genomes (at least with Trycycler) which is pretty awesome.
 
-Combined with the difficulty and randomness in the installation of Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
+Combined with the difficulty and randomness in installing Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
 
-I have also set Medaka to be v1.8.0 and I do not intend to upgrade this as this is the most recent bioconda version that doesn't cause much grief. 
+I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going forward, as this is the most recent stable bioconda version that doesn't seem to cause too much grief. 
 
-If you have trouble with Medaka installation, please run `--no_medaka`.
+If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
 
-`hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. In hybrid mode, I'd still think the short read polished assemblies should be best but who knows now that Nanopore reads are getting very accurate!
+`hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly appreciably worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. 
+
+In hybrid mode, I'd still think the short read polished assemblies should be best but who knows now that Nanopore reads are getting very accurate!
 
 ## Documentation
 
