@@ -12,8 +12,8 @@ import click
 import pandas as pd
 import pyrodigal
 from Bio import SeqIO
-from loguru import logger
 from Bio.SeqUtils import gc_fraction
+from loguru import logger
 
 """
 define the external tool class in case we need to run dnaapler
@@ -24,6 +24,7 @@ define the external tool class in case we need to run dnaapler
 def touch_file(path):
     with open(path, "a"):
         os.utime(path, None)
+
 
 # determines whether a file is empty
 def is_file_empty(file):
@@ -190,16 +191,13 @@ def select_best_chromosome_assembly_long_complete(
         is_file_empty(plassembler_plasmid_fasta) is False
     ):  # if the plassembler output is not empty
         # Open the output file in write mode
-        with open(
-            output_plasmid_fasta, "w"
-        ) as output_handle_plasmid:
+        with open(output_plasmid_fasta, "w") as output_handle_plasmid:
             with open(
                 overall_output_fasta, "a"
             ) as output_handle_overall:  # needs to be append
                 # Iterate through the records in the best assembly FASTA file and write them to the output file
                 for record in SeqIO.parse(plassembler_plasmid_fasta, "fasta"):
                     plasmids += 1
-
 
                     record.id = f"plasmid{plasmids:05}"
                     # the header is already done
@@ -211,7 +209,7 @@ def select_best_chromosome_assembly_long_complete(
                     # gc
                     gc_content = round(gc_fraction(record.seq) * 100, 2)
 
-                    # get rid off the contig id (1, 2, 3) etc from plassembler 
+                    # get rid off the contig id (1, 2, 3) etc from plassembler
                     record.description = record.description.split(" ", 1)[1]
 
                     completeness_flag = False

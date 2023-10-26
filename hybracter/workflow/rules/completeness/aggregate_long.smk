@@ -139,7 +139,7 @@ hybrid
 """
 
 
-# input function for the rule aggregate polca
+# input function for aggresgating pyrodigal plassembler analysis
 def aggregate_pyrodigal_plassembler_input(wildcards):
     # decision based on content of output file
     # Important: use the method open() of the returned file!
@@ -156,11 +156,14 @@ def aggregate_pyrodigal_plassembler_input(wildcards):
                     "{sample}.tsv",
                 )
             else:
-                return os.path.join(
-                    dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
-                )
+                return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
         else:  # incomplete
-            return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
+            if f.read().strip() == "C":  # complete
+                return os.path.join(
+                    dir.out.plassembler_individual_summaries, "{sample}_with_sample.tsv"
+                )
+            else:
+                return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
 
 
 ### from the aggregate_pyrodigal_plassembler_input
