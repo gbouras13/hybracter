@@ -26,7 +26,7 @@ All samples that are denoted by hybracter to be complete will have 5 outputs in 
    * `sample`_chromosome.fasta containing only the final chromosome(s) assembly for that sample.
    * `sample`_plasmid.fasta containing only the final plasmid(s) assembly for that sample. Note this may be empty. If this is empty, then that sample had no plasmids. 
 
-All samples that are denoted by hybracter to be incomplete will have 3 outputs:
+All samples that are denoted by hybracter to be incomplete will have 3 outputs in the `incomplete` directory:
 
    * `sample`_summary.tsv containing the summary statistics for that sample.
    * `sample`_per_contig_stats.tsv containing the contig names, lengths, GC% and whether the contig is circular.
