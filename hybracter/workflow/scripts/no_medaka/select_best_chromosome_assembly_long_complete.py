@@ -230,7 +230,7 @@ def select_best_chromosome_assembly_long_complete(
                     stats_dict[record.id]["gc"] = gc_content
                     stats_dict[record.id]["circular"] = str(completeness_flag)
     else:
-        
+        touch_file(output_plasmid_fasta)
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
 

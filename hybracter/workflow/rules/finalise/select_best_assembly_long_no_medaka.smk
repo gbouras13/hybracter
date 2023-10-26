@@ -35,7 +35,7 @@ rule aggregate_finalise_complete:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
         ),
-        plasmid_fasta=os.path.join(
+        plassembler_plasmid_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_plasmid.fasta"
         ),
         total_fasta=os.path.join(dir.out.final_contigs_complete, "{sample}_final.fasta"),
