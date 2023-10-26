@@ -20,6 +20,11 @@ define the external tool class in case we need to run dnaapler
 """
 
 
+# touches an empty file
+def touch_file(path):
+    with open(path, "a"):
+        os.utime(path, None)
+
 # determines whether a file is empty
 def is_file_empty(file):
     """
@@ -225,6 +230,7 @@ def select_best_chromosome_assembly_long_complete(
                     stats_dict[record.id]["gc"] = gc_content
                     stats_dict[record.id]["circular"] = str(completeness_flag)
     else:
+        
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
 

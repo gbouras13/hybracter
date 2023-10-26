@@ -20,6 +20,11 @@ define the external tool class in case we need to run dnaapler
 """
 
 
+# touches an empty file
+def touch_file(path):
+    with open(path, "a"):
+        os.utime(path, None)
+
 class ExternalTool:
     def __init__(self, tool: str, input: str, output: str, params: str, logdir: Path):
         self.command: List[str] = self._build_command(tool, input, output, params)
@@ -309,6 +314,7 @@ def select_best_chromosome_assembly_long_complete(
     else:
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
+        touch_file(output_plasmid_fasta)
 
     number_of_contigs = chromosomes + plasmids
 
