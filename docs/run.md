@@ -34,6 +34,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
+* You can turn off Medaka polishing using `--no_medaka`
 
 ```
 Usage: hybracter [OPTIONS] COMMAND [ARGS]...
@@ -186,6 +187,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
+* You can turn off Medaka polishing using `--no_medaka`
 
 ```
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
