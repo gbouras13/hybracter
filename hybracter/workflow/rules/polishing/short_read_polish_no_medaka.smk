@@ -77,7 +77,7 @@ rule polypolish:
         """
 
 
-rule compare_assemblies_polypolish_vs_medaka_round_2:
+rule compare_assemblies_polypolish_vs_prechrom:
     """
     compare assemblies 
     """

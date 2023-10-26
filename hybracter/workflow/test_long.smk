@@ -125,11 +125,11 @@ if config.args.no_medaka is False:  # standard - uses Medaka
     # dnaapler or dnaapler custom
     if config.args.dnaapler_custom_db == "none":  # standard - no custom
 
-        include: os.path.join("rules", "polishing", "dnaapler.smk")
+        include: os.path.join("rules", "reorientation", "dnaapler.smk")
 
     else:
 
-        include: os.path.join("rules", "polishing", "dnaapler_custom.smk")
+        include: os.path.join("rules", "reorientation", "dnaapler_custom.smk")
     # plassembler  & pyrodigal
     include: os.path.join("rules", "assembly", "plassembler_long.smk")
     include: os.path.join("rules", "processing", "combine_plassembler_info.smk")

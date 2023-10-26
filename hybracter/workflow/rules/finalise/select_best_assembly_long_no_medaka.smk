@@ -49,7 +49,7 @@ rule aggregate_finalise_complete:
             dir.out.final_summaries_complete, "{sample}_per_contig_stats.tsv"
         ),
     params:
-        complete_flag=True
+        complete_flag=True,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",

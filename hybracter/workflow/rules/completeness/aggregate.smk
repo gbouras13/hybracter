@@ -143,16 +143,30 @@ def aggregate_short_read_polish_input(wildcards):
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
         if f.read().strip() == "C":
-            if config.args.no_pypolca is False:
+            if (
+                config.args.no_pypolca is False
+            ):  # with pypolca - will return this regardless of medaka being run
                 return os.path.join(
                     dir.out.differences, "{sample}", "pypolca_vs_polypolish.txt"
                 )
-            else:
+            else:  # no pypolca is true
+                if config.args.no_medaka is False:  # with medaka
+                    return os.path.join(
+                        dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"
+                    )
+                else:  # no medaka and no pypolca only runs polypolish
+                    return os.path.join(
+                        dir.out.differences, "{sample}", "polypolish_vs_pre_polish.txt"
+                    )
+        else:  # incomplete
+            if (
+                config.args.no_pypolca is False
+            ):  # with pypolca - will return this regardless of medaka being run
                 return os.path.join(
-                    dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"
+                    dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
                 )
-        else:
-            return os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta")
+            else:  # no pypolca, still will run polypolsh regardless of medaka being run
+                return os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta")
 
 
 ### from the short_read_polishing
