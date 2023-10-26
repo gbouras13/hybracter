@@ -108,40 +108,70 @@ include: os.path.join("rules", "assembly", "assemble.smk")
 include: os.path.join("rules", "processing", "extract_fastas.smk")
 # checkpoint
 include: os.path.join("rules", "completeness", "aggregate.smk")
+
+
 # checkpoint here for completeness
-# need long read polish files regardless
-include: os.path.join("rules", "polishing", "long_read_polish.smk")
-include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
 
 
-# dnaapler or dnaapler custom
-if config.args.dnaapler_custom_db == "none":  # standard - no custom
+### medaka vs no medaka
+# default - medaka will be run
+if config.args.no_medaka is False:
 
-    include: os.path.join("rules", "polishing", "dnaapler.smk")
+    # checkpoint here for completeness
+    # need long read polish files regardless
+    include: os.path.join("rules", "polishing", "long_read_polish.smk")
+    include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
 
+    # dnaapler or dnaapler custom
+    if config.args.dnaapler_custom_db == "none":  # standard - no custom
+
+        include: os.path.join("rules", "reorientation", "dnaapler.smk")
+
+    else:
+
+        include: os.path.join("rules", "reorientation", "dnaapler_custom.smk")
+    #  polish the assemblies
+    include: os.path.join("rules", "polishing", "short_read_polish.smk")
+    include: os.path.join("rules", "polishing", "short_read_polish_incomplete.smk")
+    # plassembler
+    include: os.path.join("rules", "assembly", "plassembler.smk")
+    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
+
+    if config.args.no_pypolca is False:
+
+        include: os.path.join("rules", "polishing", "short_read_pypolca.smk")
+    # ale
+    include: os.path.join("rules", "assess", "assess_complete.smk")
+    include: os.path.join("rules", "assess", "assess_incomplete.smk")
+    # finalse
+    include: os.path.join("rules", "finalise", "select_best_assembly.smk")
+
+
+# --no_medaka
 else:
+    # dnaapler or dnaapler custom
+    if config.args.dnaapler_custom_db == "none":  # standard - no custom
 
-    include: os.path.join("rules", "polishing", "dnaapler_custom.smk")
+        include: os.path.join("rules", "reorientation", "dnaapler_no_medaka.smk")
 
+    else:
 
-#  polish the assemblies
-include: os.path.join("rules", "polishing", "short_read_polish.smk")
-include: os.path.join("rules", "polishing", "short_read_polish_incomplete.smk")
-# plassembler
-include: os.path.join("rules", "assembly", "plassembler.smk")
-include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
+        include: os.path.join("rules", "reorientation", "dnaapler_custom_no_medaka.smk")
+    #  polish the assemblies with short reads
+    include: os.path.join("rules", "polishing", "short_read_polish_no_medaka.smk")
+    include: os.path.join("rules", "polishing", "short_read_polish_incomplete_no_medaka.smk")
+    # plassembler
+    include: os.path.join("rules", "assembly", "plassembler.smk")
+    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 
+    if config.args.no_pypolca is False:
 
-if config.args.no_pypolca is False:
-
-    include: os.path.join("rules", "polishing", "short_read_pypolca.smk")
-
-
-# ale
-include: os.path.join("rules", "assess", "assess_complete.smk")
-include: os.path.join("rules", "assess", "assess_incomplete.smk")
-# finalse
-include: os.path.join("rules", "finalise", "select_best_assembly.smk")
+        include: os.path.join("rules", "polishing", "short_read_pypolca_no_medaka.smk")
+    # ale
+    include: os.path.join("rules", "assess", "assess_complete_no_medaka.smk")
+    include: os.path.join("rules", "assess", "assess_incomplete_no_medaka.smk")
+    # finalse
+    include: os.path.join("rules", "finalise", "select_best_assembly_no_medaka.smk")
 
 
 ### rule all

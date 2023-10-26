@@ -157,7 +157,7 @@ def select_best_chromosome_assembly_complete(
                 sequence_length = len(record.seq)
 
                 # gc
-                gc_content = round(gc_fraction(record.seq)*100, 2)
+                gc_content = round(gc_fraction(record.seq) * 100, 2)
 
                 # total assembly length
                 total_assembly_length += sequence_length
@@ -208,13 +208,13 @@ def select_best_chromosome_assembly_complete(
                     # usually there will be 1 chromosome of course!
                     record.id = f"plasmid{plasmids:05}"
 
-                    sequence_len = len(record.seq)
+                    sequence_length = len(record.seq)
 
                     # add record length
-                    total_assembly_length += sequence_len
+                    total_assembly_length += sequence_length
 
                     # gc
-                    gc_content = round(gc_fraction(record.seq)*100, 2)
+                    gc_content = round(gc_fraction(record.seq) * 100, 2)
 
                     # get rid off the contig id (1, 2, 3) etc from plassembler
                     record.description = record.description.split(" ", 1)[1]

@@ -10,12 +10,12 @@ rule medaka_round_1:
         version=os.path.join(dir.out.versions, "{sample}", "medaka_complete.version"),
         copy_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
-        )
+        ),
     conda:
         os.path.join(dir.env, "medaka.yaml")
     params:
         model=MEDAKA_MODEL,
-        dir=os.path.join(dir.out.medaka_rd_1, "{sample}")
+        dir=os.path.join(dir.out.medaka_rd_1, "{sample}"),
     resources:
         mem_mb=config.resources.big.mem,
         mem=str(config.resources.big.mem) + "MB",
@@ -67,12 +67,12 @@ rule medaka_round_2:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         copy_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
-        )
+        ),
     conda:
         os.path.join(dir.env, "medaka.yaml")
     params:
         model=MEDAKA_MODEL,
-        dir=os.path.join(dir.out.medaka_rd_2, "{sample}")
+        dir=os.path.join(dir.out.medaka_rd_2, "{sample}"),
     resources:
         mem_mb=config.resources.big.mem,
         mem=str(config.resources.big.mem) + "MB",

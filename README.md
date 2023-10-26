@@ -18,6 +18,7 @@
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
   - [Description](#description)
+  - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
   - [Documentation](#documentation)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
   - [Other Options](#other-options)
@@ -84,6 +85,18 @@ It scales massively using the embarassingly parallel power of HPC and Snakemake 
 `hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targeted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
 Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. Also, you probably still will get good results with hybracter, but the pre-polished genome will be the highest quality! If you really want this feature to be added, please reach out.
+
+## v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`
+
+Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html) on 24 October 2023 suggests that if you have new 5Hz SUP or Res (bacterial specific) ONT reads, Medaka polishing often makes things worse! It also implies that Nanopore reads are almost good enough to assemble perfect genomes (with Trycycler) which is pretty awesome.
+
+Combined with the difficulty and randomness in the installation of Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
+
+I have also set Medaka to be v1.8.0 and I do not intend to upgrade this as this is the most recent bioconda version that doesn't cause much grief. 
+
+If you have trouble with Medaka installation, please run `--no_medaka`.
+
+`hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. In hybrid mode, I'd still think the short read polished assemblies should be best but who knows now that Nanopore reads are getting very accurate!
 
 ## Documentation
 

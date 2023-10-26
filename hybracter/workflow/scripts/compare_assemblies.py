@@ -22,6 +22,7 @@ have received a copy of the GNU General Public License along with this program. 
 
 import argparse
 import datetime
+
 # import edlib
 import gzip
 import os

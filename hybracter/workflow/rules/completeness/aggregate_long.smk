@@ -21,7 +21,7 @@ def aggregate_plassembler_input(wildcards):
     ].open() as f:
         if f.read().strip() == "C":
             return os.path.join(
-                dir.out.plassembler, "{sample}", "medaka", "consensus.fasta"
+                dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
             )
         else:  # if incomplete
             return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
@@ -76,10 +76,20 @@ def aggregate_long_read_polish_input(wildcards):
     # This way, Snakemake is able to automatically download the file if it is generated in
     # a cloud environment without a shared filesystem.
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
-        if f.read().strip() == "C":
-            return os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta")
-        else:  # if incomplete
-            return os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta")
+        if config.args.no_medaka is False:  # default
+            if f.read().strip() == "C":
+                return os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta")
+            else:  # if incomplete
+                return os.path.join(
+                    dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
+                )
+        else:  # no medaka
+            if f.read().strip() == "C":
+                return os.path.join(
+                    dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
+                )
+            else:  # if incomplete
+                return os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta")
 
 
 ### from the long_read_polishing
@@ -138,12 +148,17 @@ def aggregate_pyrodigal_plassembler_input(wildcards):
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[
         0
     ].open() as f:
-        if f.read().strip() == "C":  # complete
-            return os.path.join(
-                dir.out.pyrodigal_summary_plassembler,
-                "complete",
-                "{sample}.tsv",
-            )
+        if config.args.no_medaka is False:  # default
+            if f.read().strip() == "C":  # complete
+                return os.path.join(
+                    dir.out.pyrodigal_summary_plassembler,
+                    "complete",
+                    "{sample}.tsv",
+                )
+            else:
+                return os.path.join(
+                    dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
+                )
         else:  # incomplete
             return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
 

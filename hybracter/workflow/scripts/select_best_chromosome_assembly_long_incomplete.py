@@ -4,7 +4,7 @@ import pandas as pd
 import pyrodigal
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction
- 
+
 
 def calculate_mean_CDS_length(filepath_in):
     """
@@ -86,9 +86,8 @@ def select_best_chromosome_assembly_long_incomplete(
         best_assembly = pre_polish_fasta
         best_round = "pre_polish"
 
-
     stats_dict = {}
-    
+
     # count contigs
     number_of_contigs = 0
 
@@ -114,8 +113,7 @@ def select_best_chromosome_assembly_long_incomplete(
             total_assembly_length += sequence_length
 
             # gc
-            gc_content = round(gc_fraction(record.seq)*100, 2)
-
+            gc_content = round(gc_fraction(record.seq) * 100, 2)
 
             # to get longest contig
             if number_of_contigs == 1:
@@ -169,6 +167,7 @@ def select_best_chromosome_assembly_long_incomplete(
     ]
 
     stats_df.to_csv(per_conting_summary, index=False, sep="\t")
+
 
 select_best_chromosome_assembly_long_incomplete(
     snakemake.output.hybracter_summary,

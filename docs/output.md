@@ -18,16 +18,18 @@ This directory will include:
 
 2. The `complete` and `incomplete` directories will contain the summary assemblies for all samples.
 
-All samples that are denoted by hybracter to be complete will have 4 outputs in the `complete` directory:
+All samples that are denoted by hybracter to be complete will have 5 outputs in the `complete` directory:
 
-   * `sample`.tsv containing the summary statistics for that sample.
+   * `sample`_summary.tsv containing the summary statistics for that sample.
+   * `sample`_per_contig_stats.tsv containing the contig names, lengths, GC% and whether the contig is circular.
    * `sample`_final.fasta containing the final assembly for that sample.
    * `sample`_chromosome.fasta containing only the final chromosome(s) assembly for that sample.
    * `sample`_plasmid.fasta containing only the final plasmid(s) assembly for that sample. Note this may be empty. If this is empty, then that sample had no plasmids. 
 
-All samples that are denoted by hybracter to be incomplete will have 2 outputs:
+All samples that are denoted by hybracter to be incomplete will have 3 outputs:
 
-   * `sample`.tsv containing the summary statistics for that sample.
+   * `sample`_summary.tsv containing the summary statistics for that sample.
+   * `sample`_per_contig_stats.tsv containing the contig names, lengths, GC% and whether the contig is circular.
    * `sample`_final.fasta containing the final assembly for that sample.
 
 # Other Outputs

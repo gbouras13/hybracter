@@ -111,27 +111,48 @@ include: os.path.join("rules", "processing", "extract_fastas.smk")
 # checkpoint
 # needs its own rules for long
 include: os.path.join("rules", "completeness", "aggregate_long.smk")
+
+
 # checkpoint here for completeness
-# need long read polish files regardless
-include: os.path.join("rules", "polishing", "long_read_polish.smk")
-include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
+
+## medaka vs no medaka
+if config.args.no_medaka is False:  # standard - uses Medaka
+
+    # need long read polish files regardless
+    include: os.path.join("rules", "polishing", "long_read_polish.smk")
+    include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
+
+    # dnaapler or dnaapler custom
+    if config.args.dnaapler_custom_db == "none":  # standard - no custom
+
+        include: os.path.join("rules", "polishing", "dnaapler.smk")
+
+    else:
+
+        include: os.path.join("rules", "polishing", "dnaapler_custom.smk")
+    # plassembler  & pyrodigal
+    include: os.path.join("rules", "assembly", "plassembler_long.smk")
+    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
+    # finalse & pyrodigal
+    include: os.path.join("rules", "finalise", "select_best_assembly_long.smk")
 
 
-# dnaapler or dnaapler custom
-if config.args.dnaapler_custom_db == "none":  # standard - no custom
-
-    include: os.path.join("rules", "polishing", "dnaapler.smk")
-
+# --no_medaka is chosen
 else:
+    # dnaapler or dnaapler custom
+    if config.args.dnaapler_custom_db == "none":  # standard - no custom
 
-    include: os.path.join("rules", "polishing", "dnaapler_custom.smk")
+        include: os.path.join("rules", "reorientation", "dnaapler_no_medaka.smk")
 
+    else:
 
-# plassembler  & pyrodigal
-include: os.path.join("rules", "assembly", "plassembler_long.smk")
-include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
-# finalse & pyrodigal
-include: os.path.join("rules", "finalise", "select_best_assembly_long.smk")
+        include: os.path.join("rules", "reorientation", "dnaapler_custom_no_medaka.smk")
+    # plassembler  & pyrodigal
+    # no polishing
+    include: os.path.join("rules", "assembly", "plassembler_long_no_medaka.smk")
+    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
+    # finalse & pyrodigal
+    include: os.path.join("rules", "finalise", "select_best_assembly_long_no_medaka.smk")
 
 
 ### rule all

@@ -235,7 +235,7 @@ def select_best_chromosome_assembly_long_complete(
                 sequence_length = len(record.seq)
 
                 # gc
-                gc_content = round(gc_fraction(record.seq)*100, 2)
+                gc_content = round(gc_fraction(record.seq) * 100, 2)
 
                 # total assembly length
                 total_assembly_length += sequence_length
@@ -281,17 +281,16 @@ def select_best_chromosome_assembly_long_complete(
             for record in SeqIO.parse(final_plasmid_fasta, "fasta"):
                 plasmids += 1
 
+                record.id = f"plasmid{plasmids:05}"
+
                 # the header is already done
-                sequence_len = len(record.seq)
+                sequence_length = len(record.seq)
 
                 # add record length
-                total_assembly_length += sequence_len
+                total_assembly_length += sequence_length
 
                 # gc
-                gc_content = round(gc_fraction(record.seq)*100, 2)
-
-                if "circular" in record.description:
-                    circular_plasmids += 1
+                gc_content = round(gc_fraction(record.seq) * 100, 2)
 
                 completeness_flag = False
                 if "circular" in record.description:
@@ -337,7 +336,6 @@ def select_best_chromosome_assembly_long_complete(
     # Create a DataFrame from the dictionary
     summary_df = pd.DataFrame([summary_dict])
     summary_df.to_csv(hybracter_summary, index=False, sep="\t")
-
 
     # stats dict
     stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
