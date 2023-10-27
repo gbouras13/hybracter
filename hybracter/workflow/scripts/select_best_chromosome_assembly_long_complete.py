@@ -1,11 +1,75 @@
 #!/usr/bin/env python3
 
+import hashlib
 import os
+import shlex
+import subprocess
 import sys
+from pathlib import Path
+from typing import List, Optional
 
+import click
 import pandas as pd
 import pyrodigal
 from Bio import SeqIO
+from Bio.SeqUtils import gc_fraction
+from loguru import logger
+
+"""
+define the external tool class in case we need to run dnaapler
+"""
+
+
+class ExternalTool:
+    def __init__(self, tool: str, input: str, output: str, params: str, logdir: Path):
+        self.command: List[str] = self._build_command(tool, input, output, params)
+        logdir.mkdir(parents=True, exist_ok=True)
+        command_hash = hashlib.sha256(self.command_as_str.encode("utf-8")).hexdigest()
+        tool_name = Path(tool).name
+        logfile_prefix: Path = logdir / f"{tool_name}_{command_hash}"
+        self.out_log = f"{logfile_prefix}.out"
+        self.err_log = f"{logfile_prefix}.err"
+
+    @property
+    def command_as_str(self) -> str:
+        return shlex.join(self.command)
+
+    @staticmethod
+    def _build_command(tool: str, input: str, output: str, params: str) -> List[str]:
+        # note: shlex.join does not allow us to shlex.split() later
+        # this is explicitly a " ".join()
+        command = " ".join([tool, params, output, input])
+        escaped_command = shlex.split(command)
+        return escaped_command
+
+    def run(self) -> None:
+        with open(self.out_log, "w") as stdout_fh, open(self.err_log, "w") as stderr_fh:
+            print(f"Command line: {self.command_as_str}", file=stderr_fh)
+            logger.info(f"Started running {self.command_as_str} ...")
+            self._run_core(self.command, stdout_fh=stdout_fh, stderr_fh=stderr_fh)
+            logger.info(f"Done running {self.command_as_str}")
+
+    @staticmethod
+    def _run_core(command: List[str], stdout_fh, stderr_fh) -> None:
+        subprocess.check_call(command, stdout=stdout_fh, stderr=stderr_fh)
+
+    @staticmethod
+    def run_tool(tool: "ExternalTool", ctx: Optional[click.Context] = None) -> None:
+        try:
+            tool.run()
+        except subprocess.CalledProcessError as error:
+            logger.error(
+                f"Error calling {tool.command_as_str} (return code {error.returncode})"
+            )
+            logger.error(f"Please check stdout log file: {tool.out_log}")
+            logger.error(f"Please check stderr log file: {tool.err_log}")
+            logger.error("Temporary files are preserved for debugging")
+            logger.error("Exiting...")
+
+            if ctx:
+                ctx.exit(1)
+            else:
+                sys.exit(1)
 
 
 # determines whether a file is empty
@@ -60,6 +124,7 @@ def calculate_mean_CDS_length(filepath_in):
 
 def select_best_chromosome_assembly_long_complete(
     hybracter_summary,
+    per_conting_summary,
     pyrodigal_summary,
     final_plasmid_fasta,
     output_chromosome_fasta,
@@ -68,10 +133,14 @@ def select_best_chromosome_assembly_long_complete(
     medaka_rd_1_fasta,
     medaka_rd_2_fasta,
     sample,
-    flye_info
+    flye_info,
+    dnaapler_directory,
 ):
     """
     get prodigal mean length for each chromosome
+
+    if prepolish is best, it will run dnaapler all to reorient the chromosome(s)
+
     Then creates summary tsv
     statistics similar to unicycler
     instead of 1,2,3 etc we will use 'chromosome00001', 'chromosome00002' etc (for edge cases of multiple chroms/megaplasmids chromids etc)
@@ -93,6 +162,9 @@ def select_best_chromosome_assembly_long_complete(
         "medaka_rd_1_mean_cds_length": medaka_rd_1_mean_cds,
         "medaka_rd_2_mean_cds_length": medaka_rd_2_mean_cds,
     }
+
+    # stats per contig dict
+    stats_dict = {}
 
     # Convert the dictionary to a DataFrame
     summary_df = pd.DataFrame([dict])
@@ -117,6 +189,23 @@ def select_best_chromosome_assembly_long_complete(
     ):
         best_assembly = chrom_pre_polish_fasta
         best_round = "pre_polish"
+
+    # if best assembly is prepolish - run dnaapler to reorient the chromosome(s)!
+    logdir = Path(dnaapler_directory) / "logs"
+
+    if best_round == "pre_polish":
+        dnaapler = ExternalTool(
+            tool="dnaapler all",
+            input="",
+            output="",
+            params=f" -i {chrom_pre_polish_fasta} -o {dnaapler_directory} -t 1 -f",
+            logdir=logdir,
+        )
+
+        ExternalTool.run_tool(dnaapler)
+
+        # best assembly
+        best_assembly: Path = Path(dnaapler_directory) / "dnaapler_reoriented.fasta"
 
     # write the chromosome(s)
     # usually should be 1!
@@ -145,6 +234,9 @@ def select_best_chromosome_assembly_long_complete(
                 # Calculate the length of the sequence
                 sequence_length = len(record.seq)
 
+                # gc
+                gc_content = round(gc_fraction(record.seq) * 100, 2)
+
                 # total assembly length
                 total_assembly_length += sequence_length
 
@@ -161,6 +253,14 @@ def select_best_chromosome_assembly_long_complete(
                 # Write the modified record to the output file
                 SeqIO.write(record, output_handle, "fasta")
                 SeqIO.write(record, output_handle_overall, "fasta")
+
+                # append for stats dict
+
+                stats_dict[record.id] = {}
+                stats_dict[record.id]["contig_type"] = "chromosome"
+                stats_dict[record.id]["length"] = sequence_length
+                stats_dict[record.id]["gc"] = gc_content
+                stats_dict[record.id]["circular"] = "True"
 
     #######################
     # plasmid
@@ -181,16 +281,31 @@ def select_best_chromosome_assembly_long_complete(
             for record in SeqIO.parse(final_plasmid_fasta, "fasta"):
                 plasmids += 1
 
-                # the header is already done
-                # add record length
-                total_assembly_length += len(record.seq)
+                record.id = f"plasmid{plasmids:05}"
 
+                # the header is already done
+                sequence_length = len(record.seq)
+
+                # add record length
+                total_assembly_length += sequence_length
+
+                # gc
+                gc_content = round(gc_fraction(record.seq) * 100, 2)
+
+                completeness_flag = False
                 if "circular" in record.description:
+                    completeness_flag = True
                     circular_plasmids += 1
 
                 # take description from plassembler (length and copy number)
                 # Write the modified record to the output file
                 SeqIO.write(record, output_handle_overall, "fasta")
+
+                stats_dict[record.id] = {}
+                stats_dict[record.id]["contig_type"] = "plasmid"
+                stats_dict[record.id]["length"] = sequence_length
+                stats_dict[record.id]["gc"] = gc_content
+                stats_dict[record.id]["circular"] = str(completeness_flag)
     else:
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
@@ -198,13 +313,13 @@ def select_best_chromosome_assembly_long_complete(
     number_of_contigs = chromosomes + plasmids
 
     # read in the flye info and extract longest contig
-    flye_df = pd.read_csv(flye_info, sep='\t')
+    flye_df = pd.read_csv(flye_info, sep="\t")
 
     # Find the row with the largest length.
-    longest_contig_row = flye_df[flye_df['length'] == flye_df['length'].max()]
+    longest_contig_row = flye_df[flye_df["length"] == flye_df["length"].max()]
 
     # Extract the coverage value from the longest contig row.
-    longest_contig_coverage = longest_contig_row['cov.'].values[0]
+    longest_contig_coverage = longest_contig_row["cov."].values[0]
 
     # to get the summary df
     summary_dict = {
@@ -222,9 +337,20 @@ def select_best_chromosome_assembly_long_complete(
     summary_df = pd.DataFrame([summary_dict])
     summary_df.to_csv(hybracter_summary, index=False, sep="\t")
 
+    # stats dict
+    stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
+    stats_df["contig_name"] = stats_df.index
+    # Reorder the columns with 'contig_name' as the first column
+    stats_df = stats_df[
+        ["contig_name"] + [col for col in stats_df.columns if col != "contig_name"]
+    ]
+
+    stats_df.to_csv(per_conting_summary, index=False, sep="\t")
+
 
 select_best_chromosome_assembly_long_complete(
     snakemake.output.hybracter_summary,
+    snakemake.output.per_conting_summary,
     snakemake.output.pyrodigal_summary,
     snakemake.input.final_plasmid_fasta,
     snakemake.output.chromosome_fasta,
@@ -233,5 +359,6 @@ select_best_chromosome_assembly_long_complete(
     snakemake.input.medaka_rd_1_fasta,
     snakemake.input.medaka_rd_2_fasta,
     snakemake.wildcards.sample,
-    snakemake.input.flye_info
+    snakemake.input.flye_info,
+    snakemake.params.dnaapler_dir,
 )

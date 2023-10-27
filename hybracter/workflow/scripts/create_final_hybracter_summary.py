@@ -12,8 +12,10 @@ def make_final_summary(hybracter_summary, complete_summary_dir, incomplete_summa
     """
 
     # Use glob to find files with the .score extension in the directory
-    complete_file_list = glob.glob(os.path.join(complete_summary_dir, "*.tsv"))
-    incomplete_file_list = glob.glob(os.path.join(incomplete_summary_dir, "*.tsv"))
+    complete_file_list = glob.glob(os.path.join(complete_summary_dir, "*summary.tsv"))
+    incomplete_file_list = glob.glob(
+        os.path.join(incomplete_summary_dir, "*summary.tsv")
+    )
 
     # list
     summary_dfs = []

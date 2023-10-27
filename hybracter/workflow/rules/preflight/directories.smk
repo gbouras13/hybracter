@@ -30,6 +30,8 @@ dir.env = os.path.join(workflow.basedir, "envs")
 dir.rules = os.path.join(workflow.basedir, "rules")
 dir.scripts = os.path.join(workflow.basedir, "scripts")
 
+dir.scripts_no_medaka = os.path.join(workflow.basedir, "scripts", "no_medaka")
+
 ### OUTPUT DIRs
 dir.out.results = os.path.join(dir.out.base, "supplementary_results")
 dir.out.flags = os.path.join(dir.out.base, "flags")
@@ -69,6 +71,8 @@ dir.out.aggr_final = os.path.join(dir.out.flags, "aggr_final")
 # long_read_polish.smk
 dir.out.medaka_rd_1 = os.path.join(dir.out.complete, "medaka_rd_1")
 dir.out.medaka_rd_2 = os.path.join(dir.out.complete, "medaka_rd_2")
+
+# dnaapler
 dir.out.dnaapler = os.path.join(dir.out.complete, "dnaapler")
 
 # long_Read_polish_incomplete.smk

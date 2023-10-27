@@ -59,7 +59,12 @@ rule select_best_chromosome_assembly_complete:
         ),
         total_fasta=os.path.join(dir.out.final_contigs_complete, "{sample}_final.fasta"),
         ale_summary=os.path.join(dir.out.ale_summary, "complete", "{sample}.tsv"),
-        hybracter_summary=os.path.join(dir.out.final_summaries_complete, "{sample}.tsv"),
+        hybracter_summary=os.path.join(
+            dir.out.final_summaries_complete, "{sample}_summary.tsv"
+        ),
+        per_conting_summary=os.path.join(
+            dir.out.final_summaries_complete, "{sample}_per_contig_stats.tsv"
+        ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_complete, "{sample}"),
         chrom_pre_polish_fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
@@ -97,7 +102,10 @@ rule select_best_chromosome_assembly_incomplete:
         fasta=os.path.join(dir.out.final_contigs_incomplete, "{sample}_final.fasta"),
         ale_summary=os.path.join(dir.out.ale_summary, "incomplete", "{sample}.tsv"),
         hybracter_summary=os.path.join(
-            dir.out.final_summaries_incomplete, "{sample}.tsv"
+            dir.out.final_summaries_incomplete, "{sample}_summary.tsv"
+        ),
+        per_conting_summary=os.path.join(
+            dir.out.final_summaries_incomplete, "{sample}_per_contig_stats.tsv"
         ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_incomplete, "{sample}"),

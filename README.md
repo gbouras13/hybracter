@@ -18,12 +18,13 @@
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
   - [Description](#description)
+  - [Pipeline](#pipeline)
+  - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
   - [Documentation](#documentation)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
   - [Other Options](#other-options)
       - [Trycycler](#trycycler)
       - [Dragonflye](#dragonflye)
-  - [Pipeline](#pipeline)
   - [Installation](#installation)
     - [Conda](#conda)
     - [Pip](#pip)
@@ -85,6 +86,35 @@ It scales massively using the embarassingly parallel power of HPC and Snakemake 
 
 Note: if you have Pacbio reads, as of 2023, you probably can just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. Also, you probably still will get good results with hybracter, but the pre-polished genome will be the highest quality! If you really want this feature to be added, please reach out.
 
+## Pipeline
+
+<p align="center">
+  <img src="img/hybracter.png" alt="Hybracter" height=600>
+</p>
+
+- A. Reads are quality controlled with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop), [fastp](https://github.com/OpenGene/fastp) and optionally contaminant removal using modules from [trimnami](https://github.com/beardymcjohnface/Trimnami).
+- B. Long-read assembly is conducted with [Flye](https://github.com/fenderglass/Flye). Each sample is clssified if the chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
+- C. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
+- D. For all isolates, long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
+- E. For complete isolates, the chromosome is reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
+- F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
+- G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
+- H. The best assembly is selected and and output along with final assembly statistics.
+
+## v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`
+
+Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html) on 24 October 2023 suggests that if you have new 5Hz SUP or Res (bacterial model specific) ONT reads, Medaka polishing often makes things worse! It also implies that Nanopore reads are almost good enough to assemble perfect bacterial genomes (at least with Trycycler) which is pretty awesome.
+
+Combined with the difficulty and randomness in installing Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
+
+I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going forward, as this is the most recent stable bioconda version that doesn't seem to cause too much grief. 
+
+If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
+
+`hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly appreciably worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. 
+
+In hybrid mode, I'd still think the short read polished assemblies should be best but who knows now that Nanopore reads are getting very accurate!
+
 ## Documentation
 
 Documentation for `hybracter` is available [here](https://hybracter.readthedocs.io/en/latest/).
@@ -119,21 +149,6 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
   * `hybracter` will suggest automatically whether an assembly is 'complete' or 'incomplete'
   * `hybracter` will assess each polishing step and choose the genome most likely to be the best quality.
 
-## Pipeline
-
-<p align="center">
-  <img src="img/hybracter.png" alt="Hybracter" height=600>
-</p>
-
-- A. Reads are quality controlled with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop), [fastp](https://github.com/OpenGene/fastp) and optionally contaminant removal using modules from [trimnami](https://github.com/beardymcjohnface/Trimnami).
-- B. Long-read assembly is conducted with [Flye](https://github.com/fenderglass/Flye). Each sample is clssified if the chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
-- C. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
-- D. For all isolates, long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
-- E. For complete isolates, the chromosome is reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
-- F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
-- G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
-- H. The best assembly is selected and and output along with final assembly statistics.
-
 ## Installation
 
 You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
@@ -163,7 +178,6 @@ pip install hybracter
 hybracter --help
 hybracter install
 ```
-
 
 ### Source
 
@@ -304,7 +318,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
-
+* You can turn off Medaka polishing using `--no_medaka`
 
 #### `hybracter hybrid-single`
 
@@ -326,7 +340,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
-
+* You can turn off Medaka polishing using `--no_medaka`
 
 #### `hybracter long-single`
 
@@ -355,16 +369,18 @@ This directory will include:
 
 2. `complete` and `incomplete` directories.
 
-All samples that are denoted by hybracter to be complete will have 4 outputs:
+All samples that are denoted by hybracter to be complete will have 5 outputs in the `complete` directory:
 
    * `sample`_summary.tsv containing the summary statistics for that sample.
+   * `sample`_per_contig_stats.tsv containing the contig names, lengths, GC% and whether the contig is circular.
    * `sample`_final.fasta containing the final assembly for that sample.
    * `sample`_chromosome.fasta containing only the final chromosome(s) assembly for that sample.
-   * `sample`_plasmid.fasta containing only the final plasmid(s) assembly for that sample. Note this may be empty. If this is empty, then that sample had no plasmids.
+   * `sample`_plasmid.fasta containing only the final plasmid(s) assembly for that sample. Note this may be empty. If this is empty, then that sample had no plasmids. 
 
-All samples that are denoted by hybracter to be incomplete will have 2 outputs:
+All samples that are denoted by hybracter to be incomplete will have 3 outputs in the `incomplete` directory:
 
-   * `sample`.tsv containing the summary statistics for that sample.
+   * `sample`_summary.tsv containing the summary statistics for that sample.
+   * `sample`_per_contig_stats.tsv containing the contig names, lengths, GC% and whether the contig is circular.
    * `sample`_final.fasta containing the final assembly for that sample.
 
 

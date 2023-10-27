@@ -1,9 +1,11 @@
 # History
 
-## v0.2.0 (16 October 2023)
+## v0.2.0 (26 October 2023)
 
-* Replacement of POLCA by [pypolca](https://github.com/gbouras13/pypolca) as it will be easier to integrate, install and maintain, and allows for POLCA use on MacOS.
-* Adds `--dnaapler_custom_db`
+* Replacement of POLCA by [pypolca](https://github.com/gbouras13/pypolca) as it will be easier to integrate, install and maintain going forward, and allows for POLCA use on MacOS.
+* Adds `--no_medaka` to skip long read polishing with Medaka.
+* Adds per contig stats output tsv file.
+* Adds `--dnaapler_custom_db`.
 * @simone-pignotti fixed some errors with fastp redirection and threads.
 * Adds various small improvements (mem for PBS use, various other params and paths, some of the conda envs).
 

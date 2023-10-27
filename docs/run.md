@@ -34,6 +34,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
+* You can turn off Medaka polishing using `--no_medaka`
 
 ```
 Usage: hybracter [OPTIONS] COMMAND [ARGS]...
@@ -94,6 +95,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -149,6 +154,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -178,6 +187,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
+* You can turn off Medaka polishing using `--no_medaka`
 
 ```
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
@@ -186,7 +196,7 @@ Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
 
 Options:
   -i, --input TEXT                Input csv  [required]
-  -o, --output PATH               Output directory  [default: hybracter.out]
+  -o, --output PATH               Output directory  [default: hybracter_out]
   --configfile TEXT               Custom config file [default:
                                   (outputDir)/config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
@@ -205,6 +215,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -253,6 +267,10 @@ Options:
                                   readsagainst to filter out. Choose
                                   --contaminants lambda to filter out phage
                                   lambda long reads.
+  --dnaapler_custom_db PATH       Custom amino acid FASTA file of sequences to
+                                  be used as a database with dnaapler custom.
+  --no_medaka                     Do not polish the long read assembly with
+                                  Medaka.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory

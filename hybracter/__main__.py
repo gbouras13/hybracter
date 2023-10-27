@@ -65,7 +65,7 @@ def common_options(func):
             "-d",
             "--databases",
             help="Plassembler Databases directory.",
-            type=click.Path(dir_okay=True, readable=True)
+            type=click.Path(dir_okay=True, readable=True),
         ),
         click.option(
             "--medakaModel",
@@ -105,6 +105,12 @@ def common_options(func):
             type=click.Path(),
             default="none",
             required=False,
+        ),
+        click.option(
+            "--no_medaka",
+            help="Do not polish the long read assembly with Medaka.",
+            is_flag=True,
+            default=False,
         ),
         click.option(
             "--use-conda/--no-use-conda",
@@ -314,6 +320,7 @@ hybrid
 @common_options
 def hybrid(
     _input,
+    no_medaka,
     no_pypolca,
     skip_qc,
     medakaModel,
@@ -343,6 +350,7 @@ def hybrid(
             "flyeModel": flyeModel,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
+            "no_medaka": no_medaka,
             "single": False,
         }
     }
@@ -419,6 +427,7 @@ def hybrid_single(
     output,
     contaminants,
     dnaapler_custom_db,
+    no_medaka,
     log,
     **kwargs
 ):
@@ -442,6 +451,7 @@ def hybrid_single(
             "flyeModel": flyeModel,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
+            "no_medaka": no_medaka,
             "single": True,
         }
     }
@@ -480,6 +490,7 @@ def long(
     min_quality,
     contaminants,
     dnaapler_custom_db,
+    no_medaka,
     log,
     **kwargs
 ):
@@ -498,6 +509,7 @@ def long(
             "flyeModel": flyeModel,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
+            "no_medaka": no_medaka,
             "single": False,
         }
     }
@@ -552,6 +564,7 @@ def long_single(
     contaminants,
     dnaapler_custom_db,
     log,
+    no_medaka,
     **kwargs
 ):
     """Run hybracter long on 1 isolate"""
@@ -571,6 +584,7 @@ def long_single(
             "flyeModel": flyeModel,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
+            "no_medaka": no_medaka,
             "single": True,
         }
     }
@@ -620,7 +634,7 @@ install
     "--databases",
     "databases",
     help="Directory where the Plassembler Database will be installed to (optional).",
-    show_default=True
+    show_default=True,
 )
 @click.option(
     "-o",
@@ -632,21 +646,21 @@ install
     show_default=True,
 )
 @click.option(
-            "--configfile",
-            default="config.yaml",
-            show_default=False,
-            callback=default_to_ouput,
-            help="Custom config file [default: (outputDir)/config.yaml]",
-        )
+    "--configfile",
+    default="config.yaml",
+    show_default=False,
+    callback=default_to_ouput,
+    help="Custom config file [default: (outputDir)/config.yaml]",
+)
 @click.option(
-            "--log",
-            "log",
-            default="hybracter.log",
-            callback=default_to_ouput,
-            hidden=True,
-        )
+    "--log",
+    "log",
+    default="hybracter.log",
+    callback=default_to_ouput,
+    hidden=True,
+)
 @click.argument("snake_args", nargs=-1)
-def install(databases,output, log, **kwargs):
+def install(databases, output, log, **kwargs):
     # define both together
     """Downloads and installs the plassembler database"""
     merge_config = {"args": {"databases": databases, "output": output, "log": log}}
@@ -680,6 +694,7 @@ test hybrid
 def test_hybrid(
     output,
     log,
+    no_medaka,
     min_length,
     min_quality,
     skip_qc,
@@ -705,7 +720,8 @@ def test_hybrid(
             "databases": databases,
             "no_pypolca": no_pypolca,
             "contaminants": contaminants,
-            "dnaapler_custom_db": dnaapler_custom_db
+            "dnaapler_custom_db": dnaapler_custom_db,
+            "no_medaka": no_medaka,
         }
     }
     run_snakemake(
@@ -739,6 +755,7 @@ def test_long(
     flyeModel,
     contaminants,
     dnaapler_custom_db,
+    no_medaka,
     **kwargs
 ):
     """Test hybracter long"""
@@ -754,7 +771,8 @@ def test_long(
             "databases": databases,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
-            "dnaapler_custom_db": dnaapler_custom_db
+            "dnaapler_custom_db": dnaapler_custom_db,
+            "no_medaka": no_medaka,
         }
     }
     run_snakemake(
