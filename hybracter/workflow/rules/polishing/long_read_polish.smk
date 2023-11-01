@@ -1,6 +1,7 @@
 rule medaka_round_1:
     """
     Runs medaka round 1
+    cleans up BAM and hdf for disc space
     """
     input:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
@@ -16,6 +17,8 @@ rule medaka_round_1:
     params:
         model=MEDAKA_MODEL,
         dir=os.path.join(dir.out.medaka_rd_1, "{sample}"),
+        bam=os.path.join(dir.out.medaka_rd_1, "{sample}", "calls_to_draft.bam"),
+        hdf=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus_probs.hdf")
     resources:
         mem_mb=config.resources.big.mem,
         mem=str(config.resources.big.mem) + "MB",
@@ -30,6 +33,10 @@ rule medaka_round_1:
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         medaka --version > {output.version}
         cp {output.fasta} {output.copy_fasta}
+        touch {params.bam}
+        rm {params.bam}
+        touch {params.hdf}
+        rm {params.hdf}
         """
 
 
@@ -59,6 +66,7 @@ rule medaka_round_2:
     """
     runs medaka round 2 on the reoriented genome
     note: can't run compare_assemblies.py as the order of the genome has completely changed.
+    cleans up BAM and hdf for disc space
     """
     input:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
@@ -73,6 +81,8 @@ rule medaka_round_2:
     params:
         model=MEDAKA_MODEL,
         dir=os.path.join(dir.out.medaka_rd_2, "{sample}"),
+        bam=os.path.join(dir.out.medaka_rd_2, "{sample}", "calls_to_draft.bam"),
+        hdf=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus_probs.hdf")
     resources:
         mem_mb=config.resources.big.mem,
         mem=str(config.resources.big.mem) + "MB",
@@ -86,4 +96,8 @@ rule medaka_round_2:
         """
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         cp {output.fasta} {output.copy_fasta}
+        touch {params.bam}
+        rm {params.bam}
+        touch {params.hdf}
+        rm {params.hdf}
         """

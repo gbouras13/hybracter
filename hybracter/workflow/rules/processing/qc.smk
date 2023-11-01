@@ -6,7 +6,7 @@ rule filtlong:
     input:
         fastq=get_input_lr_fastqs,
     output:
-        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
+        fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),
     conda:
         os.path.join(dir.env, "filtlong.yaml")

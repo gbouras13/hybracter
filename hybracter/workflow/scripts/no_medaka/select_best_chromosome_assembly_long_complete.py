@@ -158,7 +158,7 @@ def select_best_chromosome_assembly_long_complete(
                 total_assembly_length += sequence_length
 
                 # to get longest contig
-                if chromosomes == 1:
+                if number_of_chromosomes == 1:
                     longest_contig_length = sequence_length
                 else:
                     if sequence_length > longest_contig_length:
@@ -178,6 +178,8 @@ def select_best_chromosome_assembly_long_complete(
                 stats_dict[record.id]["length"] = sequence_length
                 stats_dict[record.id]["gc"] = gc_content
                 stats_dict[record.id]["circular"] = "True"
+
+                chromosomes += 1
 
     #######################
     # plasmid

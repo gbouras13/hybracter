@@ -1,5 +1,11 @@
 # History
 
+## v0.2.1 (1 November 2023)
+
+* Fixes small bugs relating to isolates with multiple chromosomes like ATCC17802
+* Add temp files for intermediate FASTQ files and cleans up BAM, SAM and hdf files from Medaka and polypolish to reduce output size
+
+
 ## v0.2.0 (26 October 2023)
 
 * Replacement of POLCA by [pypolca](https://github.com/gbouras13/pypolca) as it will be easier to integrate, install and maintain going forward, and allows for POLCA use on MacOS.

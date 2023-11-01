@@ -22,17 +22,16 @@ have received a copy of the GNU General Public License along with this program. 
 
 import argparse
 import datetime
+
 # import edlib
 import gzip
 import os
 import pathlib
 import re
-import shutil
-import subprocess
 import sys
-import textwrap
 
 import mappy
+from Bio import SeqIO
 
 
 def run_compare(assembly_1, assembly_2, padding, merge, aligner, outputfile):
@@ -429,25 +428,41 @@ def get_open_func(filename):
         return open
 
 
+# replaces Ryan's function
+# reads in FASTA
+# should handle the case (vibrio) with 2 chroms, but where the polisher (medaka) swapped the order for some reason
 def load_fasta(fasta_filename):
     fasta_seqs = []
-    with get_open_func(fasta_filename)(fasta_filename, "rt") as fasta_file:
-        name = ""
-        sequence = []
-        for line in fasta_file:
-            line = line.strip()
-            if not line:
-                continue
-            if line[0] == ">":  # Header line = start of new contig
-                if name:
-                    fasta_seqs.append((name.split()[0], "".join(sequence)))
-                    sequence = []
-                name = line[1:]
-            else:
-                sequence.append(line.upper())
-        if name:
-            fasta_seqs.append((name.split()[0], "".join(sequence)))
+    records = list(SeqIO.parse(fasta_filename, "fasta"))
+
+    # Sort the records by sequence length
+    records.sort(key=lambda x: len(x.seq))
+
+    for record in records:
+        fasta_seqs.append((record.id, str(record.seq)))
+
     return fasta_seqs
+
+
+# def load_fasta(fasta_filename):
+#     fasta_seqs = []
+#     with get_open_func(fasta_filename)(fasta_filename, "rt") as fasta_file:
+#         name = ""
+#         sequence = []
+#         for line in fasta_file:
+#             line = line.strip()
+#             if not line:
+#                 continue
+#             if line[0] == ">":  # Header line = start of new contig
+#                 if name:
+#                     fasta_seqs.append((name.split()[0], "".join(sequence)))
+#                     sequence = []
+#                 name = line[1:]
+#             else:
+#                 sequence.append(line.upper())
+#         if name:
+#             fasta_seqs.append((name.split()[0], "".join(sequence)))
+#     return fasta_seqs
 
 
 class MyParser(argparse.ArgumentParser):
