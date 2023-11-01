@@ -240,7 +240,7 @@ def select_best_chromosome_assembly_complete(
     else:
         touch_file(output_plasmid_fasta)
 
-    number_of_contigs = chromosomes + plasmids
+    number_of_contigs = chromosomes + plasmids - 1 
 
     # read in the flye info and extract longest contig
     # Read the TSV file into a Pandas DataFrame.

@@ -234,7 +234,7 @@ def select_best_chromosome_assembly_long_complete(
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
 
-    number_of_contigs = chromosomes + plasmids
+    number_of_contigs = chromosomes + plasmids - 1 
 
     # read in the flye info and extract longest contig
     flye_df = pd.read_csv(flye_info, sep="\t")
