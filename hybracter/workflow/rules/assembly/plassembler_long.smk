@@ -79,6 +79,8 @@ rule plassembler_polish_medaka:
     params:
         model=MEDAKA_MODEL,
         medaka_dir=os.path.join(dir.out.plassembler, "{sample}", "medaka"),
+        bam=os.path.join(dir.out.plassembler, "{sample}", "calls_to_draft.bam"),
+        hdf=os.path.join(dir.out.plassembler, "{sample}", "consensus_probs.hdf")
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
@@ -94,10 +96,13 @@ rule plassembler_polish_medaka:
         if [ -s "$plass_out" ]
         then
             medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.medaka_dir} -m {params.model}  -t {threads} 2> {log}
+            touch {params.bam}
+            rm {params.bam}
+            touch {params.hdf}
+            rm {params.hdf}
         else
             touch {output.fasta} 2> {log}
         fi
-        rm {log}
         """
 
 
