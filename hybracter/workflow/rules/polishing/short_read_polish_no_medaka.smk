@@ -27,8 +27,8 @@ rule bwa_mem:
             dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta.bwt"
         ),
     output:
-        sam1=os.path.join(dir.out.bwa, "{sample}_1.sam"),
-        sam2=os.path.join(dir.out.bwa, "{sample}_2.sam"),
+        sam1=temp(os.path.join(dir.out.bwa, "{sample}_1.sam")),
+        sam2=temp(os.path.join(dir.out.bwa, "{sample}_2.sam")),
     conda:
         os.path.join(dir.env, "bwa.yaml")
     resources:

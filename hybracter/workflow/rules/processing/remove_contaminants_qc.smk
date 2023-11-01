@@ -99,7 +99,7 @@ rule filtlong:
             dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
         ),
     output:
-        fastq=os.path.join(dir.out.qc, "{sample}_filt.fastq.gz"),
+        fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),
     conda:
         os.path.join(dir.env, "filtlong.yaml")

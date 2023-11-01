@@ -23,8 +23,8 @@ rule bwa_mem_incomplete:
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         index=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta.bwt"),
     output:
-        sam1=os.path.join(dir.out.bwa_incomplete, "{sample}_1.sam"),
-        sam2=os.path.join(dir.out.bwa_incomplete, "{sample}_2.sam"),
+        sam1=temp(os.path.join(dir.out.bwa_incomplete, "{sample}_1.sam")),
+        sam2=temp(os.path.join(dir.out.bwa_incomplete, "{sample}_2.sam")),
     conda:
         os.path.join(dir.env, "bwa.yaml")
     resources:
