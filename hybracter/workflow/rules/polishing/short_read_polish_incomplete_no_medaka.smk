@@ -15,6 +15,7 @@ rule bwa_index_incomplete:
         bwa index {input.fasta} 
         """
 
+
 rule bwa_mem_incomplete:
     input:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),

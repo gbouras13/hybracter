@@ -8,9 +8,7 @@ rule dnaapler_no_medaka:
     Runs dnaapler to begin chromosome with dnaa when medaka isn't called
     """
     input:
-        fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
-        ),
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version"),

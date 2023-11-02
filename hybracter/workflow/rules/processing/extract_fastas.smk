@@ -4,9 +4,7 @@ checkpoint check_completeness:
     adds checkpoint to determine whether the Flye assembly recovered the complete chromosome (or not)
     """
     input:
-        fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
-        ),
+        fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
     output:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:
@@ -49,11 +47,11 @@ rule copy_flye_intermediate_chrom_assembly:
     copies the flye chromosome for to the intermediate chromosome assemblies directory
     """
     input:
-        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta")
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
-        )
+        ),
     params:
         min_chrom_length=getMinChromLength,
     conda:
@@ -67,6 +65,7 @@ rule copy_flye_intermediate_chrom_assembly:
         """
         cp {input.fasta} {output.fasta} 
         """
+
 
 rule concatenate_chrom_plassembler:
     """

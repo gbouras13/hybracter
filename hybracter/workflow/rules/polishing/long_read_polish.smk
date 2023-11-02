@@ -85,17 +85,24 @@ rule compare_assemblies_medaka_round_1:
     script:
         os.path.join(dir.scripts, "compare_assemblies.py")
 
+
 rule concatenate_intermediate_dnaapler_with_plassembler:
     """
     concatenates dnaapler (medaka rd 1) and plassembler outputs
     """
     input:
-        chrom_fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        chrom_fasta=os.path.join(
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
+        ),
         plasmid_fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
         ),
     output:
-        combo_fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented_chrom_and_plasmids.fasta"),
+        combo_fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chrom_and_plasmids.fasta",
+        ),
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
@@ -114,7 +121,11 @@ rule medaka_round_2:
     cleans up BAM and hdf for disc space
     """
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented_chrom_and_plasmids.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chrom_and_plasmids.fasta",
+        ),
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
@@ -168,4 +179,3 @@ rule medaka_round_2_extract_intermediate_assembly:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "extract_chromosome.py")
-
