@@ -30,7 +30,7 @@ rule extract_chromosome_complete:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     output:
-        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     params:
         min_chrom_length=getMinChromLength,
     conda:
@@ -42,6 +42,30 @@ rule extract_chromosome_complete:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "extract_chromosome.py")
+
+
+rule concatenate_chrom_plassembler:
+    """
+    concatenates chrom and plassembler outputs
+    """
+    input:
+        chrom_fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
+        plasmid_fasta=os.path.join(
+            dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
+        ),
+    output:
+        combo_fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome_plus_plasmids.fasta"
+        ),
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    shell:
+        """
+        cat {input.chrom_fasta} {input.plasmid_fasta} > {output.combo_fasta}
+        """
 
 
 rule extract_incomplete:

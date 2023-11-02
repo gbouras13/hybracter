@@ -173,6 +173,7 @@ def select_best_chromosome_assembly_long_complete(
     summary_df.to_csv(pyrodigal_summary, index=False, sep="\t")
 
     # determine the best assembly
+    # plausible medaka makes it worse
     best_assembly = medaka_rd_2_fasta
     best_round = "medaka_rd_2"
 
@@ -193,7 +194,7 @@ def select_best_chromosome_assembly_long_complete(
     # if best assembly is prepolish - run dnaapler to reorient the chromosome(s)!
     logdir = Path(dnaapler_directory) / "logs"
 
-    if best_round == "pre_polish":
+    if best_round == "pre_polish" or best_round == "medaka_rd_1":
         dnaapler = ExternalTool(
             tool="dnaapler all",
             input="",
@@ -312,7 +313,7 @@ def select_best_chromosome_assembly_long_complete(
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
 
-    number_of_contigs = chromosomes + plasmids - 1 
+    number_of_contigs = chromosomes + plasmids - 1
 
     # read in the flye info and extract longest contig
     flye_df = pd.read_csv(flye_info, sep="\t")

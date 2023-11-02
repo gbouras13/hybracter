@@ -12,6 +12,7 @@ rule assemble:
         copy_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
         ),
+        infocopy=os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt"),
     conda:
         os.path.join(dir.env, "flye.yaml")
     resources:
@@ -31,22 +32,7 @@ rule assemble:
         flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir} 2> {log}
         flye --version > {output.version}
         cp {output.fasta} {output.copy_fasta}
-        """
-
-
-rule extract_flye_assembly_info:
-    input:
-        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
-    output:
-        info=os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt"),
-    resources:
-        mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
-        time=config.resources.sml.time,
-    threads: config.resources.sml.cpu
-    shell:
-        """
-        cp {input.info} {output.info}
+        cp {output.info} {output.infocopy}
         """
 
 

@@ -8,7 +8,9 @@ rule dnaapler_custom:
     Runs dnaapler to begin  with custom db
     """
     input:
-        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome_plus_plasmids.fasta"
+        ),
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version"),

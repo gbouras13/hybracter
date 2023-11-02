@@ -9,7 +9,8 @@ rule assess_chrom_pre_polish:
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
-        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
         score=os.path.join(
             dir.out.ale_scores_complete, "{sample}", "chrom_pre_polish.score"
@@ -32,7 +33,7 @@ rule assess_chrom_pre_polish:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}
@@ -45,6 +46,7 @@ rule assess_medaka_rd_1:
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
         score=os.path.join(
             dir.out.ale_scores_complete, "{sample}", "chrom_pre_polish.score"
@@ -67,7 +69,7 @@ rule assess_medaka_rd_1:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}
@@ -80,6 +82,7 @@ rule assess_medaka_rd_2:
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         index=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta.bwt"),
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "medaka_rd_1.score"),
@@ -100,7 +103,7 @@ rule assess_medaka_rd_2:
         os.path.join(dir.out.stderr, "ale", "{sample}_medaka_rd_2.log"),
     shell:
         """
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}
@@ -113,6 +116,7 @@ rule assess_polypolish:
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "medaka_rd_2.score"),
     output:
@@ -133,7 +137,7 @@ rule assess_polypolish:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}
@@ -146,6 +150,7 @@ rule assess_pypolca:
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "polypolish.score"),
     output:
@@ -166,7 +171,7 @@ rule assess_pypolca:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}

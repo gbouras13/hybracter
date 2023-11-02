@@ -55,9 +55,6 @@ rule polypolish:
     output:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "polypolish.version"),
-        copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
-        ),
     conda:
         os.path.join(dir.env, "polypolish.yaml")
     resources:
@@ -72,9 +69,32 @@ rule polypolish:
     shell:
         """
         polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
-        cp {output.fasta} {output.copy_fasta}
         polypolish --version > {output.version}
         """
+
+
+rule polypolish_extract_intermediate_assembly:
+    """
+    extracts the chromosome intermediate assembly
+    """
+    input:
+        fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+    output:
+        fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
+        ),
+    params:
+        min_chrom_length=getMinChromLength,
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "extract_chromosome.py")
 
 
 rule compare_assemblies_polypolish_vs_prechrom:
@@ -83,9 +103,11 @@ rule compare_assemblies_polypolish_vs_prechrom:
     """
     input:
         reference=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome.fasta"
         ),
-        assembly=os.path.join(dir.out.polypolish, "{sample}.fasta"),
+        assembly=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
+        ),
     output:
         diffs=os.path.join(
             dir.out.differences, "{sample}", "polypolish_vs_pre_polish.txt"

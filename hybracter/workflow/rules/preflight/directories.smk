@@ -51,7 +51,7 @@ dir.out.assembly_statistics = os.path.join(dir.out.results, "flye_individual_sum
 dir.out.assembly_summary = os.path.join(dir.out.results, "flye_all_assembly_summary")
 
 # extract_fastas.smk
-dir.out.chrom_pre_polish = os.path.join(dir.out.processing, "chrom_pre_polish")
+dir.out.chrom_pre_polish = os.path.join(dir.out.processing, "pre_polish")
 dir.out.incomp_pre_polish = os.path.join(dir.out.processing, "incomp_pre_polish")
 dir.out.completeness = os.path.join(dir.out.base, "completeness")
 
@@ -132,7 +132,7 @@ dir.out.pyrodigal_summary_plassembler = os.path.join(
 
 # intermediate assemblies
 dir.out.intermediate_assemblies = os.path.join(
-    dir.out.results, "intermediate_assemblies"
+    dir.out.results, "intermediate_chromosome_assemblies"
 )
 
 # final contigs

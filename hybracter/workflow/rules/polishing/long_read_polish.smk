@@ -4,21 +4,20 @@ rule medaka_round_1:
     cleans up BAM and hdf for disc space
     """
     input:
-        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome_plus_plasmids.fasta"
+        ),
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "medaka_complete.version"),
-        copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
-        ),
     conda:
         os.path.join(dir.env, "medaka.yaml")
     params:
         model=MEDAKA_MODEL,
         dir=os.path.join(dir.out.medaka_rd_1, "{sample}"),
         bam=os.path.join(dir.out.medaka_rd_1, "{sample}", "calls_to_draft.bam"),
-        hdf=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus_probs.hdf")
+        hdf=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
         mem=str(config.resources.big.mem) + "MB",
@@ -32,7 +31,6 @@ rule medaka_round_1:
         """
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
         medaka --version > {output.version}
-        cp {output.fasta} {output.copy_fasta}
         touch {params.bam}
         rm {params.bam}
         touch {params.hdf}
@@ -40,13 +38,39 @@ rule medaka_round_1:
         """
 
 
-rule compare_assemblies_medaka_round_1:
+rule medaka_round_1_extract_intermediate_assembly:
     """
-    compare assemblies between medaka and pre-polished chromosome
+    extracts the chromosome intermediate assembly
     """
     input:
-        reference=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
-        assembly=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
+        fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+    output:
+        fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
+        ),
+    params:
+        min_chrom_length=getMinChromLength,
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "extract_chromosome.py")
+
+
+rule compare_assemblies_medaka_round_1:
+    """
+    compare chromosome assemblies between medaka and pre-polished chromosome
+    """
+    input:
+        reference=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
+        assembly=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
+        ),
     output:
         diffs=os.path.join(
             dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
@@ -73,16 +97,13 @@ rule medaka_round_2:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
-        copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
-        ),
     conda:
         os.path.join(dir.env, "medaka.yaml")
     params:
         model=MEDAKA_MODEL,
         dir=os.path.join(dir.out.medaka_rd_2, "{sample}"),
         bam=os.path.join(dir.out.medaka_rd_2, "{sample}", "calls_to_draft.bam"),
-        hdf=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus_probs.hdf")
+        hdf=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
         mem=str(config.resources.big.mem) + "MB",
@@ -95,9 +116,54 @@ rule medaka_round_2:
     shell:
         """
         medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
-        cp {output.fasta} {output.copy_fasta}
         touch {params.bam}
         rm {params.bam}
         touch {params.hdf}
         rm {params.hdf}
         """
+
+
+rule medaka_round_2_extract_intermediate_assembly:
+    """
+    extracts the chromosome intermediate assembly
+    """
+    input:
+        fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+    output:
+        fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
+        ),
+    params:
+        min_chrom_length=getMinChromLength,
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "extract_chromosome.py")
+
+
+rule medaka_round_2_extract_plasmids:
+    """
+    extracts the plasmids from plassembler
+    """
+    input:
+        fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+    output:
+        fasta=os.path.join(dir.out.final_contigs_complete, "{sample}_plasmid.fasta"),
+    params:
+        min_chrom_length=getMinChromLength,
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "extract_plasmids.py")

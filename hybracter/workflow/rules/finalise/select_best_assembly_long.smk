@@ -24,12 +24,14 @@ def aggregate_finalise(wildcards):
 ### from the aggregate_finalise function - so it dynamic
 rule aggregate_finalise_complete:
     input:
-        chrom_pre_polish_fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        chrom_pre_polish_fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
+        ),
         medaka_rd_1_fasta=os.path.join(
-            dir.out.medaka_rd_1, "{sample}", "consensus.fasta"
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
         medaka_rd_2_fasta=os.path.join(
-            dir.out.medaka_rd_2, "{sample}", "consensus.fasta"
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
         final_plasmid_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_plasmid.fasta"
