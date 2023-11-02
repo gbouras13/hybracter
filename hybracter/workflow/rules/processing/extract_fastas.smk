@@ -44,6 +44,30 @@ rule extract_chromosome_complete:
         os.path.join(dir.scripts, "extract_chromosome.py")
 
 
+rule copy_flye_intermediate_chrom_assembly:
+    """
+    copies the flye chromosome for to the intermediate chromosome assemblies directory
+    """
+    input:
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta")
+    output:
+        fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
+        )
+    params:
+        min_chrom_length=getMinChromLength,
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    shell:
+        """
+        cp {input.fasta} {output.fasta} 
+        """
+
 rule concatenate_chrom_plassembler:
     """
     concatenates chrom and plassembler outputs
