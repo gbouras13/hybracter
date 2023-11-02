@@ -9,7 +9,7 @@ rule dnaapler_no_medaka:
     """
     input:
         fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome_plus_plasmids.fasta"
+            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
         ),
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
