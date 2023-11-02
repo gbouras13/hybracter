@@ -33,8 +33,8 @@ rule aggregate_finalise_complete:
         medaka_rd_2_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
-        final_plasmid_fasta=os.path.join(
-            dir.out.final_contigs_complete, "{sample}_plasmid.fasta"
+        plassembler_fasta=os.path.join(
+            dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
         ),
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
@@ -52,6 +52,9 @@ rule aggregate_finalise_complete:
         ),
         per_conting_summary=os.path.join(
             dir.out.final_summaries_complete, "{sample}_per_contig_stats.tsv"
+        ),
+        final_plasmid_fasta=os.path.join(
+            dir.out.final_contigs_complete, "{sample}_plasmid.fasta"
         ),
     params:
         complete_flag=True,

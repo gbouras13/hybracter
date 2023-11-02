@@ -147,6 +147,8 @@ rule medaka_round_2:
 rule medaka_round_2_extract_intermediate_assembly:
     """
     extracts the chromosome intermediate assembly
+    Note: polished plasmids are not kept - unpolished plassembler plasmids are only kept
+    Maybe something to add later, but not easy to keep plasmid information as medaka changes headers
     """
     input:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
@@ -167,24 +169,3 @@ rule medaka_round_2_extract_intermediate_assembly:
     script:
         os.path.join(dir.scripts, "extract_chromosome.py")
 
-
-rule medaka_round_2_extract_plasmids:
-    """
-    extracts the plasmids - will be polished once with medaka
-    """
-    input:
-        fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
-        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-    output:
-        fasta=os.path.join(dir.out.final_contigs_complete, "{sample}_plasmid.fasta"),
-    params:
-        min_chrom_length=getMinChromLength,
-    conda:
-        os.path.join(dir.env, "scripts.yaml")
-    resources:
-        mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
-        time=config.resources.sml.time,
-    threads: config.resources.sml.cpu
-    script:
-        os.path.join(dir.scripts, "extract_plasmids.py")

@@ -27,7 +27,6 @@ rule pypolca:
         pypolca --version > {params.version}
         """
 
-
 rule pypolca_extract_intermediate_assembly:
     """
     extracts the chromosome intermediate assembly from pypolca
