@@ -113,24 +113,24 @@ def select_best_chromosome_assembly_complete(
     best_round = "polca"
 
     # polypolish and/or polca should always improve the assembly as per testing
-    # therefore, never select anything before medaka
 
-    # if "chrom_pre_polish" in closest_to_zero_key:
-    #     best_assembly = chrom_pre_polish_fasta
-    #     best_round = "pre_polish"
-    # if "medaka_rd_1" in closest_to_zero_key:
-    #     best_assembly = medaka_rd_1_fasta
-    #     best_round = "medaka_rd_1"
-    # elif "medaka_rd_2" in closest_to_zero_key:
-    #     best_assembly = medaka_rd_2_fasta
-    #     best_round = "medaka_rd_2"
-
-    if "polypolish" in closest_to_zero_key:
+    if "chrom_pre_polish" in closest_to_zero_key:
+        best_assembly = chrom_pre_polish_fasta
+        best_round = "pre_polish"
+    elif "medaka_rd_1" in closest_to_zero_key:
+        best_assembly = medaka_rd_1_fasta
+        best_round = "medaka_rd_1"
+    elif "medaka_rd_2" in closest_to_zero_key:
+        best_assembly = medaka_rd_2_fasta
+        best_round = "medaka_rd_2"
+    elif "polypolish" in closest_to_zero_key:
         best_assembly = polypolish_fasta
         best_round = "polypolish"
     else:  # polca
         best_assembly = polca_fasta
         best_round = "polca"
+
+
 
     stats_dict = {}
 

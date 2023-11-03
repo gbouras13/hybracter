@@ -84,6 +84,12 @@ def is_file_empty(file):
         empty = True
     return empty
 
+# touches an empty file
+def touch_file(path):
+    with open(path, "a"):
+        os.utime(path, None)
+
+
 
 def calculate_mean_CDS_length(filepath_in):
     """
@@ -318,6 +324,12 @@ def select_best_chromosome_assembly_long_complete(
                     stats_dict[record.id]["length"] = sequence_length
                     stats_dict[record.id]["gc"] = gc_content
                     stats_dict[record.id]["circular"] = str(completeness_flag)
+
+    else:
+        touch_file(final_plasmid_fasta)
+        plasmids = 0  # do nothing as file is empty
+        circular_plasmids = 0
+
 
 
     number_of_contigs = chromosomes + plasmids - 1

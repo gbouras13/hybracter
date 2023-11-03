@@ -110,14 +110,15 @@ def select_best_chromosome_assembly_complete(
     best_assembly = polca_fasta
     best_round = "polca"
 
-    # with short reads, never select prepolish
-    # trycycler and/or pypolca should always improve the assembly
+    # with short reads, likely never select prepolish
+    # polypolish and/or pypolca should always improve the assembly
+    # will be indicator of bad reads otherwise!
 
-    # if "chrom_pre_polish" in closest_to_zero_key:
-    #     best_assembly = chrom_pre_polish_fasta
-    #     best_round = "pre_polish"
 
-    if "polypolish" in closest_to_zero_key:
+    if "chrom_pre_polish" in closest_to_zero_key:
+        best_assembly = chrom_pre_polish_fasta
+        best_round = "pre_polish"
+    elif "polypolish" in closest_to_zero_key:
         best_assembly = polypolish_fasta
         best_round = "polypolish"
     else:  # polca
