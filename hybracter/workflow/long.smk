@@ -105,6 +105,9 @@ include: os.path.join("rules", "processing", "extract_fastas.smk")
 # checkpoint
 # needs its own rules for long
 include: os.path.join("rules", "completeness", "aggregate_long.smk")
+# plassembler long and info
+include: os.path.join("rules", "assembly", "plassembler_long.smk")
+include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 
 
 # checkpoint here for completeness
@@ -124,9 +127,7 @@ if config.args.no_medaka is False:  # standard - uses Medaka
     else:
 
         include: os.path.join("rules", "reorientation", "dnaapler_custom.smk")
-    # plassembler  & pyrodigal
-    include: os.path.join("rules", "assembly", "plassembler_long.smk")
-    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
+
     # finalse & pyrodigal
     include: os.path.join("rules", "finalise", "select_best_assembly_long.smk")
 
@@ -135,14 +136,9 @@ if config.args.no_medaka is False:  # standard - uses Medaka
 else:
     # dnaapler or dnaapler custom
     if config.args.dnaapler_custom_db == "none":  # standard - no custom
-
         include: os.path.join("rules", "reorientation", "dnaapler_no_medaka.smk")
-
     else:
-
         include: os.path.join("rules", "reorientation", "dnaapler_custom_no_medaka.smk")
-    # no polishing
-    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
     # finalse & pyrodigal
     include: os.path.join("rules", "finalise", "select_best_assembly_long_no_medaka.smk")
 
