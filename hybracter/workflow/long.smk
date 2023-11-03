@@ -141,9 +141,7 @@ else:
     else:
 
         include: os.path.join("rules", "reorientation", "dnaapler_custom_no_medaka.smk")
-    # plassembler  & pyrodigal
     # no polishing
-    include: os.path.join("rules", "assembly", "plassembler_long_no_medaka.smk")
     include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
     # finalse & pyrodigal
     include: os.path.join("rules", "finalise", "select_best_assembly_long_no_medaka.smk")
