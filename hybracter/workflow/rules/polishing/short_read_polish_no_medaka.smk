@@ -115,7 +115,7 @@ rule compare_assemblies_polypolish_vs_prechrom:
     """
     input:
         reference=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome.fasta"
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
         ),
         assembly=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
