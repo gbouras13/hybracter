@@ -6,7 +6,7 @@ rule medaka_incomplete:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "medaka_incomplete.version"),
         copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka.fasta"
+            dir.out.intermediate_assemblies_incomplete, "{sample}", "{sample}_medaka.fasta"
         ),
     conda:
         os.path.join(dir.env, "medaka.yaml")
