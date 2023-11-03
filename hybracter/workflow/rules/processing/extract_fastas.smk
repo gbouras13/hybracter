@@ -45,6 +45,7 @@ rule extract_chromosome_complete:
 rule copy_flye_intermediate_chrom_assembly:
     """
     copies the flye chromosome for to the intermediate chromosome assemblies directory
+    also copies the 
     """
     input:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),

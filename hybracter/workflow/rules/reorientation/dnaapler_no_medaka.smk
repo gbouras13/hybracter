@@ -32,25 +32,29 @@ rule dnaapler_no_medaka:
         """
 
 
-rule dnaapler_extract_intermediate_assembly:
+rule dnaapler_combine_assembly_with_plasmids_assembly:
     """
     extracts the reoriented prepolished chrom assembly
     """
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
-        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-    output:
-        fasta=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome.fasta"
+        chromosome_fasta=os.path.join(
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
         ),
-    params:
-        min_chrom_length=getMinChromLength,
-    conda:
-        os.path.join(dir.env, "scripts.yaml")
+        plasmid_fasta=os.path.join(
+            dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
+        ),
+    output:
+        combined_fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
-    script:
-        os.path.join(dir.scripts, "extract_chromosome.py")
+    shell:
+        """
+        cat {input.chromosome_fasta} {input.plasmid_fasta} > {output.combined_fasta}
+        """

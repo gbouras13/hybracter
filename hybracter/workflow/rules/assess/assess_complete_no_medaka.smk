@@ -1,16 +1,25 @@
 """
 scores need to be sequential so that it can easily be aggregated based on a polca flag or not - otherwise I need another rule
+
+assess all the genome (including plasmids). 
+
+This is to avoid the Medaka polishing style errors when you use the whole read set to polish only certain contigs
+
+But will almost certainly always make the pre polish chrom the worst (due to flye misassemblies)
+
 """
 
 
 rule assess_chrom_pre_polish:
     """
-    Run ALE on chrom_pre_polish - post dnaapler
+    Run ALE on Flye chrom after dnaapler & plassembler plasmids
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome_plus_plasmids.fasta"
+        ),
     output:
         score=os.path.join(
             dir.out.ale_scores_complete, "{sample}", "chrom_pre_polish.score"

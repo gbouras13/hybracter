@@ -1,6 +1,10 @@
 rule bwa_index:
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
     output:
         index=os.path.join(
             dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta.bwt"
@@ -20,7 +24,11 @@ rule bwa_index:
 
 rule bwa_mem:
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         index=os.path.join(
@@ -49,7 +57,11 @@ rule bwa_mem:
 
 rule polypolish:
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
         sam1=os.path.join(dir.out.bwa, "{sample}_1.sam"),
         sam2=os.path.join(dir.out.bwa, "{sample}_2.sam"),
     output:
