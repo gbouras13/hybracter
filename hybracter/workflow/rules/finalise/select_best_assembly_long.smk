@@ -31,7 +31,7 @@ rule aggregate_finalise_complete:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
         medaka_rd_2_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),
         plassembler_fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"

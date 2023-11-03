@@ -71,7 +71,7 @@ rule select_best_chromosome_assembly_complete:
             dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome.fasta"
         ),
         polypolish_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}_polypolish.fasta"
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
         polca_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"

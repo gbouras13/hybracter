@@ -74,7 +74,7 @@ rule select_best_chromosome_assembly_complete:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
         medaka_rd_2_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),
         polypolish_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
