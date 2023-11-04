@@ -85,7 +85,9 @@ dir.out.bwa = os.path.join(dir.out.complete, "bwa")
 dir.out.polypolish = os.path.join(dir.out.complete, "polypolish")
 # short_read_polish_incomplete.smk
 dir.out.bwa_incomplete = os.path.join(dir.out.incomplete, "bwa_incomplete")
-dir.out.polypolish_incomplete = os.path.join(dir.out.incomplete, "polypolish_incomplete")
+dir.out.polypolish_incomplete = os.path.join(
+    dir.out.incomplete, "polypolish_incomplete"
+)
 
 # short_read_pypolca.smk (has complete and incomplete)
 # dir.out.polca = os.path.join(dir.out.complete, "polca")

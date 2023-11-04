@@ -7,7 +7,9 @@ rule bwa_index:
         ),
     output:
         index=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome_plasmids.fasta.bwt"
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta.bwt",
         ),
     conda:
         os.path.join(dir.env, "bwa.yaml")
@@ -32,7 +34,9 @@ rule bwa_mem:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         index=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome_plasmids.fasta.bwt"
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta.bwt",
         ),
     output:
         sam1=temp(os.path.join(dir.out.bwa, "{sample}_1.sam")),

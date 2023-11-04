@@ -133,7 +133,6 @@ if config.args.no_medaka is False:  # standard - uses Medaka
     else:
 
         include: os.path.join("rules", "reorientation", "dnaapler_custom.smk")
-
     # finalse & pyrodigal
     include: os.path.join("rules", "finalise", "select_best_assembly_long.smk")
 
@@ -142,8 +141,11 @@ if config.args.no_medaka is False:  # standard - uses Medaka
 else:
     # dnaapler or dnaapler custom
     if config.args.dnaapler_custom_db == "none":  # standard - no custom
+
         include: os.path.join("rules", "reorientation", "dnaapler_no_medaka.smk")
+
     else:
+
         include: os.path.join("rules", "reorientation", "dnaapler_custom_no_medaka.smk")
     # finalse & pyrodigal
     include: os.path.join("rules", "finalise", "select_best_assembly_long_no_medaka.smk")

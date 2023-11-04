@@ -84,11 +84,11 @@ def is_file_empty(file):
         empty = True
     return empty
 
+
 # touches an empty file
 def touch_file(path):
     with open(path, "a"):
         os.utime(path, None)
-
 
 
 def calculate_mean_CDS_length(filepath_in):
@@ -141,8 +141,7 @@ def select_best_chromosome_assembly_long_complete(
     flye_info,
     dnaapler_directory,
     plassembler_fasta,
-    final_plasmid_fasta
-
+    final_plasmid_fasta,
 ):
     """
     get prodigal mean length for each chromosome
@@ -273,7 +272,7 @@ def select_best_chromosome_assembly_long_complete(
 
                 chromosomes += 1
 
-     #######################
+    #######################
     # plasmid
     #######################
 
@@ -329,8 +328,6 @@ def select_best_chromosome_assembly_long_complete(
         touch_file(final_plasmid_fasta)
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
-
-
 
     number_of_contigs = chromosomes + plasmids - 1
 

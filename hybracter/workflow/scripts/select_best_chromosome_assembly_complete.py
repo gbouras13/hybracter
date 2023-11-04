@@ -130,8 +130,6 @@ def select_best_chromosome_assembly_complete(
         best_assembly = polca_fasta
         best_round = "polca"
 
-
-
     stats_dict = {}
 
     # write the chromosome(s)

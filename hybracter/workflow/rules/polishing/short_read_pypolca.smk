@@ -93,7 +93,9 @@ rule pypolca_incomplete:
         pypolca_dir=os.path.join(dir.out.pypolca_incomplete, "{sample}"),
         version=os.path.join(dir.out.versions, "{sample}", "pypolca_incomplete.version"),
         copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies_incomplete, "{sample}", "{sample}_pypolca.fasta"
+            dir.out.intermediate_assemblies_incomplete,
+            "{sample}",
+            "{sample}_pypolca.fasta",
         ),
     conda:
         os.path.join(dir.env, "pypolca.yaml")

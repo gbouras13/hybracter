@@ -57,7 +57,9 @@ rule polypolish_incomplete:
         os.path.join(dir.env, "polypolish.yaml")
     params:
         copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies_incomplete, "{sample}", "{sample}_polypolish.fasta"
+            dir.out.intermediate_assemblies_incomplete,
+            "{sample}",
+            "{sample}_polypolish.fasta",
         ),
     resources:
         mem_mb=config.resources.med.mem,

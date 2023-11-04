@@ -114,7 +114,6 @@ def select_best_chromosome_assembly_complete(
     # polypolish and/or pypolca should always improve the assembly
     # will be indicator of bad reads otherwise!
 
-
     if "chrom_pre_polish" in closest_to_zero_key:
         best_assembly = chrom_pre_polish_fasta
         best_round = "pre_polish"
