@@ -79,6 +79,7 @@ def select_best_chromosome_assembly_long_incomplete(
     summary_df.to_csv(pyrodigal_summary, index=False, sep="\t")
 
     # determine the best assembly
+    # plausible medaka makes it worse
     best_assembly = medaka_fasta
     best_round = "medaka"
 

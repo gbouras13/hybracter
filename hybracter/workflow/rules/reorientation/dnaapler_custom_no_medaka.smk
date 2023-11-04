@@ -8,7 +8,7 @@ rule dnaapler_custom:
     Runs dnaapler to begin  with custom db
     """
     input:
-        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version"),
@@ -30,4 +30,32 @@ rule dnaapler_custom:
         """
         dnaapler custom -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -a nearest -c {params.custom_db} -f 2> {log}
         dnaapler --version > {output.version}
+        """
+
+
+rule dnaapler_custom_combine_assembly_with_plasmids_assembly:
+    """
+    extracts the reoriented prepolished chrom assembly
+    """
+    input:
+        chromosome_fasta=os.path.join(
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
+        ),
+        plasmid_fasta=os.path.join(
+            dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
+        ),
+    output:
+        combined_fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    shell:
+        """
+        cat {input.chromosome_fasta} {input.plasmid_fasta} > {output.combined_fasta}
         """

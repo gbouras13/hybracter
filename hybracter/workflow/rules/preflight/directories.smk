@@ -51,7 +51,7 @@ dir.out.assembly_statistics = os.path.join(dir.out.results, "flye_individual_sum
 dir.out.assembly_summary = os.path.join(dir.out.results, "flye_all_assembly_summary")
 
 # extract_fastas.smk
-dir.out.chrom_pre_polish = os.path.join(dir.out.processing, "chrom_pre_polish")
+dir.out.chrom_pre_polish = os.path.join(dir.out.processing, "pre_polish")
 dir.out.incomp_pre_polish = os.path.join(dir.out.processing, "incomp_pre_polish")
 dir.out.completeness = os.path.join(dir.out.base, "completeness")
 
@@ -84,8 +84,10 @@ dir.out.fastp = os.path.join(dir.out.qc, "fastp")
 dir.out.bwa = os.path.join(dir.out.complete, "bwa")
 dir.out.polypolish = os.path.join(dir.out.complete, "polypolish")
 # short_read_polish_incomplete.smk
-dir.out.bwa_incomplete = os.path.join(dir.out.complete, "bwa_incomplete")
-dir.out.polypolish_incomplete = os.path.join(dir.out.complete, "polypolish_incomplete")
+dir.out.bwa_incomplete = os.path.join(dir.out.incomplete, "bwa_incomplete")
+dir.out.polypolish_incomplete = os.path.join(
+    dir.out.incomplete, "polypolish_incomplete"
+)
 
 # short_read_pypolca.smk (has complete and incomplete)
 # dir.out.polca = os.path.join(dir.out.complete, "polca")
@@ -132,7 +134,11 @@ dir.out.pyrodigal_summary_plassembler = os.path.join(
 
 # intermediate assemblies
 dir.out.intermediate_assemblies = os.path.join(
-    dir.out.results, "intermediate_assemblies"
+    dir.out.results, "intermediate_chromosome_assemblies"
+)
+
+dir.out.intermediate_assemblies_incomplete = os.path.join(
+    dir.out.results, "intermediate_incomplete_assemblies"
 )
 
 # final contigs

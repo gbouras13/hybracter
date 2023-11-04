@@ -76,7 +76,12 @@ def select_best_chromosome_assembly_incomplete(
 
     # by default the best assembly is the polca fasta
     # check that the best assembly wasn't something else
+
+    # with short reads, should select prepolish
+    # trycycler and/or pypolca should always improve the assembly
+
     best_assembly = polca_fasta
+
     if "incomp_pre_polish" in closest_to_zero_key:
         best_assembly = pre_polish_fasta
         best_round = "pre_polish"

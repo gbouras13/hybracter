@@ -58,9 +58,9 @@ The `supplementary_results` directory contains a number of supplementary results
 
 * If this file is empty, there are no differences between assemblies
 
-##### 2. `intermediate_assemblies` directory
+##### 2. `intermediate_chromosome_assemblies` directory
 
-* This directory contains intermediate assemblies for all polishing rounds for each sample.
+* This directory contains intermediate chromosome assemblies for all polishing rounds for each sample.
 
 ##### 3. `flye_individual_summaries` directory
 

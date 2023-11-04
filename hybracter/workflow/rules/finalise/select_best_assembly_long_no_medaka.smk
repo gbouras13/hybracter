@@ -24,7 +24,9 @@ def aggregate_finalise(wildcards):
 ### from the aggregate_finalise function - so it dynamic
 rule aggregate_finalise_complete:
     input:
-        chrom_pre_polish_fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}.fasta"),
+        chrom_pre_polish_fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
+        ),
         plassembler_plasmid_fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
         ),

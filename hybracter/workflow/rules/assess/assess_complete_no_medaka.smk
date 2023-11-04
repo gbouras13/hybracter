@@ -1,15 +1,25 @@
 """
 scores need to be sequential so that it can easily be aggregated based on a polca flag or not - otherwise I need another rule
+
+assess all the genome (including plasmids). 
+
+This is to avoid the Medaka polishing style errors when you use the whole read set to polish only certain contigs
+
+But will almost certainly always make the pre polish chrom the worst (due to flye misassemblies)
+
 """
 
 
 rule assess_chrom_pre_polish:
     """
-    Run ALE on chrom_pre_polish - post dnaapler
+    Run ALE on Flye chrom after dnaapler & plassembler plasmids
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
+        fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome_plus_plasmids.fasta"
+        ),
     output:
         score=os.path.join(
             dir.out.ale_scores_complete, "{sample}", "chrom_pre_polish.score"
@@ -32,7 +42,7 @@ rule assess_chrom_pre_polish:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}
@@ -45,6 +55,7 @@ rule assess_polypolish:
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         score=os.path.join(
             dir.out.ale_scores_complete, "{sample}", "chrom_pre_polish.score"
@@ -67,7 +78,7 @@ rule assess_polypolish:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}
@@ -80,6 +91,7 @@ rule assess_pypolca:
     """
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "polypolish.score"),
     output:
@@ -100,7 +112,7 @@ rule assess_pypolca:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
         rm {log}

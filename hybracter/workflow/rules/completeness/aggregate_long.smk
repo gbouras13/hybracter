@@ -148,22 +148,12 @@ def aggregate_pyrodigal_plassembler_input(wildcards):
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[
         0
     ].open() as f:
-        if config.args.no_medaka is False:  # default
-            if f.read().strip() == "C":  # complete
-                return os.path.join(
-                    dir.out.pyrodigal_summary_plassembler,
-                    "complete",
-                    "{sample}.tsv",
-                )
-            else:
-                return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
-        else:  # incomplete
-            if f.read().strip() == "C":  # complete
-                return os.path.join(
-                    dir.out.plassembler_individual_summaries, "{sample}_with_sample.tsv"
-                )
-            else:
-                return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
+        if f.read().strip() == "C":  # complete
+            return os.path.join(
+                dir.out.plassembler_individual_summaries, "{sample}_with_sample.tsv"
+            )
+        else:
+            return os.path.join(dir.out.plassembler_incomplete, "{sample}.flag")
 
 
 ### from the aggregate_pyrodigal_plassembler_input

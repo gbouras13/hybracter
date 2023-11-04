@@ -85,6 +85,12 @@ def is_file_empty(file):
     return empty
 
 
+# touches an empty file
+def touch_file(path):
+    with open(path, "a"):
+        os.utime(path, None)
+
+
 def calculate_mean_CDS_length(filepath_in):
     """
     calculates the mean CDS length in a fasta file and returns it as a float
@@ -126,7 +132,6 @@ def select_best_chromosome_assembly_long_complete(
     hybracter_summary,
     per_conting_summary,
     pyrodigal_summary,
-    final_plasmid_fasta,
     output_chromosome_fasta,
     overall_output_fasta,
     chrom_pre_polish_fasta,
@@ -135,6 +140,8 @@ def select_best_chromosome_assembly_long_complete(
     sample,
     flye_info,
     dnaapler_directory,
+    plassembler_fasta,
+    final_plasmid_fasta,
 ):
     """
     get prodigal mean length for each chromosome
@@ -173,6 +180,7 @@ def select_best_chromosome_assembly_long_complete(
     summary_df.to_csv(pyrodigal_summary, index=False, sep="\t")
 
     # determine the best assembly
+    # plausible medaka makes it worse
     best_assembly = medaka_rd_2_fasta
     best_round = "medaka_rd_2"
 
@@ -193,7 +201,7 @@ def select_best_chromosome_assembly_long_complete(
     # if best assembly is prepolish - run dnaapler to reorient the chromosome(s)!
     logdir = Path(dnaapler_directory) / "logs"
 
-    if best_round == "pre_polish":
+    if best_round == "pre_polish" or best_round == "medaka_rd_1":
         dnaapler = ExternalTool(
             tool="dnaapler all",
             input="",
@@ -273,46 +281,55 @@ def select_best_chromosome_assembly_long_complete(
     circular_plasmids = 0
 
     if (
-        is_file_empty(final_plasmid_fasta) is False
+        is_file_empty(plassembler_fasta) is False
     ):  # if the plassembler output is not empty
         # Open the output file in write mode
-        with open(
-            overall_output_fasta, "a"
-        ) as output_handle_overall:  # needs to be append
-            # Iterate through the records in the best assembly FASTA file and write them to the output file
-            for record in SeqIO.parse(final_plasmid_fasta, "fasta"):
-                plasmids += 1
+        with open(final_plasmid_fasta, "w") as output_handle:
+            with open(
+                overall_output_fasta, "a"
+            ) as output_handle_overall:  # needs to be append
+                # Iterate through the records in the best assembly FASTA file and write them to the output file
+                for record in SeqIO.parse(plassembler_fasta, "fasta"):
+                    plasmids += 1
 
-                record.id = f"plasmid{plasmids:05}"
+                    # to match the 00001 output favoured generally for parsing
+                    # usually there will be 1 chromosome of course!
+                    record.id = f"plasmid{plasmids:05}"
 
-                # the header is already done
-                sequence_length = len(record.seq)
+                    sequence_length = len(record.seq)
 
-                # add record length
-                total_assembly_length += sequence_length
+                    # add record length
+                    total_assembly_length += sequence_length
 
-                # gc
-                gc_content = round(gc_fraction(record.seq) * 100, 2)
+                    # gc
+                    gc_content = round(gc_fraction(record.seq) * 100, 2)
 
-                completeness_flag = False
-                if "circular" in record.description:
-                    completeness_flag = True
-                    circular_plasmids += 1
+                    # get rid off the contig id (1, 2, 3) etc from plassembler
+                    record.description = record.description.split(" ", 1)[1]
 
-                # take description from plassembler (length and copy number)
-                # Write the modified record to the output file
-                SeqIO.write(record, output_handle_overall, "fasta")
+                    completeness_flag = False
+                    # will have circular in header if plassembler notes it
+                    if "circular" in record.description:
+                        completeness_flag = True
+                        circular_plasmids += 1
 
-                stats_dict[record.id] = {}
-                stats_dict[record.id]["contig_type"] = "plasmid"
-                stats_dict[record.id]["length"] = sequence_length
-                stats_dict[record.id]["gc"] = gc_content
-                stats_dict[record.id]["circular"] = str(completeness_flag)
+                    # take description from plassembler (length and copy number)
+                    # Write the modified record to the output file
+                    SeqIO.write(record, output_handle, "fasta")
+                    SeqIO.write(record, output_handle_overall, "fasta")
+
+                    stats_dict[record.id] = {}
+                    stats_dict[record.id]["contig_type"] = "plasmid"
+                    stats_dict[record.id]["length"] = sequence_length
+                    stats_dict[record.id]["gc"] = gc_content
+                    stats_dict[record.id]["circular"] = str(completeness_flag)
+
     else:
+        touch_file(final_plasmid_fasta)
         plasmids = 0  # do nothing as file is empty
         circular_plasmids = 0
 
-    number_of_contigs = chromosomes + plasmids
+    number_of_contigs = chromosomes + plasmids - 1
 
     # read in the flye info and extract longest contig
     flye_df = pd.read_csv(flye_info, sep="\t")
@@ -354,7 +371,6 @@ select_best_chromosome_assembly_long_complete(
     snakemake.output.hybracter_summary,
     snakemake.output.per_conting_summary,
     snakemake.output.pyrodigal_summary,
-    snakemake.input.final_plasmid_fasta,
     snakemake.output.chromosome_fasta,
     snakemake.output.total_fasta,
     snakemake.input.chrom_pre_polish_fasta,
@@ -363,4 +379,6 @@ select_best_chromosome_assembly_long_complete(
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
     snakemake.params.dnaapler_dir,
+    snakemake.input.plassembler_fasta,
+    snakemake.output.final_plasmid_fasta,
 )

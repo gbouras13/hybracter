@@ -68,11 +68,13 @@ rule select_best_chromosome_assembly_complete:
     params:
         ale_dir=os.path.join(dir.out.ale_scores_complete, "{sample}"),
         chrom_pre_polish_fasta=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome.fasta"
         ),
-        polypolish_fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
+        polypolish_fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
+        ),
         polca_fasta=os.path.join(
-            dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
     resources:
         mem_mb=config.resources.sml.mem,

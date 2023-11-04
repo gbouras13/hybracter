@@ -6,7 +6,9 @@ rule medaka_incomplete:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "medaka_incomplete.version"),
         copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka.fasta"
+            dir.out.intermediate_assemblies_incomplete,
+            "{sample}",
+            "{sample}_medaka.fasta",
         ),
     conda:
         os.path.join(dir.env, "medaka.yaml")
@@ -14,7 +16,7 @@ rule medaka_incomplete:
         model=MEDAKA_MODEL,
         dir=os.path.join(dir.out.medaka_incomplete, "{sample}"),
         bam=os.path.join(dir.out.medaka_incomplete, "{sample}", "calls_to_draft.bam"),
-        hdf=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus_probs.hdf")
+        hdf=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
         mem=str(config.resources.big.mem) + "MB",

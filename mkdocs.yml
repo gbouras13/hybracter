@@ -19,7 +19,8 @@ nav:
       - Commands and Input: input.md
       - Usage: run.md
       - Snakemake Profiles: profiles.md
-      # - Benchmarking: benchmarking.md
     - OUTPUT:
       - Output: output.md
+    - BENCHMARKING:
+      # - Benchmarking: benchmarking.md
 

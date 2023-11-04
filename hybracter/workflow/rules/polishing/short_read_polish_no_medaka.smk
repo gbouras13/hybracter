@@ -1,9 +1,15 @@
 rule bwa_index:
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
     output:
         index=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta.bwt"
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta.bwt",
         ),
     conda:
         os.path.join(dir.env, "bwa.yaml")
@@ -20,11 +26,17 @@ rule bwa_index:
 
 rule bwa_mem:
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
         index=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta.bwt"
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta.bwt",
         ),
     output:
         sam1=temp(os.path.join(dir.out.bwa, "{sample}_1.sam")),
@@ -49,15 +61,16 @@ rule bwa_mem:
 
 rule polypolish:
     input:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler,
+            "{sample}",
+            "{sample}_reoriented_chromosome_plasmids.fasta",
+        ),
         sam1=os.path.join(dir.out.bwa, "{sample}_1.sam"),
         sam2=os.path.join(dir.out.bwa, "{sample}_2.sam"),
     output:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "polypolish.version"),
-        copy_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
-        ),
     conda:
         os.path.join(dir.env, "polypolish.yaml")
     resources:
@@ -72,9 +85,32 @@ rule polypolish:
     shell:
         """
         polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
-        cp {output.fasta} {output.copy_fasta}
         polypolish --version > {output.version}
         """
+
+
+rule polypolish_extract_intermediate_assembly:
+    """
+    extracts the chromosome intermediate assembly
+    """
+    input:
+        fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+    output:
+        fasta=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
+        ),
+    params:
+        min_chrom_length=getMinChromLength,
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "extract_chromosome.py")
 
 
 rule compare_assemblies_polypolish_vs_prechrom:
@@ -85,7 +121,9 @@ rule compare_assemblies_polypolish_vs_prechrom:
         reference=os.path.join(
             dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
         ),
-        assembly=os.path.join(dir.out.polypolish, "{sample}.fasta"),
+        assembly=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
+        ),
     output:
         diffs=os.path.join(
             dir.out.differences, "{sample}", "polypolish_vs_pre_polish.txt"

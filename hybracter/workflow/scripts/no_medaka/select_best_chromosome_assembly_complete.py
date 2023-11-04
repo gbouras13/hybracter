@@ -109,6 +109,11 @@ def select_best_chromosome_assembly_complete(
     # check that the best assembly wasn't something else
     best_assembly = polca_fasta
     best_round = "polca"
+
+    # with short reads, likely never select prepolish
+    # polypolish and/or pypolca should always improve the assembly
+    # will be indicator of bad reads otherwise!
+
     if "chrom_pre_polish" in closest_to_zero_key:
         best_assembly = chrom_pre_polish_fasta
         best_round = "pre_polish"
@@ -229,12 +234,10 @@ def select_best_chromosome_assembly_complete(
                     stats_dict[record.id]["gc"] = gc_content
                     stats_dict[record.id]["circular"] = str(completeness_flag)
 
-
-
     else:
         touch_file(output_plasmid_fasta)
 
-    number_of_contigs = chromosomes + plasmids
+    number_of_contigs = chromosomes + plasmids - 1
 
     # read in the flye info and extract longest contig
     # Read the TSV file into a Pandas DataFrame.
