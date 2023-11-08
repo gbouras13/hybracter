@@ -1,6 +1,6 @@
 # History
 
-## v0.3.0 (4 November 2023)
+## v0.3.0 (8 November 2023)
 
 * Fixes bug relating to polishing. Prior to v0.3.0, hybracter would only polish the chromosome with the entire readset. Benchmarking revealed that if there was significantly similarity between chromosome and plasmids, polishing would introduce errors. Now the entire assembly (chromosome from Flye + plasmids from Plassembler) is polished in every polishing step with improved results. Upgrading and re-running hybracter is recommended.
 * Fixes small bugs in output .tsvs.

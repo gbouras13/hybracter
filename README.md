@@ -19,6 +19,7 @@
   - [Quick Start](#quick-start)
   - [Description](#description)
   - [Pipeline](#pipeline)
+  - [v0.3.0 Updates 8 November 2023](#v030-updates-8-november-2023)
   - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
   - [Documentation](#documentation)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
@@ -100,6 +101,13 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 - F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
 - G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 - H. The best assembly is selected and and output along with final assembly statistics.
+
+## v0.3.0 Updates 8 November 2023 
+
+**Upgrading and re-running hybracter is recommended.**
+
+* Fixes bug relating to polishing. Prior to v0.3.0, hybracter would only polish the chromosome with the entire readset. Benchmarking revealed that if there was significant similarity between chromosome and plasmids, polishing would introduce errors (my bad!)
+* Now the entire assembly (chromosome from Flye + plasmids from Plassembler) is polished in every polishing step with improved results (the full benchmarking methodology and results is forthcoming shortly)
 
 ## v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`
 
