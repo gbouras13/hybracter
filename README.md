@@ -85,7 +85,7 @@ It scales massively using the embarassingly parallel power of HPC and Snakemake 
 
 `hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targeted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
-Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `--no_medaka` to turn off polishing, and  `--flyeModel pacbio-hifi`. You can alsoprobably can  just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. 
+Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `--no_medaka` to turn off polishing, and  `--flyeModel pacbio-hifi`. You can also probably just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. 
 
 ## Pipeline
 
@@ -94,7 +94,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 </p>
 
 - A. Reads are quality controlled with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop), [fastp](https://github.com/OpenGene/fastp) and optionally contaminant removal using modules from [trimnami](https://github.com/beardymcjohnface/Trimnami).
-- B. Long-read assembly is conducted with [Flye](https://github.com/fenderglass/Flye). Each sample is clssified if the chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
+- B. Long-read assembly is conducted with [Flye](https://github.com/fenderglass/Flye). Each sample is classified if the chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
 - C. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
 - D. For all isolates, long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
 - E. For complete isolates, the chromosome is reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
