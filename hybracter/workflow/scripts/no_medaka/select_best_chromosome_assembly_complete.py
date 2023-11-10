@@ -287,7 +287,7 @@ select_best_chromosome_assembly_complete(
     snakemake.output.plasmid_fasta,
     snakemake.output.total_fasta,
     snakemake.output.ale_summary,
-    snakemake.params.chrom_pre_polish_fasta,
+    snakemake.input.chrom_pre_polish_fasta,
     snakemake.params.polypolish_fasta,
     snakemake.params.polca_fasta,
     snakemake.wildcards.sample,

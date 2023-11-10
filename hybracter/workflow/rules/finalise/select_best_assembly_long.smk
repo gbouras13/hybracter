@@ -69,9 +69,6 @@ rule aggregate_finalise_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
-        fasta=os.path.join(
-            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
-        ),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"

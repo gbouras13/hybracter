@@ -81,7 +81,9 @@ rule select_best_chromosome_assembly_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
-        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
+        chrom_pre_polish_fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
+        ),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
@@ -99,9 +101,6 @@ rule select_best_chromosome_assembly_complete:
         ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_complete, "{sample}"),
-        chrom_pre_polish_fasta=os.path.join(
-            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
-        ),  # to make sure ale has finished
         polypolish_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),

@@ -85,7 +85,7 @@ rule select_best_chromosome_assembly_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
-        fasta=os.path.join(
+        chrom_pre_polish_fasta=os.path.join(
             dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
     output:
@@ -105,12 +105,10 @@ rule select_best_chromosome_assembly_complete:
         ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_complete, "{sample}"),
-        chrom_pre_polish_fasta=os.path.join(
-            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
-        ),
         medaka_rd_1_fasta=os.path.join(
             dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
-        ),  # take the reoriented round 1
+        ),
+        # take the reoriented round 1
         medaka_rd_2_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),
