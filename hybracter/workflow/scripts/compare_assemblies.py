@@ -85,7 +85,7 @@ def align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile,
                             reference_polishing_round,
         query_polishing_round):
     section_header("Aligning sequences")
-    longest_label = get_longest_label(assembly_1, assembly_2)
+    longest_label = get_longest_label(reference_polishing_round, query_polishing_round)
     for b, a in zip(assembly_1, assembly_2):
         assembly_1_name, assembly_1_seq = b
         assembly_2_name, assembly_2_seq = a
