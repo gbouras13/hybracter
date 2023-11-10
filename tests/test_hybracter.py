@@ -55,6 +55,13 @@ def test_hybracter_t_hybrid():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_hybrid_last():
+    """hybracter test-hybrid"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --logic last"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 
 def test_hybracter_t_hybrid_no_medaka():
     """hybracter test-hybrid no medaka"""
@@ -63,22 +70,40 @@ def test_hybracter_t_hybrid_no_medaka():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_hybrid_last_no_medaka():
+    """hybracter test-hybrid"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --logic last --no_medaka --skip_qc"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_hybracter_t_hybrid_no_pypolca():
     """hybracter test-hybrid no pypolca"""
     outdir: Path = "test_hybracter_output"
-    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_pypolca"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_pypolca --skip_qc"
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_t_hybrid_no_pypolca_last_logic():
+    """hybracter test-hybrid no pypolca"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_pypolca --logic last --skip_qc"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_hybracter_t_long():
     """hybracter test-long"""
     outdir: Path = "test_hybracter_output"
-    cmd = f"hybracter test-long --threads {threads} --output {outdir}"
+    cmd = f"hybracter test-long --threads {threads} --output {outdir} --skip_qc"
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_t_long_last():
+    """hybracter test-long"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-long --threads {threads} --output {outdir} --logic last --skip_qc"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_hybracter_t_long_no_medaka():
     """hybracter test-long no medaka"""

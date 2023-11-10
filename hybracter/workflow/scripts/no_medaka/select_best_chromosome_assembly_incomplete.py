@@ -20,6 +20,7 @@ def select_best_chromosome_assembly_incomplete(
     sample,
     flye_info,
     logic,
+    no_pypolca
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -75,14 +76,15 @@ def select_best_chromosome_assembly_incomplete(
     scores_df.sort_values(by="Score", ascending=True, inplace=True)
     scores_df.to_csv(ale_summary, index=False, sep="\t")
 
-    # by default the best assembly is the polca fasta
+
+    # by default the best assembly is the polca or polypolish
     # check that the best assembly wasn't something else
-
-    # with short reads, should select prepolish
-    # trycycler and/or pypolca should always improve the assembly
-
-    best_assembly = polca_fasta
-    best_round = "pypolca"
+    if no_pypolca is False:
+        best_assembly = polca_fasta
+        best_round = "pypolca"
+    else:
+        best_assembly = polypolish_fasta
+        best_round = "polypolish"
 
     if logic == "best":
         if "incomp_pre_polish" in closest_to_zero_key:
@@ -191,4 +193,5 @@ select_best_chromosome_assembly_incomplete(
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
     snakemake.params.logic,
+    snakemake.params.no_pypolca
 )

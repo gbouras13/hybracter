@@ -119,6 +119,7 @@ rule select_best_chromosome_assembly_complete:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
         logic=LOGIC,
+        no_pypolca=config.args.no_pypolca
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
@@ -159,6 +160,7 @@ rule select_best_chromosome_assembly_incomplete:
             dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
         ),
         logic=LOGIC,
+        no_pypolca=config.args.no_pypolca
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
