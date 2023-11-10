@@ -37,8 +37,10 @@ def aggregate_ale_input_finalise(wildcards):
                     "polypolish_incomplete.score",
                 )
 
+
 ### from the aggregate_ale_input function - so it dynamic
 # needed in case pre chrom is chosen
+
 
 rule dnaapler_pre_chrom:
     """
@@ -47,15 +49,15 @@ rule dnaapler_pre_chrom:
     """
     input:
         ale_input=aggregate_ale_input_finalise,
-        fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
-        ),
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
     conda:
         os.path.join(dir.env, "dnaapler.yaml")
     params:
-        dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom")
+        dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom"),
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
@@ -83,6 +85,9 @@ rule select_best_chromosome_assembly_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
+        fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
@@ -100,8 +105,12 @@ rule select_best_chromosome_assembly_complete:
         ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_complete, "{sample}"),
-        chrom_pre_polish_fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),
-        medaka_rd_1_fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"), # take the reoriented round 1
+        chrom_pre_polish_fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
+        medaka_rd_1_fasta=os.path.join(
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
+        ),  # take the reoriented round 1
         medaka_rd_2_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),
@@ -111,7 +120,7 @@ rule select_best_chromosome_assembly_complete:
         polca_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
-        logic=LOGIC
+        logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
@@ -151,7 +160,7 @@ rule select_best_chromosome_assembly_incomplete:
         polca_fasta=os.path.join(
             dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
         ),
-        logic=LOGIC
+        logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",

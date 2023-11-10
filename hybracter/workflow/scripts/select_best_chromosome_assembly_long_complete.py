@@ -83,7 +83,7 @@ def select_best_chromosome_assembly_long_complete(
     flye_info,
     plassembler_fasta,
     final_plasmid_fasta,
-    logic
+    logic,
 ):
     """
     get prodigal mean length for each chromosome
@@ -127,7 +127,6 @@ def select_best_chromosome_assembly_long_complete(
     best_round = "medaka_rd_2"
 
     if logic == "best":
-
         if (
             medaka_rd_1_mean_cds > medaka_rd_2_mean_cds
             and chrom_pre_polish_mean_cds < medaka_rd_1_mean_cds
@@ -307,5 +306,5 @@ select_best_chromosome_assembly_long_complete(
     snakemake.input.flye_info,
     snakemake.input.plassembler_fasta,
     snakemake.output.final_plasmid_fasta,
-    snakemake.params.logic
+    snakemake.params.logic,
 )

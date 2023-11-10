@@ -27,11 +27,11 @@ rule dnaapler_pre_chrom:
     In case it is chosen as best
     """
     input:
-        fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
-        )
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
     conda:
         os.path.join(dir.env, "dnaapler.yaml")
     params:
@@ -54,7 +54,9 @@ rule dnaapler_pre_chrom:
 ### from the aggregate_finalise function - so it dynamic
 rule aggregate_finalise_complete:
     input:
-        chrom_pre_polish_fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),
+        chrom_pre_polish_fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
         medaka_rd_1_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
@@ -66,7 +68,10 @@ rule aggregate_finalise_complete:
         ),
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
-        )
+        ),
+        fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
@@ -86,13 +91,13 @@ rule aggregate_finalise_complete:
         ),
     params:
         complete_flag=True,
-        logic=LOGIC
+        logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
-        os.path.join(dir.env, "pyrodigal.yaml")  
+        os.path.join(dir.env, "pyrodigal.yaml")
     threads: config.resources.med.cpu
     script:
         os.path.join(dir.scripts, "select_best_chromosome_assembly_long_complete.py")
@@ -107,7 +112,7 @@ rule aggregate_finalise_incomplete:
         ),
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
-        )
+        ),
     output:
         total_fasta=os.path.join(
             dir.out.final_contigs_incomplete, "{sample}_final.fasta"
@@ -126,7 +131,7 @@ rule aggregate_finalise_incomplete:
         medaka_fasta=os.path.join(
             dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
         ),
-        logic=LOGIC
+        logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",

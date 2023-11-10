@@ -45,11 +45,11 @@ rule dnaapler_pre_chrom:
     """
     input:
         ale_input=aggregate_ale_input_finalise,
-        fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
-        ),
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
-        fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),
+        fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
     conda:
         os.path.join(dir.env, "dnaapler.yaml")
     params:
@@ -68,6 +68,7 @@ rule dnaapler_pre_chrom:
         dnaapler all -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -a nearest -f 2> {log}
         """
 
+
 ### from the aggregate_ale_input function - so it dynamic
 # also calculates the summary
 rule select_best_chromosome_assembly_complete:
@@ -80,6 +81,7 @@ rule select_best_chromosome_assembly_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
@@ -97,14 +99,16 @@ rule select_best_chromosome_assembly_complete:
         ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_complete, "{sample}"),
-        chrom_pre_polish_fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),  # to make sure ale has finished
+        chrom_pre_polish_fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),  # to make sure ale has finished
         polypolish_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
         polca_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
-        logic=LOGIC
+        logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
@@ -143,7 +147,7 @@ rule select_best_chromosome_assembly_incomplete:
         polca_fasta=os.path.join(
             dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
         ),
-        logic=LOGIC
+        logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",

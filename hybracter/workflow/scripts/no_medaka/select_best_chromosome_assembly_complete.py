@@ -42,7 +42,7 @@ def select_best_chromosome_assembly_complete(
     polca_fasta,
     sample,
     flye_info,
-    logic
+    logic,
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -127,7 +127,6 @@ def select_best_chromosome_assembly_complete(
             best_round = "pypolca"
 
     stats_dict = {}
-
 
     # write the chromosome(s)
     # usually should be 1!

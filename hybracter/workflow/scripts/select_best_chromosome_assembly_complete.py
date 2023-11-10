@@ -10,8 +10,6 @@ from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction
 
 
-
-
 # determines whether a file is empty
 def is_file_empty(file):
     """
@@ -47,7 +45,7 @@ def select_best_chromosome_assembly_complete(
     polca_fasta,
     sample,
     flye_info,
-    logic
+    logic,
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -134,7 +132,6 @@ def select_best_chromosome_assembly_complete(
             best_assembly = polca_fasta
             best_round = "pypolca"
 
-    
     stats_dict = {}
 
     # write the chromosome(s)
@@ -304,5 +301,5 @@ select_best_chromosome_assembly_complete(
     snakemake.params.polca_fasta,
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
-    snakemake.params.logic
+    snakemake.params.logic,
 )
