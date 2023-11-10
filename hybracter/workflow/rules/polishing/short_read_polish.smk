@@ -114,7 +114,7 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
     conda:
         os.path.join(dir.env, "scripts.yaml")
     params:
-        reference_polishing_round="medaka_round_2"
+        reference_polishing_round="medaka_round_2",
         query_polishing_round="polypolish"
     resources:
         mem_mb=config.resources.med.mem,

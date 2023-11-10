@@ -136,7 +136,7 @@ rule compare_assemblies_polypolish_vs_prechrom:
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     params:
-        reference_polishing_round="pre_polish"
+        reference_polishing_round="pre_polish",
         query_polishing_round="polypolish"
     script:
         os.path.join(dir.scripts, "compare_assemblies.py")
