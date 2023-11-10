@@ -13,7 +13,7 @@ import pandas as pd
 import pyrodigal
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction
-from loguru import logger
+
 
 """
 define the external tool class in case we need to run dnaapler
@@ -45,9 +45,9 @@ class ExternalTool:
     def run(self) -> None:
         with open(self.out_log, "w") as stdout_fh, open(self.err_log, "w") as stderr_fh:
             print(f"Command line: {self.command_as_str}", file=stderr_fh)
-            logger.info(f"Started running {self.command_as_str} ...")
+            print(f"Started running {self.command_as_str} ...")
             self._run_core(self.command, stdout_fh=stdout_fh, stderr_fh=stderr_fh)
-            logger.info(f"Done running {self.command_as_str}")
+            print(f"Done running {self.command_as_str}")
 
     @staticmethod
     def _run_core(command: List[str], stdout_fh, stderr_fh) -> None:
@@ -58,13 +58,13 @@ class ExternalTool:
         try:
             tool.run()
         except subprocess.CalledProcessError as error:
-            logger.error(
+            print(
                 f"Error calling {tool.command_as_str} (return code {error.returncode})"
             )
-            logger.error(f"Please check stdout log file: {tool.out_log}")
-            logger.error(f"Please check stderr log file: {tool.err_log}")
-            logger.error("Temporary files are preserved for debugging")
-            logger.error("Exiting...")
+            print(f"Please check stdout log file: {tool.out_log}")
+            print(f"Please check stderr log file: {tool.err_log}")
+            print("Temporary files are preserved for debugging")
+            print("Exiting...")
 
             if ctx:
                 ctx.exit(1)
@@ -202,11 +202,17 @@ def select_best_chromosome_assembly_long_complete(
     logdir = Path(dnaapler_directory) / "logs"
 
     if best_round == "pre_polish" or best_round == "medaka_rd_1":
+
+        if best_round == "pre_polish":
+            pre_dnap_assembly = chrom_pre_polish_fasta
+        else:
+            pre_dnap_assembly = medaka_rd_1_fasta
+
         dnaapler = ExternalTool(
             tool="dnaapler all",
             input="",
             output="",
-            params=f" -i {chrom_pre_polish_fasta} -o {dnaapler_directory} -t 1 -f",
+            params=f" -i {pre_dnap_assembly} -o {dnaapler_directory} -t 1 -f",
             logdir=logdir,
         )
 

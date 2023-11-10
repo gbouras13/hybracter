@@ -58,7 +58,7 @@ rule aggregate_finalise_complete:
         ),
     params:
         complete_flag=True,
-        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly"),
+        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly_or_medaka_rd_1"),
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",

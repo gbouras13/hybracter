@@ -76,6 +76,7 @@ rule select_best_chromosome_assembly_complete:
         polca_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
+        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly"),
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
