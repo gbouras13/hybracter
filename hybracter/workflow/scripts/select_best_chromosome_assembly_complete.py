@@ -46,7 +46,7 @@ def select_best_chromosome_assembly_complete(
     sample,
     flye_info,
     logic,
-    no_pypolca
+    no_pypolca,
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -307,5 +307,5 @@ select_best_chromosome_assembly_complete(
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
     snakemake.params.logic,
-    snakemake.params.no_pypolca
+    snakemake.params.no_pypolca,
 )

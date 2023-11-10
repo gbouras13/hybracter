@@ -115,7 +115,7 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
         os.path.join(dir.env, "scripts.yaml")
     params:
         reference_polishing_round="medaka_round_2",
-        query_polishing_round="polypolish"
+        query_polishing_round="polypolish",
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",

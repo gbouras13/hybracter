@@ -20,26 +20,42 @@ have received a copy of the GNU General Public License along with this program. 
 <https://www.gnu.org/licenses/>.
 """
 
-import textwrap
 import datetime
 # import edlib
 import gzip
 import os
 import re
 import sys
+import textwrap
 
 import mappy
 from Bio import SeqIO
 
 
-def run_compare(assembly_1, assembly_2, padding, merge, aligner, outputfile, reference_polishing_round, query_polishing_round):
-
-
-    assembly_1, assembly_2 = load_assemblies(assembly_1, assembly_2,reference_polishing_round,
-        query_polishing_round)
+def run_compare(
+    assembly_1,
+    assembly_2,
+    padding,
+    merge,
+    aligner,
+    outputfile,
+    reference_polishing_round,
+    query_polishing_round,
+):
+    assembly_1, assembly_2 = load_assemblies(
+        assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+    )
     touch_file(outputfile)
-    align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile,        reference_polishing_round,
-        query_polishing_round)
+    align_sequences(
+        assembly_1,
+        assembly_2,
+        padding,
+        merge,
+        aligner,
+        outputfile,
+        reference_polishing_round,
+        query_polishing_round,
+    )
 
 
 def touch_file(path):
@@ -47,16 +63,19 @@ def touch_file(path):
         os.utime(path, None)
 
 
-
-
-def load_assemblies(assembly_1_filename, assembly_2_filename,reference_polishing_round, query_polishing_round):
+def load_assemblies(
+    assembly_1_filename,
+    assembly_2_filename,
+    reference_polishing_round,
+    query_polishing_round,
+):
     section_header("Loading assemblies")
     log(assembly_1_filename)
     assembly_1 = load_fasta(assembly_1_filename)
     for name, seq in assembly_1:
         log(f"{reference_polishing_round}  {name}: {len(seq):,} bp")
     log()
-        
+
     log(assembly_2_filename)
     assembly_2 = load_fasta(assembly_2_filename)
     for name, seq in assembly_2:
@@ -83,11 +102,20 @@ def load_assemblies(assembly_1_filename, assembly_2_filename,reference_polishing
     return assembly_1, assembly_2
 
 
-def align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile,
-                            reference_polishing_round,
-        query_polishing_round):
+def align_sequences(
+    assembly_1,
+    assembly_2,
+    padding,
+    merge,
+    aligner,
+    outputfile,
+    reference_polishing_round,
+    query_polishing_round,
+):
     section_header("Aligning sequences")
-    longest_label = get_longest_label(assembly_1, assembly_2, reference_polishing_round, query_polishing_round)
+    longest_label = get_longest_label(
+        assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+    )
     for b, a in zip(assembly_1, assembly_2):
         assembly_1_name, assembly_1_seq = b
         assembly_2_name, assembly_2_seq = a
@@ -102,11 +130,13 @@ def align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile,
             aligner,
             outputfile,
             reference_polishing_round,
-            query_polishing_round
+            query_polishing_round,
         )
 
 
-def get_longest_label(assembly_1, assembly_2, reference_polishing_round, query_polishing_round):
+def get_longest_label(
+    assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+):
     longest_name, longest_seq, longest_round = 0, 0, 0
     for name, seq in assembly_1 + assembly_2:
         longest_name = max(longest_name, len(name))
@@ -127,9 +157,11 @@ def output_differences(
     aligner,
     outputfile,
     reference_polishing_round,
-    query_polishing_round
+    query_polishing_round,
 ):
-    log(f"Aligning {reference_polishing_round}:{assembly_1_name} to {query_polishing_round}:{assembly_2_name}:")
+    log(
+        f"Aligning {reference_polishing_round}:{assembly_1_name} to {query_polishing_round}:{assembly_2_name}:"
+    )
     (
         assembly_1_aligned,
         assembly_2_aligned,
@@ -158,8 +190,14 @@ def output_differences(
     for start, end in diff_ranges:
         try:
             # Convert positions in alignment to positions in unaligned sequences:
-            assembly_1_start, assembly_1_end = assembly_1_pos[start], assembly_1_pos[end]
-            assembly_2_start, assembly_2_end = assembly_2_pos[start], assembly_2_pos[end]
+            assembly_1_start, assembly_1_end = (
+                assembly_1_pos[start],
+                assembly_1_pos[end],
+            )
+            assembly_2_start, assembly_2_end = (
+                assembly_2_pos[start],
+                assembly_2_pos[end],
+            )
 
             # Sanity check:
             assert (
@@ -397,9 +435,6 @@ def load_fasta(fasta_filename):
 #     return fasta_seqs
 
 
-
-
-
 def log(message="", end="\n"):
     print(message, file=sys.stderr, flush=True, end=end)
 
@@ -425,7 +460,6 @@ def bold_yellow_underline(text):
 
 def dim(text):
     return DIM + text + END_FORMATTING
-
 
 
 def quit_with_error(text):
@@ -466,7 +500,12 @@ def test_get_longest_label():
     assembly_2 = [("seq1_polished", "ACGT"), ("seq2_polished", "ACGT")]
     reference_polishing_round = "polypolish"
     query_polishing_round = "pypolca"
-    assert get_longest_label(assembly_1, assembly_2,  reference_polishing_round, query_polishing_round) == 20
+    assert (
+        get_longest_label(
+            assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+        )
+        == 20
+    )
 
 
 def test_get_expanded_cigar():
@@ -519,6 +558,6 @@ run_compare(
     30,
     "mappy",
     snakemake.output.diffs,
-    snakemake.params.reference_polishing_round, 
-    snakemake.params.query_polishing_round
+    snakemake.params.reference_polishing_round,
+    snakemake.params.query_polishing_round,
 )

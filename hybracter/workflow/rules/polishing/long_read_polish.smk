@@ -79,7 +79,7 @@ rule compare_assemblies_medaka_round_1:
         os.path.join(dir.env, "scripts.yaml")
     params:
         reference_polishing_round="pre_polish",
-        query_polishing_round="medaka_round_1"
+        query_polishing_round="medaka_round_1",
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
