@@ -85,7 +85,7 @@ def align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile,
                             reference_polishing_round,
         query_polishing_round):
     section_header("Aligning sequences")
-    longest_label = get_longest_label(reference_polishing_round, query_polishing_round)
+    longest_label = get_longest_label(assembly_1, assembly_2, reference_polishing_round, query_polishing_round)
     for b, a in zip(assembly_1, assembly_2):
         assembly_1_name, assembly_1_seq = b
         assembly_2_name, assembly_2_seq = a
@@ -104,12 +104,14 @@ def align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile,
         )
 
 
-def get_longest_label(assembly_1, assembly_2):
-    longest_name, longest_seq = 0, 0
+def get_longest_label(assembly_1, assembly_2, reference_polishing_round, query_polishing_round):
+    longest_name, longest_seq, longest_round = 0, 0, 0
     for name, seq in assembly_1 + assembly_2:
         longest_name = max(longest_name, len(name))
         longest_seq = max(longest_seq, len(str(len(seq))))
-    return longest_name + 2 * longest_seq + 3
+    longest_round = max(longest_round, reference_polishing_round)
+    longest_round = max(longest_round, query_polishing_round)
+    return query_polishing_round + longest_name + 2 * longest_seq + 3
 
 
 def output_differences(
@@ -168,8 +170,8 @@ def output_differences(
             )
 
             # Add 1 to starts to convert from 0-based exclusive ranges to 1-based inclusive ranges.
-            assembly_1_label = f"{reference_polishing_round} {assembly_1_start+1}-{assembly_1_end}:"
-            assembly_2_label = f"{query_polishing_round} {assembly_2_start+1}-{assembly_2_end}:"
+            assembly_1_label = f"{reference_polishing_round}:{assembly_1_name} {assembly_1_start+1}-{assembly_1_end}:"
+            assembly_2_label = f"{query_polishing_round}:{assembly_2_name} {assembly_2_start+1}-{assembly_2_end}:"
             assert len(assembly_1_label) <= longest_label
             assert len(assembly_2_label) <= longest_label
             assembly_1_label = assembly_1_label.rjust(longest_label)
@@ -460,7 +462,9 @@ def check_python_version():
 def test_get_longest_label():
     assembly_1 = [("seq1", "ACGT"), ("seq2", "ACGTACGTACGTACGT")]
     assembly_2 = [("seq1_polished", "ACGT"), ("seq2_polished", "ACGT")]
-    assert get_longest_label(assembly_1, assembly_2) == 20
+    reference_polishing_round = "polypolish"
+    query_polishing_round = "pypolca"
+    assert get_longest_label(assembly_1, assembly_2,  reference_polishing_round, query_polishing_round) == 20
 
 
 def test_get_expanded_cigar():
