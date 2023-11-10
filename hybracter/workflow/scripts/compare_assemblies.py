@@ -35,7 +35,8 @@ from Bio import SeqIO
 def run_compare(assembly_1, assembly_2, padding, merge, aligner, outputfile, reference_polishing_round, query_polishing_round):
 
 
-    assembly_1, assembly_2 = load_assemblies(assembly_1, assembly_2)
+    assembly_1, assembly_2 = load_assemblies(assembly_1, assembly_2,reference_polishing_round,
+        query_polishing_round)
     touch_file(outputfile)
     align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile,        reference_polishing_round,
         query_polishing_round)
@@ -48,17 +49,18 @@ def touch_file(path):
 
 
 
-def load_assemblies(assembly_1_filename, assembly_2_filename):
+def load_assemblies(assembly_1_filename, assembly_2_filename,reference_polishing_round, query_polishing_round):
     section_header("Loading assemblies")
     log(assembly_1_filename)
     assembly_1 = load_fasta(assembly_1_filename)
     for name, seq in assembly_1:
-        log(f"  {name}: {len(seq):,} bp")
+        log(f"{reference_polishing_round}  {name}: {len(seq):,} bp")
     log()
+        
     log(assembly_2_filename)
     assembly_2 = load_fasta(assembly_2_filename)
     for name, seq in assembly_2:
-        log(f"  {name}: {len(seq):,} bp")
+        log(f"{query_polishing_round}  {name}: {len(seq):,} bp")
     log()
     if len(assembly_1) != len(assembly_2):
         quit_with_error(
