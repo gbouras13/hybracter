@@ -127,7 +127,7 @@ def output_differences(
     reference_polishing_round,
     query_polishing_round
 ):
-    log(f"Aligning {assembly_1_name} to {assembly_2_name}:")
+    log(f"Aligning {reference_polishing_round}:{assembly_1_name} to {query_polishing_round}:{assembly_2_name}:")
     (
         assembly_1_aligned,
         assembly_2_aligned,
