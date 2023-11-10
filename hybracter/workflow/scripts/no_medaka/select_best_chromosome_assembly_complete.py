@@ -1,21 +1,18 @@
 #!/usr/bin/env python3
 
 import glob
-import os
-import sys
 import hashlib
 import os
 import shlex
 import subprocess
+import sys
 from pathlib import Path
 from typing import List, Optional
-
 
 import click
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction
-
 
 
 class ExternalTool:
@@ -69,6 +66,7 @@ class ExternalTool:
             else:
                 sys.exit(1)
 
+
 # determines whether a file is empty
 def is_file_empty(file):
     """
@@ -102,7 +100,7 @@ def select_best_chromosome_assembly_complete(
     polca_fasta,
     sample,
     flye_info,
-    dnaapler_directory
+    dnaapler_directory,
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -191,7 +189,6 @@ def select_best_chromosome_assembly_complete(
     logdir = Path(dnaapler_directory) / "logs"
 
     if best_round == "pre_polish":
-
         dnaapler = ExternalTool(
             tool="dnaapler all",
             input="",
@@ -204,7 +201,6 @@ def select_best_chromosome_assembly_complete(
 
         # best assembly
         best_assembly: Path = Path(dnaapler_directory) / "dnaapler_reoriented.fasta"
-
 
     # write the chromosome(s)
     # usually should be 1!
@@ -370,5 +366,5 @@ select_best_chromosome_assembly_complete(
     snakemake.params.polca_fasta,
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
-    snakemake.params.dnaapler_dir
+    snakemake.params.dnaapler_dir,
 )

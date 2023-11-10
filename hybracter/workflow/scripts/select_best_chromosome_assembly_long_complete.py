@@ -14,7 +14,6 @@ import pyrodigal
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction
 
-
 """
 define the external tool class in case we need to run dnaapler
 """
@@ -202,7 +201,6 @@ def select_best_chromosome_assembly_long_complete(
     logdir = Path(dnaapler_directory) / "logs"
 
     if best_round == "pre_polish" or best_round == "medaka_rd_1":
-
         if best_round == "pre_polish":
             pre_dnap_assembly = chrom_pre_polish_fasta
         else:
