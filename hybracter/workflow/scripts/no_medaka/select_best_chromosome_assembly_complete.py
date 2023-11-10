@@ -101,6 +101,7 @@ def select_best_chromosome_assembly_complete(
     sample,
     flye_info,
     dnaapler_directory,
+    threads
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -367,4 +368,5 @@ select_best_chromosome_assembly_complete(
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
     snakemake.params.dnaapler_dir,
+    snakemake.threads
 )

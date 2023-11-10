@@ -60,12 +60,12 @@ rule aggregate_finalise_complete:
         complete_flag=True,
         dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly_or_medaka_rd_1"),
     resources:
-        mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
-        time=config.resources.sml.time,
+        mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     conda:
         os.path.join(dir.env, "dnaapler.yaml")  # will contain pyrodigal but dnaapler needed if the best hit is pre-polish (based on Ryan wick's 24-10-23 blogpost medaka might make long only assemblies worse)
-    threads: config.resources.sml.cpu
+    threads: config.resources.med.cpu
     script:
         os.path.join(dir.scripts, "select_best_chromosome_assembly_long_complete.py")
 

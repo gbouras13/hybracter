@@ -141,6 +141,7 @@ def select_best_chromosome_assembly_long_complete(
     dnaapler_directory,
     plassembler_fasta,
     final_plasmid_fasta,
+    threads
 ):
     """
     get prodigal mean length for each chromosome
@@ -385,4 +386,5 @@ select_best_chromosome_assembly_long_complete(
     snakemake.params.dnaapler_dir,
     snakemake.input.plassembler_fasta,
     snakemake.output.final_plasmid_fasta,
+    snakemake.threads
 )

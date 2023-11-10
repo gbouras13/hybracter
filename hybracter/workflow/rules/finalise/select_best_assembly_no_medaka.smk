@@ -78,12 +78,12 @@ rule select_best_chromosome_assembly_complete:
         ),
         dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly"),
     resources:
-        mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
-        time=config.resources.sml.time,
+        mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     conda:
-        os.path.join(dir.env, "scripts.yaml")
-    threads: config.resources.sml.cpu
+        os.path.join(dir.env, "dnaapler.yaml")
+    threads: config.resources.med.cpu
     script:
         os.path.join(
             dir.scripts_no_medaka, "select_best_chromosome_assembly_complete.py"
