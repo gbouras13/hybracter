@@ -203,7 +203,7 @@ def select_best_chromosome_assembly_complete(
             tool="dnaapler",
             input="",
             output="",
-            params=f"all -i {pre_dnap_assembly} -o {dnaapler_directory} -t 1 -f",
+            params=f"all -i {pre_dnap_assembly} -o {dnaapler_directory} -t {threads} -f",
             logdir=logdir,
         )
 
