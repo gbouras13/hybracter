@@ -110,8 +110,8 @@ def get_longest_label(assembly_1, assembly_2, reference_polishing_round, query_p
         longest_name = max(longest_name, len(name))
         longest_seq = max(longest_seq, len(str(len(seq))))
     longest_round = max(longest_round, len(reference_polishing_round))
-    longest_round = max(longest_round, len(query_polishing_round))
-    return longest_round + longest_name + 2 * longest_seq + 3
+    # add 5 in case
+    return longest_round + 5 + longest_name + 2 * longest_seq + 3
 
 
 def output_differences(
