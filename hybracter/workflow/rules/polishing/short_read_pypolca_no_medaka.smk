@@ -72,6 +72,9 @@ rule compare_assemblies_pypolca_vs_polypolish:
         mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
+    params:
+        reference_polishing_round="polypolish"
+        query_polishing_round="pypolca"
     script:
         os.path.join(dir.scripts, "compare_assemblies.py")
 

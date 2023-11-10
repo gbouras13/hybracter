@@ -35,6 +35,8 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
 * You can turn off Medaka polishing using `--no_medaka`
+* You can turn off pypolca polishing using `--no_pypolca`
+* You can specify `hybracter` picking the last polishing round (not the best according to ALE) with `--logic last`. `hybracter` defaults to picking the best (according to ALE) i.e. `--logic best`.
 
 ```
 Usage: hybracter [OPTIONS] COMMAND [ARGS]...
@@ -99,6 +101,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --logic [best|last]             Hybracter logic to select best assembly. Use
+                                  --best to pick best assembly based on ALE
+                                  (hybrid) or pyrodigal mean length (long).
+                                  Use --last to pick the last polishing round
+                                  regardless.  [default: best]
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -158,6 +165,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --logic [best|last]             Hybracter logic to select best assembly. Use
+                                  --best to pick best assembly based on ALE
+                                  (hybrid) or pyrodigal mean length (long).
+                                  Use --last to pick the last polishing round
+                                  regardless.  [default: best]
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -188,6 +200,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
 * You can turn off Medaka polishing using `--no_medaka`
+* You can force `hybracter` to pick the last polishing round (not the best according to pyrodigal mean CDS length) with `--logic last`. `hybracter` defaults to picking the best i.e. `--logic best`.
 
 ```
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
@@ -219,6 +232,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --logic [best|last]             Hybracter logic to select best assembly. Use
+                                  --best to pick best assembly based on ALE
+                                  (hybrid) or pyrodigal mean length (long).
+                                  Use --last to pick the last polishing round
+                                  regardless.  [default: best]
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -271,6 +289,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --logic [best|last]             Hybracter logic to select best assembly. Use
+                                  --best to pick best assembly based on ALE
+                                  (hybrid) or pyrodigal mean length (long).
+                                  Use --last to pick the last polishing round
+                                  regardless.  [default: best]
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
