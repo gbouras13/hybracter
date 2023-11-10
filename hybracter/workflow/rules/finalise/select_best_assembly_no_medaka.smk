@@ -58,7 +58,7 @@ rule dnaapler_pre_chrom:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
-    threads: config.resources.med.cpu
+    threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "dnaapler", "{sample}_pre_chrom.txt")
     log:

@@ -115,7 +115,7 @@ def common_options(func):
         click.option(
             "--logic",
             "logic",
-            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE/pyrodigal mean length. Use --last to pick the last polish round regardless.",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
             show_default=True,
             default="best",
             type=click.Choice(
