@@ -207,10 +207,10 @@ def select_best_chromosome_assembly_long_complete(
             pre_dnap_assembly = medaka_rd_1_fasta
 
         dnaapler = ExternalTool(
-            tool="dnaapler all",
+            tool="dnaapler",
             input="",
             output="",
-            params=f" -i {pre_dnap_assembly} -o {dnaapler_directory} -t 1 -f",
+            params=f"all -i {pre_dnap_assembly} -o {dnaapler_directory} -t 1 -f",
             logdir=logdir,
         )
 

@@ -190,10 +190,10 @@ def select_best_chromosome_assembly_complete(
 
     if best_round == "pre_polish":
         dnaapler = ExternalTool(
-            tool="dnaapler all",
+            tool="dnaapler",
             input="",
             output="",
-            params=f" -i {chrom_pre_polish_fasta} -o {dnaapler_directory} -t 1 -f",
+            params=f"all -i {chrom_pre_polish_fasta} -o {dnaapler_directory} -t 1 -f",
             logdir=logdir,
         )
 
