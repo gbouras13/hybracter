@@ -82,6 +82,7 @@ rule select_best_chromosome_assembly_complete:
         polca_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
+        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly_or_medaka_rd_1")
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
@@ -120,8 +121,7 @@ rule select_best_chromosome_assembly_incomplete:
         polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
         polca_fasta=os.path.join(
             dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
-        ),
-        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly_or_medaka_rd_1")
+        )
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
