@@ -20,6 +20,7 @@ def select_best_chromosome_assembly_incomplete(
     polca_fasta,
     sample,
     flye_info,
+    logic
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -80,18 +81,21 @@ def select_best_chromosome_assembly_incomplete(
     # polypolish and/or polca should always improve the assembly as per testing
 
     best_assembly = polca_fasta
-    if "incomp_pre_polish" in closest_to_zero_key:
-        best_assembly = pre_polish_fasta
-        best_round = "pre_polish"
-    elif "medaka" in closest_to_zero_key:
-        best_assembly = medaka_fasta
-        best_round = "medaka"
-    elif "polypolish" in closest_to_zero_key:
-        best_assembly = polypolish_fasta
-        best_round = "polypolish"
-    else:  # polca
-        best_assembly = polca_fasta
-        best_round = "polca"
+    best_round =  "pypolca"
+
+    if logic == "best":
+        if "incomp_pre_polish" in closest_to_zero_key:
+            best_assembly = pre_polish_fasta
+            best_round = "pre_polish"
+        elif "medaka" in closest_to_zero_key:
+            best_assembly = medaka_fasta
+            best_round = "medaka"
+        elif "polypolish" in closest_to_zero_key:
+            best_assembly = polypolish_fasta
+            best_round = "polypolish"
+        else:  # polca
+            best_assembly = polca_fasta
+            best_round = "pypolca"
 
     stats_dict = {}
 
@@ -189,4 +193,5 @@ select_best_chromosome_assembly_incomplete(
     snakemake.params.polca_fasta,
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
+    snakemake.params.logic
 )

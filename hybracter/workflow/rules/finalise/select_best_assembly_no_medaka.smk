@@ -38,6 +38,36 @@ def aggregate_ale_input_finalise(wildcards):
                 )
 
 
+rule dnaapler_pre_chrom:
+    """
+    Runs dnaapler to begin pre polished chromosome 
+    In case it is chosen as best
+    """
+    input:
+        ale_input=aggregate_ale_input_finalise,
+        fasta=os.path.join(
+            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
+        ),
+    output:
+        fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),
+    conda:
+        os.path.join(dir.env, "dnaapler.yaml")
+    params:
+        dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom"),
+    resources:
+        mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
+    threads: config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "dnaapler", "{sample}_pre_chrom.txt")
+    log:
+        os.path.join(dir.out.stderr, "dnaapler", "{sample}_pre_chrom.log"),
+    shell:
+        """
+        dnaapler all -i {input.fasta} -o {params.dir} -p {wildcards.sample} -t {threads} -a nearest -f 2> {log}
+        """
+
 ### from the aggregate_ale_input function - so it dynamic
 # also calculates the summary
 rule select_best_chromosome_assembly_complete:
@@ -67,23 +97,21 @@ rule select_best_chromosome_assembly_complete:
         ),
     params:
         ale_dir=os.path.join(dir.out.ale_scores_complete, "{sample}"),
-        chrom_pre_polish_fasta=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented_chromosome.fasta"
-        ),
+        chrom_pre_polish_fasta=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"),  # to make sure ale has finished
         polypolish_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
         polca_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
-        dnaapler_dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom_best_assembly"),
+        logic=LOGIC
     resources:
-        mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
-        time=config.resources.med.time,
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
     conda:
-        os.path.join(dir.env, "dnaapler.yaml")
-    threads: config.resources.med.cpu
+        os.path.join(dir.env, "scripts.yaml")
+    threads: config.resources.sml.cpu
     script:
         os.path.join(
             dir.scripts_no_medaka, "select_best_chromosome_assembly_complete.py"
@@ -115,6 +143,7 @@ rule select_best_chromosome_assembly_incomplete:
         polca_fasta=os.path.join(
             dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
         ),
+        logic=LOGIC
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",

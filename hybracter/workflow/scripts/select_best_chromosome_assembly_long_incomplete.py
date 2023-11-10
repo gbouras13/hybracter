@@ -52,6 +52,7 @@ def select_best_chromosome_assembly_long_incomplete(
     medaka_fasta,
     sample,
     flye_info,
+    logic
 ):
     """
     get prodigal mean length for each assembly
@@ -83,9 +84,11 @@ def select_best_chromosome_assembly_long_incomplete(
     best_assembly = medaka_fasta
     best_round = "medaka"
 
-    if pre_polish_fasta > medaka_fasta:
-        best_assembly = pre_polish_fasta
-        best_round = "pre_polish"
+    if logic == "best":
+
+        if pre_polish_fasta > medaka_fasta:
+            best_assembly = pre_polish_fasta
+            best_round = "pre_polish"
 
     stats_dict = {}
 
@@ -179,4 +182,5 @@ select_best_chromosome_assembly_long_incomplete(
     snakemake.params.medaka_fasta,
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
+    snakemake.params.logic
 )
