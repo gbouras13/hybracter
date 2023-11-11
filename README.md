@@ -104,7 +104,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 
 ## v0.3.0 Updates 8 November 2023 
 
-**Upgrading and re-running hybracter is recommended.**
+**Upgrading and re-running hybracter is recommended.** 
 
 * Fixes bug relating to polishing. Prior to v0.3.0, hybracter would only polish the chromosome with the entire readset. Benchmarking revealed that if there was significant similarity between chromosome and plasmids, polishing would introduce errors (my bad!)
 * Now the entire assembly (chromosome from Flye + plasmids from Plassembler) is polished in every polishing step with improved results (the full benchmarking methodology and results is forthcoming shortly)
