@@ -78,7 +78,9 @@ def aggregate_long_read_polish_input(wildcards):
     with checkpoints.check_completeness.get(sample=wildcards.sample).output[0].open() as f:
         if config.args.no_medaka is False:  # default
             if f.read().strip() == "C":
-                return os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta")
+                return os.path.join(
+                    dir.out.differences, "{sample}", "medaka_round_2_vs_medaka_round_1.txt"
+                )
             else:  # if incomplete
                 return os.path.join(
                     dir.out.medaka_incomplete, "{sample}", "consensus.fasta"

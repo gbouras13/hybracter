@@ -62,7 +62,7 @@ rule compare_assemblies_pypolca_vs_polypolish:
         ),
         assembly=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
-        )
+        ),
     output:
         diffs=os.path.join(dir.out.differences, "{sample}", "pypolca_vs_polypolish.txt"),
     conda:

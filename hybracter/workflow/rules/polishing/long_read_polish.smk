@@ -71,9 +71,7 @@ rule compare_assemblies_medaka_round_1:
         reference=os.path.join(
             dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
-        assembly=os.path.join(
-            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
-        ),
+        assembly=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
     output:
         diffs=os.path.join(
             dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
@@ -200,7 +198,7 @@ rule compare_assemblies_medaka_round_2:
         ),
         diffs=os.path.join(
             dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
-        )
+        ),
     output:
         diffs=os.path.join(
             dir.out.differences, "{sample}", "medaka_round_2_vs_medaka_round_1.txt"

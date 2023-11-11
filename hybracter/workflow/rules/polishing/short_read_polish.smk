@@ -75,7 +75,7 @@ rule polypolish_extract_intermediate_assembly:
     """
     input:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
-        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt")
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"

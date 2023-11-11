@@ -10,7 +10,7 @@ rule dnaapler:
     input:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
-        )
+        ),
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version"),
