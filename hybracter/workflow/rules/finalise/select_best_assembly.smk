@@ -48,7 +48,6 @@ rule dnaapler_pre_chrom:
     In case it is chosen as best
     """
     input:
-        ale_input=aggregate_ale_input_finalise,
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     output:
         fasta=os.path.join(
