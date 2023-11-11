@@ -105,7 +105,7 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
         diffs=os.path.join(
-            dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
+            dir.out.differences, "{sample}", "medaka_round_2_vs_medaka_round_1.txt"
         ),
     output:
         diffs=os.path.join(
