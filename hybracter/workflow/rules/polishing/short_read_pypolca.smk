@@ -54,7 +54,7 @@ rule pypolca_extract_intermediate_assembly:
 
 rule compare_assemblies_pypolca_vs_polypolish:
     """
-    compare assemblies 
+    compare chrom assemblies 
     """
     input:
         reference=os.path.join(

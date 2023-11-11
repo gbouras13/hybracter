@@ -95,7 +95,7 @@ rule polypolish_extract_intermediate_assembly:
 
 rule compare_assemblies_polypolish_vs_medaka_round_2:
     """
-    compare assemblies 
+    compare chrom assemblies 
     """
     input:
         reference=os.path.join(

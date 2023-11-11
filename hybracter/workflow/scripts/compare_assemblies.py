@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 """
 Ryan Wick 2023 with modifications by George Bouras 2023
+
 This script produces a human-readable output showing the differences between two alternative
-assemblies of a genome. The two assemblies must have the same number of contigs, the contigs must
-be in the same order, and corresponding contigs must have the same strand and starting position.
+assemblies of a genome built for integration with Hybracter.
 
-It can be run like this to view the results directly in the terminal:
-  compare_assemblies.py assembly_1.fasta assembly_2.fasta
+The two assemblies must have the same number of contigs and corresponding contigs must have the same strand and starting position.
 
-Or you can store the results in a file like this:
-  compare_assemblies.py assembly_1.fasta assembly_2.fasta > differences_1_vs_2.txt
+The script will automatically sort your contigs in order of size (to handle cases where an isolate has multiple chromosomes - e.g. Vibrios).
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU
 General Public License as published by the Free Software Foundation, either version 3 of the

@@ -65,7 +65,7 @@ rule medaka_round_1_extract_intermediate_assembly:
 rule compare_assemblies_medaka_round_1:
     """
     compare chromosome assemblies between medaka and pre-polished chromosome
-    take the one that is reassembled in finalise folder
+    take the one that is dnaaplered in finalise folder so we can compare properly
     """
     input:
         reference=os.path.join(

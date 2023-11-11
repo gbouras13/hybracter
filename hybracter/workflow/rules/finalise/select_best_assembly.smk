@@ -45,7 +45,7 @@ def aggregate_ale_input_finalise(wildcards):
 rule dnaapler_pre_chrom:
     """
     Runs dnaapler to begin pre polished chromosome 
-    In case it is chosen as best
+    In case it is chosen as best and for comparisons
     """
     input:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
