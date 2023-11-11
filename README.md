@@ -102,7 +102,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 - G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 - H. The best assembly is selected and and output along with final assembly statistics.
 
-## v0.3.0 Updates 8 November 2023  
+## v0.3.0 Updates 8 November 2023   
 
 **Upgrading and re-running hybracter is recommended.**
 
