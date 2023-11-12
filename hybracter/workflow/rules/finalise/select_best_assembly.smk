@@ -19,9 +19,42 @@ def aggregate_ale_input_finalise(wildcards):
                 return os.path.join(
                     dir.out.ale_scores_complete, "{sample}", "pypolca.score"
                 )
-            else:  # with polca, best is polypolish
+            else:  # without polca, best is polypolish
                 return os.path.join(
                     dir.out.ale_scores_complete, "{sample}", "polypolish.score"
+                )
+        else:  # incomplete
+            if config.args.no_pypolca is False:  # with pypolca
+                return os.path.join(
+                    dir.out.ale_scores_incomplete,
+                    "{sample}",
+                    "pypolca_incomplete.score",
+                )
+            else:
+                return os.path.join(
+                    dir.out.ale_scores_incomplete,
+                    "{sample}",
+                    "polypolish_incomplete.score",
+                )
+
+
+# input function to make sure all comparisons are run
+def aggregate_comparisons(wildcards):
+    # decision based on content of output file
+    # Important: use the method open() of the returned file!
+    # This way, Snakemake is able to automatically download the file if it is generated in
+    # a cloud environment without a shared filesystem.
+    with checkpoints.check_completeness.get(sample=wildcards.sample).output[
+        0
+    ].open() as f:
+        if f.read().strip() == "C":  # complete
+            if config.args.no_pypolca is False:  # with pypolca
+                return os.path.join(
+                    dir.out.differences, "{sample}", "pypolca_vs_polypolish.txt"
+                )
+            else:  # without polca, best is polypolish
+                return os.path.join(
+                    dir.out.differences, "{sample}", "polypolish_vs_medaka_round_2.txt"
                 )
         else:  # incomplete
             if config.args.no_pypolca is False:  # with pypolca
@@ -87,6 +120,7 @@ rule select_best_chromosome_assembly_complete:
         chrom_pre_polish_fasta=os.path.join(
             dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
+        comparisons=aggregate_comparisons,
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"

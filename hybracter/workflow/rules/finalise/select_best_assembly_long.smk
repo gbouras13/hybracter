@@ -3,7 +3,8 @@ aggregate the pyrdigal mean length cds and finalise
 """
 
 
-def aggregate_finalise(wildcards):
+# input function to make sure all comparisons are run
+def aggregate_comparisons(wildcards):
     # decision based on content of output file
     # Important: use the method open() of the returned file!
     # This way, Snakemake is able to automatically download the file if it is generated in
@@ -13,11 +14,11 @@ def aggregate_finalise(wildcards):
     ].open() as f:
         if f.read().strip() == "C":  # complete
             return os.path.join(
-                dir.out.ale_scores_complete, "{sample}", "pypolca.score"
+                dir.out.differences, "{sample}", "medaka_round_2_vs_medaka_round_1.txt"
             )
-        else:  # incomplete
+        else:  #  this is not actually run - not needed!
             return os.path.join(
-                dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"
+                dir.out.medaka_incomplete, "{sample}", "consensus.fasta"
             )
 
 
@@ -69,6 +70,7 @@ rule aggregate_finalise_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
+        comparisons=aggregate_comparisons,
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
