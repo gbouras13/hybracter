@@ -33,12 +33,13 @@ def combine_sample_plassembler(summary_dir, output):
                 # appends to the number of plasmids
                 samples_with_plasmids += 1
 
+    # save as tsv
     if samples_with_plasmids > 1:
         # make into combined dataframe
         total_summary_df = pd.concat(summaries, ignore_index=True)
-        total_summary_df.to_csv(output, sep=",", index=False)
+        total_summary_df.to_csv(output, sep="\t", index=False)
     elif samples_with_plasmids == 1:  # just print the first
-        summaries[0].to_csv(output, sep=",", index=False)
+        summaries[0].to_csv(output, sep="\t", index=False)
     else:  # touch the output
         with open(output, "a"):
             os.utime(output, None)
