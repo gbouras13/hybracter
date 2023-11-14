@@ -4,7 +4,7 @@ rule combine_plassembler_info:
         os.path.join(dir.out.flags, "aggr_plassembler.flag"),  # need the flag as in the put - to be run after plassembler
     output:
         out=os.path.join(
-            dir.out.plassembler_all_summary, "plassembler_assembly_info.txt"
+            dir.out.plassembler_all_summary, "plassembler_assembly_info.tsv"
         ),
     params:
         summary_dir=dir.out.plassembler_individual_summaries,  # all the samples where plassembler ran (complete)
@@ -22,7 +22,7 @@ rule combine_plassembler_info:
 rule aggr_combine_plassembler_info:
     """Aggregate."""
     input:
-        os.path.join(dir.out.plassembler_all_summary, "plassembler_assembly_info.txt"),
+        os.path.join(dir.out.plassembler_all_summary, "plassembler_assembly_info.tsv"),
     output:
         flag=os.path.join(dir.out.flags, "aggr_combine_plassembler_info.flag"),
     resources:

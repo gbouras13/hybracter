@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 """
 Ryan Wick 2023 with modifications by George Bouras 2023
+
 This script produces a human-readable output showing the differences between two alternative
-assemblies of a genome. The two assemblies must have the same number of contigs, the contigs must
-be in the same order, and corresponding contigs must have the same strand and starting position.
+assemblies of a genome built for integration with Hybracter.
 
-It can be run like this to view the results directly in the terminal:
-  compare_assemblies.py assembly_1.fasta assembly_2.fasta
+The two assemblies must have the same number of contigs and corresponding contigs must have the same strand and starting position.
 
-Or you can store the results in a file like this:
-  compare_assemblies.py assembly_1.fasta assembly_2.fasta > differences_1_vs_2.txt
+The script will automatically sort your contigs in order of size (to handle cases where an isolate has multiple chromosomes - e.g. Vibrios).
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU
 General Public License as published by the Free Software Foundation, either version 3 of the
@@ -20,27 +18,42 @@ have received a copy of the GNU General Public License along with this program. 
 <https://www.gnu.org/licenses/>.
 """
 
-import argparse
 import datetime
 # import edlib
 import gzip
 import os
-import pathlib
 import re
 import sys
+import textwrap
 
 import mappy
 from Bio import SeqIO
 
 
-def run_compare(assembly_1, assembly_2, padding, merge, aligner, outputfile):
-    # args = parse_args()
-    # check_inputs(args)
-    # start_time = starting_message(args)
-
-    assembly_1, assembly_2 = load_assemblies(assembly_1, assembly_2)
+def run_compare(
+    assembly_1,
+    assembly_2,
+    padding,
+    merge,
+    aligner,
+    outputfile,
+    reference_polishing_round,
+    query_polishing_round,
+):
+    assembly_1, assembly_2 = load_assemblies(
+        assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+    )
     touch_file(outputfile)
-    align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile)
+    align_sequences(
+        assembly_1,
+        assembly_2,
+        padding,
+        merge,
+        aligner,
+        outputfile,
+        reference_polishing_round,
+        query_polishing_round,
+    )
 
 
 def touch_file(path):
@@ -48,99 +61,23 @@ def touch_file(path):
         os.utime(path, None)
 
 
-def parse_args():
-    description = (
-        "R|Assembly comparison tool\n"
-        + "https://github.com/rrwick/Perfect-bacterial-genome-tutorial"
-    )
-    parser = MyParser(
-        description=description, formatter_class=MyHelpFormatter, add_help=False
-    )
-
-    input_args = parser.add_argument_group("Inputs")
-    input_args.add_argument("assembly_1", type=str, help="First assembly to compare")
-    input_args.add_argument("assembly_2", type=str, help="Second assembly to compare")
-
-    setting_args = parser.add_argument_group("Settings")
-    setting_args.add_argument(
-        "--padding",
-        type=int,
-        default=15,
-        help="Bases of additional sequence to show before/after each change",
-    )
-    setting_args.add_argument(
-        "--merge",
-        type=int,
-        default=30,
-        help="Changes this close are merged together in the output",
-    )
-    setting_args.add_argument(
-        "--aligner",
-        type=str,
-        choices=["mappy", "edlib"],
-        default="mappy",
-        help="Aligner library: mappy has affine-gap, edlib is more robust",
-    )
-
-    help_args = parser.add_argument_group("Help")
-    help_args.add_argument(
-        "-h",
-        "--help",
-        action="help",
-        default=argparse.SUPPRESS,
-        help="Show this help message and exit",
-    )
-
-    # If no arguments were used, print the base-level help which lists possible commands.
-    if len(sys.argv) == 1:
-        parser.print_help(file=sys.stderr)
-        sys.exit(1)
-
-    return parser.parse_args()
-
-
-def check_inputs(args):
-    check_python_version()
-    if not pathlib.Path(args.assembly_1).is_file():
-        quit_with_error(f"Error: {args.assembly_1} is not a file")
-    if not pathlib.Path(args.assembly_2).is_file():
-        quit_with_error(f"Error: {args.assembly_2} is not a file")
-    if args.padding < 0 or args.padding > 1000:
-        quit_with_error("Error: the value of --padding must be >= 0 and <= 1000")
-
-
-def starting_message(args):
-    section_header("Assembly comparison tool")
-    explanation(
-        "This script produces a human-readable file showing all of the differences "
-        "between two alternative assemblies of a genome. This can help to spot "
-        "troublesome regions of the genome with a large number of changes."
-    )
-    log("Assembly 1:")
-    log(f"  {args.assembly_1}")
-    log()
-    log("Assembly 2:")
-    log(f"  {args.assembly_2}")
-    log()
-    log("Settings:")
-    log(f"  --padding {args.padding}")
-    log(f"  --merge {args.merge}")
-    log(f"  --aligner {args.aligner}")
-    log()
-    return datetime.datetime.now()
-
-
-def load_assemblies(assembly_1_filename, assembly_2_filename):
+def load_assemblies(
+    assembly_1_filename,
+    assembly_2_filename,
+    reference_polishing_round,
+    query_polishing_round,
+):
     section_header("Loading assemblies")
     log(assembly_1_filename)
     assembly_1 = load_fasta(assembly_1_filename)
     for name, seq in assembly_1:
-        log(f"  {name}: {len(seq):,} bp")
+        log(f"{reference_polishing_round}  {name}: {len(seq):,} bp")
     log()
+
     log(assembly_2_filename)
     assembly_2 = load_fasta(assembly_2_filename)
     for name, seq in assembly_2:
-        log(f"  {name}: {len(seq):,} bp")
+        log(f"{query_polishing_round}  {name}: {len(seq):,} bp")
     log()
     if len(assembly_1) != len(assembly_2):
         quit_with_error(
@@ -163,9 +100,20 @@ def load_assemblies(assembly_1_filename, assembly_2_filename):
     return assembly_1, assembly_2
 
 
-def align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile):
+def align_sequences(
+    assembly_1,
+    assembly_2,
+    padding,
+    merge,
+    aligner,
+    outputfile,
+    reference_polishing_round,
+    query_polishing_round,
+):
     section_header("Aligning sequences")
-    longest_label = get_longest_label(assembly_1, assembly_2)
+    longest_label = get_longest_label(
+        assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+    )
     for b, a in zip(assembly_1, assembly_2):
         assembly_1_name, assembly_1_seq = b
         assembly_2_name, assembly_2_seq = a
@@ -179,15 +127,21 @@ def align_sequences(assembly_1, assembly_2, padding, merge, aligner, outputfile)
             longest_label,
             aligner,
             outputfile,
+            reference_polishing_round,
+            query_polishing_round,
         )
 
 
-def get_longest_label(assembly_1, assembly_2):
-    longest_name, longest_seq = 0, 0
+def get_longest_label(
+    assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+):
+    longest_name, longest_seq, longest_round = 0, 0, 0
     for name, seq in assembly_1 + assembly_2:
         longest_name = max(longest_name, len(name))
         longest_seq = max(longest_seq, len(str(len(seq))))
-    return longest_name + 2 * longest_seq + 3
+    longest_round = max(longest_round, len(reference_polishing_round))
+    # add 5 in case
+    return longest_round + 5 + longest_name + 2 * longest_seq + 3
 
 
 def output_differences(
@@ -200,8 +154,12 @@ def output_differences(
     longest_label,
     aligner,
     outputfile,
+    reference_polishing_round,
+    query_polishing_round,
 ):
-    log(f"Aligning {assembly_1_name} to {assembly_2_name}:")
+    log(
+        f"Aligning {reference_polishing_round}:{assembly_1_name} to {query_polishing_round}:{assembly_2_name}:"
+    )
     (
         assembly_1_aligned,
         assembly_2_aligned,
@@ -228,40 +186,51 @@ def output_differences(
     diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
 
     for start, end in diff_ranges:
-        # Convert positions in alignment to positions in unaligned sequences:
-        assembly_1_start, assembly_1_end = assembly_1_pos[start], assembly_1_pos[end]
-        assembly_2_start, assembly_2_end = assembly_2_pos[start], assembly_2_pos[end]
+        try:
+            # Convert positions in alignment to positions in unaligned sequences:
+            assembly_1_start, assembly_1_end = (
+                assembly_1_pos[start],
+                assembly_1_pos[end],
+            )
+            assembly_2_start, assembly_2_end = (
+                assembly_2_pos[start],
+                assembly_2_pos[end],
+            )
 
-        # Sanity check:
-        assert (
-            assembly_1_aligned[start:end].replace("-", "")
-            == assembly_1_seq[assembly_1_start:assembly_1_end]
-        )
-        assert (
-            assembly_2_aligned[start:end].replace("-", "")
-            == assembly_2_seq[assembly_2_start:assembly_2_end]
-        )
+            # Sanity check:
+            assert (
+                assembly_1_aligned[start:end].replace("-", "")
+                == assembly_1_seq[assembly_1_start:assembly_1_end]
+            )
+            assert (
+                assembly_2_aligned[start:end].replace("-", "")
+                == assembly_2_seq[assembly_2_start:assembly_2_end]
+            )
 
-        # Add 1 to starts to convert from 0-based exclusive ranges to 1-based inclusive ranges.
-        assembly_1_label = f"{assembly_1_name} {assembly_1_start+1}-{assembly_1_end}:"
-        assembly_2_label = f"{assembly_2_name} {assembly_2_start+1}-{assembly_2_end}:"
-        assert len(assembly_1_label) <= longest_label
-        assert len(assembly_2_label) <= longest_label
-        assembly_1_label = assembly_1_label.rjust(longest_label)
-        assembly_2_label = assembly_2_label.rjust(longest_label)
+            # Add 1 to starts to convert from 0-based exclusive ranges to 1-based inclusive ranges.
+            assembly_1_label = f"{reference_polishing_round}:{assembly_1_name} {assembly_1_start+1}-{assembly_1_end}:"
+            assembly_2_label = f"{query_polishing_round}:{assembly_2_name} {assembly_2_start+1}-{assembly_2_end}:"
+            assert len(assembly_1_label) <= longest_label
+            assert len(assembly_2_label) <= longest_label
+            assembly_1_label = assembly_1_label.rjust(longest_label)
+            assembly_2_label = assembly_2_label.rjust(longest_label)
 
-        print(f"{assembly_1_label}", assembly_1_aligned[start:end], flush=True)
-        print(f"{assembly_2_label}", assembly_2_aligned[start:end], flush=True)
-        print(" " * longest_label, differences[start:end], flush=True)
-        print(flush=True)
+            print(f"{assembly_1_label}", assembly_1_aligned[start:end], flush=True)
+            print(f"{assembly_2_label}", assembly_2_aligned[start:end], flush=True)
+            print(" " * longest_label, differences[start:end], flush=True)
+            print(flush=True)
 
-        # Open the output file in write mode
-        with open(outputfile, "a") as out:
-            out.write(f"{assembly_1_label} {assembly_1_aligned[start:end]}\n")
-            out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
-            out.write(" " * longest_label + differences[start:end] + "\n")
-            out.write("\n")
-            out.close()
+            # Open the output file in write mode
+            with open(outputfile, "a") as out:
+                out.write(f"{assembly_1_label} {assembly_1_aligned[start:end]}\n")
+                out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
+                out.write(" " * longest_label + differences[start:end] + "\n")
+                out.write("\n")
+                out.close()
+        except IndexError:
+            print(f"Warning: Error writing {assembly_1_label} or {assembly_2_label}")
+            print("This isn't a fatal error, but the difference won't be visualised.")
+            continue
 
     log()
 
@@ -464,159 +433,6 @@ def load_fasta(fasta_filename):
 #     return fasta_seqs
 
 
-class MyParser(argparse.ArgumentParser):
-    """
-    This subclass of ArgumentParser changes the error messages, such that if a command is run with
-    no other arguments, it will display the help text. If there is a different error, it will give
-    the normal response (usage and error).
-    """
-
-    def error(self, message):
-        if len(sys.argv) == 2:  # if a command was given but nothing else
-            self.print_help(file=sys.stderr)
-            sys.exit(2)
-        else:
-            super().error(message)
-
-
-class MyHelpFormatter(argparse.HelpFormatter):
-    """
-    This is a custom formatter class for argparse. It allows for some custom formatting,
-    in particular for the help texts with multiple options (like bridging mode and verbosity level).
-    http://stackoverflow.com/questions/3853722
-    """
-
-    def __init__(self, prog):
-        terminal_width = shutil.get_terminal_size().columns
-        os.environ["COLUMNS"] = str(terminal_width)
-        max_help_position = min(max(24, terminal_width // 3), 40)
-        self.colours = get_colours_from_tput()
-        super().__init__(prog, max_help_position=max_help_position)
-
-    def _get_help_string(self, action):
-        """
-        Override this function to add default values, but only when 'default' is not already in the
-        help text.
-        """
-        help_text = action.help
-        if action.default != argparse.SUPPRESS and action.default is not None:
-            if "default" not in help_text.lower():
-                help_text += " (default: {})".format(action.default)
-            elif "default: DEFAULT" in help_text:
-                help_text = help_text.replace(
-                    "default: DEFAULT", "default: {}".format(action.default)
-                )
-        return help_text
-
-    def start_section(self, heading):
-        """
-        Override this method to add bold underlining to section headers.
-        """
-        if self.colours > 1:
-            heading = BOLD + heading + END_FORMATTING
-        super().start_section(heading)
-
-    def _split_lines(self, text, width):
-        """
-        Override this method to add special behaviour for help texts that start with:
-          'R|' - loop text one option per line
-        """
-        if text.startswith("R|"):
-            text_lines = text[2:].splitlines()
-            wrapped_text_lines = []
-            for line in text_lines:
-                if len(line) <= width:
-                    wrapped_text_lines.append(line)
-                else:
-                    wrap_column = 2
-                    line_parts = line.split(", ")
-                    join = ","
-                    current_line = line_parts[0]
-                    for part in line_parts[1:]:
-                        if len(current_line) + len(join) + 1 + len(part) <= width:
-                            current_line += join + " " + part
-                        else:
-                            wrapped_text_lines.append(current_line + join)
-                            current_line = " " * wrap_column + part
-                    wrapped_text_lines.append(current_line)
-            return wrapped_text_lines
-        else:
-            return argparse.HelpFormatter._split_lines(self, text, width)
-
-    def _fill_text(self, text, width, indent):
-        if text.startswith("R|"):
-            return "".join(indent + line for line in text[2:].splitlines(keepends=True))
-        else:
-            return argparse.HelpFormatter._fill_text(self, text, width, indent)
-
-    def _format_action(self, action):
-        """
-        Override this method to make help descriptions dim.
-        """
-        # determine the required width and the entry label
-        help_position = min(self._action_max_length + 2, self._max_help_position)
-        help_width = self._width - help_position
-        action_width = help_position - self._current_indent - 2
-        action_header = self._format_action_invocation(action)
-
-        # ho nelp; start on same line and add a final newline
-        if not action.help:
-            tup = self._current_indent, "", action_header
-            action_header = "%*s%s\n" % tup
-            indent_first = 0
-
-        # short action name; start on the same line and pad two spaces
-        elif len(action_header) <= action_width:
-            tup = self._current_indent, "", action_width, action_header
-            action_header = "%*s%-*s  " % tup
-            indent_first = 0
-
-        # long action name; start on the next line
-        else:
-            tup = self._current_indent, "", action_header
-            action_header = "%*s%s\n" % tup
-            indent_first = help_position
-
-        # collect the pieces of the action help
-        parts = [action_header]
-
-        # if there was help for the action, add lines of help text
-        if action.help:
-            help_text = self._expand_help(action)
-            help_lines = self._split_lines(help_text, help_width)
-            first_line = help_lines[0]
-            if self.colours > 8:
-                first_line = DIM + first_line + END_FORMATTING
-            parts.append("%*s%s\n" % (indent_first, "", first_line))
-            for line in help_lines[1:]:
-                if self.colours > 8:
-                    line = DIM + line + END_FORMATTING
-                parts.append("%*s%s\n" % (help_position, "", line))
-
-        # or add a newline if the description doesn't end with one
-        elif not action_header.endswith("\n"):
-            parts.append("\n")
-
-        # if there are any sub-actions, add their help as well
-        for subaction in self._iter_indented_subactions(action):
-            parts.append(self._format_action(subaction))
-
-        # return a single string
-        return self._join_parts(parts)
-
-
-def get_colours_from_tput():
-    try:
-        return int(subprocess.check_output(["tput", "colors"]).decode().strip())
-    except (
-        ValueError,
-        subprocess.CalledProcessError,
-        FileNotFoundError,
-        AttributeError,
-    ):
-        return 1
-
-
 def log(message="", end="\n"):
     print(message, file=sys.stderr, flush=True, end=end)
 
@@ -642,14 +458,6 @@ def bold_yellow_underline(text):
 
 def dim(text):
     return DIM + text + END_FORMATTING
-
-
-def explanation(text, indent_size=4):
-    text = " " * indent_size + text
-    terminal_width, _ = get_terminal_size_stderr()
-    for line in textwrap.wrap(text, width=terminal_width - 1):
-        log(dim(line))
-    log()
 
 
 def quit_with_error(text):
@@ -688,7 +496,14 @@ def check_python_version():
 def test_get_longest_label():
     assembly_1 = [("seq1", "ACGT"), ("seq2", "ACGTACGTACGTACGT")]
     assembly_2 = [("seq1_polished", "ACGT"), ("seq2_polished", "ACGT")]
-    assert get_longest_label(assembly_1, assembly_2) == 20
+    reference_polishing_round = "polypolish"
+    query_polishing_round = "pypolca"
+    assert (
+        get_longest_label(
+            assembly_1, assembly_2, reference_polishing_round, query_polishing_round
+        )
+        == 20
+    )
 
 
 def test_get_expanded_cigar():
@@ -741,4 +556,6 @@ run_compare(
     30,
     "mappy",
     snakemake.output.diffs,
+    snakemake.params.reference_polishing_round,
+    snakemake.params.query_polishing_round,
 )

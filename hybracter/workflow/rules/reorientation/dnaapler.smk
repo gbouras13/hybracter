@@ -8,9 +8,6 @@ rule dnaapler:
     Runs dnaapler to begin chromosome with dnaa
     """
     input:
-        diffs=os.path.join(
-            dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
-        ),
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),

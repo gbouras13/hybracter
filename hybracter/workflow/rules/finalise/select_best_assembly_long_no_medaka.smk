@@ -3,24 +3,6 @@ aggregate the pyrdigal mean length cds and finalise
 """
 
 
-def aggregate_finalise(wildcards):
-    # decision based on content of output file
-    # Important: use the method open() of the returned file!
-    # This way, Snakemake is able to automatically download the file if it is generated in
-    # a cloud environment without a shared filesystem.
-    with checkpoints.check_completeness.get(sample=wildcards.sample).output[
-        0
-    ].open() as f:
-        if f.read().strip() == "C":  # complete
-            return os.path.join(
-                dir.out.ale_scores_complete, "{sample}", "pypolca.score"
-            )
-        else:  # incomplete
-            return os.path.join(
-                dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"
-            )
-
-
 ### from the aggregate_finalise function - so it dynamic
 rule aggregate_finalise_complete:
     input:

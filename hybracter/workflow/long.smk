@@ -60,6 +60,7 @@ MIN_LENGTH = config.args.min_length
 MIN_QUALITY = config.args.min_quality
 MEDAKA_MODEL = config.args.medakaModel
 FLYE_MODEL = config.args.flyeModel
+LOGIC = config.args.logic
 
 # Parse the samples and read files
 

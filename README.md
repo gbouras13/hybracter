@@ -102,9 +102,9 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 - G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 - H. The best assembly is selected and and output along with final assembly statistics.
 
-## v0.3.0 Updates 8 November 2023 
+## v0.3.0 Updates 8 November 2023  
 
-**Upgrading and re-running hybracter is recommended.**
+**Upgrading and re-running hybracter is recommended.** 
 
 * Fixes bug relating to polishing. Prior to v0.3.0, hybracter would only polish the chromosome with the entire readset. Benchmarking revealed that if there was significant similarity between chromosome and plasmids, polishing would introduce errors (my bad!)
 * Now the entire assembly (chromosome from Flye + plasmids from Plassembler) is polished in every polishing step with improved results (the full benchmarking methodology and results is forthcoming shortly)
@@ -327,6 +327,8 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>
 * You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
 * You can turn off Medaka polishing using `--no_medaka`
+* You can turn off pypolca polishing using `--no_pypolca`
+* You can force `hybracter` to pick the last polishing round (not the best according to ALE) with `--logic last`. `hybracter` defaults to picking the best (according to ALE) i.e. `--logic best`.
 
 #### `hybracter hybrid-single`
 
@@ -349,6 +351,8 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
 * You can turn off Medaka polishing using `--no_medaka`
+* You can force `hybracter` to pick the last polishing round (not the best according to pyrodigal mean CDS length) with `--logic last`. `hybracter` defaults to picking the best i.e. `--logic best`.
+
 
 #### `hybracter long-single`
 

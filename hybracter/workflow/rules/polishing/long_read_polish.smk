@@ -65,18 +65,22 @@ rule medaka_round_1_extract_intermediate_assembly:
 rule compare_assemblies_medaka_round_1:
     """
     compare chromosome assemblies between medaka and pre-polished chromosome
+    take the one that is dnaaplered in finalise folder so we can compare properly
     """
     input:
-        reference=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
-        assembly=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
+        reference=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
+        assembly=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
     output:
         diffs=os.path.join(
             dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
         ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
+    params:
+        reference_polishing_round="pre_polish",
+        query_polishing_round="medaka_round_1",
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
@@ -179,3 +183,35 @@ rule medaka_round_2_extract_intermediate_assembly:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "extract_chromosome.py")
+
+
+rule compare_assemblies_medaka_round_2:
+    """
+    compare chromosome assemblies between medaka rd 1 (post dnaapler) and rd 2
+    """
+    input:
+        reference=os.path.join(
+            dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
+        ),
+        assembly=os.path.join(
+            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
+        ),
+        diffs=os.path.join(
+            dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
+        ),
+    output:
+        diffs=os.path.join(
+            dir.out.differences, "{sample}", "medaka_round_2_vs_medaka_round_1.txt"
+        ),
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    params:
+        reference_polishing_round="medaka_round_1",
+        query_polishing_round="medaka_round_2",
+    resources:
+        mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "compare_assemblies.py")

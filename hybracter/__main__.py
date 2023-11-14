@@ -113,6 +113,19 @@ def common_options(func):
             default=False,
         ),
         click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="best",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        ),
+        click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
@@ -331,6 +344,7 @@ def hybrid(
     output,
     contaminants,
     dnaapler_custom_db,
+    logic,
     log,
     **kwargs
 ):
@@ -352,6 +366,7 @@ def hybrid(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": False,
+            "logic": logic
         }
     }
 
@@ -428,6 +443,7 @@ def hybrid_single(
     contaminants,
     dnaapler_custom_db,
     no_medaka,
+    logic,
     log,
     **kwargs
 ):
@@ -453,6 +469,7 @@ def hybrid_single(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": True,
+            "logic": logic
         }
     }
 
@@ -491,6 +508,7 @@ def long(
     contaminants,
     dnaapler_custom_db,
     no_medaka,
+    logic,
     log,
     **kwargs
 ):
@@ -511,6 +529,7 @@ def long(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": False,
+            "logic": logic
         }
     }
 
@@ -565,6 +584,7 @@ def long_single(
     dnaapler_custom_db,
     log,
     no_medaka,
+    logic,
     **kwargs
 ):
     """Run hybracter long on 1 isolate"""
@@ -586,6 +606,7 @@ def long_single(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": True,
+            "logic": logic
         }
     }
 
@@ -704,6 +725,7 @@ def test_hybrid(
     no_pypolca,
     contaminants,
     dnaapler_custom_db,
+    logic,
     **kwargs
 ):
     """Test hybracter hybrid"""
@@ -722,6 +744,7 @@ def test_hybrid(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "logic": logic
         }
     }
     run_snakemake(
@@ -756,6 +779,7 @@ def test_long(
     contaminants,
     dnaapler_custom_db,
     no_medaka,
+    logic,
     **kwargs
 ):
     """Test hybracter long"""
@@ -773,6 +797,7 @@ def test_long(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "logic": logic
         }
     }
     run_snakemake(

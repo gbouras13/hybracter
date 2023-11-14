@@ -95,7 +95,7 @@ rule polypolish_extract_intermediate_assembly:
 
 rule compare_assemblies_polypolish_vs_medaka_round_2:
     """
-    compare assemblies 
+    compare chrom assemblies 
     """
     input:
         reference=os.path.join(
@@ -105,7 +105,7 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
         diffs=os.path.join(
-            dir.out.differences, "{sample}", "medaka_round_1_vs_pre_polish.txt"
+            dir.out.differences, "{sample}", "medaka_round_2_vs_medaka_round_1.txt"
         ),
     output:
         diffs=os.path.join(
@@ -113,6 +113,9 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
         ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
+    params:
+        reference_polishing_round="medaka_round_2",
+        query_polishing_round="polypolish",
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
