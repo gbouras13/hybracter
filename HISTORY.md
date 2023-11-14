@@ -1,5 +1,13 @@
 # History
 
+## v0.4.0 (14 November 2023)
+
+* Adds `--logic` parameter. You have 2 choices: `--logic best` (the default) or `--logic last`.
+* `--logic best` will run `hybracter` as normal and the best assembly (by ALE or pyrodigal mean length) will be selected as the final assembly.
+* `--logic last` will force hybracter to pick the last polished round as the final assembly even if it is not the best as per ALE/pyrodigal. So for `hybracter hybrid` this will default to the pypolca polished round. You may wish to use this if you want all your isolates to be consistently assembled.
+* Adds reorientation of pre polished chromosome in case it is selected as the best assembly
+* Adds fixes to the chromosome comparisons - now it is much easier to interpret any changes between conditions.
+
 ## v0.3.0 (8 November 2023)
 
 * Fixes bug relating to polishing. Prior to v0.3.0, hybracter would only polish the chromosome with the entire readset. Benchmarking revealed that if there was significantly similarity between chromosome and plasmids, polishing would introduce errors. Now the entire assembly (chromosome from Flye + plasmids from Plassembler) is polished in every polishing step with improved results. Upgrading and re-running hybracter is recommended.
