@@ -43,6 +43,8 @@ hybracter --help
 
 # Database Installation
 
+**Note: users (and CI) have reported errors where this does not work due to an MD5 file error. This is due to Zenodo having issues (where the database lives). Waiting a few minutes and trying again usuall works.**
+
 To install the hybracter databases (consisting of a plassembler database) use:
 
 ```

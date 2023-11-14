@@ -19,6 +19,7 @@
   - [Quick Start](#quick-start)
   - [Description](#description)
   - [Pipeline](#pipeline)
+  - [v0.4.0 Updates (14 November 2023)](#v040-updates-14-november-2023)
   - [v0.3.0 Updates 8 November 2023](#v030-updates-8-november-2023)
   - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
   - [Documentation](#documentation)
@@ -101,6 +102,15 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 - F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
 - G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 - H. The best assembly is selected and and output along with final assembly statistics.
+
+
+## v0.4.0 Updates (14 November 2023)
+
+* Adds `--logic` parameter. You have 2 choices: `--logic best` (the default) or `--logic last`.
+* `--logic best` will run `hybracter` as normal and the best assembly (by ALE or pyrodigal mean length) will be selected as the final assembly.
+* `--logic last` will force hybracter to pick the last polished round as the final assembly even if it is not the best as per ALE/pyrodigal. So for `hybracter hybrid` this will default to the pypolca polished round. You may wish to use this if you want all your isolates to be consistently assembled.
+* Adds reorientation of pre polished chromosome in case it is selected as the best assembly
+* Adds fixes to the chromosome comparisons - now it is much easier to interpret any changes between conditions.
 
 ## v0.3.0 Updates 8 November 2023  
 
