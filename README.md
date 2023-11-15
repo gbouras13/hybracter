@@ -45,6 +45,7 @@
   - [Outputs](#outputs)
     - [Main Output Files](#main-output-files)
   - [Snakemake Profiles](#snakemake-profiles)
+  - [Advanced Configuration](#advanced-configuration)
   - [Version Log](#version-log)
   - [System](#system)
   - [Bugs and Suggestions](#bugs-and-suggestions)
@@ -409,10 +410,13 @@ All samples that are denoted by hybracter to be incomplete will have 3 outputs i
 
 I would highly highly recommend running hybracter using a Snakemake profile. Please see this blog [post](https://fame.flinders.edu.au/blog/2021/08/02/snakemake-profiles-updated) for more details. I have included an example slurm profile in the profile directory, but check out this [link](https://github.com/Snakemake-Profiles) for more detail on other HPC job scheduler profiles.
 
-
 ```
 hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
 ```
+
+## Advanced Configuration
+
+Thanks to its Snakemake backend, you can modify resource requirements for each job contained within `hybracter` using the configuration file. A defauly can be created using the `hybracter config` command. This can make it even more efficient in server environment, as many jobs can be more efficiently parallelised than the default settings. For more information, please see the [documentation](https://hybracter.readthedocs.io/en/latest/advanced/) 
 
 ## Version Log
 
