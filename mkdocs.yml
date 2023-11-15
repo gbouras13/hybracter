@@ -18,7 +18,7 @@ nav:
       - Install: install.md
       - Commands and Input: input.md
       - Usage: run.md
-      - Advanced Usage and Configuration: advanced.md
+      - Advanced Configuration: configuration.md
       - Snakemake Profiles: profiles.md
     - OUTPUT:
       - Output: output.md
