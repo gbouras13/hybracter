@@ -22,5 +22,5 @@ nav:
       - Snakemake Profiles: profiles.md
     - OUTPUT:
       - Output: output.md
-    # - BENCHMARKING:
-    #   # - Benchmarking: benchmarking.md
+    - BENCHMARKING:
+      - Benchmarking: benchmarking.md

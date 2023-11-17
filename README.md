@@ -19,6 +19,7 @@
   - [Quick Start](#quick-start)
   - [Description](#description)
   - [Pipeline](#pipeline)
+  - [Benchmarking](#benchmarking)
   - [v0.4.0 Updates (14 November 2023)](#v040-updates-14-november-2023)
   - [v0.3.0 Updates 8 November 2023](#v030-updates-8-november-2023)
   - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
@@ -103,6 +104,20 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 - F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
 - G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
 - H. The best assembly is selected and and output along with final assembly statistics.
+
+## Benchmarking
+
+`Hybracter` was benchmarked in both hybrid and long modes (specifically using the `hybrid-single` and `long-single` commands) against [Unicycler](https://github.com/rrwick/Unicycler) v0.5.0 and [Dragonflye](https://github.com/rpetit3/dragonflye) v1.1.2.
+
+20 samples from 4 studies with available reference genomes were benchmarked. You can see the full explanation and results [here](https://hybracter.readthedocs.io/en/latest/benchmarking/).
+
+To summarise the conclusions:
+
+`Hybracter hybrid` was superior to Unicycler in terms of accuracy, time taken and (slighly) in terms of plasmid recovery. It should be preferred to Unicycler.
+* You should use `hybracter long` if you care about plasmids and have only long reads. It performs similarly to hybrid methods and its inclusion of [Plassembler](https://github.com/gbouras13/plassembler) largely seems to solve the [problem of long read assemblers recovering small plasmids](https://doi.org/10.1099/mgen.0.001024).
+* `Hybracter` in both modes is inferior to Dragonflye in terms of time though better in terms of chromosome accuracy. 
+* If you want the fastest possible chromosome assemblies for applications like species ID or sequence typing that retain a high level of accuracy, Dragonflye is a good option.
+* Dragonflye should not be used if you care about recovering plasmids.
 
 ## v0.4.0 Updates (14 November 2023)
 
