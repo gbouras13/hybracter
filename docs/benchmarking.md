@@ -37,51 +37,11 @@ To compare the performance of Hybracter, we compared wall-clock runtime consumpt
 
 | **Tool**              | **Type** | **8 Threads**                                                           | **16 Threads**                                                          |
 | --------------------- | -------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **Hybracter hybrid**  | Hybrid   | Median **\=** 00h:54m:23s
-
-Minimum = 00h:14m:22s
-
-Maximum = 02h:01m:37s | Median = 00h:40m:19s
-
-Minimum = 00h:12m:43s
-
-Maximum = 01h:21m:05s      |
-| **Dragonflye hybrid** | Hybrid   | Median = 00h:10m:55s
-
-Minimum = 00h:04m:02s
-
-Maximum = 00h:13m:34s      | Median = 00h:07m:21s
-
-Minimum = 00h:03m:33s
-
-Maximum = 00h:09m:28s      |
-| **Unicycler**         | Hybrid   | Median = 02h:03m:02s
-
-Minimum =  00h:39m:09s
-
-Maximum = 02h:48m:16s     | Median = 01h:06m:8s
-
-Minimum = 00h:21m:38s
-
-Maximum = 01h:30m:38s       |
-| **Hybracter long**    | Long     | Median **\=** 00h:45m:29s
-
-Minimum = 00h:10m:52s
-
-Maximum = 01h:23m:49s | Median **\=** 00h:34m:56s
-
-Minimum = 00h:09m:49s
-
-Maximum = 00h:59m:21s |
-| **Dragonflye long**   | Long     | Median = 00h:09m:24s
-
-Minimum = 00h:03m:52s
-
-Maximum = 00h:13m:32s      | Median **\=** 00h:07m:00s
-
-Minimum = 00h:03m:22s
-
-Maximum = 00h:08m:56s |
+| **Hybracter hybrid**  | Hybrid   | Median = 00h:54m:23s Min = 00h:14m:22s Max = 02h:01m:37s | Median = 00h:40m:19s Min = 00h:12m:43s Max = 01h:21m:05s      |
+| **Dragonflye hybrid** | Hybrid   | Median = 00h:10m:55s Min = 00h:04m:02s Max = 00h:13m:34s      | Median = 00h:07m:21s Min = 00h:03m:33s Max = 00h:09m:28s      |
+| **Unicycler**         | Hybrid   | Median = 02h:03m:02s Min =  00h:39m:09s Max = 02h:48m:16s     | Median = 01h:06m:8s Min = 00h:21m:38s Max = 01h:30m:38s       |
+| **Hybracter long**    | Long     | Median = 00h:45m:29s Min = 00h:10m:52s Max = 01h:23m:49s | Median = 00h:34m:56s Min = 00h:09m:49s Max = 00h:59m:21s |
+| **Dragonflye long**   | Long     | Median = 00h:09m:24s Min = 00h:03m:52s Max = 00h:13m:32s      | Median = 00h:07m:00s Min = 00h:03m:22s Max = 00h:08m:56s |
 
 ## Chromosome Accuracy Results
 
@@ -91,101 +51,11 @@ The summary results are presented below:
 
 | **Tool**              | **Type** | **Small Indels per 100kbp**                         | **SNVs per 100kbp**                                 | **Small Indels + SNVs per 100kbp**               | **Large Indels**                                           |
 | --------------------- | -------- | --------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------ | ---------------------------------------------------------- |
-| **Hybracter hybrid**  | Hybrid   | Median **\= 0.05**
-
-Minimum = 0
-
-Maximum = 12.34    | Median = 0.16 
-
-Minimum = 0 
-
-Maximum = 3.52        | Median = 0.**24**
-
-Minimum = 0 
-
-Maximum = 15.79 | Total = **59**
-
-Median = **0**
-
-Minimum = 0 
-
-Maximum = 26 |
-| **Dragonflye hybrid** | Hybrid   | Median = 0.49
-
-Minimum = 0
-
-Maximum = 11.56         | Median = **0.03** 
-
-Minimum = 0 
-
-Maximum = 2.21    | Median = 0.74
-
-Minimum = 0 
-
-Maximum = 13.41     | Total = 91
-
-Median = 1.5 
-
-Minimum = 1 
-
-Maximum = 29      |
-| **Unicycler**         | Hybrid   | Median = **0.28**
-
-Minimum = 0 
-
-Maximum = 9.5      | Median = 1.25
-
-Minimum = 0.25
-
-Maximum = 4.13       | Median = 1.49
-
-Minimum = 0.43
-
-Maximum = 13.62   | Total = 134
-
-Median = 2.5 
-
-Minimum = 0 
-
-Maximum = 41     |
-| **Hybracter long**    | Long     | Median **\= 0.49**
-
-Minimum = 0.06
-
-Maximum = 24.82 | Median **\=** 1.07
-
-Minimum = 0.07
-
-Maximum = 10.46 | Median = 2.08
-
-Minimum = 0.37
-
-Maximum = 35.29   | Total = 66
-
-Median = 1 
-
-Minimum = 0 
-
-Maximum = 27        |
-| **Dragonflye long**   | Long     | Median = 3.01
-
-Minimum = 1.61
-
-Maximum = 43.8       | Median **\= 0.99**
-
-Minimum = 0.33
-
-Maximum = 10.86 | Median = 3.81
-
-Minimum = 2.01
-
-Maximum = 53.1    | Total = **92**
-
-Median = 2 
-
-Minimum = 1 
-
-Maximum = 30    |
+| **Hybracter hybrid**  | Hybrid   | Median = 0.05 Min = 0 Max = 12.34    | Median = 0.16 Min = 0 Max = 3.52        | Median = 0.24 Min = 0 Max = 15.79 | Total = 59 Median = 0 Min = 0 Max = 26 |
+| **Dragonflye hybrid** | Hybrid   | Median = 0.49 Min = 0 Max = 11.56   | Median = 0.03  Min = 0  Max = 2.21    | Median = 0.74  Min = 0  Max = 13.41     | Total = 91 Median = 1.5 Min = 1  Max = 29      |
+| **Unicycler**         | Hybrid   | Median = 0.28 Min = 0  Max = 9.5      | Median = 1.25 Min = 0.25 Max = 4.13       | Median = 1.49 Min = 0.43 Max = 13.62   | Total = 134 Median = 2.5  Min = 0  Max = 41     |
+| **Hybracter long**    | Long     | Median = 0.49 Min = 0.06 Max = 24.82 | Median = 1.07 Min = 0.07 Max = 10.46 | Median = 2.08 Min = 0.37 Max = 35.29   | Total = 66 Median = 1  Min = 0  Max = 27        |
+| **Dragonflye long**   | Long     | Median = 3.01 Min = 1.61 Max = 43.8       | Median = 0.99 Min = 0.33 Max = 10.86 | Median = 3.81 Min = 2.01 Max = 53.1    | Total = 92 Median = 2 Min = 1 Max = 30    |
 
 
 ## Plasmid Recovery Results
@@ -211,7 +81,7 @@ The summary results are presented below:
 
 The plasmids assemblies for all samples were complete and circularised, and were compared against the reference with [Dnadiff](https://github.com/marbl/MUMmer3/blob/master/docs/dnadiff.README) v1.3. Small (<60bp) insertions and deletions (indels), small nucleotide variants (SNVs) and large (>60bps) were compared. SNVs and small indels were normalised per 100kbp of reference sequence.
 
-| Tool              | Type   | Minimum SNVs per 100kbp | Median SNVs per 100kbp | Maximum SNVs per 100kbp | Minimum Small Indels per 100kbp | Median Small Indels per 100kbp | Maximum Small Indels per 100kbp | Minimum SNVs + Small Indels per 100kbp | Median SNVs + Small Indels per 100kbp | Maximum SNVs + Small Indels per 100kbp | Minimum  Large Indels | Median  Large Indels | Maximum  Large Indels | Total Large Indels |
+| Tool              | Type   | Min SNVs per 100kbp | Median SNVs per 100kbp | Max SNVs per 100kbp | Min Small Indels per 100kbp | Median Small Indels per 100kbp | Max Small Indels per 100kbp | Min SNVs + Small Indels per 100kbp | Median SNVs + Small Indels per 100kbp | Max SNVs + Small Indels per 100kbp | Min  Large Indels | Median  Large Indels | Max  Large Indels | Total Large Indels |
 | ----------------- | ------ | ----------------------- | ---------------------- | ----------------------- | ------------------------------- | ------------------------------ | ------------------------------- | -------------------------------------- | ------------------------------------- | -------------------------------------- | --------------------- | -------------------- | --------------------- | ------------------ |
 | dragonflye_hybrid | hybrid | 0                       | 0                      | 9                       | 0                               | 0                              | 21.82                           | 0                                      | 0                                     | 21.82                                  | 1                     | 7.5                  | 16                    | 129                |
 | dragonflye_long   | long   | 0                       | 1.38                   | 12.86                   | 1.3                             | 7.65                           | 33.77                           | 2.6                                    | 9.215                                 | 33.77                                  | 2                     | 6.5                  | 16                    | 123                |
