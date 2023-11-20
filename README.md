@@ -109,7 +109,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 
 `Hybracter` was benchmarked in both hybrid and long modes (specifically using the `hybrid-single` and `long-single` commands) against [Unicycler](https://github.com/rrwick/Unicycler) v0.5.0 and [Dragonflye](https://github.com/rpetit3/dragonflye) v1.1.2.
 
-20 samples from 4 studies with available reference genomes were benchmarked. You can see the full explanation and results [here](https://hybracter.readthedocs.io/en/latest/benchmarking/).
+20 samples from 4 studies with available reference genomes were benchmarked. You can see the full explanation and results [here](https://hybracter.readthedocs.io/en/latest/benchmarking/). You can find all the output [here](https://doi.org/10.5281/zenodo.10158013).
 
 To summarise the conclusions:
 

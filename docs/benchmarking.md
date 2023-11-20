@@ -16,11 +16,11 @@
 
 ## Sample Selection
 
-For the full details on how `hybracter` was benchmarked, please see the [repository](https://github.com/gbouras13/hybracter_benchmarking).
+For the full details on how `hybracter` was benchmarked, please see the [repository](https://github.com/gbouras13/hybracter_benchmarking). You can find all the benchmarking output and FASTQ files used [here](https://doi.org/10.5281/zenodo.10158013).
 
 `Hybracter` was benchmarked in both hybrid and long modes (specifically using the `hybrid-single` and `long-single` commands) against [Unicycler](https://github.com/rrwick/Unicycler) v0.5.0 and [Dragonflye](https://github.com/rpetit3/dragonflye) v1.1.2.
 
-For Dragonflye, both 'long' (default assembly with Flye,, default polishing with Racon) and 'hybrid' (default assembly with Flye, default polishing with Racon followed by Polypolish ) were tested.
+For Dragonflye, both 'long' (default assembly with Flye, default polishing with Racon) and 'hybrid' (default assembly with Flye, default polishing with Racon followed by Polypolish ) were tested.
 
 `Hybracter` was benchmarked on a panel of 20 isolates form 4 studies with accompanying reference genomes.
 
