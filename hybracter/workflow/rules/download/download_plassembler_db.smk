@@ -7,8 +7,8 @@ rule download_db:
     conda:
         os.path.join(dir.env, "plassembler.yaml")
     output:
-        mash=os.path.join(dir.plassemblerdb, "plsdb.msh"),
-        tsv=os.path.join(dir.plassemblerdb, "plsdb.tsv"),
+        mash=os.path.join(dir.plassemblerdb, "plsdb_2023_11_03_v2.msh"),
+        tsv=os.path.join(dir.plassemblerdb, "plsdb_2023_11_03_v2.tsv"),
         flag=os.path.join(dir.plassemblerdb, "cleanup.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
