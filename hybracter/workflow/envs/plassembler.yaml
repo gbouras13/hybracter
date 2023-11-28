@@ -4,8 +4,9 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - plassembler >=1.4.1
+    - plassembler >=1.5.0
     - canu ==2.2
+    - mash >=2.2
     - pip:
         - git+https://github.com/rrwick/Unicycler.git
 

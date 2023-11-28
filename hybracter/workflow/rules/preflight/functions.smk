@@ -77,7 +77,7 @@ def check_db(database_dir):
     returns nothing (will sys.exit if it fails)
     """
 
-    db_files = ["plsdb.msh", "plsdb.tsv"]
+    db_files = ["plsdb_2023_11_03_v2.msh", "plsdb_2023_11_03_v2.tsv"]
 
     # Check for Database files
     dbFail = False

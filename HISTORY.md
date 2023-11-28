@@ -1,5 +1,10 @@
 # History
 
+## v0.4.1 (28 November 2023)
+
+* Updates code to work with updated version of Plassembler v1.5.0
+* Thanks @[npbhavya](https://github.com/npbhavya) for finding this.
+
 ## v0.4.0 (14 November 2023)
 
 * Adds `--logic` parameter. You have 2 choices: `--logic best` (the default) or `--logic last`.

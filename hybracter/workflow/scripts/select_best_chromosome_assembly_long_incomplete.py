@@ -23,22 +23,31 @@ def calculate_mean_CDS_length(filepath_in):
 
     # train pyrodigal
     orf_finder = pyrodigal.GeneFinder(meta=prodigal_metamode)
-    trainings_info = orf_finder.train(*seqs, translation_table=int(coding_table))
-    orf_finder = pyrodigal.GeneFinder(trainings_info, meta=prodigal_metamode)
 
-    # run pyrodigal
+    too_short = False
 
-    total_genes = 0
-    total_length = 0
+    try:
+        trainings_info = orf_finder.train(*seqs, translation_table=int(coding_table))
+    except ValueError:
+        # less than 20000bp - prodigal train will break
+        too_short = True
+        print("The assembly is less than 20000bp. Please get some more sequencing :)") 
+        mean_cds_len = 0.00
 
-    for i, record in enumerate(SeqIO.parse(filepath_in, "fasta")):
-        genes = orf_finder.find_genes(str(record.seq))
-        for gene in genes:
-            total_genes += 1
-            total_length += len(gene.sequence())  # add the length of the gene called
+    if too_short is False:
+        orf_finder = pyrodigal.GeneFinder(trainings_info, meta=prodigal_metamode)
+        # run pyrodigal
+        total_genes = 0
+        total_length = 0
+        for i, record in enumerate(SeqIO.parse(filepath_in, "fasta")):
+            genes = orf_finder.find_genes(str(record.seq))
+            for gene in genes:
+                total_genes += 1
+                total_length += len(gene.sequence())  # add the length of the gene called
 
-    mean_cds_len = float(total_length / total_genes)
-    mean_cds_len = float("{:.2f}".format(mean_cds_len))
+        mean_cds_len = float(total_length / total_genes)
+        mean_cds_len = float("{:.2f}".format(mean_cds_len))
+
 
     return mean_cds_len
 
