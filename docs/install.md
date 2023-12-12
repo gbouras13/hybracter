@@ -63,7 +63,7 @@ One benefit of writing `hybracter` in Snakemake is that it is easy to avoid depe
 
 The containerised environments will automatically be created as required when you run hybracter for the first time. This means the first time you run hybracter, it will take a while as all required enviornments are installed.
 
-For users who will be running `hybracter` offline e.g. on a cluster, this means you should probably run a small test datasets like `hybracter hybrid-test` and `hybracter long-test` where internet is available online (such as on the head node) to ensure all required environments are installed. I am one of these people :)
+For users who will be running `hybracter` offline e.g. on a cluster, this means you should probably run a small test datasets like `hybracter test-hybrid` and `hybracter test-long` where internet is available online (such as on the head node) to ensure all required environments are installed. I am one of these people :)
 
 Finally, but default `hybracter` will use mamba to install your environments. If for some reason you must use conda not mamba, use `--conda-frontend conda` with your hybracter command to force `hybracter` to use conda. 
 
@@ -74,13 +74,13 @@ Once you have installed `hybracter` and run `hybracter install`, it is recommend
 For example you can run
 
 ```
-hybracter hybrid-test --threads 8
+hybracter test-hybrid --threads 8
 ```
 
 and for long (same for Linux and MacOS)
 
 ```
-hybracter long-test --threads 1
+hybracter test-long --threads 1
 ```
 
 # Beginner Conda and Mamba Installation
