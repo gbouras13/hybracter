@@ -57,10 +57,8 @@ Commands:
   config         Copy the system default config file
   citation       Print the citation(s) for hybracter
   version        Print the version for hybracter
-(hybracter) a1667917@LY0TWV6HTW2 hybracter % hybracter hybrid -h
 
-hybracter version 0.2.0
-
+hybracter version 0.4.1
 
  _           _                    _            
 | |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
@@ -69,16 +67,15 @@ hybracter version 0.2.0
 |_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
        |___/
 
-
 Usage: hybracter hybrid [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter with hybrid long and paired end short reads
 
 Options:
   -i, --input TEXT                Input csv  [required]
-  --no_polca                      Do not use pypolca to polish assemblies with
+  --no_pypolca                    Do not use pypolca to polish assemblies with
                                   short reads
-  -o, --output PATH               Output directory  [default: hybracter.out]
+  -o, --output PATH               Output directory  [default: hybracter_out]
   --configfile TEXT               Custom config file [default:
                                   (outputDir)/config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
@@ -114,6 +111,8 @@ Options:
                                   --nolock, --show-failed-logs, --conda-
                                   frontend mamba]
   -h, --help                      Show this message and exit.
+
+
 ```
 
 ## `hybracter hybrid-single`
@@ -127,6 +126,7 @@ hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 sho
 The other arguments are the same as `hybracter hybrid`
 
 ```
+
 Usage: hybracter hybrid-single [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter hybrid on 1 isolate
@@ -140,9 +140,9 @@ Options:
   -s, --sample TEXT               Sample name.  [default: sample]
   -c, --chromosome INTEGER        Approximate lower-bound chromosome length
                                   (in base pairs).  [default: 1000000]
-  --no_polca                      Do not use pypolca to polish assemblies with
+  --no_pypolca                    Do not use pypolca to polish assemblies with
                                   short reads
-  -o, --output PATH               Output directory  [default: hybracter.out]
+  -o, --output PATH               Output directory  [default: hybracter_out]
   --configfile TEXT               Custom config file [default:
                                   (outputDir)/config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
@@ -205,7 +205,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 ```
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
 
-  Run hybracter long
+  Run hybracter with only long reads
 
 Options:
   -i, --input TEXT                Input csv  [required]
@@ -245,6 +245,7 @@ Options:
                                   --nolock, --show-failed-logs, --conda-
                                   frontend mamba]
   -h, --help                      Show this message and exit.
+
 ```
 
 ## `hybracter long-single`
@@ -266,7 +267,7 @@ Options:
   -s, --sample TEXT               Sample name.  [default: sample]
   -c, --chromosome INTEGER        FApproximate lower-bound chromosome length
                                   (in base pairs).  [default: 1000000]
-  -o, --output PATH               Output directory  [default: hybracter.out]
+  -o, --output PATH               Output directory  [default: hybracter_out]
   --configfile TEXT               Custom config file [default:
                                   (outputDir)/config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
