@@ -8,8 +8,8 @@
 * `hybracter long`: Assemble multiple genomes from isolates that have long-reads only.
 * `hybracter long-single`: Assembles a single genome from an isolate with long-reads only.
 * `hybracter install`: Downloads and installs the required `plassembler` database.
-* `hybracter hybrid-test`: Runs `hybracter hybrid` on a small test dataset.
-* `hybracter long-test`: Runs `hybracter long` on a small test dataset.
+* `hybracter test-hybrid `: Runs `hybracter hybrid` on a small test dataset.
+* `hybracter test-long`: Runs `hybracter long` on a small test dataset.
 
 ```
 hybracter -h 

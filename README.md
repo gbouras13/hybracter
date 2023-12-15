@@ -8,13 +8,13 @@
 [![PyPI version](https://badge.fury.io/py/hybracter.svg)](https://badge.fury.io/py/hybracter)
 [![Downloads](https://static.pepy.tech/badge/hybracter)](https://pepy.tech/project/hybracter)
 
-# `hybracter`
+# Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies
 
-`hybracter` is an automated long-read first bacterial genome assembly pipeline implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool).
+`hybracter` is an automated long-read first bacterial genome assembly tool implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool).
 
 ## Table of Contents
 
-- [`hybracter`](#hybracter)
+- [Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies](#hybracter-enabling-scalable-automated-complete-and-accurate-bacterial-genome-assemblies)
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
   - [Description](#description)
@@ -72,11 +72,11 @@ Mamba is **highly highly** recommend. Please see the [documentation](https://hyb
 
 When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
 
-If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter hybrid-test` and/or `hybracter long-test` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes. If your computer/node has internet access, please skip this step.
+If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter test-hybrid` and/or `hybracter test-long` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes. If your computer/node has internet access, please skip this step.
 
 ```
-hybracter hybrid-test --threads 8
-hybracter long-test --threads 8
+hybracter test-hybrid --threads 8
+hybracter test-long --threads 8
 ```
 
 ## Description
@@ -326,11 +326,11 @@ hybracter install -d  <databases directory>
 
 When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
 
-If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter hybrid-test` and/or `hybracter long-test` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes.
+If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter  test-hybrid ` and/or `hybracter test-long` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes.
 
 ```
-hybracter hybrid-test
-hybracter long-test
+hybracter test-hybrid 
+hybracter test-long
 hybracter --help
 ```
 
@@ -447,7 +447,10 @@ If you come across bugs with `hybracter`, or would like to make any suggestions 
 
 # Citation
 
-Please consider also citing these dependencies (especially my own tools Plassembler and Dnaapler :) ):
+If you use Hybracter, please cite the preprint along with core dependencies (they are also our tools!):
+
+Hybracter Preprint
+* George Bouras, Ghais Houtak, Ryan R Wick, Vijini Mallawaarachchi, Michael J. Roach, Bhavya Papudeshi, Louise M Judd, Anna E Sheppard, Robert A Edwards, Sarah Vreugde - Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies. bioRxiv doi: https://doi.org/10.1101/2023.12.12.571215
 
 Plassembler:
 * Bouras G., Sheppard A.E., Mallawaarachchi V., Vreugde S., Plassembler: an automated bacterial plasmid assembly tool, Bioinformatics, Volume 39, Issue 7, July 2023, btad409, https://doi.org/10.1093/bioinformatics/btad409. 
@@ -455,11 +458,16 @@ Plassembler:
 Dnaapler:
 * Bouras, G., Grigson., S., Papudeshi., B., Mallawaarachchi V., Roach, M. J. (2023) Dnaapler: A tool to reorient circular microbial genomes https://github.com/gbouras13/dnaapler.
 
-Snaketool:
-* Roach MJ, Pierce-Ward NT, Suchecki R, Mallawaarachchi V, Papudeshi B, Handley SA, et al. (2022) Ten simple rules and a template for creating workflows-as-applications. PLoS Comput Biol 18(12): e1010705. https://doi.org/10.1371/journal.pcbi.1010705
-
 Ryan Wick et al's Assembling the perfect bacterial genome paper, which provided the intellectual framework for hybracter:
 * Wick RR, Judd LM, Holt KE (2023) Assembling the perfect bacterial genome using Oxford Nanopore and Illumina sequencing. PLoS Comput Biol 19(3): e1010905. https://doi.org/10.1371/journal.pcbi.1010905
+
+I would also recommend citing Hybracter's other dependencies if you can where they are used:
+
+Flye:
+* Kolmogorov, M., Yuan, J., Lin, Y. et al. Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol 37, 540–546 (2019). https://doi.org/10.1038/s41587-019-0072-8
+
+Snaketool:
+* Roach MJ, Pierce-Ward NT, Suchecki R, Mallawaarachchi V, Papudeshi B, Handley SA, et al. (2022) Ten simple rules and a template for creating workflows-as-applications. PLoS Comput Biol 18(12): e1010705. https://doi.org/10.1371/journal.pcbi.1010705
 
 Trimnami:
 * Roach MJ. (2023) Trimnami. https://github.com/beardymcjohnface/Trimnami.
@@ -473,9 +481,6 @@ Porechop and Porechop_abi:
 
 fastp:
 * Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu, fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, September 2018, Pages i884–i890, https://doi.org/10.1093/bioinformatics/bty560. 
-
-Flye:
-* Kolmogorov, M., Yuan, J., Lin, Y. et al. Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol 37, 540–546 (2019). https://doi.org/10.1038/s41587-019-0072-8
 
 ALE:
 * Scott C. Clark, Rob Egan, Peter I. Frazier, Zhong Wang, ALE: a generic assembly likelihood evaluation framework for assessing the accuracy of genome and metagenome assemblies, Bioinformatics, Volume 29, Issue 4, February 2013, Pages 435–443, https://doi.org/10.1093/bioinformatics/bts723
