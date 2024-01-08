@@ -7,7 +7,7 @@ You will need conda and **highly recommended** mamba to run `hybracter`, because
 `hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
 
 ```
-mamba create -n hybracterENV hybracter
+mamba create -n hybracterENV  -c bioconda -c conda-forge  hybracter
 conda activate hybracterENV
 hybracter --help
 hybracter install

@@ -61,7 +61,7 @@ MIN_QUALITY = config.args.min_quality
 MEDAKA_MODEL = config.args.medakaModel
 FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
-
+SUBSAMPLE_DEPTH = config.args.subsample_depth
 
 # Parse the samples and read files
 
@@ -75,6 +75,7 @@ else:
     dictReads[config.args.sample] = {}
     dictReads[config.args.sample]["LR"] = config.args.longreads
     dictReads[config.args.sample]["MinChromLength"] = config.args.chromosome
+    dictReads[config.args.sample]["TargetBases"] = SUBSAMPLE_DEPTH * config.args.chromosome
     dictReads[config.args.sample]["R1"] = config.args.short_one
     dictReads[config.args.sample]["R2"] = config.args.short_two
     SAMPLES = [config.args.sample]

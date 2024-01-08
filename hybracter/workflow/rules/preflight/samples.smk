@@ -10,7 +10,7 @@ long
 """
 
 
-def samplesFromCsvLong(csvFile):
+def samplesFromCsvLong(csvFile, subsample_depth):
     """
     Read samples and files from a CSV Long Read Only
     3 cols
@@ -27,6 +27,7 @@ def samplesFromCsvLong(csvFile):
                 if os.path.isfile(l[1]) and l[2].isnumeric():
                     outDict[l[0]]["LR"] = l[1]
                     outDict[l[0]]["MinChromLength"] = l[2]
+                    outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
                 else:
                     sys.stderr.write(
                         "\n"
@@ -53,7 +54,7 @@ short
 """
 
 
-def samplesFromCsvShort(csvFile):
+def samplesFromCsvShort(csvFile, subsample_depth):
     """
     Read samples and files from a CSV Hybrid
     5 cols
@@ -79,6 +80,7 @@ def samplesFromCsvShort(csvFile):
                     outDict[l[0]]["MinChromLength"] = l[2]
                     outDict[l[0]]["R1"] = l[3]
                     outDict[l[0]]["R2"] = l[4]
+                    outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
                 else:
                     sys.stderr.write(
                         "\n"
@@ -103,11 +105,11 @@ def samplesFromCsvShort(csvFile):
     return outDict
 
 
-def parseSamples(csvfile, long_flag):
+def parseSamples(csvfile, long_flag, subsample_depth):
     if os.path.isfile(csvfile) and long_flag is True:
-        sampleDict = samplesFromCsvLong(csvfile)
+        sampleDict = samplesFromCsvLong(csvfile, subsample_depth)
     elif os.path.isfile(csvfile) and long_flag is False:
-        sampleDict = samplesFromCsvShort(csvfile)
+        sampleDict = samplesFromCsvShort(csvfile, subsample_depth)
     else:
         sys.stderr.write(
             "\n"

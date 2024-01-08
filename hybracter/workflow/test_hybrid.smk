@@ -61,12 +61,8 @@ MIN_QUALITY = config.args.min_quality
 MEDAKA_MODEL = config.args.medakaModel
 FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
+SUBSAMPLE_DEPTH = config.args.subsample_depth
 
-# Parse the samples and read files
-# dictReads = parseSamples(INPUT, True)  # long flag true
-# SAMPLES = list(dictReads.keys())
-# wildcard_constraints:
-#     sample="|".join([re.escape(x) for x in SAMPLES]),
 
 # instead of parsing the samples with INPUT, just make the dictionary from scratch
 
@@ -74,12 +70,14 @@ dictReads = {}
 dictReads["Sample1"] = {}
 dictReads["Sample1"]["LR"] = os.path.join(dir.test_fastqs, "test_long_reads.fastq.gz")
 dictReads["Sample1"]["MinChromLength"] = 50000
+dictReads["Sample1"]["TargetBases"] = SUBSAMPLE_DEPTH * 50000
 dictReads["Sample1"]["R1"] = os.path.join(dir.test_fastqs, "test_short_reads_R1.fastq.gz")
 dictReads["Sample1"]["R2"] = os.path.join(dir.test_fastqs, "test_short_reads_R2.fastq.gz")
 
 dictReads["Sample2"] = {}
 dictReads["Sample2"]["LR"] = os.path.join(dir.test_fastqs, "test_long_reads.fastq.gz")
 dictReads["Sample2"]["MinChromLength"] = 100000
+dictReads["Sample2"]["TargetBases"] = SUBSAMPLE_DEPTH * 100000
 dictReads["Sample2"]["R1"] = os.path.join(dir.test_fastqs, "test_short_reads_R1.fastq.gz")
 dictReads["Sample2"]["R2"] = os.path.join(dir.test_fastqs, "test_short_reads_R2.fastq.gz")
 
