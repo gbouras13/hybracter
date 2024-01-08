@@ -1,5 +1,10 @@
 # History
 
+## v0.5.0 (08 January 2024)
+
+* Adds subsampling using `--subsample_depth` using Filtlong, based on some benchmarking of Dorado v0.5.0. Defaults to 100x of the estimated chromosome size `-c`.
+* Adds stricter criteria for complete assemblies (aka ensures that identified chromosomes must be circularised according to Flye). Thanks to Matthew Croxen for pointing this out.
+
 ## v0.4.1 (28 November 2023)
 
 * Updates code to work with updated version of Plassembler v1.5.0

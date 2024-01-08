@@ -18,7 +18,7 @@ rule filtlong:
     params:
         qual=config.args.min_quality,
         length=config.args.min_length,
-        target_bases=getTargetBases
+        target_bases=getTargetBases,
     benchmark:
         os.path.join(dir.out.bench, "filtlong", "{sample}.txt")
     log:

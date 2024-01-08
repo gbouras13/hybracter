@@ -67,7 +67,7 @@ SUBSAMPLE_DEPTH = config.args.subsample_depth
 
 # for hybracter hybrid
 if config.args.single is False:
-    dictReads = parseSamples(INPUT, False)  # long flag false
+    dictReads = parseSamples(INPUT, False, SUBSAMPLE_DEPTH)  # long flag false
     SAMPLES = list(dictReads.keys())
 # for hybracter hybrid-single
 else:

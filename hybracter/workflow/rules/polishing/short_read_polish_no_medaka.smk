@@ -96,12 +96,14 @@ rule polypolish_extract_intermediate_assembly:
     input:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt")
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
     params:
         min_chrom_length=getMinChromLength,
+        polypolish_flag=True
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
