@@ -10,7 +10,7 @@
 
 # Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies
 
-`hybracter` is an automated long-read first bacterial genome assembly tool implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool).
+`hybracter` is an automated long-read first bacterial genome assembly tool implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool). 
 
 ## Table of Contents
 
