@@ -45,12 +45,14 @@ rule medaka_round_1_extract_intermediate_assembly:
     input:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt")
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
     params:
         min_chrom_length=getMinChromLength,
+        polypolish_flag=False
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -168,12 +170,14 @@ rule medaka_round_2_extract_intermediate_assembly:
     input:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt")
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),
     params:
         min_chrom_length=getMinChromLength,
+        polypolish_flag=False
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

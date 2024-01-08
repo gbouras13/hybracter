@@ -31,7 +31,7 @@ def calculate_mean_CDS_length(filepath_in):
     except ValueError:
         # less than 20000bp - prodigal train will break
         too_short = True
-        print("The assembly is less than 20000bp. Please get some more sequencing :)") 
+        print("The assembly is less than 20000bp. Please get some more sequencing :)")
         mean_cds_len = 0.00
 
     if too_short is False:
@@ -43,11 +43,12 @@ def calculate_mean_CDS_length(filepath_in):
             genes = orf_finder.find_genes(str(record.seq))
             for gene in genes:
                 total_genes += 1
-                total_length += len(gene.sequence())  # add the length of the gene called
+                total_length += len(
+                    gene.sequence()
+                )  # add the length of the gene called
 
         mean_cds_len = float(total_length / total_genes)
         mean_cds_len = float("{:.2f}".format(mean_cds_len))
-
 
     return mean_cds_len
 

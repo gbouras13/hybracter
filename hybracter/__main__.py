@@ -9,9 +9,16 @@ import os
 
 import click
 
-from .util import (OrderedCommands, all_medaka_models, copy_config,
-                   default_to_ouput, print_citation, print_version,
-                   run_snakemake, snake_base)
+from .util import (
+    OrderedCommands,
+    all_medaka_models,
+    copy_config,
+    default_to_ouput,
+    print_citation,
+    print_version,
+    run_snakemake,
+    snake_base,
+)
 
 
 def common_options(func):
@@ -47,17 +54,19 @@ def common_options(func):
             help="min read length for long reads",
             type=int,
             default=1000,
+            show_default=True
         ),
         click.option(
             "--min_quality",
             "min_quality",
-            help="min read quality for long reads",
+            help="min read quality score for long reads in bp.",
             type=int,
             default=9,
+            show_default=True
         ),
         click.option(
             "--skip_qc",
-            help="Do not run porechop, filtlong and fastp to QC the reads",
+            help="Do not run porechop_abi, filtlong and fastp to QC the reads",
             is_flag=True,
             default=False,
         ),
@@ -66,6 +75,14 @@ def common_options(func):
             "--databases",
             help="Plassembler Databases directory.",
             type=click.Path(dir_okay=True, readable=True),
+        ),
+        click.option(
+            "--subsample_depth",
+            "subsample_depth",
+            help="subsampled long read depth to subsample with Filtlong. By default is 100x.",
+            type=int,
+            default=100,
+            show_default=True,
         ),
         click.option(
             "--medakaModel",
@@ -338,6 +355,7 @@ def hybrid(
     skip_qc,
     medakaModel,
     databases,
+    subsample_depth,
     min_quality,
     flyeModel,
     min_length,
@@ -357,6 +375,7 @@ def hybrid(
             "log": log,
             "min_length": min_length,
             "databases": databases,
+            "subsample_depth": subsample_depth,
             "min_quality": min_quality,
             "no_pypolca": no_pypolca,
             "skip_qc": skip_qc,
@@ -366,7 +385,7 @@ def hybrid(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": False,
-            "logic": logic
+            "logic": logic,
         }
     }
 
@@ -436,6 +455,7 @@ def hybrid_single(
     skip_qc,
     medakaModel,
     databases,
+    subsample_depth,
     min_quality,
     flyeModel,
     min_length,
@@ -460,6 +480,7 @@ def hybrid_single(
             "log": log,
             "min_length": min_length,
             "databases": databases,
+            "subsample_depth": subsample_depth,
             "min_quality": min_quality,
             "no_pypolca": no_pypolca,
             "skip_qc": skip_qc,
@@ -469,7 +490,7 @@ def hybrid_single(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": True,
-            "logic": logic
+            "logic": logic,
         }
     }
 
@@ -500,6 +521,7 @@ def long(
     _input,
     medakaModel,
     databases,
+    subsample_depth,
     skip_qc,
     flyeModel,
     min_length,
@@ -523,13 +545,14 @@ def long(
             "min_quality": min_quality,
             "skip_qc": skip_qc,
             "databases": databases,
+            "subsample_depth": subsample_depth,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": False,
-            "logic": logic
+            "logic": logic,
         }
     }
 
@@ -575,6 +598,7 @@ def long_single(
     chromosome,
     medakaModel,
     databases,
+    subsample_depth,
     skip_qc,
     flyeModel,
     min_length,
@@ -600,13 +624,14 @@ def long_single(
             "min_quality": min_quality,
             "skip_qc": skip_qc,
             "databases": databases,
+            "subsample_depth": subsample_depth,
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "single": True,
-            "logic": logic
+            "logic": logic,
         }
     }
 
@@ -722,6 +747,7 @@ def test_hybrid(
     medakaModel,
     flyeModel,
     databases,
+    subsample_depth,
     no_pypolca,
     contaminants,
     dnaapler_custom_db,
@@ -740,11 +766,12 @@ def test_hybrid(
             "medakaModel": medakaModel,
             "flyeModel": flyeModel,
             "databases": databases,
+            "subsample_depth": subsample_depth,
             "no_pypolca": no_pypolca,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
-            "logic": logic
+            "logic": logic,
         }
     }
     run_snakemake(
@@ -775,6 +802,7 @@ def test_long(
     skip_qc,
     medakaModel,
     databases,
+    subsample_depth,
     flyeModel,
     contaminants,
     dnaapler_custom_db,
@@ -793,11 +821,12 @@ def test_long(
             "skip_qc": skip_qc,
             "medakaModel": medakaModel,
             "databases": databases,
+            "subsample_depth": subsample_depth,
             "flyeModel": flyeModel,
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
-            "logic": logic
+            "logic": logic,
         }
     }
     run_snakemake(

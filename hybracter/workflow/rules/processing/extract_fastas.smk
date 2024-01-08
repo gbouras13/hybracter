@@ -5,6 +5,7 @@ checkpoint check_completeness:
     """
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
+        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt")
     output:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:
@@ -26,11 +27,13 @@ rule extract_chromosome_complete:
     """
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
-        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt")
     output:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
     params:
         min_chrom_length=getMinChromLength,
+        polypolish_flag=False
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

@@ -55,6 +55,7 @@ def test_hybracter_t_hybrid():
     exec_command(cmd)
     remove_directory(outdir)
 
+
 def test_hybracter_hybrid_last():
     """hybracter test-hybrid"""
     outdir: Path = "test_hybracter_output"
@@ -70,12 +71,22 @@ def test_hybracter_t_hybrid_no_medaka():
     exec_command(cmd)
     remove_directory(outdir)
 
+
+def test_hybracter_t_subsample_depth():
+    """hybracter test-hybrid no medaka"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka --subsample_depth 50"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+
 def test_hybracter_hybrid_last_no_medaka():
     """hybracter test-hybrid"""
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --logic last --no_medaka --skip_qc"
     exec_command(cmd)
     remove_directory(outdir)
+
 
 def test_hybracter_t_hybrid_no_pypolca():
     """hybracter test-hybrid no pypolca"""
@@ -84,12 +95,14 @@ def test_hybracter_t_hybrid_no_pypolca():
     exec_command(cmd)
     remove_directory(outdir)
 
+
 def test_hybracter_t_hybrid_no_pypolca_last_logic():
     """hybracter test-hybrid no pypolca"""
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_pypolca --logic last --skip_qc"
     exec_command(cmd)
     remove_directory(outdir)
+
 
 def test_hybracter_t_long():
     """hybracter test-long"""
@@ -98,12 +111,14 @@ def test_hybracter_t_long():
     exec_command(cmd)
     remove_directory(outdir)
 
+
 def test_hybracter_t_long_last():
     """hybracter test-long"""
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-long --threads {threads} --output {outdir} --logic last --skip_qc"
     exec_command(cmd)
     remove_directory(outdir)
+
 
 def test_hybracter_t_long_no_medaka():
     """hybracter test-long no medaka"""
@@ -159,6 +174,13 @@ def test_hybracter_no_pypolca():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_subsample_depth():
+    """test hybracter hybrid subsample_Depth"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --no_pypolca --databases {db_dir} --subsample_depth 50"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 """
 long
@@ -210,7 +232,6 @@ def test_hybracter_hybrid_single_no_medaka():
     remove_directory(outdir)
 
 
-@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_long_single():
     """test hybracter long"""
     outdir: Path = "test_hybracter_output_long_single"
@@ -220,11 +241,11 @@ def test_hybracter_long_single():
     remove_directory(outdir)
 
 
-def test_hybracter_long_single_no_medaka():
-    """test hybracter long no medaka"""
+def test_hybracter_long_single_no_medaka_subsample_depth():
+    """test hybracter long no medaka and with --subsample_depth"""
     outdir: Path = "test_hybracter_output_long_single"
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
-    cmd = f"hybracter long-single -l {longreads} -c 50000 -s Sample1  --threads {threads} --output {outdir} --databases {db_dir} --no_medaka"
+    cmd = f"hybracter long-single -l {longreads} -c 50000 -s Sample1  --threads {threads} --output {outdir} --databases {db_dir} --no_medaka --subsample_depth 50"
     exec_command(cmd)
     remove_directory(outdir)
 

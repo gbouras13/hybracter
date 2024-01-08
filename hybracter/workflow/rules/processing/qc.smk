@@ -18,13 +18,14 @@ rule filtlong:
     params:
         qual=config.args.min_quality,
         length=config.args.min_length,
+        target_bases=getTargetBases,
     benchmark:
         os.path.join(dir.out.bench, "filtlong", "{sample}.txt")
     log:
         os.path.join(dir.out.stderr, "filtlong", "{sample}.log"),
     shell:
         """
-        filtlong --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq} 2> {log}
+        filtlong --target_bases {params.target_bases} --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq} 2> {log}
         filtlong --version > {output.version}
         """
 

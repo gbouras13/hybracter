@@ -10,7 +10,7 @@
 
 # Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies
 
-`hybracter` is an automated long-read first bacterial genome assembly tool implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool).
+`hybracter` is an automated long-read first bacterial genome assembly tool implemented in Snakemake using [Snaketool](https://github.com/beardymcjohnface/Snaketool). 
 
 ## Table of Contents
 
@@ -20,6 +20,7 @@
   - [Description](#description)
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
+  - [v0.5.0 Updates (08 January 2024)](#v050-updates-08-january-2024)
   - [v0.4.0 Updates (14 November 2023)](#v040-updates-14-november-2023)
   - [v0.3.0 Updates 8 November 2023](#v030-updates-8-november-2023)
   - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
@@ -62,7 +63,7 @@ You will need conda or mamba available so `hybracter` can install all the requir
 Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 ```
-mamba create -n hybracterENV hybracter
+mamba create -n hybracterENV -c bioconda -c conda-forge  hybracter
 conda activate hybracterENV
 hybracter --help
 hybracter install
@@ -119,6 +120,13 @@ To summarise the conclusions:
 * If you want the fastest possible chromosome assemblies for applications like species ID or sequence typing that retain a high level of accuracy, Dragonflye is a good option.
 * Dragonflye should not be used if you care about recovering plasmids.
 
+## v0.5.0 Updates (08 January 2024)
+
+Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 Nanopore reads (his [blog post](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html)). You can read a write-up of the results [here](https://hybracter.readthedocs.io/en/latest/dorado_ryan_louise_0_5_0/). 
+
+* Adds subsampling using `--subsample_depth` using Filtlong, based on some benchmarking of Dorado v0.5.0. Defaults to 100x of the estimated chromosome size `-c`.
+* Also adds stricter criteria for complete assemblies (aka ensures that identified chromosomes must be circularised according to Flye).
+  
 ## v0.4.0 Updates (14 November 2023)
 
 * Adds `--logic` parameter. You have 2 choices: `--logic best` (the default) or `--logic last`.
