@@ -14,15 +14,25 @@ def get_chromosome_plasmids(input_fasta, chromosome_fasta, min_chrom_length, inf
 
     with open(chromosome_fasta, "w") as fa:
         for dna_record in SeqIO.parse(input_fasta, "fasta"):
-            # get the circ value
-            # if 
+            # get the circ values
             if polypolish_flag is False:
-                circ_value = info_df[info_df['seq_name'] == dna_record.id]['circ'].values[0]
+                seq_id = dna_record.id
+            # trim the last 11 characters _polypolish if the flag is true
             else:
-                # trim the last 11 characters _polypolish
-                trim_seq_id = dna_record.id[:-11]
-                circ_value = info_df[info_df['seq_name'] == trim_seq_id]['circ'].values[0]
-            # will actually extract multiple chromosomes if above the desired chrom length
+                seq_id = dna_record.id[:-11]
+
+            # get all the values
+            circ_values = info_df.loc[info_df['seq_name'] == seq_id, 'circ'].values
+
+            if len(circ_values) == 1:
+                circ_value = circ_values[0]
+            # this should never every happen as there won't be dupes in the Flye info shee but just in case
+            elif len(circ_values) > 1:
+                circ_value = circ_values[0]
+            # for plasmids - not part of the chromosome so 'N' to make sure it doesn't get extracted
+            else:
+                circ_value = 'N'
+            # will actually extract multiple chromosomes if above the desired chrom length and circularised
             if len(dna_record.seq) > int(min_chrom_length) and circ_value == 'Y':
                 SeqIO.write(dna_record, fa, "fasta")
 
