@@ -72,7 +72,7 @@ def test_hybracter_t_hybrid_no_medaka():
     remove_directory(outdir)
 
 
-def test_hybracter_subsample_depth():
+def test_hybracter_t_subsample_depth():
     """hybracter test-hybrid no medaka"""
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka --subsample_depth 50"
@@ -232,7 +232,6 @@ def test_hybracter_hybrid_single_no_medaka():
     remove_directory(outdir)
 
 
-@pytest.mark.dependency(depends=["test_hybracter_install"])
 def test_hybracter_long_single():
     """test hybracter long"""
     outdir: Path = "test_hybracter_output_long_single"
