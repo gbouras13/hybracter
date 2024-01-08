@@ -2,7 +2,7 @@
 
 ## Background and Method
 
-In December 2023, Ryan Wick updated his ongoing ONT-only accuracy analysis on his (blog](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html) (you should read his blog if you are reading this and haven't yet!)
+In December 2023, Ryan Wick updated his ongoing ONT-only accuracy analysis on his [blog](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html) (you should read his blog if you are reading this and haven't yet!)
 
 With the latest updates to Oxford Nanopore's basecaller Dorado, he found that the reads were were consistently Q20+ (median Q=20.5) and that when using Trycycler, there were significantly updates over earlier versions of Dorado thanks to new basecaller models - specifically 'dna_r10.4.1_e8.2_400bps_sup@v4.3.0'.
 
