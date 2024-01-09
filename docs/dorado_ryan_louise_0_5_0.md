@@ -4,11 +4,13 @@
 
 In December 2023, Ryan Wick updated his ongoing ONT-only accuracy analysis on his [blog](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html) (you should read his blog if you are reading this and haven't yet!)
 
-With the latest updates to Oxford Nanopore's basecaller Dorado, he found that the reads were were consistently Q20+ (median Q=20.5) and that when using Trycycler, there were significantly updates over earlier versions of Dorado thanks to new basecaller models - specifically 'dna_r10.4.1_e8.2_400bps_sup@v4.3.0'.
+With the latest updates to Oxford Nanopore's basecaller Dorado, he found that the reads were were consistently Q20+ (median Q=20.5) and that when using Trycycler, there were significant improvements over earlier versions of Dorado thanks to new basecaller models - specifically 'dna_r10.4.1_e8.2_400bps_sup@v4.3.0'.
 
-He found that - at least with Trycycler assemblies — we're pretty close to being able to generate perfect ONT-only assemblies - he found a total of 37 differences between the 'ground truth' and Trycycler (as an aside here, the closer we get to perfection, the more the ground-truths themselves come into question in my opinion - unless you use exhaustively generate the same assemblies using multiple sequencing modalities like this [paper](https://doi.org/10.1128/mra.01129-22) ).
+He found that — at least with Trycycler assemblies — we're pretty close to being able to generate perfect ONT-only assemblies - he found a total of 37 differences between the 'ground truth' and Trycycler in 9 isolates tested. (As an aside here, the closer we get to perfection, the more the ground-truths themselves come into question in my opinion - unless you use exhaustively generate the same assemblies using multiple sequencing modalities like this [paper](https://doi.org/10.1128/mra.01129-22) ).
 
-I asked Ryan to run `hybracter` on these strains with `--no_medaka` (as he had previously found that Medaka polishing makes the assemblies worse with the newest ONT reads [here](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html)). As the legend he is, he agreed kindly. 
+I asked Ryan to run `hybracter` on these 9 isolates with `--no_medaka` (as he had previously found that Medaka polishing makes the assemblies worse with the newest ONT reads [here](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html)). 
+
+As the legend he is, he agreed kindly. 
 
 He first tried to run `hybracter` on the entire raw read sets, but he found they failed the Flye step of Hybracter as there were too many long reads (~500x depth).
 
