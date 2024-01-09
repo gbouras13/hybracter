@@ -2,7 +2,7 @@
 
 ## Background and Method
 
-In December 2023, Ryan Wick updated his ongoing ONT-only accuracy analysis on his (blog](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html) (you should read his blog if you are reading this and haven't yet!)
+In December 2023, Ryan Wick updated his ongoing ONT-only accuracy analysis on his [blog](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html) (you should read his blog if you are reading this and haven't yet!)
 
 With the latest updates to Oxford Nanopore's basecaller Dorado, he found that the reads were were consistently Q20+ (median Q=20.5) and that when using Trycycler, there were significantly updates over earlier versions of Dorado thanks to new basecaller models - specifically 'dna_r10.4.1_e8.2_400bps_sup@v4.3.0'.
 
@@ -54,12 +54,12 @@ The results of the errors are as follows:
 | ----------------------- | ---------------- | --------------------------- | ------------------------- |
 | _Campylobacter jejuni_    | 5                | 15                          | 16                        |
 | _Campylobacter lari_      | 18               | 27                          | 40                        |
-| _Escherichia coli_        | 1                | 2                           | _1328_ (see note)                           |
+| _Escherichia coli_        | 1                | 2                           | _1328_ (see note below)                           |
 | _Listeria ivanovii_       | 5                | 7                           | 475                       |
 | _Listeria monocytogenes_  | 0                | 2                           | 3                         |
 | _Listeria welshimeri_     | 1                | 2                           | 1                         |
 | _Salmonella enterica_     | 3                | 15                          | 18                        |
-| _Vibrio cholerae_         | 2                | _31535_ (see note)                       | _28205_ (see note)                          |
+| _Vibrio cholerae_         | 2                | _31535_ (see note below)                       | _28205_ (see note below)                          |
 | _Vibrio parahaemolyticus_ | 2                | 12                          | 7                         |
 
 For some context of the _V. cholerae_  and _E. coli_ results in Ryan's words
@@ -93,16 +93,16 @@ Note: Ryan had pre-filtered the read sets to throw away all reads <10kp. Therefo
 | _Vibrio parahaemolyticus_ | Filtlong           | 0                                  | 16                | 0               | 14                        |
 | _Vibrio parahaemolyticus_ | Rasusa             | 0                                  | 2                 | 0               | 0                         |
 
-Overall, 5 Rasusa assemblies had extra non-chromosome contigs, while only 1 Filtlong one did (_Vibrio parahaemolyticus_).
+Overall, 5 Rasusa assemblies had extra non-plasmid contigs, while only 1 Filtlong one did (_Vibrio parahaemolyticus_).
 
 ## Conclusions
 
-1. Bacterial genome assembly is hard! While I think (along with the other benchmarking) that Hybracter is the best way of currently doing _automated_ long- and hybrid-read assemblies, it still doesn't always get it right. Structural variation and low-qualtiy reads that sneak into to the final read sets can cause some grief.
-2. Nonetheless, most of the time, Hybracter is pretty good! 82 errors in the 8 genomes without structural variation is getting pretty close to perfect even with long reads only.
-3. Subsampling deeply sequenced read sets with Filtlong outperforms Rasusa - both in terms of errors and also it was far less likely to assemble extra non-plasmid contigs.
+1. Bacterial genome assembly is hard! While I think (along with the other benchmarking) that Hybracter is the best way of currently doing _automated_ long- and hybrid-read assemblies, it still doesn't always get it right. Structural variation and low-quality reads that sneak into to the final read sets can cause some grief.
+2. Nonetheless, most of the time, Hybracter is pretty good even on long-only read sets! 82 errors in the 8 genomes without structural variation is getting pretty close to perfect even with long reads only.
+3. Subsampling deeply sequenced (500x) read sets with Filtlong outperforms Rasusa - both in terms of errors and also it was far less likely to assemble extra non-plasmid contigs.
 
 Based on these results (and after getting requests for subsampling functionality), the `--subsample_depth` parameter has been added to Hybracter in v0.5.0. It defaults to 100. That value multiplied by the estimated chromosome size (`-c`) will be passed as `--target_bases` to Filtlong during Hybracter's QC phase. 
 
-As a final word of warning: if you are really interested in small plasmid recovery and/or small plasmid copy number accuracy, you may want to disable subsampling, because `--target_bases` is not random - it prioritises the longest, highest quality reads (which may result in your small plasmid reads being dropped). 
+As a final word of warning: if you are really interested in small plasmid recovery and/or small plasmid copy number accuracy, you may want to disable subsampling, because `--target_bases` is not random - it prioritises the longest & highest quality reads (which may result in your small plasmid reads being dropped). 
 
 You can turn off subsampling by specifying a very large number for `--subsample_depth` e.g. `--subsample_depth 100000`.

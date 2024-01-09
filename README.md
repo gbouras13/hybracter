@@ -122,7 +122,7 @@ To summarise the conclusions:
 
 ## v0.5.0 Updates (08 January 2024)
 
-Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 Nanopore reads (his [blog post](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html)). You can read a write-up of the results [here](https://hybracter.readthedocs.io/en/latest/dorado_ryan_louise_0_5_0/). 
+Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 basecalled Nanopore reads (his [blog post](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html)). You can read a write-up of the results [here](https://hybracter.readthedocs.io/en/latest/dorado_ryan_louise_0_5_0/). As a result, subsampling has been added to Hybracter. 
 
 * Adds subsampling using `--subsample_depth` using Filtlong, based on some benchmarking of Dorado v0.5.0. Defaults to 100x of the estimated chromosome size `-c`.
 * Also adds stricter criteria for complete assemblies (aka ensures that identified chromosomes must be circularised according to Flye).
