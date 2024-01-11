@@ -90,7 +90,7 @@ Error in rule plassembler_long:
 
 2. Activate this environment:
 
-`conda activate <path to conda env`
+`conda activate <path to conda env>`
 
 3. Troubleshoot as desired
 
