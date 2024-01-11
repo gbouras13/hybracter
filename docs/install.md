@@ -75,7 +75,7 @@ However, of course this being bioinformatics, there is a chance `hybracter` may 
 
 If you encounter issues with speficic conda environments (see e.g. [this](https://github.com/gbouras13/hybracter/issues/44) and [this](https://github.com/gbouras13/hybracter/issues/45) which had issues with Plassembler), the way you can troubleshoot is:
 
-1. For each rule, there will be a path to `conda-env:` listed in the `hybracter.log` file.
+* For each rule, there will be a path to `conda-env:` listed in the `hybracter.log` file.
 
 e.g.
 
@@ -88,11 +88,11 @@ Error in rule plassembler_long:
     conda-env: <path to conda env>
 ```
 
-2. Activate this environment:
+* Activate this environment:
 
 `conda activate <path to conda env>`
 
-3. Troubleshoot as desired
+* Troubleshoot as desired
 
 
 # `hybracter` testing
