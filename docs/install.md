@@ -67,6 +67,34 @@ For users who will be running `hybracter` offline e.g. on a cluster, this means 
 
 Finally, but default `hybracter` will use mamba to install your environments. If for some reason you must use conda not mamba, use `--conda-frontend conda` with your hybracter command to force `hybracter` to use conda. 
 
+## Errors with Installing Dependencies & Environments
+
+During installation, `hybracter` will install each separate rule's dependency in a separate conda environment - this is one way to get around the 'dependency hell' problem when you need multiple different tools to work like in `hybracter`. For instance, Flye will have its own environment, as will Dnaapler, Plassembler, Polypolish etc.
+
+However, of course this being bioinformatics, there is a chance `hybracter` may not install some of these environments perfectly on your machine.
+
+If you encounter issues with speficic conda environments (see e.g. [this](https://github.com/gbouras13/hybracter/issues/44) and [this](https://github.com/gbouras13/hybracter/issues/45) which had issues with Plassembler), the way you can troubleshoot is:
+
+1. For each rule, there will be a path to `conda-env:` listed in the `hybracter.log` file.
+
+e.g.
+
+```
+Error in rule plassembler_long:
+    jobid: 56
+    input: hybracter_out/processing/qc/Sample1_filt_trim.fastq.gz
+    output: hybracter_out/processing/plassembler/Sample1/plassembler_plasmids.fasta, hybracter_out/processing/plassembler/Sample1/plassembler_summary.tsv, hybracter_out/versions/Sample1/plassembler.version
+    log: hybracter_out/stderr/plassembler_long/Sample1.log (check log file(s) for error details)
+    conda-env: <path to conda env>
+```
+
+2. Activate this environment:
+
+`conda activate <path to conda env>`
+
+3. Troubleshoot as desired
+
+
 # `hybracter` testing
 
 Once you have installed `hybracter` and run `hybracter install`, it is recommended to run a test to make sure hybracter installs all required dependencies. It should take 5-10 minutes.
