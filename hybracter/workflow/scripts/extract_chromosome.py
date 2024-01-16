@@ -14,12 +14,17 @@ def get_chromosome_plasmids(input_fasta, chromosome_fasta, min_chrom_length, inf
 
     with open(chromosome_fasta, "w") as fa:
         for dna_record in SeqIO.parse(input_fasta, "fasta"):
-            # get the circ values
-            if polypolish_flag is False:
-                seq_id = dna_record.id
-            # trim the last 11 characters _polypolish if the flag is true
-            else:
-                seq_id = dna_record.id[:-11]
+
+            # # get the circ values
+            # if polypolish_flag is False:
+            #     seq_id = dna_record.id
+            # # trim the last 11 characters _polypolish if the flag is true
+            # else:
+            #     seq_id = dna_record.id[:-11]
+
+            # polypolish v0.6.0 introduces a space not an underscore
+            # so no need for polypolish flag as the id will be the same as for fly
+            seq_id = dna_record.id
 
             # get all the values
             circ_values = info_df.loc[info_df['seq_name'] == seq_id, 'circ'].values
