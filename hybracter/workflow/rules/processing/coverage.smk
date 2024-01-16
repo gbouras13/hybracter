@@ -45,16 +45,15 @@ rule run_seqkit_long:
         """
 
 
-rule aggr_seqkit:
+rule aggr_seqkit_short:
     """
     aggregates the seqkit stats over all samples
     """
     input:
         expand(os.path.join(dir.out.seqkit, "{sample}_r1.txt"), sample=SAMPLES),
         expand(os.path.join(dir.out.seqkit, "{sample}_r2.txt"), sample=SAMPLES),
-        expand(os.path.join(dir.out.seqkit, "{sample}_long.txt"), sample=SAMPLES),
     output:
-        flag=os.path.join(dir.out.flags, "aggr_seqkit.flag"),
+        flag=os.path.join(dir.out.flags, "aggr_seqkit_short.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
@@ -65,6 +64,23 @@ rule aggr_seqkit:
         touch {output.flag}
         """
 
+rule aggr_seqkit_long:
+    """
+    aggregates the seqkit stats over all samples
+    """
+    input:
+        expand(os.path.join(dir.out.seqkit, "{sample}_long.txt"), sample=SAMPLES),
+    output:
+        flag=os.path.join(dir.out.flags, "aggr_seqkit_long.flag"),
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    shell:
+        """
+        touch {output.flag}
+        """
 
 rule estimate_sr_coverage:
     """
