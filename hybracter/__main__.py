@@ -54,7 +54,7 @@ def common_options(func):
             help="min read length for long reads",
             type=int,
             default=1000,
-            show_default=True
+            show_default=True,
         ),
         click.option(
             "--min_quality",
@@ -62,7 +62,7 @@ def common_options(func):
             help="min read quality score for long reads in bp.",
             type=int,
             default=9,
-            show_default=True
+            show_default=True,
         ),
         click.option(
             "--skip_qc",

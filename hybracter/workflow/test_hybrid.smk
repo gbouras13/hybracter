@@ -114,9 +114,9 @@ include: os.path.join("rules", "assembly", "assemble.smk")
 include: os.path.join("rules", "processing", "extract_fastas.smk")
 # checkpoint
 include: os.path.join("rules", "completeness", "aggregate.smk")
-
 # for short read polishing --careful
 include: os.path.join("rules", "processing", "coverage.smk")
+
 
 ### medaka vs no medaka
 # default - medaka will be run

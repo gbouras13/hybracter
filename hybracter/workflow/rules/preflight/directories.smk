@@ -81,7 +81,7 @@ dir.out.medaka_incomplete = os.path.join(dir.out.incomplete, "medaka_incomplete"
 # for both complete and incomplete
 dir.out.fastp = os.path.join(dir.out.qc, "fastp")
 
-# for coverage 
+# for coverage
 dir.out.seqkit = os.path.join(dir.out.qc, "seqkit")
 dir.out.coverage = os.path.join(dir.out.qc, "coverage")
 

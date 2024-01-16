@@ -35,14 +35,14 @@ rule pypolca_extract_intermediate_assembly:
     input:
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt")
+        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
     params:
         min_chrom_length=getMinChromLength,
-        polypolish_flag=True
+        polypolish_flag=True,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

@@ -48,7 +48,7 @@ rule polypolish_incomplete:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         sam1=os.path.join(dir.out.bwa_incomplete, "{sample}_1.sam"),
         sam2=os.path.join(dir.out.bwa_incomplete, "{sample}_2.sam"),
-        coverage=os.path.join(dir.out.coverage, "{sample}.txt")
+        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
     output:
         fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
         version=os.path.join(

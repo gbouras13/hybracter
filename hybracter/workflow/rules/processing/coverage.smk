@@ -1,10 +1,10 @@
 rule run_seqkit_short:
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
-        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz")
+        r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
     output:
         r1=os.path.join(dir.out.seqkit, "{sample}_r1.txt"),
-        r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt")
+        r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt"),
     conda:
         os.path.join(dir.env, "seqkit.yaml")
     resources:
@@ -22,11 +22,12 @@ rule run_seqkit_short:
         seqkit stats {input.r2} -T  > {output.r2}
         """
 
+
 rule run_seqkit_long:
     input:
         long=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
-        long=os.path.join(dir.out.seqkit, "{sample}_long.txt")
+        long=os.path.join(dir.out.seqkit, "{sample}_long.txt"),
     conda:
         os.path.join(dir.env, "seqkit.yaml")
     resources:
@@ -42,6 +43,7 @@ rule run_seqkit_long:
         """
         seqkit stats {input.long} -T -N 50 -N 90 > {output.long}
         """
+
 
 rule aggr_seqkit:
     """
@@ -70,11 +72,11 @@ rule estimate_sr_coverage:
     """
     input:
         r1=os.path.join(dir.out.seqkit, "{sample}_r1.txt"),
-        r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt")
+        r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt"),
     output:
         sr_coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
     params:
-        chromlen=getMinChromLength
+        chromlen=getMinChromLength,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -84,6 +86,3 @@ rule estimate_sr_coverage:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "sr_coverage.py")
-
-
-
