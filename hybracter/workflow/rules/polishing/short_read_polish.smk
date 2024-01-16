@@ -64,7 +64,7 @@ rule polypolish:
         os.path.join(dir.out.stderr, "polypolish", "{sample}.log"),
     shell:
         """
-        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        polypolish polish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         polypolish --version > {output.version}
         """
 
