@@ -146,7 +146,7 @@ def test_hybracter_hybrid_csv():
     exec_command(cmd)
     remove_directory(outdir)
 
-def test_hybracter_hybrid_csv():
+def test_hybracter_hybrid_csv_low_cov():
     """test hybracter hybrid default low illumina coverage"""
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_hybrid_input_low_illumina_coverage.csv"
