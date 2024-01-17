@@ -4,6 +4,6 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - pypolca >=0.2.0
+    - pypolca >=0.3.0
     - freebayes >=1.3.1,<1.3.7
     - python =3.10
