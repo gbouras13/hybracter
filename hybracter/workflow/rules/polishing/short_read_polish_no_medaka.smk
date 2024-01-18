@@ -68,7 +68,7 @@ rule polypolish:
         ),
         sam1=os.path.join(dir.out.bwa, "{sample}_1.sam"),
         sam2=os.path.join(dir.out.bwa, "{sample}_2.sam"),
-        sr_coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
+        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
     output:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "polypolish.version"),
