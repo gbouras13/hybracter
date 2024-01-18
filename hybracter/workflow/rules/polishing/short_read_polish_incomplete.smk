@@ -48,6 +48,7 @@ rule polypolish_incomplete:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         sam1=os.path.join(dir.out.bwa_incomplete, "{sample}_1.sam"),
         sam2=os.path.join(dir.out.bwa_incomplete, "{sample}_2.sam"),
+        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
     output:
         fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
         version=os.path.join(
@@ -72,6 +73,12 @@ rule polypolish_incomplete:
         os.path.join(dir.out.stderr, "polypolish_incomplete", "{sample}.log"),
     shell:
         """
-        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        coverage=$(head -n 1 {input.coverage})
+        if [ "$coverage" -gt 25 ]; then
+            polypolish polish --careful {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        else
+            polypolish polish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        fi
         polypolish --version > {output.version}
+        cp {output.fasta} {params.copy_fasta}
         """

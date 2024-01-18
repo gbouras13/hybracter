@@ -57,6 +57,12 @@ Alternatively, if you would like to specify a different database directory, that
 hybracter install -d <database directory>
 ```
 
+If you would like to download all the Medaka models (e.g. if you are going to run on a HPC node without internet), you can use `-m` or `--medaka`.
+
+```
+hybracter install -m
+```
+
 # Installing Hybracter Environments
 
 One benefit of writing `hybracter` in Snakemake is that it is easy to avoid dependency hell by containerising each environment. 

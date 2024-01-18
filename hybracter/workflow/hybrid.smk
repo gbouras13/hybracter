@@ -115,6 +115,10 @@ include: os.path.join("rules", "completeness", "aggregate.smk")
 # checkpoint here for completeness
 
 
+# for short read polishing --careful
+include: os.path.join("rules", "processing", "coverage.smk")
+
+
 ### medaka vs no medaka
 # default - medaka will be run
 if config.args.no_medaka is False:

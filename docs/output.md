@@ -92,7 +92,7 @@ The `processing` directory will contain a number of intermediate directories who
 
 ##### 2. `qc` directory
 
- This directory will contain the filtered, trimmed and contaminant removed FASTQ reads (where applicable) for each sample
+* This directory will contain the filtered, trimmed and contaminant removed FASTQ reads (where applicable) for each sample. From v0.6.0, it will also contain `seqkit` directory with Seqkit outputs for each read set, and `coverage` with calculated quick short read coverage (for `hybracter hybrid`).
 
 ##### 3. `plassembler` directory
 

@@ -68,6 +68,7 @@ rule polypolish:
         ),
         sam1=os.path.join(dir.out.bwa, "{sample}_1.sam"),
         sam2=os.path.join(dir.out.bwa, "{sample}_2.sam"),
+        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
     output:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "polypolish.version"),
@@ -84,7 +85,12 @@ rule polypolish:
         os.path.join(dir.out.stderr, "polypolish", "{sample}.log"),
     shell:
         """
-        polypolish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        coverage=$(head -n 1 {input.coverage})
+        if [ "$coverage" -gt 25 ]; then
+            polypolish polish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        else
+            polypolish polish --careful {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        fi
         polypolish --version > {output.version}
         """
 
@@ -96,14 +102,14 @@ rule polypolish_extract_intermediate_assembly:
     input:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt")
+        info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
     params:
         min_chrom_length=getMinChromLength,
-        polypolish_flag=True
+        polypolish_flag=True,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

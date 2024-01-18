@@ -79,7 +79,6 @@ def test_hybracter_t_subsample_depth():
     exec_command(cmd)
     remove_directory(outdir)
 
-
 def test_hybracter_hybrid_last_no_medaka():
     """hybracter test-hybrid"""
     outdir: Path = "test_hybracter_output"
@@ -147,6 +146,13 @@ def test_hybracter_hybrid_csv():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_hybrid_csv_low_cov():
+    """test hybracter hybrid default low illumina coverage"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input_low_illumina_coverage.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_hybracter_no_pypolca_no_medaka():
     """test hybracter hybrid no pypolca and no medaka"""

@@ -54,7 +54,7 @@ def common_options(func):
             help="min read length for long reads",
             type=int,
             default=1000,
-            show_default=True
+            show_default=True,
         ),
         click.option(
             "--min_quality",
@@ -62,7 +62,7 @@ def common_options(func):
             help="min read quality score for long reads in bp.",
             type=int,
             default=9,
-            show_default=True
+            show_default=True,
         ),
         click.option(
             "--skip_qc",
@@ -683,6 +683,14 @@ install
     show_default=True,
 )
 @click.option(
+    "-m",
+    "--medaka",
+    "medaka",
+    help="Download medaka models.",
+    is_flag=True,
+    default=False
+)
+@click.option(
     "-o",
     "--output",
     "output",
@@ -706,10 +714,10 @@ install
     hidden=True,
 )
 @click.argument("snake_args", nargs=-1)
-def install(databases, output, log, **kwargs):
+def install(databases, output, log, medaka, **kwargs):
     # define both together
     """Downloads and installs the plassembler database"""
-    merge_config = {"args": {"databases": databases, "output": output, "log": log}}
+    merge_config = {"args": {"databases": databases, "output": output, "log": log, "medaka": medaka}}
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "install.smk")),
         merge_config=merge_config,

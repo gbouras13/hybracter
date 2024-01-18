@@ -80,6 +80,11 @@ dir.out.medaka_incomplete = os.path.join(dir.out.incomplete, "medaka_incomplete"
 
 # for both complete and incomplete
 dir.out.fastp = os.path.join(dir.out.qc, "fastp")
+
+# for coverage
+dir.out.seqkit = os.path.join(dir.out.qc, "seqkit")
+dir.out.coverage = os.path.join(dir.out.qc, "coverage")
+
 # short_read_polish.smk
 dir.out.bwa = os.path.join(dir.out.complete, "bwa")
 dir.out.polypolish = os.path.join(dir.out.complete, "polypolish")

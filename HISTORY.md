@@ -1,5 +1,13 @@
 # History
 
+## v0.6.0 (18 January 2024)
+
+* Fixes bug with Polypolish v0.6.0 breaking the CLI #48
+* Adds `-m` option to download all Medaka models with `hybracter install` - useful for offline use #49
+* Adds quick SR coverage estimates (in `processing/qc/coverage`) and other QC stats (using [seqkit](https://bioinf.shenwei.me/seqkit/) ) in `processing/qc/seqkit`. This is calculated as (Total bases / estimated chromosome size) for each sample
+* Logic added to run Polypolish and pypolca with `--careful` if the SR coverage estimate is below 25x.
+
+
 ## v0.5.0 (08 January 2024)
 
 Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 Nanopore reads (his [blog post](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html)). You can read a write-up of the results [here](https://hybracter.readthedocs.io/en/latest/dorado_ryan_louise_0_5_0/). 

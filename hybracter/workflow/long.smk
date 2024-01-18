@@ -101,6 +101,8 @@ else:  # where no contaminants to be removed
 
         include: os.path.join("rules", "processing", "qc.smk")
 
+# for seqkit
+include: os.path.join("rules", "processing", "coverage.smk")
 
 # assembly
 include: os.path.join("rules", "assembly", "assemble.smk")
