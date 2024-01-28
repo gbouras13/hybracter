@@ -441,6 +441,28 @@ hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> -
 
 Thanks to its Snakemake backend, you can modify resource requirements for each job contained within `hybracter` using the configuration file. A defauly can be created using the `hybracter config` command. This can make it even more efficient in server environment, as many jobs can be more efficiently parallelised than the default settings. For more information, please see the [documentation](https://hybracter.readthedocs.io/en/latest/configuration/) 
 
+## Using PacBio long reads
+
+Hybracter works with PacBio long reads once they have been extracted from the PacBio BAM file.
+
+To extract the raw fastq long read from the BAM file:
+Install pbtk: https://github.com/PacificBiosciences/pbtk
+```
+conda create -n pacbio -c bioconda pbtk
+conda activate pacbio
+```
+Extracting the fastq requires a 'pbi' file as an index:
+```
+pbindex yourpacbiofile.bam
+```
+then to extract the fastq file from the bam:
+```
+bam2fastq -o yourfastqfilename yourpacbiofile.bam
+```
+The output file will be:
+
+yourfastqfilename.fastq.gz
+
 ## Version Log
 
 A brief description of what is new in each update of `hybracter` can be found in the HISTORY.md file.
