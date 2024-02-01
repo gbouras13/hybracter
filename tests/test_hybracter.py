@@ -146,6 +146,14 @@ def test_hybracter_hybrid_csv():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_hybrid_csv_skip_qc_not_gzipped():
+    """test hybracter hybrid with --skip_qc and a long read fastq that isn't gzipped """
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input_not_gzipped.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 def test_hybracter_hybrid_csv_low_cov():
     """test hybracter hybrid default low illumina coverage"""
     outdir: Path = "test_hybracter_output"

@@ -2,6 +2,12 @@
 rule skip_qc_long:
     """
     copies long reads
+    If ends in *.gz, will copy
+    If not, will gzip then copy
+
+    # case with gzip hybracter test-hybrid -t 8 -o test_hybracter_output_skip_qc --skip_qc
+    # case without gzip hyb
+
     """
     input:
         fastq=get_input_lr_fastqs,
@@ -14,13 +20,18 @@ rule skip_qc_long:
     threads: config.resources.sml.cpu
     shell:
         """
-        cp {input.fastq} {output.fastq}
+        if [[ {input.fastq} == *.gz ]]; then
+            cp {input.fastq} {output.fastq}
+        else
+            gzip -c {input.fastq} > {output.fastq}
+        fi
         """
 
 
 rule skip_qc_short:
     """
     copies short reads
+    fastp detects gzip by default if file ends in .gz
     """
     input:
         r1=get_input_r1,
