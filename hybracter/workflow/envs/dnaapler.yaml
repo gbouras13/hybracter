@@ -4,5 +4,5 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - dnaapler >=0.4.0
+    - dnaapler >=0.5.1
 
