@@ -44,6 +44,11 @@ rule bwa_mem:
 
 
 rule polypolish:
+    """
+    if depth < 5, run polypolish --careful
+    if depth 5-25, run polypolish --careful
+    if depth > 25, run polypolish default - might fix errors in repeats pypolca can't
+    """
     input:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         sam1=os.path.join(dir.out.bwa, "{sample}_1.sam"),
@@ -65,7 +70,6 @@ rule polypolish:
         os.path.join(dir.out.stderr, "polypolish", "{sample}.log"),
     shell:
         """
-        coverage=$(head -n 1 {input.coverage})
         if [ "$coverage" -gt 25 ]; then
             polypolish polish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         else
