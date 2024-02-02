@@ -59,14 +59,13 @@ rule polypolish_incomplete:
         version=os.path.join(
             dir.out.versions, "{sample}", "polypolish_incomplete.version"
         ),
-    conda:
-        os.path.join(dir.env, "polypolish.yaml")
-    params:
         copy_fasta=os.path.join(
             dir.out.intermediate_assemblies_incomplete,
             "{sample}",
             "{sample}_polypolish.fasta",
         ),
+    conda:
+        os.path.join(dir.env, "polypolish.yaml")
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
@@ -85,5 +84,5 @@ rule polypolish_incomplete:
             polypolish polish --careful {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         fi
         polypolish --version > {output.version}
-        cp {output.fasta} {params.copy_fasta}
+        cp {output.fasta} {output.copy_fasta}
         """
