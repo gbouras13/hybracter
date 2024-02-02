@@ -78,6 +78,7 @@ rule polypolish_incomplete:
         os.path.join(dir.out.stderr, "polypolish_incomplete", "{sample}.log"),
     shell:
         """
+        coverage=$(head -n 1 {input.coverage})
         if [ "$coverage" -gt 25 ]; then
             polypolish polish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         else
