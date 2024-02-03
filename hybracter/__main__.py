@@ -36,10 +36,10 @@ def common_options(func):
         ),
         click.option(
             "--configfile",
-            default="config.yaml",
+            default=None,
             show_default=False,
             callback=default_to_ouput,
-            help="Custom config file [default: (outputDir)/config.yaml]",
+            help="Custom config file [default: None]",
         ),
         click.option(
             "-t",
@@ -364,6 +364,7 @@ def hybrid(
     dnaapler_custom_db,
     logic,
     log,
+    configfile,
     **kwargs
 ):
     """Run hybracter with hybrid long and paired end short reads"""
@@ -386,6 +387,7 @@ def hybrid(
             "no_medaka": no_medaka,
             "single": False,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -393,6 +395,7 @@ def hybrid(
     run_snakemake(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
+        configfile=configfile,
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -465,6 +468,7 @@ def hybrid_single(
     no_medaka,
     logic,
     log,
+    configfile,
     **kwargs
 ):
     """Run hybracter hybrid on 1 isolate"""
@@ -491,6 +495,7 @@ def hybrid_single(
             "no_medaka": no_medaka,
             "single": True,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -498,6 +503,7 @@ def hybrid_single(
     run_snakemake(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
+        configfile=configfile,
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -532,6 +538,7 @@ def long(
     no_medaka,
     logic,
     log,
+    configfile,
     **kwargs
 ):
     """Run hybracter with only long reads"""
@@ -553,6 +560,7 @@ def long(
             "no_medaka": no_medaka,
             "single": False,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -561,6 +569,7 @@ def long(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
         merge_config=merge_config,
+        configfile=configfile,
         log=log,
         **kwargs
     )
@@ -609,6 +618,7 @@ def long_single(
     log,
     no_medaka,
     logic,
+    configfile,
     **kwargs
 ):
     """Run hybracter long on 1 isolate"""
@@ -632,6 +642,7 @@ def long_single(
             "no_medaka": no_medaka,
             "single": True,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -639,6 +650,7 @@ def long_single(
     run_snakemake(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
+        configfile=configfile,
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -760,6 +772,7 @@ def test_hybrid(
     contaminants,
     dnaapler_custom_db,
     logic,
+    configfile,
     **kwargs
 ):
     """Test hybracter hybrid"""
@@ -780,6 +793,7 @@ def test_hybrid(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "logic": logic,
+            "configfile": configfile
         }
     }
     run_snakemake(
@@ -816,6 +830,7 @@ def test_long(
     dnaapler_custom_db,
     no_medaka,
     logic,
+    configfile,
     **kwargs
 ):
     """Test hybracter long"""
@@ -835,10 +850,12 @@ def test_long(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "logic": logic,
+            "configfile": configfile
         }
     }
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "test_long.smk")),
+        configfile=configfile,
         merge_config=merge_config,
         **kwargs
     )

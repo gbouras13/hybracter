@@ -24,6 +24,7 @@ onerror:
 
 
 # config file
+
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 
