@@ -159,12 +159,6 @@ def run_snakemake(
     """Run a Snakefile"""
     snake_command = ["snakemake", "-s", snakefile_path]
 
-    # make log
-
-    # Create the directory
-    os.makedirs(directory_name, exist_ok=True)
-
-
     # if using a configfile
     if configfile:
 
