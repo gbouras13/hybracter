@@ -65,13 +65,6 @@ def default_to_ouput(ctx, param, value):
     return value
 
 
-def default_to_ouput(ctx, param, value):
-    """Callback for --configfile; place value in output directory unless specified"""
-    if param.default == value:
-        return os.path.join(ctx.params["output"], value)
-    return value
-
-
 def write_config(_config, file, log=None):
     msg(f"Writing config file to {file}", log=log)
     with open(file, "w") as stream:

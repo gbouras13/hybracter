@@ -799,6 +799,8 @@ def test_hybrid(
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "test_hybrid.smk")),
         merge_config=merge_config,
+        configfile=configfile,
+        log=log
         **kwargs
     )
 
@@ -857,6 +859,7 @@ def test_long(
         snakefile_path=snake_base(os.path.join("workflow", "test_long.smk")),
         configfile=configfile,
         merge_config=merge_config,
+        log=log
         **kwargs
     )
 
