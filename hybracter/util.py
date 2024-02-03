@@ -32,8 +32,19 @@ def print_version():
 def echo_click(msg, log=None):
     click.echo(msg, nl=False, err=True)
     if log:
-        with open(log, "a") as l:
-            l.write(msg)
+        # if log already exists
+        if os.path.exists(log):
+            with open(log, "a") as l:
+                l.write(msg)
+        # to create it
+        else:
+            directory_path = os.path.dirname(log)
+            # Create the directories recursively
+            os.makedirs(directory_path, exist_ok=True)
+            with open(log, "w") as l:
+                l.write(msg)
+
+
 
 
 def print_citation():
@@ -148,8 +159,15 @@ def run_snakemake(
     """Run a Snakefile"""
     snake_command = ["snakemake", "-s", snakefile_path]
 
+    # make log
+
+    # Create the directory
+    os.makedirs(directory_name, exist_ok=True)
+
+
     # if using a configfile
     if configfile:
+
         # copy sys default config if not present
         copy_config(configfile, log=log)
 
