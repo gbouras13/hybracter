@@ -2,6 +2,7 @@
 
 ## v0.7.0 (02 February 2024)
 
+* Fixes bug where `--configfile` wasn't being passed to Hybracter.
 * Fixes bug where `hybracter` would crash if the input long reads were not gzipped #51 thanks @wanyuac.
 * Logic changes for short read polishing. Logic added to run Polypolish `--careful` and skip pypolca if the SR coverage estimate is below 5x (FASTA files for pypolca will be generated to play nice with Snakemake, but these will be identical to the polypolish output). For 5-25x coverage, `polypolish --careful` and `pypolca --careful` will be run. For >25x coverage, `polypolish` default and `pypolca --careful` will be run. 
 

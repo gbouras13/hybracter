@@ -36,10 +36,11 @@ def common_options(func):
         ),
         click.option(
             "--configfile",
-            default=None,
+            default="config.yaml",
+            type=str,
             show_default=False,
             callback=default_to_ouput,
-            help="Custom config file [default: None]",
+            help="Custom config file [default: config.yaml]",
         ),
         click.option(
             "-t",
@@ -172,6 +173,8 @@ def common_options(func):
             "--log",
             default="hybracter.log",
             callback=default_to_ouput,
+            type=str,
+            show_default=False,
             hidden=True,
         ),
         click.argument("snake_args", nargs=-1),
@@ -800,7 +803,7 @@ def test_hybrid(
         snakefile_path=snake_base(os.path.join("workflow", "test_hybrid.smk")),
         merge_config=merge_config,
         configfile=configfile,
-        log=log
+        log=log,
         **kwargs
     )
 
@@ -859,7 +862,7 @@ def test_long(
         snakefile_path=snake_base(os.path.join("workflow", "test_long.smk")),
         configfile=configfile,
         merge_config=merge_config,
-        log=log
+        log=log,
         **kwargs
     )
 
