@@ -167,6 +167,8 @@ def select_best_chromosome_assembly_complete(
 
                 # for the circularity match at the end
                 contig_id = record.id
+                print(contig_id)
+                print(non_circular_chromosome_contig_list)
 
                 # to match the 00001 output favoured generally for parsing
                 # usually there will be 1 chromosome of course!
