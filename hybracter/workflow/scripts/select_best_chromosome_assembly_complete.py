@@ -156,8 +156,9 @@ def select_best_chromosome_assembly_complete(
     total_assembly_length = 0
 
     # ignore list 
+    # strip '\n'
     with open(ignore_list, 'r') as file:
-        non_circular_chromosome_contig_list = file.readlines()
+        non_circular_chromosome_contig_list = [line.strip() for line in file.readlines()]
 
     # Open the output file in write mode
     with open(output_chromosome_fasta, "w") as output_handle:
