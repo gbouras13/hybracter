@@ -82,7 +82,7 @@ rule dnaapler_pre_chrom:
     """
     input:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
-        ignore_list=fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt")
+        ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt")
     output:
         fasta=os.path.join(
             dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
@@ -122,7 +122,7 @@ rule select_best_chromosome_assembly_complete:
             dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
         comparisons=aggregate_comparisons,
-        ignore_list=fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
+        ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"
