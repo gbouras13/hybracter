@@ -44,6 +44,7 @@ def select_best_chromosome_assembly_complete(
     flye_info,
     logic,
     no_pypolca,
+    ignore_list
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -145,6 +146,10 @@ def select_best_chromosome_assembly_complete(
     # total assembly length
     total_assembly_length = 0
 
+    # ignore list 
+    with open(ignore_list, 'r') as file:
+        non_circular_chromosome_contig_list = file.readlines()
+
     # Open the output file in write mode
     with open(output_chromosome_fasta, "w") as output_handle:
         with open(overall_output_fasta, "w") as output_handle_overall:
@@ -183,7 +188,10 @@ def select_best_chromosome_assembly_complete(
                 stats_dict[record.id]["contig_type"] = "chromosome"
                 stats_dict[record.id]["length"] = sequence_length
                 stats_dict[record.id]["gc"] = gc_content
-                stats_dict[record.id]["circular"] = "True"
+                if record.id in non_circular_chromosome_contig_list:
+                    stats_dict[record.id]["circular"] = "False"
+                else:
+                    stats_dict[record.id]["circular"] = "True"
 
                 chromosomes += 1
 
@@ -296,4 +304,5 @@ select_best_chromosome_assembly_complete(
     snakemake.input.flye_info,
     snakemake.params.logic,
     snakemake.params.no_pypolca,
+    snakemake.input.ignore_list
 )

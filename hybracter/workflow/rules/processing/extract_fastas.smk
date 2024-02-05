@@ -24,6 +24,7 @@ checkpoint check_completeness:
 rule extract_chromosome_complete:
     """
     extracts the chromosome for complete samples
+    ignore_list contains any contigs > min_chrom_length that are not circular as marked by Flye 
     """
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
@@ -31,6 +32,7 @@ rule extract_chromosome_complete:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     output:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
+        ignore_list=fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     params:
         min_chrom_length=getMinChromLength,
         polypolish_flag=False,

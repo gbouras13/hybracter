@@ -15,6 +15,7 @@ rule aggregate_finalise_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
+        ignore_list=fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"

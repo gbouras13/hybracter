@@ -2,13 +2,22 @@
 
 import pandas as pd
 from Bio import SeqIO
+import os
 
-# get chromosome if length > min chrom length and circ by Flye
-# need to trim '_polypolish' on the end of the seq_name for polypolish and pypolca extractions as polypolish introduces this
+"""
+get chromosome if length > min chrom length 
+add ignore_list if the contig is not marked as circular by Flye - to make sure Dnaapler doesn't rotate it
+"""
+
+# touches an empty file
+def touch_file(path):
+    with open(path, "a"):
+        os.utime(path, None)
+
 
 
 def get_chromosome_plasmids(
-    input_fasta, chromosome_fasta, min_chrom_length, info_file_path, polypolish_flag
+    input_fasta, chromosome_fasta, ignore_list, min_chrom_length, info_file_path, polypolish_flag
 ):
     # read in the fasta
 
@@ -29,6 +38,9 @@ def get_chromosome_plasmids(
             "graph_path",
         ],
     )
+
+    # to make sure it gets made regardless for snakemake
+    touch_file(ignore_list)
 
     with open(chromosome_fasta, "w") as fa:
         for dna_record in SeqIO.parse(input_fasta, "fasta"):
@@ -55,13 +67,19 @@ def get_chromosome_plasmids(
             else:
                 circ_value = "N"
             # will actually extract multiple chromosomes if above the desired chrom length and circularised
-            if len(dna_record.seq) > int(min_chrom_length) and circ_value == "Y":
+            if len(dna_record.seq) > int(min_chrom_length):
                 SeqIO.write(dna_record, fa, "fasta")
+                if circ_value == "N":
+                    with open(ignore_list, 'a') as file:
+                        file.write(f'{seq_id}\n')
 
+                    
+            
 
 get_chromosome_plasmids(
     snakemake.input.fasta,
     snakemake.output.fasta,
+    snakemake.output.ignore_list,
     snakemake.params.min_chrom_length,
     snakemake.input.info,
     snakemake.params.polypolish_flag,

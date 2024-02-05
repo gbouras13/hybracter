@@ -84,6 +84,7 @@ def select_best_chromosome_assembly_long_complete(
     plassembler_fasta,
     final_plasmid_fasta,
     logic,
+    ignore_list
 ):
     """
     get prodigal mean length for each chromosome
@@ -156,6 +157,10 @@ def select_best_chromosome_assembly_long_complete(
     # total assembly length
     total_assembly_length = 0
 
+    # ignore list 
+    with open(ignore_list, 'r') as file:
+        non_circular_chromosome_contig_list = file.readlines()
+
     # Open the output file in write mode
     with open(output_chromosome_fasta, "w") as output_handle:
         with open(overall_output_fasta, "w") as output_handle_overall:
@@ -194,7 +199,10 @@ def select_best_chromosome_assembly_long_complete(
                 stats_dict[record.id]["contig_type"] = "chromosome"
                 stats_dict[record.id]["length"] = sequence_length
                 stats_dict[record.id]["gc"] = gc_content
-                stats_dict[record.id]["circular"] = "True"
+                if record.id in non_circular_chromosome_contig_list:
+                    stats_dict[record.id]["circular"] = "False"
+                else:
+                    stats_dict[record.id]["circular"] = "True"
 
                 chromosomes += 1
 
@@ -307,4 +315,5 @@ select_best_chromosome_assembly_long_complete(
     snakemake.input.plassembler_fasta,
     snakemake.output.final_plasmid_fasta,
     snakemake.params.logic,
+    snakemake.input.ignore_list
 )
