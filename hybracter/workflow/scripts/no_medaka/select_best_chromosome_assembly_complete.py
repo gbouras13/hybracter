@@ -155,6 +155,10 @@ def select_best_chromosome_assembly_complete(
         with open(overall_output_fasta, "w") as output_handle_overall:
             # Iterate through the records in the best assembly FASTA file and write them to the output file
             for record in SeqIO.parse(best_assembly, "fasta"):
+
+                # for the circularity match at the end
+                contig_id = record.id
+
                 # to match the 00001 output favoured generally for parsing
                 # usually there will be 1 chromosome of course!
                 record.id = f"chromosome{chromosomes:05}"
@@ -188,7 +192,7 @@ def select_best_chromosome_assembly_complete(
                 stats_dict[record.id]["contig_type"] = "chromosome"
                 stats_dict[record.id]["length"] = sequence_length
                 stats_dict[record.id]["gc"] = gc_content
-                if record.id in non_circular_chromosome_contig_list:
+                if contig_id in non_circular_chromosome_contig_list:
                     stats_dict[record.id]["circular"] = "False"
                 else:
                     stats_dict[record.id]["circular"] = "True"
