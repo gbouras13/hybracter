@@ -114,7 +114,7 @@ rule select_best_chromosome_assembly_complete:
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
         chrom_pre_polish_fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
         comparisons=aggregate_comparisons,
     output:

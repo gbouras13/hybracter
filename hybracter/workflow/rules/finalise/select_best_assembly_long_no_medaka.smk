@@ -7,7 +7,7 @@ aggregate the pyrdigal mean length cds and finalise
 rule aggregate_finalise_complete:
     input:
         chrom_pre_polish_fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
         plassembler_plasmid_fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
