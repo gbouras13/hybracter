@@ -176,6 +176,7 @@ rule medaka_round_2_extract_intermediate_assembly:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),
+        ignore_list=os.path.join(dir.out.medaka_rd_2, "{sample}_ignore_list.txt")
     params:
         min_chrom_length=getMinChromLength,
         polypolish_flag=False,

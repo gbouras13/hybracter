@@ -112,6 +112,7 @@ rule polypolish_extract_intermediate_assembly:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
+        ignore_list=os.path.join(dir.out.polypolish, "{sample}_ignore_list.txt")
     params:
         min_chrom_length=getMinChromLength,
         polypolish_flag=True,
