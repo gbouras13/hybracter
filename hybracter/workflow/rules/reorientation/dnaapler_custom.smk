@@ -11,7 +11,7 @@ rule dnaapler_custom:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
-        ignore_list=fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt")
+        ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt")
     output:
         fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "dnaapler.version"),
@@ -31,6 +31,6 @@ rule dnaapler_custom:
         os.path.join(dir.out.stderr, "dnaapler", "{sample}.log"),
     shell:
         """
-        dnaapler custom -i {input.fasta} -o {params.dir} --ignore {input.ignore_list} -p {wildcards.sample} -t {threads} -a nearest -c {params.custom_db} -f 2> {log}
+        dnaapler custom -i {input.fasta} -o {params.dir} --ignore {input.ignore_list} -p {wildcards.sample} -t {threads} -a nearest -c {params.custom_db}  -f 2> {log}
         dnaapler --version > {output.version}
         """
