@@ -31,6 +31,6 @@ rule dnaapler_custom:
         os.path.join(dir.out.stderr, "dnaapler", "{sample}.log"),
     shell:
         """
-        dnaapler custom -i {input.fasta} -o {params.dir} --ignore {input.ignore_list} -p {wildcards.sample} -t {threads} -a nearest -c {params.custom_db}  -f 2> {log}
+        dnaapler all -i {input.fasta} -o {params.dir} --ignore {input.ignore_list} -p {wildcards.sample} -t {threads} -a nearest -c {params.custom_db}  -f 2> {log}
         dnaapler --version > {output.version}
         """
