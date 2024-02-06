@@ -283,7 +283,7 @@ def test_hybracter_dnaapler_custom_db():
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
     reads1: Path = test_data_path / "Fastqs/test_short_reads_R1.fastq.gz"
     reads2: Path = test_data_path / "Fastqs/test_short_reads_R2.fastq.gz"
-    dnaapler_custom_db: Path = test_data_path / "dnaapler_custom_db/dnaA.faa"
+    dnaapler_custom_db: Path = test_data_path / "dnaapler_custom_db/all.faa"
     cmd = f"hybracter hybrid-single -l {longreads} -1 {reads1} -2 {reads2} -c 50000 -s Sample1 --threads {threads} --output {outdir} --databases {db_dir} --dnaapler_custom_db {dnaapler_custom_db}"
     exec_command(cmd)
     remove_directory(outdir)
