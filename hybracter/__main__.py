@@ -131,19 +131,6 @@ def common_options(func):
             default=False,
         ),
         click.option(
-            "--logic",
-            "logic",
-            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
-            show_default=True,
-            default="best",
-            type=click.Choice(
-                [
-                    "best",
-                    "last",
-                ]
-            ),
-        ),
-        click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
@@ -350,6 +337,19 @@ hybrid
     is_flag=True,
     default=False,
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="last",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 @common_options
 def hybrid(
     _input,
@@ -450,6 +450,19 @@ hybrid single
     is_flag=True,
     default=False,
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="last",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 @common_options
 def hybrid_single(
     longreads,
@@ -526,6 +539,19 @@ long
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @common_options
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="best",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 def long(
     _input,
     medakaModel,
@@ -604,6 +630,19 @@ long single
     show_default=True,
 )
 @common_options
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="best",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 def long_single(
     longreads,
     sample,
@@ -760,6 +799,19 @@ test hybrid
     is_flag=True,
     default=False,
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="last",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 def test_hybrid(
     output,
     log,
@@ -820,6 +872,19 @@ test long
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="best",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 @common_options
 def test_long(
     output,
