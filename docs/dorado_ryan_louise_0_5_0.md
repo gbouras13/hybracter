@@ -23,7 +23,7 @@ He then compared the results to the reference using the same methodology as he d
 
 The full `hybracter` config parameters were:
 
-```
+```yaml
   contaminants: none
   databases: null
   dnaapler_custom_db: none

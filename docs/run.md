@@ -5,13 +5,13 @@
 
 You will first need to install the `hybracter` databases.
 
-```
+```bash
 hybracter install
 ```
 
 Alternatively, can also specify a particular directory to store them - you will need to specify this with `-d <databases directory>` when you run `hybracter`.
 
-```
+```bash
 hybracter install -d  <databases directory>
 ```
 
@@ -19,7 +19,7 @@ hybracter install -d  <databases directory>
 
 You only need to specify a input CSV to run `hybracter hybrid`. It is recommended that you also specify an output directory with `-o` and a thread count with `-t`.
 
-```
+```bash
 hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 ```
 
@@ -36,29 +36,13 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
 * You can turn off Medaka polishing using `--no_medaka`
 * You can turn off pypolca polishing using `--no_pypolca`
-* You can specify `hybracter` picking the last polishing round (not the best according to ALE) with `--logic last`. `hybracter` defaults to picking the best (according to ALE) i.e. `--logic best`.
+* By default, `hybracter hybrid` takes the last polishing round as the final assembly  (`--logic last`). We would recommend never changing this, as picking the best polishing round according to ALE with  `--logic best` is not guaranteed to give the most accurate assembly.
 
-```
-Usage: hybracter [OPTIONS] COMMAND [ARGS]...
+```bash
 
-  For more options, run: hybracter command --help
+hybracter version 0.7.0
 
-Options:
-  -h, --help  Show this message and exit.
 
-Commands:
-  install        Downloads and installs the plassembler database
-  hybrid         Run hybracter with hybrid long and paired end short reads
-  hybrid-single  Run hybracter hybrid on 1 isolate
-  long           Run hybracter long
-  long-single    Run hybracter long on 1 isolate
-  test-hybrid    Test hybracter hybrid
-  test-long      Test hybracter long
-  config         Copy the system default config file
-  citation       Print the citation(s) for hybracter
-  version        Print the version for hybracter
-
-hybracter version 0.4.1
 
  _           _                    _            
 | |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
@@ -66,6 +50,7 @@ hybracter version 0.4.1
 | | | | |_| | |_) | | | (_| | (__| ||  __/ |   
 |_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
        |___/
+
 
 Usage: hybracter hybrid [OPTIONS] [SNAKE_ARGS]...
 
@@ -75,15 +60,24 @@ Options:
   -i, --input TEXT                Input csv  [required]
   --no_pypolca                    Do not use pypolca to polish assemblies with
                                   short reads
+  --logic [best|last]             Hybracter logic to select best assembly. Use
+                                  --best to pick best assembly based on ALE
+                                  (hybrid) or pyrodigal mean length (long).
+                                  Use --last to pick the last polishing round
+                                  regardless.  [default: last]
   -o, --output PATH               Output directory  [default: hybracter_out]
-  --configfile TEXT               Custom config file [default:
-                                  (outputDir)/config.yaml]
+  --configfile TEXT               Custom config file [default: config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
-  --min_length INTEGER            min read length for long reads
-  --min_quality INTEGER           min read quality for long reads
-  --skip_qc                       Do not run porechop, filtlong and fastp to
-                                  QC the reads
+  --min_length INTEGER            min read length for long reads  [default:
+                                  1000]
+  --min_quality INTEGER           min read quality score for long reads in bp.
+                                  [default: 9]
+  --skip_qc                       Do not run porechop_abi, filtlong and fastp
+                                  to QC the reads
   -d, --databases PATH            Plassembler Databases directory.
+  --subsample_depth INTEGER       subsampled long read depth to subsample with
+                                  Filtlong. By default is 100x.  [default:
+                                  100]
   --medakaModel [r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
                                   Medaka Model.  [default:
                                   r1041_e82_400bps_sup_v4.2.0]
@@ -98,11 +92,6 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
-  --logic [best|last]             Hybracter logic to select best assembly. Use
-                                  --best to pick best assembly based on ALE
-                                  (hybrid) or pyrodigal mean length (long).
-                                  Use --last to pick the last polishing round
-                                  regardless.  [default: best]
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -112,20 +101,19 @@ Options:
                                   frontend mamba]
   -h, --help                      Show this message and exit.
 
-
 ```
 
 ## `hybracter hybrid-single`
 
 You can also run a single isolate using the same input arguments as Unicycler by specifying `hybracter hybrid-single`. Instead of specifying a CSV with `--input`, use `-l` to specify the long read FASTQ file, `-1` to specify the short read R1 file, `-2` to specify the short read R2 file, `-s` to specify the sample name, `-c` to specify the chromosome size.
 
-```
+```bash
 hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 short reads FASTQ> -s <sample name> -c <chromosome size> -o <output_dir> -t <threads>  [other arguments]
 ```
 
 The other arguments are the same as `hybracter hybrid`
 
-```
+```bash
 
 Usage: hybracter hybrid-single [OPTIONS] [SNAKE_ARGS]...
 
@@ -142,15 +130,24 @@ Options:
                                   (in base pairs).  [default: 1000000]
   --no_pypolca                    Do not use pypolca to polish assemblies with
                                   short reads
+  --logic [best|last]             Hybracter logic to select best assembly. Use
+                                  --best to pick best assembly based on ALE
+                                  (hybrid) or pyrodigal mean length (long).
+                                  Use --last to pick the last polishing round
+                                  regardless.  [default: last]
   -o, --output PATH               Output directory  [default: hybracter_out]
-  --configfile TEXT               Custom config file [default:
-                                  (outputDir)/config.yaml]
+  --configfile TEXT               Custom config file [default: config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
-  --min_length INTEGER            min read length for long reads
-  --min_quality INTEGER           min read quality for long reads
-  --skip_qc                       Do not run porechop, filtlong and fastp to
-                                  QC the reads
+  --min_length INTEGER            min read length for long reads  [default:
+                                  1000]
+  --min_quality INTEGER           min read quality score for long reads in bp.
+                                  [default: 9]
+  --skip_qc                       Do not run porechop_abi, filtlong and fastp
+                                  to QC the reads
   -d, --databases PATH            Plassembler Databases directory.
+  --subsample_depth INTEGER       subsampled long read depth to subsample with
+                                  Filtlong. By default is 100x.  [default:
+                                  100]
   --medakaModel [r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
                                   Medaka Model.  [default:
                                   r1041_e82_400bps_sup_v4.2.0]
@@ -165,11 +162,6 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
-  --logic [best|last]             Hybracter logic to select best assembly. Use
-                                  --best to pick best assembly based on ALE
-                                  (hybrid) or pyrodigal mean length (long).
-                                  Use --last to pick the last polishing round
-                                  regardless.  [default: best]
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -185,7 +177,7 @@ Options:
 
 You only need to specify a input CSV to run  `hybracter long`. It is recommended that you also specify an output directory with `-o` and a thread count with `-t`.
 
-```
+```bash
 hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 ```
 
@@ -200,9 +192,9 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
 * You can turn off Medaka polishing using `--no_medaka`
-* You can force `hybracter` to pick the last polishing round (not the best according to pyrodigal mean CDS length) with `--logic last`. `hybracter` defaults to picking the best i.e. `--logic best`.
+* You can force `hybracter long` to pick the last polishing round (not the best according to pyrodigal mean CDS length) with `--logic last`. `hybracter long` defaults to picking the best i.e. `--logic best`.
 
-```
+```bash
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter with only long reads
@@ -210,14 +202,18 @@ Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
 Options:
   -i, --input TEXT                Input csv  [required]
   -o, --output PATH               Output directory  [default: hybracter_out]
-  --configfile TEXT               Custom config file [default:
-                                  (outputDir)/config.yaml]
+  --configfile TEXT               Custom config file [default: config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
-  --min_length INTEGER            min read length for long reads
-  --min_quality INTEGER           min read quality for long reads
-  --skip_qc                       Do not run porechop, filtlong and fastp to
-                                  QC the reads
+  --min_length INTEGER            min read length for long reads  [default:
+                                  1000]
+  --min_quality INTEGER           min read quality score for long reads in bp.
+                                  [default: 9]
+  --skip_qc                       Do not run porechop_abi, filtlong and fastp
+                                  to QC the reads
   -d, --databases PATH            Plassembler Databases directory.
+  --subsample_depth INTEGER       subsampled long read depth to subsample with
+                                  Filtlong. By default is 100x.  [default:
+                                  100]
   --medakaModel [r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
                                   Medaka Model.  [default:
                                   r1041_e82_400bps_sup_v4.2.0]
@@ -232,11 +228,6 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
-  --logic [best|last]             Hybracter logic to select best assembly. Use
-                                  --best to pick best assembly based on ALE
-                                  (hybrid) or pyrodigal mean length (long).
-                                  Use --last to pick the last polishing round
-                                  regardless.  [default: best]
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -244,6 +235,11 @@ Options:
                                   --rerun-incomplete, --printshellcmds,
                                   --nolock, --show-failed-logs, --conda-
                                   frontend mamba]
+  --logic [best|last]             Hybracter logic to select best assembly. Use
+                                  --best to pick best assembly based on ALE
+                                  (hybrid) or pyrodigal mean length (long).
+                                  Use --last to pick the last polishing round
+                                  regardless.  [default: best]
   -h, --help                      Show this message and exit.
 
 ```
@@ -253,11 +249,11 @@ Options:
 
 Run `hybracter long` on a single isolate. Instead of specifying a CSV with `--input`, use `-l` to specify the long read FASTQ file, `-s` to specify the sample name, `-c` to specify the chromosome size.
 
-```
+```bash
 hybracter long-single -l <longread FASTQ> -s <sample name> -c <chromosome size>  -o <output_dir> -t <threads>  [other arguments]
 ```
 
-```
+```bash
 Usage: hybracter long-single [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter long on 1 isolate
@@ -304,4 +300,3 @@ Options:
                                   frontend mamba]
   -h, --help                      Show this message and exit.
 ```
-

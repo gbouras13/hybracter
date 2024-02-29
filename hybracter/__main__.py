@@ -131,6 +131,13 @@ def common_options(func):
             default=False,
         ),
         click.option(
+            "--depth_filter",
+            help="Depth filter to pass to Plassembler. Filters out all putative plasmid contigs below this fraction of the chromosome read depth (needs to be below in both long and short read sets for hybrid).",
+            type=float,
+            default=0.25,
+        ),
+
+        click.option(
             "--use-conda/--no-use-conda",
             default=True,
             help="Use conda for Snakemake rules",
@@ -366,6 +373,7 @@ def hybrid(
     contaminants,
     dnaapler_custom_db,
     logic,
+    depth_filter,
     log,
     configfile,
     **kwargs
@@ -388,6 +396,7 @@ def hybrid(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
             "configfile": configfile
@@ -483,6 +492,7 @@ def hybrid_single(
     dnaapler_custom_db,
     no_medaka,
     logic,
+    depth_filter,
     log,
     configfile,
     **kwargs
@@ -509,6 +519,7 @@ def hybrid_single(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
             "configfile": configfile
@@ -566,6 +577,7 @@ def long(
     dnaapler_custom_db,
     no_medaka,
     logic,
+    depth_filter,
     log,
     configfile,
     **kwargs
@@ -587,6 +599,7 @@ def long(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
             "configfile": configfile
@@ -660,6 +673,7 @@ def long_single(
     log,
     no_medaka,
     logic,
+    depth_filter,
     configfile,
     **kwargs
 ):
@@ -682,6 +696,7 @@ def long_single(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
             "configfile": configfile
@@ -827,6 +842,7 @@ def test_hybrid(
     contaminants,
     dnaapler_custom_db,
     logic,
+    depth_filter,
     configfile,
     **kwargs
 ):
@@ -848,6 +864,7 @@ def test_hybrid(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "logic": logic,
+            "depth_filter": depth_filter,
             "configfile": configfile
         }
     }
@@ -900,6 +917,7 @@ def test_long(
     dnaapler_custom_db,
     no_medaka,
     logic,
+    depth_filter,
     configfile,
     **kwargs
 ):
@@ -920,6 +938,7 @@ def test_long(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "logic": logic,
+            "depth_filter": depth_filter,
             "configfile": configfile
         }
     }

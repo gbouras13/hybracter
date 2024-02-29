@@ -82,7 +82,7 @@ rule dnaapler_pre_chrom:
     """
     input:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
-        ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt")
+        ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     output:
         fasta=os.path.join(
             dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"

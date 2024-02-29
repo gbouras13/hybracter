@@ -2,6 +2,7 @@
 aggregate the pyrdigal mean length cds and finalise
 """
 
+
 rule dnaapler_pre_chrom:
     """
     Runs dnaapler to begin pre polished chromosome 
@@ -31,6 +32,7 @@ rule dnaapler_pre_chrom:
         """
         dnaapler all -i {input.fasta} -o {params.dir} --ignore {input.ignore_list} -p {wildcards.sample} -t {threads} -a nearest --db dnaa,repa -f 2> {log}
         """
+
 
 ### from the aggregate_finalise function - so it dynamic
 rule aggregate_finalise_complete:

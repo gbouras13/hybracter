@@ -55,7 +55,7 @@ If your HPC uses a different workload manager, the process of installing a profi
 We have provided an example profile for the Slurm workload manager that should work for most HPCs using Slurm.
 Snakemake will look for profiles in your home directory at:
 
-```text
+```bash
 ~/.config/snakemake/
 ```
 

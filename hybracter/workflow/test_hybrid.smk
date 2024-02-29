@@ -61,6 +61,7 @@ MIN_QUALITY = config.args.min_quality
 MEDAKA_MODEL = config.args.medakaModel
 FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
+DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 
 

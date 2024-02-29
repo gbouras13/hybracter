@@ -20,9 +20,9 @@
   - [Description](#description)
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
+  - [v0.7.0 Updates (28 February 2024)](#v070-updates-28-february-2024)
   - [v0.5.0 Updates (08 January 2024)](#v050-updates-08-january-2024)
   - [v0.4.0 Updates (14 November 2023)](#v040-updates-14-november-2023)
-  - [v0.3.0 Updates 8 November 2023](#v030-updates-8-november-2023)
   - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
   - [Documentation](#documentation)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
@@ -62,7 +62,7 @@ You will need conda or mamba available so `hybracter` can install all the requir
 
 Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
-```
+```bash
 mamba create -n hybracterENV -c bioconda -c conda-forge  hybracter
 conda activate hybracterENV
 hybracter --help
@@ -120,6 +120,16 @@ To summarise the conclusions:
 * If you want the fastest possible chromosome assemblies for applications like species ID or sequence typing that retain a high level of accuracy, Dragonflye is a good option.
 * Dragonflye should not be used if you care about recovering plasmids.
 
+## v0.7.0 Updates (28 February 2024)
+
+* Changes to short read polishing. Logic added to run `polypolish` v0.6.0 with `--careful` and skip pypolca if the SR coverage estimate is below 5x (note: FASTA files for pypolca will be generated in the processing directory to play nice with Snakemake, but these will be identical to the polypolish output). 
+* For 5-25x coverage, `polypolish --careful` and `pypolca` with `--careful` will be run. For >25x coverage, `polypolish` default and `pypolca` with `--careful` will be run. 
+* By default, `--logic` defaults to `last` for `hybracter hybrid`, as there we have found that the polishing strategy implemented above never makes the assembly worse (a pre-print is coming!)
+* Logic changes for chromosome contigs and circularity. If hybracter assemblies a contig that is greater than the minimum chromosome length but not marked as circular by Flye, this will now be denoted as a chromosome, but not circular. It will be polished and in the final `_chromosome.fasta` output and it will not be rotated by `dnaapler`. 
+    * These were previously being excluded, which was missing chromosomes with structural heterogeneity (causing the chromosome not to completely circularise) or bacteria with linear chromosomes like [_Borrelia_](https://www.nature.com/articles/37551).
+
+
+
 ## v0.5.0 Updates (08 January 2024)
 
 Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 basecalled Nanopore reads (his [blog post](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html)). You can read a write-up of the results [here](https://hybracter.readthedocs.io/en/latest/dorado_ryan_louise_0_5_0/). As a result, subsampling has been added to Hybracter. 
@@ -135,12 +145,6 @@ Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 basecalled N
 * Adds reorientation of pre polished chromosome in case it is selected as the best assembly
 * Adds fixes to the chromosome comparisons - now it is much easier to interpret any changes between polishing rounds.
 
-## v0.3.0 Updates 8 November 2023  
-
-**Upgrading and re-running hybracter is recommended.** 
-
-* Fixes bug relating to polishing. Prior to v0.3.0, hybracter would only polish the chromosome with the entire readset. Benchmarking revealed that if there was significant similarity between chromosome and plasmids, polishing would introduce errors (my bad!)
-* Now the entire assembly (chromosome from Flye + plasmids from Plassembler) is polished in every polishing step with improved results (the full benchmarking methodology and results is forthcoming shortly)
 
 ## v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`
 
@@ -153,8 +157,6 @@ I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going fo
 If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
 
 `hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly appreciably worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. 
-
-In hybrid mode, I'd still think the short read polished assemblies should be best but who knows now that Nanopore reads are getting very accurate!
 
 ## Documentation
 
@@ -198,7 +200,7 @@ You will need conda and **highly recommended** mamba to run `hybracter`, because
 
 `hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
 
-```
+```bash
 mamba create -n hybracterENV hybracter
 conda activate hybracterENV
 hybracter --help
@@ -212,7 +214,7 @@ hybracter install
 You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 
-```
+```bash
 mamba create -n hybracterENV pip
 conda activate hybracterENV
 pip install hybracter
@@ -224,7 +226,7 @@ hybracter install
 
 Alternatively, the development version of `hybracter` (which may include new, untested features) can be installed manually via github. 
 
-```
+```bash
 git clone https://github.com/gbouras13/hybracter.git
 cd hybracter
 pip install -e .
@@ -239,7 +241,7 @@ hybracter --help
 * `hybracter long-single`: Assembles a single genome from an isolate with long-reads only.
 * `hybracter install`: Downloads and installs the required `plassembler` database.
 
-```
+```bash
  _           _                    _            
 | |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
 | '_ \| | | | '_ \| '__/ _` |/ __| __/ _ \ '__|
@@ -290,7 +292,7 @@ Commands:
 
 e.g.
 
-```
+```bash
 s_aureus_sample1,sample1_long_read.fastq.gz,2500000,sample1_SR_R1.fastq.gz,sample1_SR_R2.fastq.gz
 p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000,sample2_SR_R1.fastq.gz,sample2_SR_R2.fastq.gz
 ```
@@ -307,7 +309,7 @@ p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000,sample2_SR_R1.fastq.gz,s
 
 e.g.
 
-```
+```bash
 s_aureus_sample1,sample1_long_read.fastq.gz,2500000
 p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000
 ```
@@ -318,13 +320,13 @@ p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000
 
 You will first need to install the `hybracter` databases.
 
-```
+```bash
 hybracter install
 ```
 
 Alternatively, can also specify a particular directory to store them - you will need to specify this with `-d <databases directory>` when you run `hybracter`.
 
-```
+```bash
 hybracter install -d  <databases directory>
 ```
 
@@ -336,7 +338,7 @@ When you run `hybracter` for the first time, all the required dependencies will 
 
 If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter  test-hybrid ` and/or `hybracter test-long` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes.
 
-```
+```bash
 hybracter test-hybrid 
 hybracter test-long
 hybracter --help
@@ -346,7 +348,7 @@ Once that is done, run `hybracter hybrid` or `hybracter long` as follows.
 
 #### `hybracter hybrid`
 
-```
+```bash
 hybracter hybrid -i <input.csv> -o <output_dir> -t <threads> 
 ```
 
@@ -365,13 +367,13 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>
 
 #### `hybracter hybrid-single`
 
-```
+```bash
 hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 short reads FASTQ> -s <sample name> -c <chromosome size> -o <output_dir> -t <threads>  [other arguments]
 ```
 
 #### `hybracter long`
 
-```
+```bash
 hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 ```
 
@@ -389,7 +391,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 
 #### `hybracter long-single`
 
-```
+```bash
 hybracter long-single -l <longread FASTQ> -s <sample name> -c <chromosome size>  -o <output_dir> -t <threads>  [other arguments]
 ```
 
@@ -433,7 +435,7 @@ All samples that are denoted by hybracter to be incomplete will have 3 outputs i
 
 I would highly highly recommend running hybracter using a Snakemake profile. Please see this blog [post](https://fame.flinders.edu.au/blog/2021/08/02/snakemake-profiles-updated) for more details. I have included an example slurm profile in the profile directory, but check out this [link](https://github.com/Snakemake-Profiles) for more detail on other HPC job scheduler profiles.
 
-```
+```bash
 hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
 ```
 

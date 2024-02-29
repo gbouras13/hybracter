@@ -17,6 +17,7 @@ config = ap.AttrMap(config)
 # flag to download all medaka models
 MEDAKA_DOWNLOAD = config.args.medaka
 
+
 # directories
 include: os.path.join("rules", "preflight", "directories.smk")
 # targets
@@ -29,4 +30,4 @@ include: os.path.join("rules", "download", "download_medaka_models.smk")
 # define the rule all
 rule all:
     input:
-        TargetFilesDownload
+        TargetFilesDownload,

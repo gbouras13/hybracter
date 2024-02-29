@@ -51,7 +51,7 @@ rule pypolca_extract_intermediate_assembly:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
-        ignore_list=os.path.join(dir.out.pypolca, "{sample}_ignore_list.txt")
+        ignore_list=os.path.join(dir.out.pypolca, "{sample}_ignore_list.txt"),
     params:
         min_chrom_length=getMinChromLength,
         polypolish_flag=True,

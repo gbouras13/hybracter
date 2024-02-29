@@ -47,7 +47,8 @@ def select_best_chromosome_assembly_complete(
     flye_info,
     logic,
     no_pypolca,
-    ignore_list
+    ignore_list,
+    
 ):
     """
     reads all the .score files in teh ale directory, picks the best one (closest to zero) and then takes that chromosome fasta and writes it to file with length
@@ -57,6 +58,8 @@ def select_best_chromosome_assembly_complete(
     Checks if not empty
     And if it isn't, then adds the plassembler contigs as 'plasmid00001' etc
     Otherwise the plasmid output is empty
+
+    Filters out all contigs under depth_threshold (needs to be short and long)
 
     Then creates hybracter_summary tsv
     """
@@ -168,8 +171,6 @@ def select_best_chromosome_assembly_complete(
 
                 # for the circularity match at the end
                 contig_id = record.id
-                print(contig_id)
-                print(non_circular_chromosome_contig_list)
 
                 # to match the 00001 output favoured generally for parsing
                 # usually there will be 1 chromosome of course!
