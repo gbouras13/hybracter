@@ -3,11 +3,42 @@ aggregate the pyrdigal mean length cds and finalise
 """
 
 
+rule dnaapler_pre_chrom:
+    """
+    Runs dnaapler to begin pre polished chromosome 
+    In case it is chosen as best and for comparisons
+    """
+    input:
+        fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
+        ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
+    output:
+        fasta=os.path.join(
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
+        ),
+    conda:
+        os.path.join(dir.env, "dnaapler.yaml")
+    params:
+        dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom"),
+    resources:
+        mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
+    threads: config.resources.med.cpu
+    benchmark:
+        os.path.join(dir.out.bench, "dnaapler", "{sample}_pre_chrom.txt")
+    log:
+        os.path.join(dir.out.stderr, "dnaapler", "{sample}_pre_chrom.log"),
+    shell:
+        """
+        dnaapler all -i {input.fasta} -o {params.dir} --ignore {input.ignore_list} -p {wildcards.sample} -t {threads} -a nearest --db dnaa,repa -f 2> {log}
+        """
+
+
 ### from the aggregate_finalise function - so it dynamic
 rule aggregate_finalise_complete:
     input:
         chrom_pre_polish_fasta=os.path.join(
-            dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"
+            dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
         plassembler_plasmid_fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
@@ -15,6 +46,7 @@ rule aggregate_finalise_complete:
         flye_info=os.path.join(
             dir.out.assembly_statistics, "{sample}_assembly_info.txt"
         ),
+        ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     output:
         chromosome_fasta=os.path.join(
             dir.out.final_contigs_complete, "{sample}_chromosome.fasta"

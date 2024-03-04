@@ -6,7 +6,7 @@ You will need conda and **highly recommended** mamba to run `hybracter`, because
 
 `hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
 
-```
+```bash
 mamba create -n hybracterENV  -c bioconda -c conda-forge  hybracter
 conda activate hybracterENV
 hybracter --help
@@ -20,7 +20,7 @@ hybracter install
 You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 
-```
+```bash
 mamba create -n hybracterENV pip
 conda activate hybracterENV
 pip install hybracter
@@ -34,7 +34,7 @@ Mamba is **highly highly** recommend. Please see the [documentation](https://hyb
 
 Alternatively, the development version of `hybracter` (which may include new, untested features) can be installed manually via github. 
 
-```
+```bash
 git clone https://github.com/gbouras13/hybracter.git
 cd hybracter
 pip install -e .
@@ -47,19 +47,19 @@ hybracter --help
 
 To install the hybracter databases (consisting of a plassembler database) use:
 
-```
+```bash
 hybracter install
 ```
 
 Alternatively, if you would like to specify a different database directory, that can be achieved with `-d` or `--databases`:
 
-```
+```bash
 hybracter install -d <database directory>
 ```
 
 If you would like to download all the Medaka models (e.g. if you are going to run on a HPC node without internet), you can use `-m` or `--medaka`.
 
-```
+```bash
 hybracter install -m
 ```
 
@@ -85,7 +85,7 @@ If you encounter issues with speficic conda environments (see e.g. [this](https:
 
 e.g.
 
-```
+```bash
 Error in rule plassembler_long:
     jobid: 56
     input: hybracter_out/processing/qc/Sample1_filt_trim.fastq.gz
@@ -107,13 +107,13 @@ Once you have installed `hybracter` and run `hybracter install`, it is recommend
 
 For example you can run
 
-```
+```bash
 hybracter test-hybrid --threads 8
 ```
 
 and for long (same for Linux and MacOS)
 
-```
+```bash
 hybracter test-long --threads 1
 ```
 
@@ -142,7 +142,7 @@ Install miniforge and follow the prompts.
 
 ##### After installation is complete, you should add the following channels to your conda configuration:
 
-```
+```bash
 conda config --add channels defaults
 conda config --add channels bioconda
 conda config --add channels conda-forge
@@ -150,7 +150,7 @@ conda config --add channels conda-forge
 
 ##### Finally, I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
 
-```
+```bash
 mamba create -n hybracterENV hybracter
 conda activate hybracterENV
 hybracter -h
@@ -175,7 +175,7 @@ Install miniconda and follow the prompts.
 
 ##### After installation is complete, you should add the following channels to your conda configuration:
 
-```
+```bash
 conda config --add channels defaults
 conda config --add channels bioconda
 conda config --add channels conda-forge
@@ -183,13 +183,13 @@ conda config --add channels conda-forge
 
 ##### After this, conda should be installed (you may need to restart your terminal). It is recommended that mamba is also installed, as it will solve the enviroment quicker than conda:
 
-```
+```bash
 conda install mamba
 ```
 
 ##### Finally, I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
 
-```
+```bash
 mamba create -n hybracterENV hybracter
 conda activate hybracterENV
 hybracter -h

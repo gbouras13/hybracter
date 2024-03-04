@@ -28,9 +28,9 @@ def get_completeness(input_fasta, completeness_check, min_chrom_length, info_fil
     # flag for if the assembly is complete
     comp = False
     for dna_record in SeqIO.parse(input_fasta, "fasta"):
-        # get the circ value
         circ_value = info_df[info_df["seq_name"] == dna_record.id]["circ"].values[0]
-        if len(dna_record.seq) > int(min_chrom_length) and circ_value == "Y":
+        # mark as complete if over the size - but these will not necessarily be rotated - needs to be circular (as per extract_chromosome.py)
+        if len(dna_record.seq) > int(min_chrom_length):
             comp = True
 
     with open(completeness_check, "w") as f:

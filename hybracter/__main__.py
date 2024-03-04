@@ -37,9 +37,10 @@ def common_options(func):
         click.option(
             "--configfile",
             default="config.yaml",
+            type=str,
             show_default=False,
             callback=default_to_ouput,
-            help="Custom config file [default: (outputDir)/config.yaml]",
+            help="Custom config file [default: config.yaml]",
         ),
         click.option(
             "-t",
@@ -130,18 +131,12 @@ def common_options(func):
             default=False,
         ),
         click.option(
-            "--logic",
-            "logic",
-            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
-            show_default=True,
-            default="best",
-            type=click.Choice(
-                [
-                    "best",
-                    "last",
-                ]
-            ),
+            "--depth_filter",
+            help="Depth filter to pass to Plassembler. Filters out all putative plasmid contigs below this fraction of the chromosome read depth (needs to be below in both long and short read sets for hybrid).",
+            type=float,
+            default=0.25,
         ),
+
         click.option(
             "--use-conda/--no-use-conda",
             default=True,
@@ -172,6 +167,8 @@ def common_options(func):
             "--log",
             default="hybracter.log",
             callback=default_to_ouput,
+            type=str,
+            show_default=False,
             hidden=True,
         ),
         click.argument("snake_args", nargs=-1),
@@ -347,6 +344,19 @@ hybrid
     is_flag=True,
     default=False,
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --last to pick the last polishing round. Use --best to pick best assembly based on ALE (hybrid). ",
+            show_default=True,
+            default="last",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 @common_options
 def hybrid(
     _input,
@@ -363,7 +373,9 @@ def hybrid(
     contaminants,
     dnaapler_custom_db,
     logic,
+    depth_filter,
     log,
+    configfile,
     **kwargs
 ):
     """Run hybracter with hybrid long and paired end short reads"""
@@ -384,8 +396,10 @@ def hybrid(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -393,6 +407,7 @@ def hybrid(
     run_snakemake(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
+        configfile=configfile,
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -444,6 +459,19 @@ hybrid single
     is_flag=True,
     default=False,
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="last",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 @common_options
 def hybrid_single(
     longreads,
@@ -464,7 +492,9 @@ def hybrid_single(
     dnaapler_custom_db,
     no_medaka,
     logic,
+    depth_filter,
     log,
+    configfile,
     **kwargs
 ):
     """Run hybracter hybrid on 1 isolate"""
@@ -489,8 +519,10 @@ def hybrid_single(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -498,6 +530,7 @@ def hybrid_single(
     run_snakemake(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "hybrid.smk")),
+        configfile=configfile,
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -517,6 +550,19 @@ long
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
 @common_options
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="best",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 def long(
     _input,
     medakaModel,
@@ -531,7 +577,9 @@ def long(
     dnaapler_custom_db,
     no_medaka,
     logic,
+    depth_filter,
     log,
+    configfile,
     **kwargs
 ):
     """Run hybracter with only long reads"""
@@ -551,8 +599,10 @@ def long(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -561,6 +611,7 @@ def long(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
         merge_config=merge_config,
+        configfile=configfile,
         log=log,
         **kwargs
     )
@@ -592,6 +643,19 @@ long single
     show_default=True,
 )
 @common_options
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="best",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 def long_single(
     longreads,
     sample,
@@ -609,6 +673,8 @@ def long_single(
     log,
     no_medaka,
     logic,
+    depth_filter,
+    configfile,
     **kwargs
 ):
     """Run hybracter long on 1 isolate"""
@@ -630,8 +696,10 @@ def long_single(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
+            "configfile": configfile
         }
     }
 
@@ -639,6 +707,7 @@ def long_single(
     run_snakemake(
         # Full path to Snakefile
         snakefile_path=snake_base(os.path.join("workflow", "long.smk")),
+        configfile=configfile,
         merge_config=merge_config,
         log=log,
         **kwargs
@@ -745,6 +814,19 @@ test hybrid
     is_flag=True,
     default=False,
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="last",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 def test_hybrid(
     output,
     log,
@@ -760,6 +842,8 @@ def test_hybrid(
     contaminants,
     dnaapler_custom_db,
     logic,
+    depth_filter,
+    configfile,
     **kwargs
 ):
     """Test hybracter hybrid"""
@@ -780,11 +864,15 @@ def test_hybrid(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "logic": logic,
+            "depth_filter": depth_filter,
+            "configfile": configfile
         }
     }
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "test_hybrid.smk")),
         merge_config=merge_config,
+        configfile=configfile,
+        log=log,
         **kwargs
     )
 
@@ -801,6 +889,19 @@ test long
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            show_default=True,
+            default="best",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
 @common_options
 def test_long(
     output,
@@ -816,6 +917,8 @@ def test_long(
     dnaapler_custom_db,
     no_medaka,
     logic,
+    depth_filter,
+    configfile,
     **kwargs
 ):
     """Test hybracter long"""
@@ -835,11 +938,15 @@ def test_long(
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
             "logic": logic,
+            "depth_filter": depth_filter,
+            "configfile": configfile
         }
     }
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "test_long.smk")),
+        configfile=configfile,
         merge_config=merge_config,
+        log=log,
         **kwargs
     )
 

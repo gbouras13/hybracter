@@ -97,3 +97,36 @@ p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000
 | p_aeruginosa_sample2 | sample2_long_read.fastq.gz | 5500000 |
 
 
+## Pacbio Reads
+
+Thanks to Brad Hart ([@biobrad](https://github.com/biobrad)) for volunteering this tutorial on how to run Hybracter with PacBio long reads.
+
+Hybracter works with PacBio long reads once they have been extracted from the PacBio BAM file.
+
+To extract the raw fastq long read from the BAM file:
+
+First, install pbtk: https://github.com/PacificBiosciences/pbtk
+ 
+ ```bash
+ conda create -n pacbio -c bioconda pbtk
+ conda activate pacbio
+ ```
+
+Next, extract the fastq, requiring a 'pbi' file as an index:
+```bash
+ pbindex yourpacbiofile.bam
+```
+
+Then to extract the fastq file from the bam:
+
+```bash
+ bam2fastq -o yourfastqfilename yourpacbiofile.bam
+```
+
+The output file will be:
+
+```bash
+yourfastqfilename.fastq.gz
+```
+
+which you can feed into any of the Hybracter input formats as above.

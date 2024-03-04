@@ -11,6 +11,3 @@ TargetFilesDownload = [
 
 if MEDAKA_DOWNLOAD is True:
     TargetFilesDownload.append(os.path.join(dir.plassemblerdb, "medaka.flag"))
-
-
-

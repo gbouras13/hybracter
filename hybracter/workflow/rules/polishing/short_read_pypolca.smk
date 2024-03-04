@@ -1,5 +1,9 @@
 
 rule pypolca:
+    """
+    if coverage > 5, run pypolca --careful
+    otherwise don't run pypolca at all (depth < 5) - copies file to make it work in snakemake for later
+    """
     input:
         polypolish_fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
@@ -25,11 +29,12 @@ rule pypolca:
     shell:
         """
         coverage=$(head -n 1 {input.coverage})
-        if [ "$coverage" -gt 25 ]; then
-            pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t {threads} -f -p {wildcards.sample} 2> {log}
-        else
+        if [ "$coverage" -gt 5 ]; then
             pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t {threads} -f -p {wildcards.sample} --careful 2> {log}
+        else
+            cp {input.polypolish_fasta} {output.fasta}
         fi
+
         pypolca --version > {params.version}
         """
 
@@ -46,6 +51,7 @@ rule pypolca_extract_intermediate_assembly:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
+        ignore_list=os.path.join(dir.out.pypolca, "{sample}_ignore_list.txt"),
     params:
         min_chrom_length=getMinChromLength,
         polypolish_flag=True,
@@ -91,6 +97,10 @@ rule compare_assemblies_pypolca_vs_polypolish:
 
 
 rule pypolca_incomplete:
+    """
+    if coverage > 5, run pypolca --careful
+    otherwise don't run pypolca at all (depth < 5) - copies file to make it work in snakemake for later
+    """
     input:
         polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
@@ -123,11 +133,12 @@ rule pypolca_incomplete:
     shell:
         """
         coverage=$(head -n 1 {input.coverage})
-        if [ "$coverage" -gt 25 ]; then
-            pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t {threads} -f -p {wildcards.sample} 2> {log}
-        else
+        if [ "$coverage" -gt 5 ]; then
             pypolca run -a {input.polypolish_fasta} -1 {input.r1} -2 {input.r2} -o {params.pypolca_dir} -t {threads} -f -p {wildcards.sample} --careful 2> {log}
+        else
+            cp {input.polypolish_fasta} {output.fasta}
         fi
+
         pypolca --version > {params.version}
         cp {output.fasta} {params.copy_fasta} 
         """

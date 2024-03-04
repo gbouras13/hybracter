@@ -24,6 +24,8 @@ onerror:
 
 
 # config file
+
+
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 
@@ -61,6 +63,7 @@ MIN_QUALITY = config.args.min_quality
 MEDAKA_MODEL = config.args.medakaModel
 FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
+DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 
 # Parse the samples and read files

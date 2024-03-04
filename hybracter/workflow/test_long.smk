@@ -61,6 +61,7 @@ MIN_QUALITY = config.args.min_quality
 MEDAKA_MODEL = config.args.medakaModel
 FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
+DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 
 # Parse the samples and read files
@@ -106,9 +107,9 @@ else:  # where no contaminants to be removed
 
         include: os.path.join("rules", "processing", "qc.smk")
 
+
 # for seqkit
 include: os.path.join("rules", "processing", "coverage.smk")
-
 # assembly
 include: os.path.join("rules", "assembly", "assemble.smk")
 # extract chrom

@@ -79,6 +79,13 @@ def test_hybracter_t_subsample_depth():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_t_depth_filter():
+    """hybracter test-hybrid depth filter 2"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka --depth_filter 2"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 def test_hybracter_hybrid_last_no_medaka():
     """hybracter test-hybrid"""
     outdir: Path = "test_hybracter_output"
@@ -118,6 +125,12 @@ def test_hybracter_t_long_last():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_t_long_depth_filter():
+    """hybracter test-long with depth_filter"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-long --threads {threads} --output {outdir}--skip_qc --depth_filter 2"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_hybracter_t_long_no_medaka():
     """hybracter test-long no medaka"""
@@ -142,6 +155,22 @@ def test_hybracter_hybrid_csv():
     """test hybracter hybrid default"""
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_hybrid_input.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+def test_hybracter_hybrid_csv_skip_qc_not_gzipped():
+    """test hybracter hybrid with --skip_qc and a long read fastq that isn't gzipped """
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input_not_gzipped.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+def test_hybracter_hybrid_csv_ultra_low_cov():
+    """test hybracter hybrid default ultra low illumina coverage (4x) - to make sure pypolca is skipped"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input_ultra_low_illumina_coverage.csv"
     cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
     exec_command(cmd)
     remove_directory(outdir)
@@ -267,7 +296,7 @@ def test_hybracter_dnaapler_custom_db():
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
     reads1: Path = test_data_path / "Fastqs/test_short_reads_R1.fastq.gz"
     reads2: Path = test_data_path / "Fastqs/test_short_reads_R2.fastq.gz"
-    dnaapler_custom_db: Path = test_data_path / "dnaapler_custom_db/dnaA.faa"
+    dnaapler_custom_db: Path = test_data_path / "dnaapler_custom_db/all.faa"
     cmd = f"hybracter hybrid-single -l {longreads} -1 {reads1} -2 {reads2} -c 50000 -s Sample1 --threads {threads} --output {outdir} --databases {db_dir} --dnaapler_custom_db {dnaapler_custom_db}"
     exec_command(cmd)
     remove_directory(outdir)

@@ -1,5 +1,17 @@
 # History
 
+## v0.7.0 (02 February 2024)
+
+* Fixes bug where `--configfile` wasn't being passed to Hybracter.
+* Fixes bug where `hybracter` would crash if the input long reads were not gzipped #51 thanks @wanyuac.
+* Logic changes for chromosome contigs and circularity. If hybracter assemblies a contig that is greater than the minimum chromosome length but not marked as circular by Flye, this will now be denoted as a chromosome, but not circular. It will be polished and in the final `_chromosome.fasta` output and it will not be rotated by `dnaapler`. 
+  * These were previously being excluded, which was missing chromosomes with structural heterogeneity (causing the chromosome not to completely circularise) or bacteria with linear chromosomes like [_Borrelia_](https://www.nature.com/articles/37551).
+* Changes to short read polishing. Logic added to run `polypolish` v0.6.0 with `--careful` and skip pypolca if the SR coverage estimate is below 5x (note: FASTA files for pypolca will be generated in the processing directory to play nice with Snakemake, but these will be identical to the polypolish output). 
+* For 5-25x coverage, `polypolish --careful` and `pypolca` with `--careful` will be run. For >25x coverage, `polypolish` default and `pypolca` with `--careful` will be run. 
+* By default, `--logic` defaults to `last` for `hybracter hybrid`, as there we have found that the polishing strategy implemented above never makes the assembly worse (a pre-print is coming!). We suggest never using `--logic best` with `hybracter hybrid`.
+
+
+
 ## v0.6.0 (18 January 2024)
 
 * Fixes bug with Polypolish v0.6.0 breaking the CLI #48

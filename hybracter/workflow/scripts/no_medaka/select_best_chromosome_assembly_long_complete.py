@@ -87,6 +87,7 @@ def select_best_chromosome_assembly_long_complete(
     chrom_pre_polish_fasta,
     sample,
     flye_info,
+    ignore_list
 ):
     """
     get prodigal mean length for each chromosome
@@ -139,11 +140,20 @@ def select_best_chromosome_assembly_long_complete(
     # total assembly length
     total_assembly_length = 0
 
+    # ignore list 
+    # strip '\n'
+    with open(ignore_list, 'r') as file:
+        non_circular_chromosome_contig_list = [line.strip() for line in file.readlines()]
+
     # Open the output file in write mode
     with open(output_chromosome_fasta, "w") as output_handle:
         with open(overall_output_fasta, "w") as output_handle_overall:
             # Iterate through the records in the best assembly FASTA file and write them to the output file
             for record in SeqIO.parse(best_assembly, "fasta"):
+
+                # for the circularity match at the end
+                contig_id = record.id
+
                 # to match the 00001 output favoured generally for parsing
                 # usually there will be 1 chromosome of course!
                 record.id = f"chromosome{chromosomes:05}"
@@ -177,7 +187,10 @@ def select_best_chromosome_assembly_long_complete(
                 stats_dict[record.id]["contig_type"] = "chromosome"
                 stats_dict[record.id]["length"] = sequence_length
                 stats_dict[record.id]["gc"] = gc_content
-                stats_dict[record.id]["circular"] = "True"
+                if contig_id in non_circular_chromosome_contig_list:
+                    stats_dict[record.id]["circular"] = "False"
+                else:
+                    stats_dict[record.id]["circular"] = "True"
 
                 chromosomes += 1
 
@@ -283,4 +296,5 @@ select_best_chromosome_assembly_long_complete(
     snakemake.input.chrom_pre_polish_fasta,
     snakemake.wildcards.sample,
     snakemake.input.flye_info,
+    snakemake.input.ignore_list
 )

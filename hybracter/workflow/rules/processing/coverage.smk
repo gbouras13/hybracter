@@ -64,6 +64,7 @@ rule aggr_seqkit_short:
         touch {output.flag}
         """
 
+
 rule aggr_seqkit_long:
     """
     aggregates the seqkit stats over all samples
@@ -81,6 +82,7 @@ rule aggr_seqkit_long:
         """
         touch {output.flag}
         """
+
 
 rule estimate_sr_coverage:
     """

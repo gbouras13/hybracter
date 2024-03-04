@@ -20,6 +20,7 @@ rule plassembler_hybrid:
         chromlen=getMinChromLength,
         outdir=os.path.join(dir.out.plassembler, "{sample}"),
         flye_dir=os.path.join(dir.out.assemblies, "{sample}"),
+        depth_filter=DEPTH_FILTER,
     conda:
         os.path.join(dir.env, "plassembler.yaml")
     resources:
@@ -34,10 +35,10 @@ rule plassembler_hybrid:
     shell:
         """
         if unicycler --version ; then
-            plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+            plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} --depth_filter {params.depth_filter} -f 2> {log}
         else
             pip install git+https://github.com/rrwick/Unicycler.git
-            plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} -f 2> {log}
+            plassembler run -l {input.l} -o {params.outdir} -1 {input.r1} -2 {input.r2} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} --depth_filter {params.depth_filter} -f 2> {log}
         fi
         touch {output.fasta}
         touch {output.summary}

@@ -44,6 +44,11 @@ rule bwa_mem_incomplete:
 
 
 rule polypolish_incomplete:
+    """
+    if depth < 5, run polypolish --careful
+    if depth 5-25, run polypolish --careful
+    if depth > 25, run polypolish default - might fix errors in repeats pypolca can't
+    """
     input:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         sam1=os.path.join(dir.out.bwa_incomplete, "{sample}_1.sam"),
@@ -54,14 +59,13 @@ rule polypolish_incomplete:
         version=os.path.join(
             dir.out.versions, "{sample}", "polypolish_incomplete.version"
         ),
-    conda:
-        os.path.join(dir.env, "polypolish.yaml")
-    params:
         copy_fasta=os.path.join(
             dir.out.intermediate_assemblies_incomplete,
             "{sample}",
             "{sample}_polypolish.fasta",
         ),
+    conda:
+        os.path.join(dir.env, "polypolish.yaml")
     resources:
         mem_mb=config.resources.med.mem,
         mem=str(config.resources.med.mem) + "MB",
@@ -75,10 +79,10 @@ rule polypolish_incomplete:
         """
         coverage=$(head -n 1 {input.coverage})
         if [ "$coverage" -gt 25 ]; then
-            polypolish polish --careful {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
-        else
             polypolish polish {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
+        else
+            polypolish polish --careful {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         fi
         polypolish --version > {output.version}
-        cp {output.fasta} {params.copy_fasta}
+        cp {output.fasta} {output.copy_fasta}
         """

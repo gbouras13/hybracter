@@ -24,13 +24,13 @@ resources:
 
 Users can copy and modify the default config file to suit their own needs by running `hybracter config`. 
 
-```
+```bash
 hecatomb config
 ```
 
 This will copy the default config file to the `hybracter_out` directory as `config.yaml`. You can modify this as you please to suit your system, and you can specify it using the `--configfile` parameter.
 
-```
+```bash
 hybracter hybrid --configfile my_modified_config.yaml
 ```
 
