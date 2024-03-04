@@ -44,15 +44,7 @@ def get_chromosome_plasmids(
 
     with open(chromosome_fasta, "w") as fa:
         for dna_record in SeqIO.parse(input_fasta, "fasta"):
-            # # get the circ values
-            # if polypolish_flag is False:
-            #     seq_id = dna_record.id
-            # # trim the last 11 characters _polypolish if the flag is true
-            # else:
-            #     seq_id = dna_record.id[:-11]
 
-            # polypolish v0.6.0 introduces a space not an underscore
-            # so no need for polypolish flag as the id will be the same as for fly
             seq_id = dna_record.id
 
             # get all the values
@@ -63,7 +55,10 @@ def get_chromosome_plasmids(
             # this should never every happen as there won't be dupes in the Flye info shee but just in case
             elif len(circ_values) > 1:
                 circ_value = circ_values[0]
-            # for plasmids - not part of the chromosome so 'N' to make sure it doesn't get extracted
+            # will be 0 (so under this case) if:
+                # chromosome didn't circularise
+                # plasmids - not part of the chromosome 
+                # so 'N' to make sure it doesn't get extracted
             else:
                 circ_value = "N"
             # will actually extract multiple chromosomes if above the desired chrom length and circularised

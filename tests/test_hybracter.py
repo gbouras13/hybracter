@@ -79,6 +79,13 @@ def test_hybracter_t_subsample_depth():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_t_depth_filter():
+    """hybracter test-hybrid depth filter 2"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka --depth_filter 2"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 def test_hybracter_hybrid_last_no_medaka():
     """hybracter test-hybrid"""
     outdir: Path = "test_hybracter_output"
@@ -118,6 +125,12 @@ def test_hybracter_t_long_last():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_t_long_depth_filter():
+    """hybracter test-long with depth_filter"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-long --threads {threads} --output {outdir}--skip_qc --depth_filter 2"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_hybracter_t_long_no_medaka():
     """hybracter test-long no medaka"""

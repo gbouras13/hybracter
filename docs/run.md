@@ -92,6 +92,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --depth_filter FLOAT            Depth filter to pass to Plassembler. Filters
+                                  out all putative plasmid contigs below this
+                                  fraction of the chromosome read depth (needs
+                                  to be below in both long and short read sets
+                                  for hybrid).
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -162,6 +167,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --depth_filter FLOAT            Depth filter to pass to Plassembler. Filters
+                                  out all putative plasmid contigs below this
+                                  fraction of the chromosome read depth (needs
+                                  to be below in both long and short read sets
+                                  for hybrid).
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -228,6 +238,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --depth_filter FLOAT            Depth filter to pass to Plassembler. Filters
+                                  out all putative plasmid contigs below this
+                                  fraction of the chromosome read depth (needs
+                                  to be below in both long and short read sets
+                                  for hybrid).
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -286,6 +301,11 @@ Options:
                                   be used as a database with dnaapler custom.
   --no_medaka                     Do not polish the long read assembly with
                                   Medaka.
+  --depth_filter FLOAT            Depth filter to pass to Plassembler. Filters
+                                  out all putative plasmid contigs below this
+                                  fraction of the chromosome read depth (needs
+                                  to be below in both long and short read sets
+                                  for hybrid).
   --logic [best|last]             Hybracter logic to select best assembly. Use
                                   --best to pick best assembly based on ALE
                                   (hybrid) or pyrodigal mean length (long).

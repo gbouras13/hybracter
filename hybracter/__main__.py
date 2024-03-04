@@ -347,7 +347,7 @@ hybrid
 @click.option(
             "--logic",
             "logic",
-            help="Hybracter logic to select best assembly. Use --best to pick best assembly based on ALE (hybrid) or pyrodigal mean length (long). Use --last to pick the last polishing round regardless.",
+            help="Hybracter logic to select best assembly. Use --last to pick the last polishing round. Use --best to pick best assembly based on ALE (hybrid). ",
             show_default=True,
             default="last",
             type=click.Choice(
