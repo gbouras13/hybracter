@@ -1,5 +1,9 @@
 # History
 
+## v0.7.1 (13 March 2024)
+
+* Fixes bug where `hybracter install -d db_dir` would not work as the `-f` parameter was not being passed to Plassembler. Thanks @npbhavya
+
 ## v0.7.0 (04 March 2024)
 
 **Bug fixes**

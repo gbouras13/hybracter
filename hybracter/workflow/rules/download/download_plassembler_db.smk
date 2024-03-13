@@ -17,7 +17,7 @@ rule download_db:
     threads: config.resources.sml.cpu
     shell:
         """
-        plassembler download -d {params.db}
+        plassembler download -d {params.db} -f
         rm -r {params.intermediate_outputs}
         touch {output.flag}
         """
