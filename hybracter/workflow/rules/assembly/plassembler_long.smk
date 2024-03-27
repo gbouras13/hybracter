@@ -29,6 +29,7 @@ rule plassembler_long:
         os.path.join(dir.out.stderr, "plassembler_long", "{sample}.log"),
     shell:
         """
+        pip install git+https://github.com/rrwick/Unicycler.git
         plassembler long -l {input.l} -o {params.outdir} -d {params.db} -t {threads} -c {params.chromlen} --skip_qc --flye_directory {params.flye_dir} --depth_filter {params.depth_filter} -f 2> {log}
         touch {output.fasta}
         touch {output.summary}
