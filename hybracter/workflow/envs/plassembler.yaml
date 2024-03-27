@@ -7,4 +7,5 @@ dependencies:
     - plassembler >=1.6.1
     - canu ==2.2
     - mash >=2.2
+    - pip
 
