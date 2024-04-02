@@ -95,7 +95,7 @@ To install and run v0.7.1 with singularity
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras/hybracter:0.7.1
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.1
 
 containerImage="$IMAGE_DIR/hybracter_0.7.1.sif"
 
