@@ -175,7 +175,10 @@ def select_best_chromosome_assembly_long_complete(
                         longest_contig_length = sequence_length
 
                 # Update the description (header) with the length information
-                record.description = f"len={sequence_length}"
+                if contig_id in non_circular_chromosome_contig_list:
+                    record.description = f"len={sequence_length}"
+                else:
+                    record.description = f"len={sequence_length} circular=true"
 
                 # Write the modified record to the output file
                 SeqIO.write(record, output_handle, "fasta")
