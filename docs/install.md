@@ -41,6 +41,27 @@ pip install -e .
 hybracter --help
 ```
 
+## Docker/Singularity
+
+A Docker/Singularity Linux container image is available for Hybracter (starting from v0.7.1) [here](https://quay.io/repository/gbouras13/hybracter). This will likely be useful for running Hybracter in HPC environments.
+
+* **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
+
+To install and run v0.7.1 with singularity
+
+```bash
+
+IMAGE_DIR="<the directory you want the .sif file to be in >"
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras/hybracter:0.7.1
+
+containerImage="$IMAGE_DIR/hybracter_0.7.1.sif"
+
+# example command with test fastqs
+ singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
+ -1 test_data/Fastqs/test_short_reads_R1.fastq.gz  -2 test_data/Fastqs/test_short_reads_R2.fastq.gz \
+ -o output_test_singularity -t 4 -c 50000
+```
+
 # Database Installation
 
 **Note: users (and CI) have reported errors where this does not work due to an MD5 file error. This is due to Zenodo having issues (where the database lives). Waiting a few minutes and trying again usuall works.**

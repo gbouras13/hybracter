@@ -25,6 +25,7 @@ All samples that are denoted by hybracter to be complete will have 5 outputs in 
    * `sample`_final.fasta containing the final assembly for that sample.
    * `sample`_chromosome.fasta containing only the final chromosome(s) assembly for that sample.
    * `sample`_plasmid.fasta containing only the final plasmid(s) assembly for that sample. Note this may be empty. If this is empty, then that sample had no plasmids. 
+       * **Note** - there may be a number of non-circular "plasmid" contigs. Be careful assuming these are truly plasmids and check the plassmbler output in `supplementary_results`. These may be assembly artefacts that should be excluded, or indicate that your long- and short-read sets aren't well matched!
 
 All samples that are denoted by hybracter to be incomplete will have 3 outputs in the `incomplete` directory:
 
