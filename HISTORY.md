@@ -1,5 +1,10 @@
 # History
 
+## v0.7.2 (2 April 2024)
+
+* Adds 'circualr=True' to chromosome contig headers where Flye has marked these as such. This bug was introduced in v0.7.0.
+* Thanks Nicole Lerminiaux for spotting this
+ 
 ## v0.7.1 (13 March 2024)
 
 * Fixes bug where `hybracter install -d db_dir` would not work as the `-f` parameter was not being passed to Plassembler. Thanks @npbhavya
