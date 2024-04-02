@@ -17,6 +17,8 @@
 - [Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies](#hybracter-enabling-scalable-automated-complete-and-accurate-bacterial-genome-assemblies)
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
+    - [Mamba/Conda](#mambaconda)
+    - [Container](#container)
   - [Description](#description)
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
@@ -56,6 +58,8 @@
 
 ## Quick Start
 
+### Mamba/Conda
+
 `hybracter` is available to install with `pip` or `conda`.
 
 You will need conda or mamba available so `hybracter` can install all the required dependencies. 
@@ -78,6 +82,27 @@ If you intend to run hybracter offline (e.g. on HPC nodes with no access to the 
 ```
 hybracter test-hybrid --threads 8
 hybracter test-long --threads 8
+```
+
+### Container
+
+Alternatively, a Docker/Singularity Linux container image is available for Hybracter (starting from v0.7.1) [here](https://quay.io/repository/gbouras13/hybracter). This will likely be useful for running Hybracter in HPC environments.
+
+* **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
+
+To install and run v0.7.1 with singularity
+
+```bash
+
+IMAGE_DIR="<the directory you want the .sif file to be in >"
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.1
+
+containerImage="$IMAGE_DIR/hybracter_0.7.1.sif"
+
+# example command with test fastqs
+ singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
+ -1 test_data/Fastqs/test_short_reads_R1.fastq.gz  -2 test_data/Fastqs/test_short_reads_R2.fastq.gz \
+ -o output_test_singularity -t 4 -c 50000
 ```
 
 ## Description

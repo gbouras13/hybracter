@@ -34,9 +34,10 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter hybrid -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter hybrid -h`)
-* You can turn off Medaka polishing using `--no_medaka`
-* You can turn off pypolca polishing using `--no_pypolca`
-* By default, `hybracter hybrid` takes the last polishing round as the final assembly  (`--logic last`). We would recommend never changing this, as picking the best polishing round according to ALE with  `--logic best` is not guaranteed to give the most accurate assembly.
+* You can turn off Medaka polishing using `--no_medaka` - recommended for Q20+ modern Nanopore reads
+* You can turn off pypolca polishing using `--no_pypolca` - I wouldn't though!
+* You can change the `--depth_filter` from 0.25x chromosome coverage. This will filter out all Plassembler contigs below this depth.
+* By default, `hybracter hybrid` takes the last polishing round as the final assembly  (`--logic last`). We would not recommend changing this to `--logic best`, as picking the best polishing round according to ALE with  `--logic best` is not guaranteed to give the most accurate assembly (See our [preprint](https://www.biorxiv.org/content/10.1101/2024.03.07.584013v1)).
 
 ```bash
 
@@ -201,8 +202,11 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * `--skip_qc` will skip all read QC steps.
 * You can change the `--medakaModel` (all available options are listed in `hybracter long -h`)
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
-* You can turn off Medaka polishing using `--no_medaka`
+* You can turn off Medaka polishing using `--no_medaka` - recommended for Q20+ modern Nanopore and PacBio reads
+* You can change the `--depth_filter` from 0.25x chromosome coverage. This will filter out all Plassembler contigs below this depth.
 * You can force `hybracter long` to pick the last polishing round (not the best according to pyrodigal mean CDS length) with `--logic last`. `hybracter long` defaults to picking the best i.e. `--logic best`.
+
+
 
 ```bash
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
