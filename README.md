@@ -19,6 +19,7 @@
   - [Quick Start](#quick-start)
     - [Mamba/Conda](#mambaconda)
     - [Container](#container)
+  - [Documentation](#documentation)
   - [Description](#description)
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
@@ -26,7 +27,6 @@
   - [v0.5.0 Updates (08 January 2024)](#v050-updates-08-january-2024)
   - [v0.4.0 Updates (14 November 2023)](#v040-updates-14-november-2023)
   - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
-  - [Documentation](#documentation)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
   - [Other Options](#other-options)
       - [Trycycler](#trycycler)
@@ -90,20 +90,24 @@ Alternatively, a Docker/Singularity Linux container image is available for Hybra
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.7.1 with singularity
+To install and run v0.7.2 with singularity
 
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.1
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.2
 
-containerImage="$IMAGE_DIR/hybracter_0.7.1.sif"
+containerImage="$IMAGE_DIR/hybracter_0.7.2.sif"
 
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
  -1 test_data/Fastqs/test_short_reads_R1.fastq.gz  -2 test_data/Fastqs/test_short_reads_R2.fastq.gz \
  -o output_test_singularity -t 4 -c 50000
 ```
+
+## Documentation
+
+Documentation for `hybracter` is available [here](https://hybracter.readthedocs.io/en/latest/).
 
 ## Description
 
@@ -135,7 +139,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 
 `Hybracter` was benchmarked in both hybrid and long modes (specifically using the `hybrid-single` and `long-single` commands) against [Unicycler](https://github.com/rrwick/Unicycler) v0.5.0 and [Dragonflye](https://github.com/rpetit3/dragonflye) v1.1.2.
 
-30 samples from 5 studies with available reference genomes were benchmarked. You can see the full explanation and results [here](https://hybracter.readthedocs.io/en/latest/benchmarking/). You can find all the output [here](https://doi.org/10.5281/zenodo.10158013).
+30 samples from 5 studies with available reference genomes were benchmarked. You can see the full explanation and results [here](https://hybracter.readthedocs.io/en/latest/benchmarking/). You can find all the output [here](https://doi.org/10.5281/zenodo.10906937).
 
 To summarise the conclusions:
 
@@ -198,10 +202,6 @@ I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going fo
 If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
 
 `hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly appreciably worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. 
-
-## Documentation
-
-Documentation for `hybracter` is available [here](https://hybracter.readthedocs.io/en/latest/).
 
 ## Why Would You Run Hybracter?
 
