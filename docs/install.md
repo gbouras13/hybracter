@@ -47,14 +47,14 @@ A Docker/Singularity Linux container image is available for Hybracter (starting 
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.7.1 with singularity
+To install and run v0.7.2 with singularity
 
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.1
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.2
 
-containerImage="$IMAGE_DIR/hybracter_0.7.1.sif"
+containerImage="$IMAGE_DIR/hybracter_0.7.2.sif"
 
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
