@@ -5,6 +5,7 @@ channels:
     - defaults
 dependencies:
     - plassembler >=1.6.1
+    - spades >=3.15.2
     - canu ==2.2
     - mash >=2.2
     - pip

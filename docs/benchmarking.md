@@ -16,7 +16,7 @@
 
 ## Sample Selection
 
-For the full details on how `hybracter` was benchmarked, please see the [repository](https://github.com/gbouras13/hybracter_benchmarking). You can find all the benchmarking output and FASTQ files used [here](https://doi.org/10.5281/zenodo.10158013).
+For the full details on how `hybracter` was benchmarked, please see the [repository](https://github.com/gbouras13/hybracter_benchmarking). You can find all the benchmarking output and FASTQ files used [here](https://doi.org/10.5281/zenodo.10906937).
 
 `Hybracter` v0.7.0 was benchmarked in both hybrid and long modes (specifically using the `hybrid-single` and `long-single` commands) against [Unicycler](https://github.com/rrwick/Unicycler) v0.5.0 and [Dragonflye](https://github.com/rpetit3/dragonflye) v1.1.2.
 
