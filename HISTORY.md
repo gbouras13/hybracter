@@ -1,5 +1,10 @@
 # History
 
+## v0.7.3 (4 April 2024)
+
+* Enforce spades>=v3.15.2 in the `plassembler.yaml` environment
+* For some reason, the environment on Linux environments was being solved for v3.14.1, which was causing an error with Unicycler within Plassembler for some samples described (https://github.com/rrwick/Unicycler/issues/318) 
+
 ## v0.7.2 (2 April 2024)
 
 * Adds 'circualr=True' to chromosome contig headers where Flye has marked these as such. This bug was introduced in v0.7.0.
