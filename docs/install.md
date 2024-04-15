@@ -1,5 +1,13 @@
 # Installation
 
+# Google Colab Notebooks
+
+If you don't want to install `hybracter` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
+
+This is only recommend if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install as described below is suggested.
+
+# Local Installation
+
 You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install mamba.
 
 ## Conda
@@ -47,14 +55,14 @@ A Docker/Singularity Linux container image is available for Hybracter (starting 
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.7.2 with singularity
+To install and run v0.7.3 with singularity
 
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.2
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.3
 
-containerImage="$IMAGE_DIR/hybracter_0.7.2.sif"
+containerImage="$IMAGE_DIR/hybracter_0.7.3.sif"
 
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \

@@ -1,3 +1,5 @@
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![](https://img.shields.io/static/v1?label=CLI&message=Snaketool&color=blueviolet)](https://github.com/beardymcjohnface/Snaketool)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/gbouras13/hybracter/dev?color=8a35da)
@@ -17,6 +19,7 @@
 - [Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies](#hybracter-enabling-scalable-automated-complete-and-accurate-bacterial-genome-assemblies)
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
+- [Google Colab Notebooks](#google-colab-notebooks)
     - [Mamba/Conda](#mambaconda)
     - [Container](#container)
   - [Documentation](#documentation)
@@ -58,6 +61,12 @@
 
 ## Quick Start
 
+# Google Colab Notebooks
+
+If you don't want to install `hybracter` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
+
+This is only recommend if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install as described below is suggested.
+
 ### Mamba/Conda
 
 `hybracter` is available to install with `pip` or `conda`.
@@ -90,14 +99,14 @@ Alternatively, a Docker/Singularity Linux container image is available for Hybra
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.7.2 with singularity
+To install and run v0.7.3 with singularity
 
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.2
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.7.3
 
-containerImage="$IMAGE_DIR/hybracter_0.7.2.sif"
+containerImage="$IMAGE_DIR/hybracter_0.7.3.sif"
 
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
