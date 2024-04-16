@@ -19,7 +19,7 @@
 - [Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies](#hybracter-enabling-scalable-automated-complete-and-accurate-bacterial-genome-assemblies)
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
-- [Google Colab Notebooks](#google-colab-notebooks)
+    - [Google Colab Notebooks](#google-colab-notebooks)
     - [Mamba/Conda](#mambaconda)
     - [Container](#container)
   - [Documentation](#documentation)
@@ -61,7 +61,7 @@
 
 ## Quick Start
 
-# Google Colab Notebooks
+### Google Colab Notebooks
 
 If you don't want to install `hybracter` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
 
