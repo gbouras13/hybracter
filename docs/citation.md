@@ -48,7 +48,7 @@ Polypolish:
 * Wick RR, Holt KE (2022) Polypolish: Short-read polishing of long-read bacterial genome assemblies. PLoS Comput Biol 18(1): e1009802. https://doi.org/10.1371/journal.pcbi.1009802.
 
 Pypolca:
-* George Bouras, Aleksey V. Zimin (2023) pypolca: Standalone Python reimplementation of the genome polishing tool POLCA. https://github.com/gbouras13/pypolca. 
+* Bouras G, Judd LM, Edwards RA, Vreugde S, Stinear TP, Wick RR (2024) How low can you go? Short-read polishing of Oxford Nanopore bacterial genome assemblies. bioRxiv 2024.03.07.584013; doi: [https://doi.org/10.1101/2024.03.07.584013](https://doi.org/10.1101/2024.03.07.584013).
 * Zimin AV, Salzberg SL (2020) The genome polishing tool POLCA makes fast and accurate corrections in genome assemblies. PLoS Comput Biol 16(6): e1007981. https://doi.org/10.1371/journal.pcbi.1007981. 
 
 Snakemake:
