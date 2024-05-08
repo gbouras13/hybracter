@@ -338,6 +338,7 @@ hybrid
     ),
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
+@click.option("--datadir", "datadir", help="Directory where FASTQs are. Will be added to the filename if in input csv if provided", type=str, default=None)
 @click.option(
     "--no_pypolca",
     help="Do not use pypolca to polish assemblies with short reads",
@@ -360,6 +361,7 @@ hybrid
 @common_options
 def hybrid(
     _input,
+    datadir,
     no_medaka,
     no_pypolca,
     skip_qc,
@@ -383,6 +385,7 @@ def hybrid(
     merge_config = {
         "args": {
             "input": _input,
+            "datadir": datadir,
             "output": output,
             "log": log,
             "min_length": min_length,
@@ -549,6 +552,7 @@ long
     ),
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
+@click.option("--datadir", "datadir", help="Directory where FASTQs are. Will be added to the filename if in input csv if provided", type=str, default=None)
 @common_options
 @click.option(
             "--logic",
@@ -565,6 +569,7 @@ long
         )
 def long(
     _input,
+    datadir,
     medakaModel,
     databases,
     subsample_depth,
@@ -587,6 +592,7 @@ def long(
     merge_config = {
         "args": {
             "input": _input,
+            "datadir": datadir,
             "output": output,
             "log": log,
             "min_length": min_length,
