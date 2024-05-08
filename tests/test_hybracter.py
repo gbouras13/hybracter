@@ -217,6 +217,16 @@ def test_hybracter_subsample_depth():
     exec_command(cmd)
     remove_directory(outdir)
 
+
+def test_hybracter_hybrid_datadir():
+    """test hybracter hybrid with --datadir"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input_datadir.csv"
+    datadir: Path = "hybracter/test_data/Fastqs/"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --datadir {datadir}"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 """
 long
 """
@@ -230,6 +240,14 @@ def test_hybracter_long():
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_long_datadir():
+    """test hybracter long with --datadir"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_long_input_datadir.csv"
+    datadir: Path = "hybracter/test_data/Fastqs/"
+    cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --datadir {datadir}"
+    exec_command(cmd)
+    remove_directory(outdir)
 
 def test_hybracter_long_no_medaka():
     """test hybracter long"""
