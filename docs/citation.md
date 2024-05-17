@@ -1,9 +1,9 @@
 # Citation
 
-If you use Hybracter, please cite the preprint along with core dependencies (they are also our tools!):
+If you use Hybracter, please cite the manuscript along with core dependencies (they are also our tools!):
 
-Hybracter Preprint
-* George Bouras, Ghais Houtak, Ryan R Wick, Vijini Mallawaarachchi, Michael J. Roach, Bhavya Papudeshi, Louise M Judd, Anna E Sheppard, Robert A Edwards, Sarah Vreugde - Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies. bioRxiv doi: https://doi.org/10.1101/2023.12.12.571215
+Hybracter Manuscript
+* George Bouras, Ghais Houtak, Ryan R Wick, Vijini Mallawaarachchi, Michael J. Roach, Bhavya Papudeshi, Louise M Judd, Anna E Sheppard, Robert A Edwards, Sarah Vreugde - Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies. (2024) _Microbial Genomics_ doi: https://doi.org/10.1099/mgen.0.001244.
 
 Plassembler:
 * Bouras G., Sheppard A.E., Mallawaarachchi V., Vreugde S., Plassembler: an automated bacterial plasmid assembly tool, Bioinformatics, Volume 39, Issue 7, July 2023, btad409, https://doi.org/10.1093/bioinformatics/btad409. 
