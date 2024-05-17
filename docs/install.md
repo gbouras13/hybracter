@@ -2,9 +2,9 @@
 
 # Google Colab Notebooks
 
-If you don't want to install `hybracter` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
+If you don't want to install `plassembler` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/plassembler/blob/main/run_plassembler.ipynb](https://colab.research.google.com/github/gbouras13/plassembler/blob/main/run_plassembler.ipynb)
 
-This is only recommend if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install as described below is suggested.
+This is only recommend if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install is recommended.
 
 # Local Installation
 

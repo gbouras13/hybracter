@@ -1,9 +1,11 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
 
+[![Paper](https://img.shields.io/badge/paper-Microbial_Genomics-green.svg?style=flat-square&maxAge=3600)](https://doi.org/10.1099/mgen.0.001244)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![](https://img.shields.io/static/v1?label=CLI&message=Snaketool&color=blueviolet)](https://github.com/beardymcjohnface/Snaketool)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/gbouras13/hybracter/dev?color=8a35da)
-[![DOI](https://zenodo.org/badge/574521745.svg)](https://zenodo.org/badge/latestdoi/574521745)
+[![Code DOI](https://zenodo.org/badge/574521745.svg)](https://zenodo.org/badge/latestdoi/574521745)
 
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/hybracter/badges/version.svg)](https://anaconda.org/bioconda/hybracter)
 [![Bioconda Downloads](https://img.shields.io/conda/dn/bioconda/hybracter)](https://img.shields.io/conda/dn/bioconda/hybracter)
@@ -23,6 +25,7 @@
     - [Mamba/Conda](#mambaconda)
     - [Container](#container)
   - [Documentation](#documentation)
+  - [Manuscript](#manuscript)
   - [Description](#description)
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
@@ -118,6 +121,12 @@ containerImage="$IMAGE_DIR/hybracter_0.7.3.sif"
 
 Documentation for `hybracter` is available [here](https://hybracter.readthedocs.io/en/latest/).
 
+## Manuscript 
+
+`hybracter` has recently been published in _Microbial Genomics_
+
+* George Bouras, Ghais Houtak, Ryan R Wick, Vijini Mallawaarachchi, Michael J. Roach, Bhavya Papudeshi, Louise M Judd, Anna E Sheppard, Robert A Edwards, Sarah Vreugde - Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies. (2024) _Microbial Genomics_ doi: https://doi.org/10.1099/mgen.0.001244.
+
 ## Description
 
 `hybracter` is designed for assembling bacterial isolate genomes using a long read first assembly approach. 
@@ -146,7 +155,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 
 ## Benchmarking
 
-`Hybracter` was benchmarked in both hybrid and long modes (specifically using the `hybrid-single` and `long-single` commands) against [Unicycler](https://github.com/rrwick/Unicycler) v0.5.0 and [Dragonflye](https://github.com/rpetit3/dragonflye) v1.1.2.
+`hybracter` was benchmarked in both hybrid and long modes (specifically using the `hybrid-single` and `long-single` commands) against [Unicycler](https://github.com/rrwick/Unicycler) v0.5.0 and [Dragonflye](https://github.com/rpetit3/dragonflye) v1.1.2.
 
 30 samples from 5 studies with available reference genomes were benchmarked. You can see the full explanation and results [here](https://hybracter.readthedocs.io/en/latest/benchmarking/). You can find all the output [here](https://doi.org/10.5281/zenodo.10906937).
 
@@ -499,7 +508,7 @@ A brief description of what is new in each update of `hybracter` can be found in
 
 ## System
 
-`hybracter` is tested on Linux, and on MacOS.
+`hybracter` is tested on Linux and on MacOS.
 
 ## Bugs and Suggestions
 
@@ -507,10 +516,10 @@ If you come across bugs with `hybracter`, or would like to make any suggestions 
 
 # Citation
 
-If you use Hybracter, please cite the preprint along with core dependencies (they are also our tools!):
+If you use Hybracter, please cite the manuscript along with core dependencies (they are also our tools!):
 
-Hybracter Preprint
-* George Bouras, Ghais Houtak, Ryan R Wick, Vijini Mallawaarachchi, Michael J. Roach, Bhavya Papudeshi, Louise M Judd, Anna E Sheppard, Robert A Edwards, Sarah Vreugde - Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies. bioRxiv doi: https://doi.org/10.1101/2023.12.12.571215
+Hybracter Manuscript
+* George Bouras, Ghais Houtak, Ryan R Wick, Vijini Mallawaarachchi, Michael J. Roach, Bhavya Papudeshi, Louise M Judd, Anna E Sheppard, Robert A Edwards, Sarah Vreugde - Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies. (2024) _Microbial Genomics_ doi: https://doi.org/10.1099/mgen.0.001244.
 
 Plassembler:
 * Bouras G., Sheppard A.E., Mallawaarachchi V., Vreugde S., Plassembler: an automated bacterial plasmid assembly tool, Bioinformatics, Volume 39, Issue 7, July 2023, btad409, https://doi.org/10.1093/bioinformatics/btad409. 

@@ -1,0 +1,2 @@
+Sample1,test_long_reads.fastq.gz,50000,test_short_reads_R1.fastq.gz,test_short_reads_R2.fastq.gz
+Sample2,test_long_reads.fastq.gz,100000,test_short_reads_R1.fastq.gz,test_short_reads_R2.fastq.gz

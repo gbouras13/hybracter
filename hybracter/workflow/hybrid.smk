@@ -55,6 +55,7 @@ include: os.path.join("rules", "preflight", "targets_hybrid.smk")
 ### from config files
 #  input as csv
 INPUT = config.args.input
+DATADIR = config.args.datadir
 OUTPUT = config.args.output
 LOG = os.path.join(OUTPUT, "hybracter.log")
 THREADS = config.args.threads
@@ -70,7 +71,7 @@ SUBSAMPLE_DEPTH = config.args.subsample_depth
 
 # for hybracter hybrid
 if config.args.single is False:
-    dictReads = parseSamples(INPUT, False, SUBSAMPLE_DEPTH)  # long flag false
+    dictReads = parseSamples(INPUT, False, SUBSAMPLE_DEPTH, DATADIR)  # long flag false
     SAMPLES = list(dictReads.keys())
 # for hybracter hybrid-single
 else:

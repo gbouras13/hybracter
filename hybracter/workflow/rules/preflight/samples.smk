@@ -10,7 +10,7 @@ long
 """
 
 
-def samplesFromCsvLong(csvFile, subsample_depth):
+def samplesFromCsvLong(csvFile, subsample_depth, datadir):
     """
     Read samples and files from a CSV Long Read Only
     3 cols
@@ -24,14 +24,19 @@ def samplesFromCsvLong(csvFile, subsample_depth):
             l = line.strip().split(",")
             if len(l) == 3:
                 outDict[l[0]] = {}
-                if os.path.isfile(l[1]) and l[2].isnumeric():
-                    outDict[l[0]]["LR"] = l[1]
+                # where datafir isn't specified
+                if datadir is None:
+                    long_fastq =  l[1]
+                else:
+                    long_fastq = os.path.join(datadir, l[1])
+                if os.path.isfile(long_fastq) and l[2].isnumeric():
+                    outDict[l[0]]["LR"] = long_fastq
                     outDict[l[0]]["MinChromLength"] = l[2]
                     outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
                 else:
                     sys.stderr.write(
                         "\n"
-                        f"    FATAL: Error parsing {csvFile}. {l[1]} \n"
+                        f"    FATAL: Error parsing {csvFile}. {long_fastq} \n"
                         f"    does not exist or  {l[2]} is not an integer. \n"
                         "    Check formatting, and that \n"
                         "    file names and file paths are correct.\n"
@@ -54,7 +59,7 @@ short
 """
 
 
-def samplesFromCsvShort(csvFile, subsample_depth):
+def samplesFromCsvShort(csvFile, subsample_depth, datadir):
     """
     Read samples and files from a CSV Hybrid
     5 cols
@@ -70,24 +75,34 @@ def samplesFromCsvShort(csvFile, subsample_depth):
             l = line.strip().split(",")
             if len(l) == 5:
                 outDict[l[0]] = {}
+                # where datafir isn't specified
+                if datadir is None:
+                    long_fastq =  l[1]
+                    r1_fastq =  l[3]
+                    r2_fastq = l[4]
+                else:
+                    long_fastq = os.path.join(datadir, l[1])
+                    r1_fastq = os.path.join(datadir, l[3])
+                    r2_fastq = os.path.join(datadir, l[4])
+
                 if (
-                    os.path.isfile(l[1])
+                    os.path.isfile(long_fastq)
                     and l[2].isnumeric()
-                    and os.path.isfile(l[3])
-                    and os.path.isfile(l[4])
+                    and os.path.isfile(r1_fastq)
+                    and os.path.isfile(r2_fastq)
                 ):
-                    outDict[l[0]]["LR"] = l[1]
+                    outDict[l[0]]["LR"] = long_fastq
                     outDict[l[0]]["MinChromLength"] = l[2]
-                    outDict[l[0]]["R1"] = l[3]
-                    outDict[l[0]]["R2"] = l[4]
+                    outDict[l[0]]["R1"] = r1_fastq
+                    outDict[l[0]]["R2"] = r2_fastq
                     outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
                 else:
                     sys.stderr.write(
                         "\n"
                         f"    FATAL: Error parsing {csvFile}. One of \n"
-                        f"    {l[1]} or \n"
-                        f"    {l[3]} or \n"
-                        f"    {l[4]} \n"
+                        f"    {long_fastq} or \n"
+                        f"    {r1_fastq} or \n"
+                        f"    {r2_fastq} \n"
                         f"    does not exist or  {l[2]} is not an integer. \n"
                         "    Check formatting, and that \n"
                         "    file names and file paths are correct.\n"
@@ -105,11 +120,11 @@ def samplesFromCsvShort(csvFile, subsample_depth):
     return outDict
 
 
-def parseSamples(csvfile, long_flag, subsample_depth):
+def parseSamples(csvfile, long_flag, subsample_depth, datadir):
     if os.path.isfile(csvfile) and long_flag is True:
-        sampleDict = samplesFromCsvLong(csvfile, subsample_depth)
+        sampleDict = samplesFromCsvLong(csvfile, subsample_depth, datadir)
     elif os.path.isfile(csvfile) and long_flag is False:
-        sampleDict = samplesFromCsvShort(csvfile, subsample_depth)
+        sampleDict = samplesFromCsvShort(csvfile, subsample_depth, datadir)
     else:
         sys.stderr.write(
             "\n"
