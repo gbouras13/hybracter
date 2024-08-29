@@ -2,7 +2,8 @@ name: medaka
 channels:
     - conda-forge
     - bioconda
-    - defaults
 dependencies: 
-    - medaka ==1.8.0 # all versions above this cause M1 grief, both with pip and conda. I don't know why. Medaka is so annoying 
+  - pip
+    - pip:
+        - medaka ==1.12.1 # all versions above this cause M1 grief, both with pip and conda. I don't know why. Medaka is so annoying 
     
