@@ -231,7 +231,6 @@ def test_hybracter_hybrid_datadir():
 long
 """
 
-
 def test_hybracter_long():
     """test hybracter long"""
     outdir: Path = "test_hybracter_output"
