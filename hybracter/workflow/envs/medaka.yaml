@@ -3,7 +3,6 @@ channels:
     - conda-forge
     - bioconda
 dependencies: 
-  - pip
+    - pip
     - pip:
-        - medaka ==1.12.1 # all versions above this cause M1 grief, both with pip and conda. I don't know why. Medaka is so annoying 
-    
+        - git+https://github.com/rrwick/Unicycler.git
