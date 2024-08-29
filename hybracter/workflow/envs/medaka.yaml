@@ -5,4 +5,4 @@ channels:
 dependencies: 
     - pip
     - pip:
-        - git+https://github.com/rrwick/Unicycler.git
+        - medaka==1.12.1
