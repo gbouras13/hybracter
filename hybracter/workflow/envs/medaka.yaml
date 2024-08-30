@@ -4,7 +4,7 @@ channels:
     - bioconda
 dependencies: 
     - pip #######taken from the last medaka conda recipe#####
-    - python
+    - python >=3.8,<3.11
     - cffi >=1.15.0
     - grpcio
     - h5py
