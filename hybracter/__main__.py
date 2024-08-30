@@ -89,7 +89,7 @@ def common_options(func):
             "--medakaModel",
             "medakaModel",
             help="Medaka Model.",
-            default="r1041_e82_400bps_sup_v5.0.0",
+            default="r1041_e82_400bps_sup_v4.2.0",
             show_default=True,
             type=click.Choice(all_medaka_models),
         ),

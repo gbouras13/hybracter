@@ -212,7 +212,7 @@ list of all available medaka models
 """
 
 # from medaka models.py
-# https://github.com/nanoporetech/medaka/blob/938167e2ff804899d578d04388ba5c15ab339316/medaka/models.py
+# https://github.com/nanoporetech/medaka/blob/aa4da2429a5e32d02369ff0b67fad6edc6c4a94e/medaka/options.py
 
 all_medaka_models = [
     
