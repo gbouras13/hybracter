@@ -65,6 +65,18 @@ DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 MAC = config.args.mac
 
+# MAC medaka
+
+new_models = ['r1041_e82_400bps_sup_v5.0.0',
+    'r1041_e82_400bps_hac_v5.0.0',
+    'r1041_e82_400bps_hac_v4.3.0',
+    'r1041_e82_400bps_sup_v4.3.0']
+
+if MAC:
+    if MEDAKA_MODEL in new_models:
+        print(f"{MEDAKA_MODEL} is not available in medaka v1.8.0 as it is too new. If you want this model, try Hybracter on a Linux machine.")
+        print(f"Changing the medaka model to r1041_e82_400bps_sup_v4.2.0.")
+        MEDAKA_MODEL = "r1041_e82_400bps_sup_v4.2.0"
 
 # instead of parsing the samples with INPUT, just make the dictionary from scratch
 
