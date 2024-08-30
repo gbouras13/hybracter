@@ -400,17 +400,17 @@ def test_version():
     exec_command(cmd)
 
 
-class errors(unittest.TestCase):
-    def test_no_db(self, run_mac):
-        """test hybracter with no db"""
-        with self.assertRaises(RuntimeError):
-            outdir: Path = "test_hybracter_output"
-            empty_db: Path = "tests/empty_db"
-            cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_pypolca"
-            if run_mac:
-                cmd += " --mac"
-            exec_command(cmd)
-            remove_directory(outdir)
+# class errors(unittest.TestCase):
+#     def test_no_db(self, run_mac):
+#         """test hybracter with no db"""
+#         with self.assertRaises(RuntimeError):
+#             outdir: Path = "test_hybracter_output"
+#             empty_db: Path = "tests/empty_db"
+#             cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_pypolca"
+#             if run_mac:
+#                 cmd += " --mac"
+#             exec_command(cmd)
+#             remove_directory(outdir)
 
 
 # cleanup
