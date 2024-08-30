@@ -1,5 +1,14 @@
 # History
 
+## v0.8.0 (30 August 2024)
+
+* Add `--datadir` that removes the need to add full paths in sample sheet (thanks @oschwengers)
+* Update medaka to v1.12.1 to support the newest models (#84)
+    * New default medaka model is `r1041_e82_400bps_sup_v5.0.0`
+* Adds `--mac` flag if you are running Hybracter on MacOS - it is now recommended from to run it on Linux if you want the latest Medaka models. 
+    * This is because ONT do not support bioconda install anymore and the latest version (v1.12.1) from pip doesn't work on Mac
+    * `--mac` will install and run Medaka v1.8.0 as in previous versions and use `r1041_e82_400bps_sup_v4.2.0` as default
+
 ## v0.7.3 (4 April 2024)
 
 * Enforce spades>=v3.15.2 in the `plassembler.yaml` environment
