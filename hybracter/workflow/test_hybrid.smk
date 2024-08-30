@@ -63,6 +63,7 @@ FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
+MAC = config.args.mac
 
 
 # instead of parsing the samples with INPUT, just make the dictionary from scratch

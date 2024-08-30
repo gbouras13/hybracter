@@ -64,6 +64,7 @@ FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
+MAC = config.args.mac
 
 # Parse the samples and read files
 

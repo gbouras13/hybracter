@@ -215,7 +215,13 @@ list of all available medaka models
 # https://github.com/nanoporetech/medaka/blob/938167e2ff804899d578d04388ba5c15ab339316/medaka/models.py
 
 all_medaka_models = [
+    
+    # default 1.12.1
+    'r1041_e82_400bps_sup_v5.0.0',
     # r1041 e82 (kit14) consensus
+    'r1041_e82_400bps_hac_v5.0.0',
+    'r1041_e82_400bps_hac_v4.3.0',
+    'r1041_e82_400bps_sup_v4.3.0',
     "r1041_e82_400bps_hac_v4.2.0",
     "r1041_e82_400bps_sup_v4.2.0",
     # r1041 variant calling

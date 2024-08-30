@@ -89,7 +89,7 @@ def common_options(func):
             "--medakaModel",
             "medakaModel",
             help="Medaka Model.",
-            default="r1041_e82_400bps_sup_v4.2.0",
+            default="r1041_e82_400bps_sup_v5.0.0",
             show_default=True,
             type=click.Choice(all_medaka_models),
         ),
@@ -135,6 +135,12 @@ def common_options(func):
             help="Depth filter to pass to Plassembler. Filters out all putative plasmid contigs below this fraction of the chromosome read depth (needs to be below in both long and short read sets for hybrid).",
             type=float,
             default=0.25,
+        ),
+        click.option(
+            "--mac",
+            help="If you are running Hybracter on Mac - installs v1.8.0 of Medaka as higher versions break.",
+            is_flag=True,
+            default=False,
         ),
 
         click.option(
@@ -376,6 +382,7 @@ def hybrid(
     dnaapler_custom_db,
     logic,
     depth_filter,
+    mac,
     log,
     configfile,
     **kwargs
@@ -399,6 +406,7 @@ def hybrid(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "mac": mac,
             "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
@@ -494,6 +502,7 @@ def hybrid_single(
     contaminants,
     dnaapler_custom_db,
     no_medaka,
+    mac,
     logic,
     depth_filter,
     log,
@@ -522,6 +531,7 @@ def hybrid_single(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "mac": mac,
             "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
@@ -581,6 +591,7 @@ def long(
     contaminants,
     dnaapler_custom_db,
     no_medaka,
+    mac,
     logic,
     depth_filter,
     log,
@@ -605,6 +616,7 @@ def long(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "mac": mac,
             "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
@@ -678,6 +690,7 @@ def long_single(
     dnaapler_custom_db,
     log,
     no_medaka,
+    mac,
     logic,
     depth_filter,
     configfile,
@@ -702,6 +715,7 @@ def long_single(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "mac": mac,
             "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
@@ -766,6 +780,12 @@ install
     default=False
 )
 @click.option(
+            "--mac",
+            help="If you are running Hybracter on Mac - installs v1.8.0 of Medaka as higher versions break.",
+            is_flag=True,
+            default=False,
+)
+@click.option(
     "-o",
     "--output",
     "output",
@@ -789,10 +809,10 @@ install
     hidden=True,
 )
 @click.argument("snake_args", nargs=-1)
-def install(databases, output, log, medaka, **kwargs):
+def install(databases, output, log, medaka, mac, **kwargs):
     # define both together
     """Downloads and installs the plassembler database"""
-    merge_config = {"args": {"databases": databases, "output": output, "log": log, "medaka": medaka}}
+    merge_config = {"args": {"databases": databases, "output": output, "log": log, "medaka": medaka, "mac": mac}}
     run_snakemake(
         snakefile_path=snake_base(os.path.join("workflow", "install.smk")),
         merge_config=merge_config,
@@ -845,6 +865,7 @@ def test_hybrid(
     databases,
     subsample_depth,
     no_pypolca,
+    mac,
     contaminants,
     dnaapler_custom_db,
     logic,
@@ -869,6 +890,7 @@ def test_hybrid(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "mac": mac,
             "logic": logic,
             "depth_filter": depth_filter,
             "configfile": configfile
@@ -922,6 +944,7 @@ def test_long(
     contaminants,
     dnaapler_custom_db,
     no_medaka,
+    mac,
     logic,
     depth_filter,
     configfile,
@@ -943,6 +966,7 @@ def test_long(
             "contaminants": contaminants,
             "dnaapler_custom_db": dnaapler_custom_db,
             "no_medaka": no_medaka,
+            "mac": mac,
             "logic": logic,
             "depth_filter": depth_filter,
             "configfile": configfile

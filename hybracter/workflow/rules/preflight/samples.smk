@@ -26,7 +26,7 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir):
                 outDict[l[0]] = {}
                 # where datafir isn't specified
                 if datadir is None:
-                    long_fastq =  l[1]
+                    long_fastq = l[1]
                 else:
                     long_fastq = os.path.join(datadir, l[1])
                 if os.path.isfile(long_fastq) and l[2].isnumeric():
@@ -77,8 +77,8 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir):
                 outDict[l[0]] = {}
                 # where datafir isn't specified
                 if datadir is None:
-                    long_fastq =  l[1]
-                    r1_fastq =  l[3]
+                    long_fastq = l[1]
+                    r1_fastq = l[3]
                     r2_fastq = l[4]
                 else:
                     long_fastq = os.path.join(datadir, l[1])
