@@ -1,0 +1,6 @@
+name: medaka
+channels:
+    - conda-forge
+    - bioconda
+dependencies: 
+    - medaka ==1.8.0 # all versions above this cause MacOS grief in CI

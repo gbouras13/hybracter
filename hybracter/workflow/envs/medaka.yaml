@@ -2,7 +2,29 @@ name: medaka
 channels:
     - conda-forge
     - bioconda
-    - defaults
 dependencies: 
-    - medaka ==1.8.0 # all versions above this cause M1 grief, both with pip and conda. I don't know why. Medaka is so annoying 
-    
+    - pip #######taken from the last medaka conda recipe#####
+    - python >=3.8,<3.11
+    - cffi >=1.15.0
+    - grpcio
+    - h5py
+    - intervaltree
+    - numpy >=1.21.6,<2.0.0
+    - nomkl  # [osx]
+    - mappy
+    - ont-fast5-api
+    - parasail-python
+    - pyabpoa
+    - pyspoa >=0.2.1
+    - pysam >=0.16.0.1
+    - python-edlib
+    - requests
+    - samtools >=1.14
+    - bcftools >=1.14
+    - minimap2 >=2.17
+    - htslib >=1.14
+    - libcurl
+    - openssl
+    - wurlitzer
+    - pip:
+        - medaka==1.12.1

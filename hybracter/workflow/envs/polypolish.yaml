@@ -2,7 +2,6 @@ name: polypolish
 channels:
     - conda-forge
     - bioconda
-    - defaults
 dependencies:
     - polypolish >=0.6.0
     - bwa >=0.7.17

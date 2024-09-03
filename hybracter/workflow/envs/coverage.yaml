@@ -2,7 +2,6 @@ name: coverage
 channels:
     - conda-forge
     - bioconda
-    - defaults
 dependencies:
     - samtools >=1.17
     - bwa >=0.7.17

@@ -2,7 +2,11 @@
 rule download_medaka_models:
     """Rule to Download plassembler db."""
     conda:
-        os.path.join(dir.env, "medaka.yaml")
+        (
+            os.path.join(dir.env, "medaka_mac.yaml")
+            if MAC
+            else os.path.join(dir.env, "medaka.yaml")
+        )
     output:
         flag=os.path.join(dir.plassemblerdb, "medaka.flag"),
     resources:

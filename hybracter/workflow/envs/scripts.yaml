@@ -2,7 +2,6 @@ name: scripts
 channels:
     - conda-forge
     - bioconda
-    - defaults
 dependencies:
     - pandas
     - pyarrow

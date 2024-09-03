@@ -11,7 +11,11 @@ rule medaka_incomplete:
             "{sample}_medaka.fasta",
         ),
     conda:
-        os.path.join(dir.env, "medaka.yaml")
+        (
+            os.path.join(dir.env, "medaka_mac.yaml")
+            if MAC
+            else os.path.join(dir.env, "medaka.yaml")
+        )
     params:
         model=MEDAKA_MODEL,
         dir=os.path.join(dir.out.medaka_incomplete, "{sample}"),
