@@ -3,5 +3,5 @@ channels:
     - conda-forge
     - bioconda
 dependencies:
-    - dnaapler >=0.7.0
+    - dnaapler >=0.8.1
 
