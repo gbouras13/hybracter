@@ -17,6 +17,9 @@ rule sanitiseInputReads:
         """
 
 rule kmc:
+    """
+    need params.prefix so kmc writes into the output dir
+    """
     input:
         fastq = rules.sanitiseInputReads.output.fastq,
     output:

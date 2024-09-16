@@ -204,31 +204,31 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
                         else:
                             r1_fastq = os.path.join(datadirshort, l[3])
                             r2_fastq = os.path.join(datadirshort, l[4])                        
-                        if (
-                            os.path.isfile(long_fastq)
-                            and l[2].isnumeric()
-                            and os.path.isfile(r1_fastq)
-                            and os.path.isfile(r2_fastq)
-                        ):
-                            outDict[l[0]]["LR"] = long_fastq
-                            outDict[l[0]]["MinChromLength"] = l[2]
-                            outDict[l[0]]["R1"] = r1_fastq
-                            outDict[l[0]]["R2"] = r2_fastq
-                            outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
-                            outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
-                        else:
-                            sys.stderr.write(
-                                "\n"
-                                f"    FATAL: Error parsing {csvFile}. One of \n"
-                                f"    {long_fastq} or \n"
-                                f"    {r1_fastq} or \n"
-                                f"    {r2_fastq} \n"
-                                f"    does not exist or  {l[2]} is not an integer. \n"
-                                "    Check formatting, and that \n"
-                                "    file names and file paths are correct.\n"
-                                "\n"
-                            )
-                            sys.exit(1)
+                    if (
+                        os.path.isfile(long_fastq)
+                        and l[2].isnumeric()
+                        and os.path.isfile(r1_fastq)
+                        and os.path.isfile(r2_fastq)
+                    ):
+                        outDict[l[0]]["LR"] = long_fastq
+                        outDict[l[0]]["MinChromLength"] = l[2]
+                        outDict[l[0]]["R1"] = r1_fastq
+                        outDict[l[0]]["R2"] = r2_fastq
+                        outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
+                        outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+                    else:
+                        sys.stderr.write(
+                            "\n"
+                            f"    FATAL: Error parsing {csvFile}. One of \n"
+                            f"    {long_fastq} or \n"
+                            f"    {r1_fastq} or \n"
+                            f"    {r2_fastq} \n"
+                            f"    does not exist or  {l[2]} is not an integer. \n"
+                            "    Check formatting, and that \n"
+                            "    file names and file paths are correct.\n"
+                            "\n"
+                        )
+                        sys.exit(1)
                 else:
                     sys.stderr.write(
                         "\n"
