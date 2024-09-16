@@ -6,6 +6,29 @@ from itertools import chain
 import sys
 
 """
+check_datadir function
+"""
+
+
+def check_datadir(datadir: str):
+    # if only one (hybracter long)
+    if "," not in datadir:
+        return datadir, None
+    else:
+        # if more than one (hybracter hybrid)
+        parts = datadir.split(",")
+
+        if len(parts) > 2:
+            sys.exit(
+                f"Error: You must specify a maximum of two comma separated input directories with --datadir, the first being where the long-read FASTQs are, the second the short-read.\n You have specified --datadir {datadir}.\n Please check this."
+            )
+
+        # If exactly one comma, assign the two parts
+        datadirlong, datadirshort = parts
+        return datadirlong, datadirshort
+
+
+"""
 long
 """
 
@@ -28,7 +51,8 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir):
                 if datadir is None:
                     long_fastq = l[1]
                 else:
-                    long_fastq = os.path.join(datadir, l[1])
+                    datadirlong, datadirshort = check_datadir(datadir)
+                    long_fastq = os.path.join(datadirlong, l[1])
                 if os.path.isfile(long_fastq) and l[2].isnumeric():
                     outDict[l[0]]["LR"] = long_fastq
                     outDict[l[0]]["MinChromLength"] = l[2]
@@ -81,9 +105,17 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir):
                     r1_fastq = l[3]
                     r2_fastq = l[4]
                 else:
-                    long_fastq = os.path.join(datadir, l[1])
-                    r1_fastq = os.path.join(datadir, l[3])
-                    r2_fastq = os.path.join(datadir, l[4])
+                    # if the user supplies a datadir
+                    datadirlong, datadirshort = check_datadir(datadir)
+                    long_fastq = os.path.join(datadirlong, l[1])
+                    # all fastqs in 1 dir
+                    if datadirshort is None:
+                        r1_fastq = os.path.join(datadirlong, l[3])
+                        r2_fastq = os.path.join(datadirlong, l[4])
+                    # separate dirs
+                    else:
+                        r1_fastq = os.path.join(datadirshort, l[3])
+                        r2_fastq = os.path.join(datadirshort, l[4])                        
 
                 if (
                     os.path.isfile(long_fastq)

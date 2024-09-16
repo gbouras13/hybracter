@@ -82,7 +82,8 @@ def test_hybracter_t_hybrid_no_medaka(run_mac):
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -92,7 +93,8 @@ def test_hybracter_t_subsample_depth(run_mac):
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka --subsample_depth 50"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -101,16 +103,18 @@ def test_hybracter_t_depth_filter(run_mac):
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka --depth_filter 2"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
 def test_hybracter_hybrid_last_no_medaka(run_mac):
-    """hybracter test-hybrid"""
+    """hybracter test-hybrid - don't worry about MAC as no medaka"""
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --logic last --no_medaka --skip_qc"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -164,11 +168,12 @@ def test_hybracter_t_long_depth_filter(run_mac):
     remove_directory(outdir)
 
 def test_hybracter_t_long_no_medaka(run_mac):
-    """hybracter test-long no medaka"""
+    """hybracter test-long no medaka - don't worry about mac"""
     outdir: Path = "test_hybracter_output"
     cmd = f"hybracter test-long --threads {threads} --output {outdir} --no_medaka"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -232,7 +237,8 @@ def test_hybracter_no_pypolca_no_medaka(run_mac):
     input_csv: Path = test_data_path / "test_hybrid_input.csv"
     cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --no_pypolca --databases {db_dir} --no_medaka "
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -243,7 +249,8 @@ def test_hybracter_no_medaka(run_mac):
     input_csv: Path = test_data_path / "test_hybrid_input.csv"
     cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --no_medaka"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -268,12 +275,23 @@ def test_hybracter_subsample_depth(run_mac):
     exec_command(cmd)
     remove_directory(outdir)
 
-
-def test_hybracter_hybrid_datadir(run_mac):
-    """test hybracter hybrid with --datadir"""
+def test_hybracter_hybrid_datadir_1dir(run_mac):
+    """test hybracter hybrid with --datadir - 1 dir"""
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_hybrid_input_datadir.csv"
     datadir: Path = "hybracter/test_data/Fastqs/"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --datadir {datadir}"
+    if run_mac:
+        cmd += " --mac"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+def test_hybracter_hybrid_datadir_2dirs(run_mac):
+    """test hybracter hybrid with --datadir - 2 dirs"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input_datadir.csv"
+    # 2 dirs
+    datadir: Path = "hybracter/test_data/Fastqs/,hybracter/test_data/Fastqs/"
     cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --datadir {datadir}"
     if run_mac:
         cmd += " --mac"
@@ -304,6 +322,7 @@ def test_hybracter_long_datadir(run_mac):
         cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
+    
 
 def test_hybracter_long_no_medaka(run_mac):
     """test hybracter long"""
@@ -311,7 +330,8 @@ def test_hybracter_long_no_medaka(run_mac):
     input_csv: Path = test_data_path / "test_long_input.csv"
     cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --no_medaka"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -342,7 +362,8 @@ def test_hybracter_hybrid_single_no_medaka(run_mac):
     reads2: Path = test_data_path / "Fastqs/test_short_reads_R2.fastq.gz"
     cmd = f"hybracter hybrid-single -l {longreads} -1 {reads1} -2 {reads2} -c 50000 -s Sample1 --threads {threads} --output {outdir} --databases {db_dir} --no_medaka"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
@@ -364,7 +385,8 @@ def test_hybracter_long_single_no_medaka_subsample_depth(run_mac):
     longreads: Path = test_data_path / "Fastqs/test_long_reads.fastq.gz"
     cmd = f"hybracter long-single -l {longreads} -c 50000 -s Sample1  --threads {threads} --output {outdir} --databases {db_dir} --no_medaka --subsample_depth 50"
     if run_mac:
-        cmd += " --mac"
+        cmd = f"hybracter test-hybrid -h"
+        #cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
 
