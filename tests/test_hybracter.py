@@ -204,7 +204,7 @@ def test_hybracter_hybrid_csv(run_mac):
 def test_hybracter_hybrid_csv_auto(run_mac):
     """test hybracter hybrid auto"""
     outdir: Path = "test_hybracter_output"
-    input_csv: Path = test_data_path / "test_hybrid_input.csv"
+    input_csv: Path = test_data_path / "test_hybrid_input_auto.csv"
     cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --auto"
     if run_mac:
         cmd += " --mac"
@@ -325,7 +325,7 @@ def test_hybracter_long(run_mac):
 def test_hybracter_long_auto(run_mac):
     """test hybracter long auto"""
     outdir: Path = "test_hybracter_output"
-    input_csv: Path = test_data_path / "test_long_input.csv"
+    input_csv: Path = test_data_path / "test_long_input_auto.csv"
     cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --auto"
     if run_mac:
         cmd += " --mac"
