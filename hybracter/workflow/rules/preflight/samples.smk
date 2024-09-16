@@ -33,7 +33,7 @@ long
 """
 
 
-def samplesFromCsvLong(csvFile, subsample_depth, datadir):
+def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth):
     """
     Read samples and files from a CSV Long Read Only
     3 cols
@@ -57,6 +57,7 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir):
                     outDict[l[0]]["LR"] = long_fastq
                     outDict[l[0]]["MinChromLength"] = l[2]
                     outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
+                    outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
                 else:
                     sys.stderr.write(
                         "\n"
@@ -83,7 +84,7 @@ short
 """
 
 
-def samplesFromCsvShort(csvFile, subsample_depth, datadir):
+def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth):
     """
     Read samples and files from a CSV Hybrid
     5 cols
@@ -128,6 +129,7 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir):
                     outDict[l[0]]["R1"] = r1_fastq
                     outDict[l[0]]["R2"] = r2_fastq
                     outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
+                    outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
                 else:
                     sys.stderr.write(
                         "\n"

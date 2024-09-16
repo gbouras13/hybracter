@@ -8,7 +8,7 @@ rule pypolca:
         polypolish_fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
-        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
+        coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     output:
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "pypolca_complete.version"),
@@ -102,7 +102,7 @@ rule pypolca_incomplete:
         polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
-        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
+        coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     output:
         fasta=os.path.join(
             dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"

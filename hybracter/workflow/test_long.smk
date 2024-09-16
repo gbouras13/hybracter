@@ -63,6 +63,7 @@ FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
+MIN_DEPTH = config.args.min_depth
 MAC = config.args.mac
 
 # MAC medaka
@@ -95,11 +96,13 @@ dictReads["Sample1"] = {}
 dictReads["Sample1"]["LR"] = os.path.join(dir.test_fastqs, "test_long_reads.fastq.gz")
 dictReads["Sample1"]["MinChromLength"] = 50000
 dictReads["Sample1"]["TargetBases"] = SUBSAMPLE_DEPTH * 50000
+dictReads["Sample1"]["MinBases"] = MIN_DEPTH * 50000
 
 dictReads["Sample2"] = {}
 dictReads["Sample2"]["LR"] = os.path.join(dir.test_fastqs, "test_long_reads.fastq.gz")
 dictReads["Sample2"]["MinChromLength"] = 100000
 dictReads["Sample2"]["TargetBases"] = SUBSAMPLE_DEPTH * 100000
+dictReads["Sample2"]["MinBases"] = MIN_DEPTH * 100000
 
 SAMPLES = ["Sample1", "Sample2"]
 

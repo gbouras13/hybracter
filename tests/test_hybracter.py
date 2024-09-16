@@ -422,17 +422,42 @@ def test_version():
     exec_command(cmd)
 
 
-# class errors(unittest.TestCase):
-#     def test_no_db(self, run_mac):
-#         """test hybracter with no db"""
-#         with self.assertRaises(RuntimeError):
-#             outdir: Path = "test_hybracter_output"
-#             empty_db: Path = "tests/empty_db"
-#             cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_pypolca"
-#             if run_mac:
-#                 cmd += " --mac"
-#             exec_command(cmd)
-#             remove_directory(outdir)
+
+class TestErrors:
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.threads = threads  
+
+    def test_no_db(self, run_mac):
+        """test hybracter with no db"""
+        with pytest.raises(RuntimeError):
+            outdir: Path = "test_hybracter_output"
+            empty_db: Path = "tests/empty_db"
+            cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --database {empty_db} --no_pypolca"
+            if run_mac:
+                cmd += " --mac"
+            exec_command(cmd)
+            remove_directory(outdir)
+
+    def test_hybracter_t_hybrid_md(run_mac):
+        """hybracter test-hybrid with --min_depth 1000"""
+        with pytest.raises(RuntimeError):
+            outdir: Path = "test_hybracter_output"
+            cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --min_depth 1000"
+            if run_mac:
+                cmd += " --mac"
+            exec_command(cmd)
+            remove_directory(outdir)
+
+    def test_hybracter_t_long_md(run_mac):
+        """hybracter test-long --min_depth 1000 also test """
+        with pytest.raises(RuntimeError):
+            outdir: Path = "test_hybracter_output"
+            cmd = f"hybracter test-long --threads {threads} --output {outdir} --min_depth 1000"
+            if run_mac:
+                cmd += " --mac"
+            exec_command(cmd)
+            remove_directory(outdir)
 
 
 # cleanup

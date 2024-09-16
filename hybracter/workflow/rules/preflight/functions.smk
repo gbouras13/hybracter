@@ -18,6 +18,9 @@ def get_input_lr_fastqs(wildcards):
 def getMinChromLength(wildcards):
     return dictReads[wildcards.sample]["MinChromLength"]
 
+# get min_depth 
+def getMinBases(wildcards):
+    return dictReads[wildcards.sample]["MinBases"]
 
 # get target bases for filtlong subsampling
 def getTargetBases(wildcards):

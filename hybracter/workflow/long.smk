@@ -64,6 +64,7 @@ FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
+MIN_DEPTH = config.args.min_depth
 MAC = config.args.mac
 
 # MAC medaka
@@ -87,7 +88,7 @@ if MAC:
 
 # for hybracter hybrid
 if config.args.single is False:
-    dictReads = parseSamples(INPUT, True, SUBSAMPLE_DEPTH, DATADIR)  # long flag true
+    dictReads = parseSamples(INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH)  # long flag true
     SAMPLES = list(dictReads.keys())
 # for hybracter hybrid-single
 else:
@@ -97,6 +98,7 @@ else:
     dictReads[config.args.sample]["MinChromLength"] = config.args.chromosome
     # add target bases for filtlong
     dictReads[config.args.sample]["TargetBases"] = SUBSAMPLE_DEPTH * config.args.chromosome
+    dictReads[config.args.sample]["MinBases"] = MIN_DEPTH * config.args.chromosome
     SAMPLES = [config.args.sample]
 
 ##############################

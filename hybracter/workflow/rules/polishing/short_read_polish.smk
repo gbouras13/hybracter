@@ -53,7 +53,7 @@ rule polypolish:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         sam1=os.path.join(dir.out.bwa, "{sample}_1.sam"),
         sam2=os.path.join(dir.out.bwa, "{sample}_2.sam"),
-        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
+        coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     output:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "polypolish.version"),
