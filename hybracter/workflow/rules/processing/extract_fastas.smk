@@ -1,22 +1,22 @@
 
 checkpoint check_completeness:
     """
-    adds checkpoint to determine whether the Flye assembly recovered the complete chromosome (or not)
+    Adds checkpoint to determine whether the Flye assembly recovered the complete chromosome (or not).
     """
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
         kmc=lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
     output:
-        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt")
     params:
-        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO))
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
-        time=config.resources.sml.time,
+        time=config.resources.sml.time
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "check_completeness.py")

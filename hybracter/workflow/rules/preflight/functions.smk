@@ -9,13 +9,13 @@ import os
 
 def get_kmers(sample, auto):
     if auto:
-        with checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG.open() as file:
+        with checkpoints.kmc.get(sample=sample).output.kmcLOG.open() as file:
             for line in file:
                 if "No. of unique counted k-mers" in line:
                     # keep 80% of kmers as lower bound for chromosome
                     return int(float(re.search(r"No. of unique counted k-mers\s*:\s*([\d\.eE+-]+)", line).group(1)) * 0.8)
     else:
-        return dictReads[wildcards.sample]["MinChromLength"]
+        return dictReads[sample]["MinChromLength"]
 
 # define functions
 # get long reads

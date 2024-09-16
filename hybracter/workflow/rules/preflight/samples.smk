@@ -243,9 +243,9 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
 
 def parseSamples(csvfile, long_flag, subsample_depth, datadir, min_depth, auto):
     if os.path.isfile(csvfile) and long_flag is True:
-        sampleDict = samplesFromCsvLong(csvfile, subsample_depth, datadir, min_depth)
+        sampleDict = samplesFromCsvLong(csvfile, subsample_depth, datadir, min_depth, auto)
     elif os.path.isfile(csvfile) and long_flag is False:
-        sampleDict = samplesFromCsvShort(csvfile, subsample_depth, datadir, min_depth)
+        sampleDict = samplesFromCsvShort(csvfile, subsample_depth, datadir, min_depth, auto)
     else:
         sys.stderr.write(
             "\n"
