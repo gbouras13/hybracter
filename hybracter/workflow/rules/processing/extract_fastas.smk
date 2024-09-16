@@ -31,7 +31,7 @@ rule extract_chromosome_complete:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc= lambda wildcards: rule.kmc.get(sample=wildcards.sample).output.kmcLOG
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
         ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
@@ -106,7 +106,7 @@ rule extract_incomplete:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc= lambda wildcards: rule.kmc.get(sample=wildcards.sample).output.kmcLOG
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
     params:
