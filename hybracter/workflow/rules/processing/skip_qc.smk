@@ -10,7 +10,7 @@ rule skip_qc_long:
 
     """
     input:
-        fastq=get_input_lr_fastqs,
+        fastq=get_input_lr_fastqs(sample=wildcards.sample),
     output:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     resources:
@@ -34,8 +34,8 @@ rule skip_qc_short:
     fastp detects gzip by default if file ends in .gz
     """
     input:
-        r1=get_input_r1,
-        r2=get_input_r2,
+        r1=get_input_r1(sample=wildcards.sample),
+        r2=get_input_r2(sample=wildcards.sample),
     output:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),

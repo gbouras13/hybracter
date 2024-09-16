@@ -4,7 +4,7 @@ https://github.com/gbouras13/hybracter/issues/90
 """
 rule sanitiseInputReads:
     input:
-        fastq=get_input_lr_fastqs
+        fastq=get_input_lr_fastqs(sample=wildcards.sample)
     output:
         fastq=temp(os.path.join(dir.out.qc, "{sample}_sanitised.fastq.gz"))
     conda:
