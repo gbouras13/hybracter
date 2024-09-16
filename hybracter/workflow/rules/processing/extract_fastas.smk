@@ -1,22 +1,22 @@
 
 checkpoint check_completeness:
     """
-    Adds checkpoint to determine whether the Flye assembly recovered the complete chromosome (or not).
+    adds checkpoint to determine whether the Flye assembly recovered the complete chromosome (or not)
     """
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
-        kmc=lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
-        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt")
+        completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:
-        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO))
+        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
-        time=config.resources.sml.time
+        time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "check_completeness.py")
@@ -31,7 +31,7 @@ rule extract_chromosome_complete:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
+        kmc= lambda wildcards: rule.kmc.get(sample=wildcards.sample).output.kmcLOG
     output:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
         ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
@@ -106,7 +106,7 @@ rule extract_incomplete:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
+        kmc= lambda wildcards: rule.kmc.get(sample=wildcards.sample).output.kmcLOG
     output:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
     params:

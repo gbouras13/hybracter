@@ -10,7 +10,7 @@ rule skip_qc_long:
 
     """
     input:
-        fastq=get_input_lr_fastqs(sample=wildcards.sample),
+        fastq=get_input_lr_fastqs,
     output:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     resources:

@@ -159,8 +159,8 @@ rule fastp:
     runs fastp on the paired end short reads
     """
     input:
-        r1=get_input_r1(sample=wildcards.sample),
-        r2=get_input_r2(sample=wildcards.sample),
+        r1=get_input_r1,
+        r2=get_input_r2,
     output:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),

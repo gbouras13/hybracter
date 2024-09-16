@@ -19,28 +19,28 @@ def get_kmers(sample, auto):
 
 # define functions
 # get long reads
-def get_input_lr_fastqs(sample):
-    return dictReads[sample]["LR"]
+def get_input_lr_fastqs(wildcards):
+    return dictReads[wildcards.sample]["LR"]
 
 # get min chrom length (define chrom size)
-def getMinChromLength(sample):
-    return dictReads[sample]["MinChromLength"]
+def getMinChromLength(wildcards):
+    return dictReads[wildcards.sample]["MinChromLength"]
 
 # get min_depth 
-def getMinBases(sample):
-    return dictReads[sample]["MinBases"]
+def getMinBases(wildcards):
+    return dictReads[wildcards.sample]["MinBases"]
 
 # get target bases for filtlong subsampling
-def getTargetBases(sample):
-    return dictReads[sample]["TargetBases"]
+def getTargetBases(wildcards):
+    return dictReads[wildcards.sample]["TargetBases"]
 
 
-def get_input_r1(sample):
-    return dictReads[sample]["R1"]
+def get_input_r1(wildcards):
+    return dictReads[wildcards.sample]["R1"]
 
 
-def get_input_r2(sample):
-    return dictReads[sample]["R2"]
+def get_input_r2(wildcards):
+    return dictReads[wildcards.sample]["R2"]
 
 
 ### host removal
