@@ -3,7 +3,7 @@ rule plassembler_long:
     runs plassembler for long
     """
     input:
-        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG,
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG,
         l=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz")
     output:
         fasta=os.path.join(

@@ -47,7 +47,7 @@ rule pypolca_extract_intermediate_assembly:
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
-        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"

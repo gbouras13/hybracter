@@ -6,7 +6,7 @@ checkpoint check_completeness:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
-        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
+        kmc=lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
     output:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:
@@ -31,7 +31,7 @@ rule extract_chromosome_complete:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
     output:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
         ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
@@ -106,7 +106,7 @@ rule extract_incomplete:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG
     output:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
     params:
