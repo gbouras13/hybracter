@@ -67,6 +67,7 @@ LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 MIN_DEPTH = config.args.min_depth
+AUTO = config.args.auto
 MAC = config.args.mac
 
 # MAC medaka
