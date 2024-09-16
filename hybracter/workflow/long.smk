@@ -106,7 +106,7 @@ else:
 # Import rules and functions
 ##############################
 
-# kmc - needs to be included due to the chckpointing
+# kmc - needs to be included due to the
 include: os.path.join("rules", "processing", "estimate_chromosome.smk")
 
 # qc and host

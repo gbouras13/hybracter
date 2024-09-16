@@ -9,7 +9,7 @@ import os
 
 def get_kmers(sample, auto):
     if auto:
-        with checkpoints.kmc.get(sample=sample).output.kmcLOG.open() as file:
+        with rule.kmc.get(sample=sample).output.kmcLOG.open() as file:
             for line in file:
                 if "No. of unique counted k-mers" in line:
                     # keep 80% of kmers as lower bound for chromosome
@@ -17,22 +17,44 @@ def get_kmers(sample, auto):
     else:
         return dictReads[sample]["MinChromLength"]
 
+# get min_depth 
+def getMinBases(sample, auto, min_depth):
+    if auto:
+        with rule.kmc.get(sample=sample).output.kmcLOG.open() as file:
+            for line in file:
+                if "No. of unique counted k-mers" in line:
+                    # keep 80% of kmers as lower bound for chromosome
+                    chrom_size = int(float(re.search(r"No. of unique counted k-mers\s*:\s*([\d\.eE+-]+)", line).group(1)) * 0.8)
+                    return int(min_depth*chrom_size)
+    else:
+        return dictReads[sample]["MinBases"]
+
+def getTargetBases(sample, auto, target_depth):
+    if auto:
+        with rule.kmc.get(sample=sample).output.kmcLOG.open() as file:
+            for line in file:
+                if "No. of unique counted k-mers" in line:
+                    # keep 80% of kmers as lower bound for chromosome
+                    chrom_size = int(float(re.search(r"No. of unique counted k-mers\s*:\s*([\d\.eE+-]+)", line).group(1)) * 0.8)
+                    return int(target_depth*chrom_size)
+    else:
+        return dictReads[sample]["TargetBases"]
+
+
+# # get target bases for filtlong subsampling
+# def getTargetBases(wildcards):
+#     return dictReads[wildcards.sample]["TargetBases"]
+
+
 # define functions
 # get long reads
 def get_input_lr_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
 
-# get min chrom length (define chrom size)
-def getMinChromLength(wildcards):
-    return dictReads[wildcards.sample]["MinChromLength"]
+# # get min chrom length (define chrom size)
+# def getMinChromLength(wildcards):
+#     return dictReads[wildcards.sample]["MinChromLength"]
 
-# get min_depth 
-def getMinBases(wildcards):
-    return dictReads[wildcards.sample]["MinBases"]
-
-# get target bases for filtlong subsampling
-def getTargetBases(wildcards):
-    return dictReads[wildcards.sample]["TargetBases"]
 
 
 def get_input_r1(wildcards):

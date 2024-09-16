@@ -41,6 +41,8 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
     2 = Long read
     3 = MinChromLength
     IF auto - only need 2
+
+    chrom_size, target_bases and min_depth handled with functions if --auto
     """
     outDict = {}
     with open(csvFile, "r") as csv:
@@ -56,8 +58,6 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
                         long_fastq = os.path.join(datadirlong, l[1])
                     if os.path.isfile(long_fastq):
                         outDict[l[0]]["LR"] = long_fastq
-                        outDict[l[0]]["TargetBases"] = chrom_size * subsample_depth
-                        outDict[l[0]]["MinBases"] = chrom_size * min_depth
                     else:
                         sys.stderr.write(
                             "\n"
@@ -160,8 +160,6 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
                         outDict[l[0]]["LR"] = long_fastq
                         outDict[l[0]]["R1"] = r1_fastq
                         outDict[l[0]]["R2"] = r2_fastq
-                        outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
-                        outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
                     else:
                         sys.stderr.write(
                             "\n"

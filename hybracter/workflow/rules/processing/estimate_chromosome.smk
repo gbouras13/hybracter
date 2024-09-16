@@ -24,7 +24,7 @@ rule kmc:
         fastq = rules.sanitiseInputReads.output.fastq,
     output:
         kmcLOG = os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt"),
-        dir = temp(directory(os.path.join(dir.out.kmc,"{sample}"))),
+        dir = directory(os.path.join(dir.out.kmc,"{sample}")),
     conda:
         os.path.join(dir.env, "kmc.yaml")
     threads:

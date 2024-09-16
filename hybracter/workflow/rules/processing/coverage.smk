@@ -70,12 +70,13 @@ rule estimate_lr_coverage:
     quickly estimates long read coverage for min_depth
     """
     input:
-        long_bases=os.path.join(dir.out.seqkit, "{sample}_long.txt")
+        long_bases=os.path.join(dir.out.seqkit, "{sample}_long.txt"),
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"),
     params:
-        chromlen=getMinChromLength,
-        min_bases=getMinBases
+        chromlen=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
+        min_bases=lambda wildcards: str(getMinBases(wildcards.sample, auto=AUTO, min_depth=SUBSAMPLE_DEPTH)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -114,10 +115,11 @@ rule estimate_sr_coverage:
     input:
         r1=os.path.join(dir.out.seqkit, "{sample}_r1.txt"),
         r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt"),
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         sr_coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     params:
-        chromlen=getMinChromLength,
+        chromlen=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
