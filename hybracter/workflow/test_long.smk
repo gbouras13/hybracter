@@ -64,6 +64,7 @@ LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 MIN_DEPTH = config.args.min_depth
+AUTO = config.args.auto
 MAC = config.args.mac
 
 # MAC medaka
@@ -106,9 +107,13 @@ dictReads["Sample2"]["MinBases"] = MIN_DEPTH * 100000
 
 SAMPLES = ["Sample1", "Sample2"]
 
+
 ##############################
 # Import rules and functions
 ##############################
+
+# kmc - needs to be included due to the chckpointing
+include: os.path.join("rules", "processing", "estimate_chromosome.smk")
 
 # qc and host
 # depends on whehter --contaminants has been specified and --skip_qc flag activiated

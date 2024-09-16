@@ -6,10 +6,11 @@ checkpoint check_completeness:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
     output:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -30,11 +31,12 @@ rule extract_chromosome_complete:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
     output:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
         ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
         polypolish_flag=False,
     conda:
         os.path.join(dir.env, "scripts.yaml")
@@ -59,7 +61,7 @@ rule copy_flye_intermediate_chrom_assembly:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
         ),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -104,10 +106,11 @@ rule extract_incomplete:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
     output:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

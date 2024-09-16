@@ -108,13 +108,14 @@ rule polypolish_extract_intermediate_assembly:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
+        kmc= lambda wildcards: checkpoints.kmc.get(sample=wildcards.sample, auto=AUTO).output.kmcLOG
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
         ),
         ignore_list=os.path.join(dir.out.polypolish, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
         polypolish_flag=True,
     conda:
         os.path.join(dir.env, "scripts.yaml")

@@ -143,6 +143,8 @@ include: os.path.join("rules", "completeness", "aggregate.smk")
 # for short read polishing --careful
 include: os.path.join("rules", "processing", "coverage.smk")
 
+# kmc - needs to be included due to the checkpointing
+include: os.path.join("rules", "processing", "estimate_chromosome.smk")
 
 ### medaka vs no medaka
 # default - medaka will be run

@@ -40,42 +40,78 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth):
     1 = sample
     2 = Long read
     3 = MinChromLength
+    IF auto - only need 2
     """
     outDict = {}
     with open(csvFile, "r") as csv:
         for line in csv:
             l = line.strip().split(",")
-            if len(l) == 3:
-                outDict[l[0]] = {}
-                # where datafir isn't specified
-                if datadir is None:
-                    long_fastq = l[1]
-                else:
-                    datadirlong, datadirshort = check_datadir(datadir)
-                    long_fastq = os.path.join(datadirlong, l[1])
-                if os.path.isfile(long_fastq) and l[2].isnumeric():
-                    outDict[l[0]]["LR"] = long_fastq
-                    outDict[l[0]]["MinChromLength"] = l[2]
-                    outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
-                    outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+            if auto:
+                if len(l) == 2:
+                    # where datafir isn't specified
+                    if datadir is None:
+                        long_fastq = l[1]
+                    else:
+                        datadirlong, datadirshort = check_datadir(datadir)
+                        long_fastq = os.path.join(datadirlong, l[1])
+                    if os.path.isfile(long_fastq):
+                        print(f"Estimating chromosome size for {config.args.sample}")
+                        chrom_size = estimate_chrom_size_from_kmers(long_fastq)
+                        outDict[l[0]]["LR"] = long_fastq
+                        outDict[l[0]]["MinChromLength"] = chrom_size
+                        outDict[l[0]]["TargetBases"] = chrom_size * subsample_depth
+                        outDict[l[0]]["MinBases"] = chrom_size * min_depth
+                    else:
+                        sys.stderr.write(
+                            "\n"
+                            f"    FATAL: Error parsing {csvFile}. {long_fastq} \n"
+                            f"    does not exist. \n"
+                            "    Check formatting, and that \n"
+                            "    file names and file paths are correct.\n"
+                            "\n"
+                        )
+                        sys.exit(1)
                 else:
                     sys.stderr.write(
                         "\n"
-                        f"    FATAL: Error parsing {csvFile}. {long_fastq} \n"
-                        f"    does not exist or  {l[2]} is not an integer. \n"
-                        "    Check formatting, and that \n"
-                        "    file names and file paths are correct.\n"
-                        "\n"
+                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                        f"    does not have 2 columns. \n"
+                        f"    Please check the formatting of {csvFile}. \n"
                     )
                     sys.exit(1)
+
             else:
-                sys.stderr.write(
-                    "\n"
-                    f"    FATAL: Error parsing {csvFile}. Line {l} \n"
-                    f"    does not have 3 columns. \n"
-                    f"    Please check the formatting of {csvFile}. \n"
-                )
-                sys.exit(1)
+                if len(l) == 3:
+                    outDict[l[0]] = {}
+                    # where datafir isn't specified
+                    if datadir is None:
+                        long_fastq = l[1]
+                    else:
+                        datadirlong, datadirshort = check_datadir(datadir)
+                        long_fastq = os.path.join(datadirlong, l[1])
+                    if os.path.isfile(long_fastq) and l[2].isnumeric():
+                        outDict[l[0]]["LR"] = long_fastq
+                        outDict[l[0]]["MinChromLength"] = l[2]
+                        outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
+                        outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+                    else:
+                        sys.stderr.write(
+                            "\n"
+                            f"    FATAL: Error parsing {csvFile}. {long_fastq} \n"
+                            f"    does not exist or  {l[2]} is not an integer. \n"
+                            "    Check formatting, and that \n"
+                            "    file names and file paths are correct.\n"
+                            "\n"
+                        )
+                        sys.exit(1)
+                else:
+                    sys.stderr.write(
+                        "\n"
+                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                        f"    does not have 3 columns. \n"
+                        f"    Please check the formatting of {csvFile}. \n"
+                    )
+                    sys.exit(1)
     return outDict
 
 
@@ -154,11 +190,11 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth):
     return outDict
 
 
-def parseSamples(csvfile, long_flag, subsample_depth, datadir):
+def parseSamples(csvfile, long_flag, subsample_depth, datadir, min_depth):
     if os.path.isfile(csvfile) and long_flag is True:
-        sampleDict = samplesFromCsvLong(csvfile, subsample_depth, datadir)
+        sampleDict = samplesFromCsvLong(csvfile, subsample_depth, datadir, min_depth)
     elif os.path.isfile(csvfile) and long_flag is False:
-        sampleDict = samplesFromCsvShort(csvfile, subsample_depth, datadir)
+        sampleDict = samplesFromCsvShort(csvfile, subsample_depth, datadir, min_depth)
     else:
         sys.stderr.write(
             "\n"

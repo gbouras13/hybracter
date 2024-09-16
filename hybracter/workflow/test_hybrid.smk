@@ -110,6 +110,9 @@ SAMPLES = ["Sample1", "Sample2"]
 # Import rules and functions
 ##############################
 
+# kmc - needs to be included due to the chckpointing
+include: os.path.join("rules", "processing", "estimate_chromosome.smk")
+
 # qc and host
 # depends on whehter --contaminants has been specified and --skip_qc flag activiated
 if config.args.contaminants != "none":  # where --contaminants specified

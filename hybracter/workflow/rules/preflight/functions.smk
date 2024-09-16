@@ -7,12 +7,20 @@ from Bio import SeqIO
 import sys
 import os
 
+def get_kmers(sample, auto):
+    if auto:
+        with checkpoints.kmc.get(sample=sample).output.kmcLOG.open() as file:
+            for line in file:
+                if "No. of unique counted k-mers" in line:
+                    # keep 80% of kmers as lower bound for chromosome
+                    return int(float(re.search(r"No. of unique counted k-mers\s*:\s*([\d\.eE+-]+)", line).group(1)) * 0.8)
+    else:
+        return dictReads[wildcards.sample]["MinChromLength"]
 
 # define functions
 # get long reads
 def get_input_lr_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
-
 
 # get min chrom length (define chrom size)
 def getMinChromLength(wildcards):

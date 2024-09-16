@@ -201,6 +201,16 @@ def test_hybracter_hybrid_csv(run_mac):
     exec_command(cmd)
     remove_directory(outdir)
 
+def test_hybracter_hybrid_csv_auto(run_mac):
+    """test hybracter hybrid auto"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_hybrid_input.csv"
+    cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --auto"
+    if run_mac:
+        cmd += " --mac"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 def test_hybracter_hybrid_csv_skip_qc_not_gzipped(run_mac):
     """test hybracter hybrid with --skip_qc and a long read fastq that isn't gzipped """
     outdir: Path = "test_hybracter_output"
@@ -307,6 +317,16 @@ def test_hybracter_long(run_mac):
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_long_input.csv"
     cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir}"
+    if run_mac:
+        cmd += " --mac"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+def test_hybracter_long_auto(run_mac):
+    """test hybracter long auto"""
+    outdir: Path = "test_hybracter_output"
+    input_csv: Path = test_data_path / "test_long_input.csv"
+    cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --auto"
     if run_mac:
         cmd += " --mac"
     exec_command(cmd)

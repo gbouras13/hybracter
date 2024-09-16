@@ -40,6 +40,7 @@ dir.out.processing = os.path.join(dir.out.base, "processing")
 dir.out.complete = os.path.join(dir.out.processing, "complete")
 dir.out.incomplete = os.path.join(dir.out.processing, "incomplete")
 dir.out.qc = os.path.join(dir.out.processing, "qc")
+dir.out.kmc = os.path.join(dir.out.processing, "kmc")
 
 # logs and benchmarks
 dir.out.bench = os.path.join(dir.out.base, "benchmarks")
