@@ -229,14 +229,14 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
                                 "\n"
                             )
                             sys.exit(1)
-                    else:
-                        sys.stderr.write(
-                            "\n"
-                            f"    FATAL: Error parsing {csvFile}. Line {l} \n"
-                            f"    does not have 5 columns. \n"
-                            f"    Please check the formatting of {csvFile}. \n"
-                        )
-                        sys.exit(1)
+                else:
+                    sys.stderr.write(
+                        "\n"
+                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                        f"    does not have 5 columns. \n"
+                        f"    Please check the formatting of {csvFile}. \n"
+                    )
+                    sys.exit(1)
 
     return outDict
 
