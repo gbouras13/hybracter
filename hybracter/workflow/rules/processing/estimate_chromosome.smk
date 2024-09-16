@@ -26,8 +26,10 @@ rule kmc:
         os.path.join(dir.env, "kmc.yaml")
     threads:
         config.resources.med.cpu
+    params:
+        prefix=os.path.join(dir.out.kmc,"{sample}","{sample}")
     shell:
-        "kmc -k21 -ci10 -t{threads} -v -fq {input.fastq} {wildcards.sample} {output.dir} > {output.kmcLOG} 2>&1"
+        "kmc -k21 -ci10 -t{threads} -v -fq {input.fastq} {params.prefix} {output.dir} > {output.kmcLOG} 2>&1"
 
 rule aggr_kmc:
     """
