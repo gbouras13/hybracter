@@ -89,7 +89,7 @@ if MAC:
 
 # for hybracter hybrid
 if config.args.single is False:
-    dictReads = parseSamples(INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH)  # long flag true
+    dictReads = parseSamples(INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO)  # long flag true
     SAMPLES = list(dictReads.keys())
 # for hybracter hybrid-single
 else:

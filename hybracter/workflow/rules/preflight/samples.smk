@@ -33,7 +33,7 @@ long
 """
 
 
-def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth):
+def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
     """
     Read samples and files from a CSV Long Read Only
     3 cols
@@ -55,10 +55,7 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth):
                         datadirlong, datadirshort = check_datadir(datadir)
                         long_fastq = os.path.join(datadirlong, l[1])
                     if os.path.isfile(long_fastq):
-                        print(f"Estimating chromosome size for {config.args.sample}")
-                        chrom_size = estimate_chrom_size_from_kmers(long_fastq)
                         outDict[l[0]]["LR"] = long_fastq
-                        outDict[l[0]]["MinChromLength"] = chrom_size
                         outDict[l[0]]["TargetBases"] = chrom_size * subsample_depth
                         outDict[l[0]]["MinBases"] = chrom_size * min_depth
                     else:
@@ -120,7 +117,7 @@ short
 """
 
 
-def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth):
+def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
     """
     Read samples and files from a CSV Hybrid
     5 cols
@@ -134,63 +131,117 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth):
     with open(csvFile, "r") as csv:
         for line in csv:
             l = line.strip().split(",")
-            if len(l) == 5:
-                outDict[l[0]] = {}
-                # where datafir isn't specified
-                if datadir is None:
-                    long_fastq = l[1]
-                    r1_fastq = l[3]
-                    r2_fastq = l[4]
-                else:
-                    # if the user supplies a datadir
-                    datadirlong, datadirshort = check_datadir(datadir)
-                    long_fastq = os.path.join(datadirlong, l[1])
-                    # all fastqs in 1 dir
-                    if datadirshort is None:
-                        r1_fastq = os.path.join(datadirlong, l[3])
-                        r2_fastq = os.path.join(datadirlong, l[4])
-                    # separate dirs
+            if auto:
+                if len(l) == 4:
+                    outDict[l[0]] = {}
+                    # where datafir isn't specified
+                    if datadir is None:
+                        long_fastq = l[1]
+                        r1_fastq = l[2]
+                        r2_fastq = l[3]
                     else:
-                        r1_fastq = os.path.join(datadirshort, l[3])
-                        r2_fastq = os.path.join(datadirshort, l[4])                        
+                        # if the user supplies a datadir
+                        datadirlong, datadirshort = check_datadir(datadir)
+                        long_fastq = os.path.join(datadirlong, l[1])
+                        # all fastqs in 1 dir
+                        if datadirshort is None:
+                            r1_fastq = os.path.join(datadirlong, l[2])
+                            r2_fastq = os.path.join(datadirlong, l[3])
+                        # separate dirs
+                        else:
+                            r1_fastq = os.path.join(datadirshort, l[2])
+                            r2_fastq = os.path.join(datadirshort, l[3])                        
 
-                if (
-                    os.path.isfile(long_fastq)
-                    and l[2].isnumeric()
-                    and os.path.isfile(r1_fastq)
-                    and os.path.isfile(r2_fastq)
-                ):
-                    outDict[l[0]]["LR"] = long_fastq
-                    outDict[l[0]]["MinChromLength"] = l[2]
-                    outDict[l[0]]["R1"] = r1_fastq
-                    outDict[l[0]]["R2"] = r2_fastq
-                    outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
-                    outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+                    if (
+                        os.path.isfile(long_fastq)
+                        and os.path.isfile(r1_fastq)
+                        and os.path.isfile(r2_fastq)
+                    ):
+                        outDict[l[0]]["LR"] = long_fastq
+                        outDict[l[0]]["R1"] = r1_fastq
+                        outDict[l[0]]["R2"] = r2_fastq
+                        outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
+                        outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+                    else:
+                        sys.stderr.write(
+                            "\n"
+                            f"    FATAL: Error parsing {csvFile}. One of \n"
+                            f"    {long_fastq} or \n"
+                            f"    {r1_fastq} or \n"
+                            f"    {r2_fastq} \n"
+                            f"    does not exist. \n"
+                            "    Check formatting, and that \n"
+                            "    file names and file paths are correct.\n"
+                            "\n"
+                        )
+                        sys.exit(1)
                 else:
                     sys.stderr.write(
                         "\n"
-                        f"    FATAL: Error parsing {csvFile}. One of \n"
-                        f"    {long_fastq} or \n"
-                        f"    {r1_fastq} or \n"
-                        f"    {r2_fastq} \n"
-                        f"    does not exist or  {l[2]} is not an integer. \n"
-                        "    Check formatting, and that \n"
-                        "    file names and file paths are correct.\n"
-                        "\n"
+                        f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                        f"    does not have 5 columns. \n"
+                        f"    Please check the formatting of {csvFile}. \n"
                     )
                     sys.exit(1)
+
             else:
-                sys.stderr.write(
-                    "\n"
-                    f"    FATAL: Error parsing {csvFile}. Line {l} \n"
-                    f"    does not have 5 columns. \n"
-                    f"    Please check the formatting of {csvFile}. \n"
-                )
-                sys.exit(1)
+                if len(l) == 5:
+                    outDict[l[0]] = {}
+                    # where datafir isn't specified
+                    if datadir is None:
+                        long_fastq = l[1]
+                        r1_fastq = l[3]
+                        r2_fastq = l[4]
+                    else:
+                        # if the user supplies a datadir
+                        datadirlong, datadirshort = check_datadir(datadir)
+                        long_fastq = os.path.join(datadirlong, l[1])
+                        # all fastqs in 1 dir
+                        if datadirshort is None:
+                            r1_fastq = os.path.join(datadirlong, l[3])
+                            r2_fastq = os.path.join(datadirlong, l[4])
+                        # separate dirs
+                        else:
+                            r1_fastq = os.path.join(datadirshort, l[3])
+                            r2_fastq = os.path.join(datadirshort, l[4])                        
+                        if (
+                            os.path.isfile(long_fastq)
+                            and l[2].isnumeric()
+                            and os.path.isfile(r1_fastq)
+                            and os.path.isfile(r2_fastq)
+                        ):
+                            outDict[l[0]]["LR"] = long_fastq
+                            outDict[l[0]]["MinChromLength"] = l[2]
+                            outDict[l[0]]["R1"] = r1_fastq
+                            outDict[l[0]]["R2"] = r2_fastq
+                            outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
+                            outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+                        else:
+                            sys.stderr.write(
+                                "\n"
+                                f"    FATAL: Error parsing {csvFile}. One of \n"
+                                f"    {long_fastq} or \n"
+                                f"    {r1_fastq} or \n"
+                                f"    {r2_fastq} \n"
+                                f"    does not exist or  {l[2]} is not an integer. \n"
+                                "    Check formatting, and that \n"
+                                "    file names and file paths are correct.\n"
+                                "\n"
+                            )
+                            sys.exit(1)
+                    else:
+                        sys.stderr.write(
+                            "\n"
+                            f"    FATAL: Error parsing {csvFile}. Line {l} \n"
+                            f"    does not have 5 columns. \n"
+                            f"    Please check the formatting of {csvFile}. \n"
+                        )
+                        sys.exit(1)
+
     return outDict
 
 
-def parseSamples(csvfile, long_flag, subsample_depth, datadir, min_depth):
+def parseSamples(csvfile, long_flag, subsample_depth, datadir, min_depth, auto):
     if os.path.isfile(csvfile) and long_flag is True:
         sampleDict = samplesFromCsvLong(csvfile, subsample_depth, datadir, min_depth)
     elif os.path.isfile(csvfile) and long_flag is False:
