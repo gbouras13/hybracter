@@ -50,7 +50,7 @@ rule medaka_round_1_extract_intermediate_assembly:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
-        kmc= lambda wildcards: rule.kmc.get(sample=wildcards.sample).output.kmcLOG
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
