@@ -9,7 +9,7 @@ import os
 
 def get_kmers(sample, auto):
     if auto:
-        with checkpoints.kmc.get(sample=sample).output.kmcLOG.open() as file:
+        with checkpoints.kmc.get(sample=wildcards.sample).output.kmcLOG.open() as file:
             for line in file:
                 if "No. of unique counted k-mers" in line:
                     # keep 80% of kmers as lower bound for chromosome
