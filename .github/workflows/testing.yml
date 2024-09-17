@@ -27,6 +27,7 @@ jobs:
             activate-environment: hybracterENV
             environment-file: build/environment.yaml
             python-version: ${{ matrix.python-version }}
+            miniforge-version: latest # not mambaforge anymore
             auto-activate-base: false
 
         - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
