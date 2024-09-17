@@ -29,7 +29,6 @@ jobs:
             python-version: ${{ matrix.python-version }}
             auto-activate-base: false
             channel-priority: strict
-            channels: conda-forge,bioconda,defaults,anaconda
             auto-update-conda: true
 
         - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"

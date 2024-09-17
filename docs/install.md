@@ -8,14 +8,14 @@ This is only recommend if you have one or a few samples to assemble (it takes a 
 
 # Local Installation
 
-You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install mamba.
+You will need conda, ideal via **highly recommended** [miniforge](https://github.com/conda-forge/miniforge) to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). See the end of this page for steps on how to install [miniforge](https://github.com/conda-forge/miniforge).
 
 ## Conda
 
 `hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
 
 ```bash
-mamba create -n hybracterENV  -c bioconda -c conda-forge  hybracter
+conda create -n hybracterENV  -c bioconda -c conda-forge  hybracter
 conda activate hybracterENV
 hybracter --help
 hybracter install
@@ -25,18 +25,16 @@ hybracter install
 
 `hybracter` is available to install with `pip` . 
 
-You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
+You will also need conda available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 
 ```bash
-mamba create -n hybracterENV pip
+conda create -n hybracterENV pip
 conda activate hybracterENV
 pip install hybracter
 hybracter --help
 hybracter install
 ```
-
-Mamba is **highly highly** recommend. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
 
 ## Source
 
@@ -100,7 +98,7 @@ The containerised environments will automatically be created as required when yo
 
 For users who will be running `hybracter` offline e.g. on a cluster, this means you should probably run a small test datasets like `hybracter test-hybrid` and `hybracter test-long` where internet is available online (such as on the head node) to ensure all required environments are installed. I am one of these people :)
 
-Finally, but default `hybracter` will use mamba to install your environments. If for some reason you must use conda not mamba, use `--conda-frontend conda` with your hybracter command to force `hybracter` to use conda. 
+Finally, by default `hybracter` will use `conda` to install your environments (from v0.9.0), now that by default it uses the mamba solver. If you must use `mamba`, use `--conda-frontend mamba` with your hybracter command to force `hybracter` to use mamba explicitly. 
 
 ## Errors with Installing Dependencies & Environments
 
@@ -148,9 +146,9 @@ hybracter test-long --threads 1
 
 # Beginner Conda and Mamba Installation
 
-If you are new to using the command-line, please install mamba or conda using either option detailed below.
+If you are new to using the command-line, please install conda using either option detailed below.
 
-I would prefer and recommend the miniforge option as it comes with mamba!
+I would prefer and recommend the miniforge option!
 
 ##  Install miniforge
 
@@ -180,7 +178,7 @@ conda config --add channels conda-forge
 ##### Finally, I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
 
 ```bash
-mamba create -n hybracterENV hybracter
+conda create -n hybracterENV hybracter
 conda activate hybracterENV
 hybracter -h
 ```
@@ -210,16 +208,12 @@ conda config --add channels bioconda
 conda config --add channels conda-forge
 ```
 
-##### After this, conda should be installed (you may need to restart your terminal). It is recommended that mamba is also installed, as it will solve the enviroment quicker than conda:
+##### I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
 
 ```bash
-conda install mamba
-```
-
-##### Finally, I would recommend installing hybracter into a fresh environment. For example to create an environment called hybracterENV with hybracter installed:
-
-```bash
-mamba create -n hybracterENV hybracter
+conda create -n hybracterENV hybracter
 conda activate hybracterENV
 hybracter -h
 ```
+
+**There is no need to install mamba anymore, as conda's default solver is mamba!**

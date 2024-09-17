@@ -21,7 +21,7 @@
 - [Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies](#hybracter-enabling-scalable-automated-complete-and-accurate-bacterial-genome-assemblies)
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
-    - [Mamba/Conda](#mambaconda)
+    - [Conda](#conda)
     - [Container](#container)
     - [Google Colab Notebooks](#google-colab-notebooks)
   - [Documentation](#documentation)
@@ -36,7 +36,7 @@
       - [Trycycler](#trycycler)
       - [Dragonflye](#dragonflye)
   - [Installation](#installation)
-    - [Conda](#conda)
+    - [Conda](#conda-1)
     - [Pip](#pip)
     - [Source](#source)
   - [Main Commands](#main-commands)
@@ -67,7 +67,7 @@
 
 ## Quick Start
 
-### Mamba/Conda
+### Conda
 
 `hybracter` is available to install with `pip` or `conda`.
 
@@ -76,13 +76,13 @@ You will need conda or mamba available so `hybracter` can install all the requir
 Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 ```bash
-mamba create -n hybracterENV -c bioconda -c conda-forge  hybracter
+conda create -n hybracterENV -c bioconda -c conda-forge  hybracter
 conda activate hybracterENV
 hybracter --help
 hybracter install
 ```
 
-Mamba is **highly highly** recommend. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
+Miniforge is **highly highly** recommended. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install miniforeg.
 
 When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
 
@@ -235,14 +235,14 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 
 ## Installation
 
-You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
+You will need conda  (**highly recommended** through miniforge) to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install miniforge.
 
 ### Conda
 
 `hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
 
 ```bash
-mamba create -n hybracterENV hybracter
+conda create -n hybracterENV hybracter
 conda activate hybracterENV
 hybracter --help
 hybracter install
@@ -252,11 +252,11 @@ hybracter install
 
 `hybracter` is available to install with `pip` . 
 
-You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
+You will also need conda available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 
 ```bash
-mamba create -n hybracterENV pip
+conda create -n hybracterENV pip
 conda activate hybracterENV
 pip install hybracter
 hybracter --help
