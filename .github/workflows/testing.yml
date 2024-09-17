@@ -32,7 +32,7 @@ jobs:
         - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
           shell: bash -l {0}
           run: |
-            mamba install python=${{ matrix.python-version }}
+            conda install python=${{ matrix.python-version }}
             python -m pip install --upgrade pip
             pip install .
         
