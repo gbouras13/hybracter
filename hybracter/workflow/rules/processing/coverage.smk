@@ -76,7 +76,7 @@ rule estimate_lr_coverage:
         lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"),
     params:
         min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
-        min_bases=lambda wildcards: str(getMinBases(kmc_log_path=os.path.join(dir.out.kmc,f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"),sample=wildcards.sample, auto=AUTO, min_depth=SUBSAMPLE_DEPTH)),
+        min_bases=lambda wildcards: str(getMinBases(kmc_log_path=os.path.join(dir.out.kmc,f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"),sample=wildcards.sample, auto=AUTO, min_depth=MIN_DEPTH)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

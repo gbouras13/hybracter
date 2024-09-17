@@ -29,16 +29,40 @@ rule kmc:
         os.path.join(dir.env, "kmc.yaml")
     threads:
         config.resources.med.cpu
+    resources:
+        mem_mb=config.resources.med.mem,
+        mem=str(config.resources.med.mem) + "MB",
+        time=config.resources.med.time,
     params:
         prefix=os.path.join(dir.out.kmc,"{sample}","{sample}")
     shell:
         "kmc -k21 -ci10 -t{threads} -v -fq {input.fastq} {params.prefix} {output.dir} > {output.kmcLOG} 2>&1"
+
+rule write_chrom_size:
+    """
+    need params.prefix so kmc writes into the output dir
+    """
+    input:
+        kmcLOG = os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+    output:
+        chrom_size = os.path.join(dir.out.chrom_size,"{sample}", "{sample}_kmc_estimated_chrom_size.txt"),
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    threads:
+        config.resources.sml.cpu
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    script:
+        os.path.join(dir.scripts, "write_chrom_size.py")
 
 rule aggr_kmc:
     """
     aggregates over all samples
     """
     input:
+        expand(os.path.join(dir.out.chrom_size,"{sample}", "{sample}_kmc_estimated_chrom_size.txt"), sample=SAMPLES),
         expand(os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt"), sample=SAMPLES)
     output:
         flag=os.path.join(dir.out.flags, "aggr_kmc.flag"),

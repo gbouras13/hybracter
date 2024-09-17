@@ -6,7 +6,7 @@ checkpoint check_completeness:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt"),
     output:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:

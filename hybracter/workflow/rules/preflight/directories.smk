@@ -41,6 +41,8 @@ dir.out.complete = os.path.join(dir.out.processing, "complete")
 dir.out.incomplete = os.path.join(dir.out.processing, "incomplete")
 dir.out.qc = os.path.join(dir.out.processing, "qc")
 dir.out.kmc = os.path.join(dir.out.processing, "kmc")
+# auto only - write chrom size to file
+dir.out.chrom_size = os.path.join(dir.out.processing, "chrom_size")
 
 # logs and benchmarks
 dir.out.bench = os.path.join(dir.out.base, "benchmarks")

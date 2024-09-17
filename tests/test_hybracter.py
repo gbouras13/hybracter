@@ -202,7 +202,23 @@ def test_hybracter_hybrid_csv(run_mac):
     remove_directory(outdir)
 
 def test_hybracter_hybrid_csv_auto(run_mac):
-    """test hybracter hybrid auto"""
+    """test hybracter hybrid auto
+
+    Note that in 'auto' mode, it is going to be very hard for incomplete samples to happen
+    This is because the required No. unique counter k-mers to be count is set to 10 
+    Likely to get longer assemblies than 10kmers (in general), done some tests on subsampled data
+    So warn people to be careful using kmc
+
+    Sample 1
+    kmc
+    No. of unique counted k-mers       :        72697
+    which should give a chromosome size of 58157  ( assembly is 70ish)
+
+    Sample 2
+    No. of unique counted k-mers       : 4542  
+    which should give a chromosome size of 3633( assembly is 70ish)
+
+    """
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_hybrid_input_auto.csv"
     cmd = f"hybracter hybrid --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --auto"
@@ -323,7 +339,24 @@ def test_hybracter_long(run_mac):
     remove_directory(outdir)
 
 def test_hybracter_long_auto(run_mac):
-    """test hybracter long auto"""
+    """
+
+    Note that in 'auto' mode, it is going to be very hard for incomplete samples to happen
+    This is because the required No. unique counter k-mers to be count is set to 10 
+    Likely to get longer assemblies than 10kmers (in general), done some tests on subsampled data
+    If the chrom size is really low --> suggests that you need more sequencing data :)
+    So warn people to be careful using kmc
+
+    Sample 1
+    kmc
+    No. of unique counted k-mers       :        72697
+    which should give a chromosome size of 58157  ( assembly is 70ish)
+
+    Sample 2
+    No. of unique counted k-mers       : 4542  
+    which should give a chromosome size of 3633( assembly is 70ish)
+
+    """
     outdir: Path = "test_hybracter_output"
     input_csv: Path = test_data_path / "test_long_input_auto.csv"
     cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --auto"
