@@ -10,7 +10,7 @@ checkpoint check_completeness:
     output:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:
-        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -36,7 +36,7 @@ rule extract_chromosome_complete:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
         ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
         polypolish_flag=False,
     conda:
         os.path.join(dir.env, "scripts.yaml")
@@ -61,7 +61,7 @@ rule copy_flye_intermediate_chrom_assembly:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
         ),
     params:
-        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, AUTO)),
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -110,7 +110,7 @@ rule extract_incomplete:
     output:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
     params:
-        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

@@ -41,7 +41,7 @@ def get_quick_coverage_estimate_long(
 
 get_quick_coverage_estimate_long(
     snakemake.input.long_bases,
-    snakemake.params.chromlen,
+    snakemake.params.min_chrom_length,
     snakemake.params.min_bases,
     snakemake.output.lr_coverage,
 )

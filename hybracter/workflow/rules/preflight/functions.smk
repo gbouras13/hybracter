@@ -6,10 +6,11 @@ import gzip
 from Bio import SeqIO
 import sys
 import os
+import re
 
-def get_kmers(sample, auto):
+def getMinChromLength(kmc_log_path, sample, auto):
     if auto:
-        with rule.kmc.get(sample=sample).output.kmcLOG.open() as file:
+        with open(kmc_log_path, "r") as file:
             for line in file:
                 if "No. of unique counted k-mers" in line:
                     # keep 80% of kmers as lower bound for chromosome
@@ -18,9 +19,9 @@ def get_kmers(sample, auto):
         return dictReads[sample]["MinChromLength"]
 
 # get min_depth 
-def getMinBases(sample, auto, min_depth):
+def getMinBases(kmc_log_path, sample, auto, min_depth):
     if auto:
-        with rule.kmc.get(sample=sample).output.kmcLOG.open() as file:
+        with open(kmc_log_path, "r") as file:
             for line in file:
                 if "No. of unique counted k-mers" in line:
                     # keep 80% of kmers as lower bound for chromosome
@@ -29,9 +30,9 @@ def getMinBases(sample, auto, min_depth):
     else:
         return dictReads[sample]["MinBases"]
 
-def getTargetBases(sample, auto, target_depth):
+def getTargetBases(kmc_log_path, sample, auto, target_depth):
     if auto:
-        with rule.kmc.get(sample=sample).output.kmcLOG.open() as file:
+        with open(kmc_log_path, "r") as file:
             for line in file:
                 if "No. of unique counted k-mers" in line:
                     # keep 80% of kmers as lower bound for chromosome
@@ -41,20 +42,12 @@ def getTargetBases(sample, auto, target_depth):
         return dictReads[sample]["TargetBases"]
 
 
-# # get target bases for filtlong subsampling
-# def getTargetBases(wildcards):
-#     return dictReads[wildcards.sample]["TargetBases"]
 
 
 # define functions
 # get long reads
 def get_input_lr_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
-
-# # get min chrom length (define chrom size)
-# def getMinChromLength(wildcards):
-#     return dictReads[wildcards.sample]["MinChromLength"]
-
 
 
 def get_input_r1(wildcards):

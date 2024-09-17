@@ -13,7 +13,7 @@ rule plassembler_long:
         version=os.path.join(dir.out.versions, "{sample}", "plassembler.version"),
     params:
         db=dir.plassemblerdb,
-        chromlen = lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
+        chromlen = lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
         outdir=os.path.join(dir.out.plassembler, "{sample}"),
         flye_dir=os.path.join(dir.out.assemblies, "{sample}"),
         depth_filter=DEPTH_FILTER,

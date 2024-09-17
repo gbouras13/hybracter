@@ -50,6 +50,7 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
             l = line.strip().split(",")
             if auto:
                 if len(l) == 2:
+                    outDict[l[0]] = {}
                     # where datafir isn't specified
                     if datadir is None:
                         long_fastq = l[1]

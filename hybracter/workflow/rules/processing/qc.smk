@@ -19,7 +19,7 @@ rule filtlong:
     params:
         qual=config.args.min_quality,
         length=config.args.min_length,
-        target_bases=lambda wildcards: str(getTargetBases(sample=wildcards.sample, auto=AUTO, target_depth=SUBSAMPLE_DEPTH)),
+        target_bases=lambda wildcards: str(getTargetBases(kmc_log_path=os.path.join(dir.out.kmc,f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"),sample=wildcards.sample, auto=AUTO, target_depth=SUBSAMPLE_DEPTH)),
     benchmark:
         os.path.join(dir.out.bench, "filtlong", "{sample}.txt")
     log:

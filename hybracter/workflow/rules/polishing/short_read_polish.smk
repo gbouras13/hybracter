@@ -95,7 +95,7 @@ rule polypolish_extract_intermediate_assembly:
         ),
         ignore_list=os.path.join(dir.out.polypolish, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=lambda wildcards: str(get_kmers(wildcards.sample, auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
         polypolish_flag=True,
     conda:
         os.path.join(dir.env, "scripts.yaml")
