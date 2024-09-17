@@ -75,6 +75,21 @@ p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000,sample2_SR_R1.fastq.gz,s
 | -------------------- | -------------------------- | ------- | ---------------------- | ----------------------- |
 | p_aeruginosa_sample2 | sample2_long_read.fastq.gz | 5500000 | sample2_SR_R1.fastq.gz |  sample2_SR_R2.fastq.gz |
 
+
+* If you use `--auto`, you can remove the column with the chromosome length
+
+e.g.
+
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz,sample1_SR_R1.fastq.gz,sample1_SR_R2.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz,sample2_SR_R1.fastq.gz,sample2_SR_R2.fastq.gz
+```
+
+| s_aureus_sample1     | sample1_long_read.fastq.gz | sample1_SR_R1.fastq.gz |  sample1_SR_R2.fastq.gz |
+| -------------------- | -------------------------- | ---------------------- | ----------------------- |
+| p_aeruginosa_sample2 | sample2_long_read.fastq.gz | sample2_SR_R1.fastq.gz |  sample2_SR_R2.fastq.gz |
+
+
 #### `hybracter long`
 
 `hybracter long` also requires an input csv with no headers, but only 3 columns.
@@ -96,6 +111,16 @@ p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000
 | -------------------- | -------------------------- | ------- |
 | p_aeruginosa_sample2 | sample2_long_read.fastq.gz | 5500000 |
 
+* If you use `--auto`, you can remove the column with the chromosome length
+
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz
+```
+
+| s_aureus_sample1     | sample1_long_read.fastq.gz |
+| -------------------- | -------------------------- |
+| p_aeruginosa_sample2 | sample2_long_read.fastq.gz |
 
 ## Pacbio Reads
 

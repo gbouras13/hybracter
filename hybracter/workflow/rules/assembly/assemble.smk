@@ -5,6 +5,7 @@ rule assemble:
     """
     input:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
+        lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"), # make sure coverage is run before assembly in case below min_depth
     output:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),

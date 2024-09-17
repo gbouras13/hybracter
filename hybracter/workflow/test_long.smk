@@ -63,18 +63,24 @@ FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
+MIN_DEPTH = config.args.min_depth
+AUTO = config.args.auto
 MAC = config.args.mac
 
 # MAC medaka
 
-new_models = ['r1041_e82_400bps_sup_v5.0.0',
-    'r1041_e82_400bps_hac_v5.0.0',
-    'r1041_e82_400bps_hac_v4.3.0',
-    'r1041_e82_400bps_sup_v4.3.0']
+new_models = [
+    "r1041_e82_400bps_sup_v5.0.0",
+    "r1041_e82_400bps_hac_v5.0.0",
+    "r1041_e82_400bps_hac_v4.3.0",
+    "r1041_e82_400bps_sup_v4.3.0",
+]
 
 if MAC:
     if MEDAKA_MODEL in new_models:
-        print(f"{MEDAKA_MODEL} is not available in medaka v1.8.0 as it is too new. If you want this model, try Hybracter on a Linux machine.")
+        print(
+            f"{MEDAKA_MODEL} is not available in medaka v1.8.0 as it is too new. If you want this model, try Hybracter on a Linux machine."
+        )
         print(f"Changing the medaka model to r1041_e82_400bps_sup_v4.2.0.")
         MEDAKA_MODEL = "r1041_e82_400bps_sup_v4.2.0"
 
@@ -89,19 +95,27 @@ if MAC:
 dictReads = {}
 dictReads["Sample1"] = {}
 dictReads["Sample1"]["LR"] = os.path.join(dir.test_fastqs, "test_long_reads.fastq.gz")
-dictReads["Sample1"]["MinChromLength"] = 50000
+if not AUTO:
+    dictReads["Sample1"]["MinChromLength"] = 50000
 dictReads["Sample1"]["TargetBases"] = SUBSAMPLE_DEPTH * 50000
+dictReads["Sample1"]["MinBases"] = MIN_DEPTH * 50000
 
 dictReads["Sample2"] = {}
 dictReads["Sample2"]["LR"] = os.path.join(dir.test_fastqs, "test_long_reads.fastq.gz")
-dictReads["Sample2"]["MinChromLength"] = 100000
+if not AUTO:
+    dictReads["Sample2"]["MinChromLength"] = 100000
 dictReads["Sample2"]["TargetBases"] = SUBSAMPLE_DEPTH * 100000
+dictReads["Sample2"]["MinBases"] = MIN_DEPTH * 100000
 
 SAMPLES = ["Sample1", "Sample2"]
+
 
 ##############################
 # Import rules and functions
 ##############################
+
+# kmc - needs to be included due to the chckpointing
+include: os.path.join("rules", "processing", "estimate_chromosome.smk")
 
 # qc and host
 # depends on whehter --contaminants has been specified and --skip_qc flag activiated

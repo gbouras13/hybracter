@@ -50,13 +50,14 @@ rule medaka_round_1_extract_intermediate_assembly:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
         ),
         ignore_list=os.path.join(dir.out.medaka_rd_1, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
         polypolish_flag=False,
     conda:
         os.path.join(dir.env, "scripts.yaml")
@@ -186,7 +187,7 @@ rule medaka_round_2_extract_intermediate_assembly:
         ),
         ignore_list=os.path.join(dir.out.medaka_rd_2, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
         polypolish_flag=False,
     conda:
         os.path.join(dir.env, "scripts.yaml")

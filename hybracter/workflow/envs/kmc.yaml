@@ -1,0 +1,7 @@
+name: kmc
+channels:
+    - conda-forge
+    - bioconda
+dependencies: 
+    - kmc >=3.2.4
+    

@@ -32,7 +32,7 @@ rule host_removal_mapping_single:
     """Map reads to host and return unmapped reads"""
     input:
         index=os.path.join(dir.out.contaminant_index, "host.index"),
-        fastq=get_input_lr_fastqs,
+        fastq=get_input_lr_fastqs(sample=wildcards.sample),
     output:
         r1=os.path.join(
             dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
@@ -98,6 +98,7 @@ rule filtlong:
         fastq=os.path.join(
             dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
         ),
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),
@@ -111,13 +112,14 @@ rule filtlong:
     params:
         qual=config.args.min_quality,
         length=config.args.min_length,
+        target_bases=lambda wildcards: str(getTargetBases(kmc_log_path=os.path.join(dir.out.kmc,f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"),sample=wildcards.sample, auto=AUTO, target_depth=SUBSAMPLE_DEPTH)),
     benchmark:
         os.path.join(dir.out.bench, "filtlong", "{sample}.txt")
     log:
         os.path.join(dir.out.stderr, "filtlong", "{sample}.log"),
     shell:
         """
-        filtlong --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq} 2> {log}
+        filtlong --target_bases {params.target_bases}  --min_mean_q {params.qual} --min_length {params.length} {input.fastq} | pigz > {output.fastq} 2> {log}
         filtlong --version > {output.version}
         """
 

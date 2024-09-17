@@ -64,18 +64,24 @@ FLYE_MODEL = config.args.flyeModel
 LOGIC = config.args.logic
 DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
+MIN_DEPTH = config.args.min_depth
+AUTO = config.args.auto
 MAC = config.args.mac
 
 # MAC medaka
 
-new_models = ['r1041_e82_400bps_sup_v5.0.0',
-    'r1041_e82_400bps_hac_v5.0.0',
-    'r1041_e82_400bps_hac_v4.3.0',
-    'r1041_e82_400bps_sup_v4.3.0']
+new_models = [
+    "r1041_e82_400bps_sup_v5.0.0",
+    "r1041_e82_400bps_hac_v5.0.0",
+    "r1041_e82_400bps_hac_v4.3.0",
+    "r1041_e82_400bps_sup_v4.3.0",
+]
 
 if MAC:
     if MEDAKA_MODEL in new_models:
-        print(f"{MEDAKA_MODEL} is not available in medaka v1.8.0 as it is too new. If you want this model, try Hybracter on a Linux machine.")
+        print(
+            f"{MEDAKA_MODEL} is not available in medaka v1.8.0 as it is too new. If you want this model, try Hybracter on a Linux machine."
+        )
         print(f"Changing the medaka model to r1041_e82_400bps_sup_v4.2.0.")
         MEDAKA_MODEL = "r1041_e82_400bps_sup_v4.2.0"
 
@@ -83,7 +89,7 @@ if MAC:
 
 # for hybracter hybrid
 if config.args.single is False:
-    dictReads = parseSamples(INPUT, True, SUBSAMPLE_DEPTH, DATADIR)  # long flag true
+    dictReads = parseSamples(INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO)  # long flag true
     SAMPLES = list(dictReads.keys())
 # for hybracter hybrid-single
 else:
@@ -93,11 +99,15 @@ else:
     dictReads[config.args.sample]["MinChromLength"] = config.args.chromosome
     # add target bases for filtlong
     dictReads[config.args.sample]["TargetBases"] = SUBSAMPLE_DEPTH * config.args.chromosome
+    dictReads[config.args.sample]["MinBases"] = MIN_DEPTH * config.args.chromosome
     SAMPLES = [config.args.sample]
 
 ##############################
 # Import rules and functions
 ##############################
+
+# kmc - needs to be included due to the
+include: os.path.join("rules", "processing", "estimate_chromosome.smk")
 
 # qc and host
 # depends on whehter --contaminants has been specified and --skip_qc flag activiated

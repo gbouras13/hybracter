@@ -6,22 +6,48 @@ import gzip
 from Bio import SeqIO
 import sys
 import os
+import re
+
+def getMinChromLength(kmc_log_path, sample, auto):
+    if auto:
+        with open(kmc_log_path, "r") as file:
+            for line in file:
+                if "No. of unique counted k-mers" in line:
+                    # keep 80% of kmers as lower bound for chromosome
+                    return int(float(re.search(r"No. of unique counted k-mers\s*:\s*([\d\.eE+-]+)", line).group(1)) * 0.8)
+    else:
+        return dictReads[sample]["MinChromLength"]
+
+# get min_depth 
+def getMinBases(kmc_log_path, sample, auto, min_depth):
+    if auto:
+        with open(kmc_log_path, "r") as file:
+            for line in file:
+                if "No. of unique counted k-mers" in line:
+                    # keep 80% of kmers as lower bound for chromosome
+                    chrom_size = int(float(re.search(r"No. of unique counted k-mers\s*:\s*([\d\.eE+-]+)", line).group(1)) * 0.8)
+                    return int(min_depth*chrom_size)
+    else:
+        return dictReads[sample]["MinBases"]
+
+def getTargetBases(kmc_log_path, sample, auto, target_depth):
+    if auto:
+        with open(kmc_log_path, "r") as file:
+            for line in file:
+                if "No. of unique counted k-mers" in line:
+                    # keep 80% of kmers as lower bound for chromosome
+                    chrom_size = int(float(re.search(r"No. of unique counted k-mers\s*:\s*([\d\.eE+-]+)", line).group(1)) * 0.8)
+                    return int(target_depth*chrom_size)
+    else:
+        return dictReads[sample]["TargetBases"]
+
+
 
 
 # define functions
 # get long reads
 def get_input_lr_fastqs(wildcards):
     return dictReads[wildcards.sample]["LR"]
-
-
-# get min chrom length (define chrom size)
-def getMinChromLength(wildcards):
-    return dictReads[wildcards.sample]["MinChromLength"]
-
-
-# get target bases for filtlong subsampling
-def getTargetBases(wildcards):
-    return dictReads[wildcards.sample]["TargetBases"]
 
 
 def get_input_r1(wildcards):

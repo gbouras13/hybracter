@@ -65,12 +65,37 @@ rule aggr_seqkit_short:
         """
 
 
+rule estimate_lr_coverage:
+    """
+    quickly estimates long read coverage for min_depth
+    """
+    input:
+        long_bases=os.path.join(dir.out.seqkit, "{sample}_long.txt"),
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+    output:
+        lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"),
+    params:
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
+        min_bases=lambda wildcards: str(getMinBases(kmc_log_path=os.path.join(dir.out.kmc,f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"),sample=wildcards.sample, auto=AUTO, min_depth=MIN_DEPTH)),
+    conda:
+        os.path.join(dir.env, "scripts.yaml")
+    resources:
+        mem_mb=config.resources.sml.mem,
+        mem=str(config.resources.sml.mem) + "MB",
+        time=config.resources.sml.time,
+    threads: config.resources.sml.cpu
+    script:
+        os.path.join(dir.scripts, "lr_coverage.py")
+        
+
+
 rule aggr_seqkit_long:
     """
-    aggregates the seqkit stats over all samples
+    aggregates the seqkit stats and coverage check over all samples
     """
     input:
         expand(os.path.join(dir.out.seqkit, "{sample}_long.txt"), sample=SAMPLES),
+        expand(os.path.join(dir.out.coverage, "{sample}_lr.txt"), sample=SAMPLES)
     output:
         flag=os.path.join(dir.out.flags, "aggr_seqkit_long.flag"),
     resources:
@@ -83,18 +108,18 @@ rule aggr_seqkit_long:
         touch {output.flag}
         """
 
-
 rule estimate_sr_coverage:
     """
-    quickly estimates short read coverage for careful
+    quickly estimates short read coverage for pypolca and polypolish careful
     """
     input:
         r1=os.path.join(dir.out.seqkit, "{sample}_r1.txt"),
         r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt"),
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
-        sr_coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
+        sr_coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     params:
-        chromlen=getMinChromLength,
+        chromlen=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -104,3 +129,4 @@ rule estimate_sr_coverage:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "sr_coverage.py")
+

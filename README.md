@@ -21,24 +21,22 @@
 - [Hybracter: Enabling Scalable, Automated, Complete and Accurate Bacterial Genome Assemblies](#hybracter-enabling-scalable-automated-complete-and-accurate-bacterial-genome-assemblies)
   - [Table of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
-    - [Google Colab Notebooks](#google-colab-notebooks)
-    - [Mamba/Conda](#mambaconda)
+    - [Conda](#conda)
     - [Container](#container)
+    - [Google Colab Notebooks](#google-colab-notebooks)
   - [Documentation](#documentation)
   - [Manuscript](#manuscript)
   - [Description](#description)
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
-  - [v0.7.0 Updates (04 March 2024)](#v070-updates-04-march-2024)
-  - [v0.5.0 Updates (08 January 2024)](#v050-updates-08-january-2024)
-  - [v0.4.0 Updates (14 November 2023)](#v040-updates-14-november-2023)
-  - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
+  - [Recent Updates](#recent-updates)
+    - [v0.9.0 Updates (18 September 2024)](#v090-updates-18-september-2024)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
   - [Other Options](#other-options)
       - [Trycycler](#trycycler)
       - [Dragonflye](#dragonflye)
   - [Installation](#installation)
-    - [Conda](#conda)
+    - [Conda](#conda-1)
     - [Pip](#pip)
     - [Source](#source)
   - [Main Commands](#main-commands)
@@ -56,6 +54,11 @@
     - [Main Output Files](#main-output-files)
   - [Snakemake Profiles](#snakemake-profiles)
   - [Advanced Configuration](#advanced-configuration)
+  - [Older Updates](#older-updates)
+    - [v0.7.0 Updates (04 March 2024)](#v070-updates-04-march-2024)
+    - [v0.5.0 Updates (08 January 2024)](#v050-updates-08-january-2024)
+    - [v0.4.0 Updates (14 November 2023)](#v040-updates-14-november-2023)
+    - [v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`](#v020-updates-26-october-2023---medaka-polishing-and---no_medaka)
   - [Version Log](#version-log)
   - [System](#system)
   - [Bugs and Suggestions](#bugs-and-suggestions)
@@ -64,13 +67,7 @@
 
 ## Quick Start
 
-### Google Colab Notebooks
-
-If you don't want to install `hybracter` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
-
-This is only recommend if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install as described below is suggested.
-
-### Mamba/Conda
+### Conda
 
 `hybracter` is available to install with `pip` or `conda`.
 
@@ -79,13 +76,13 @@ You will need conda or mamba available so `hybracter` can install all the requir
 Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 ```bash
-mamba create -n hybracterENV -c bioconda -c conda-forge  hybracter
+conda create -n hybracterENV -c bioconda -c conda-forge  hybracter
 conda activate hybracterENV
 hybracter --help
 hybracter install
 ```
 
-Mamba is **highly highly** recommend. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
+Miniforge is **highly highly** recommended. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install miniforeg.
 
 When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
 
@@ -114,8 +111,14 @@ containerImage="$IMAGE_DIR/hybracter_0.8.0.sif"
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
  -1 test_data/Fastqs/test_short_reads_R1.fastq.gz  -2 test_data/Fastqs/test_short_reads_R2.fastq.gz \
- -o output_test_singularity -t 4 -c 50000
+ -o output_test_singularity -t 4 --auto
 ```
+
+### Google Colab Notebooks
+
+If you don't want to install `hybracter` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
+
+This is only recommend if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install as described below is suggested.
 
 ## Documentation
 
@@ -167,59 +170,38 @@ To summarise the conclusions:
 * If you want the fastest possible chromosome assemblies for applications like species ID or sequence typing that retain a high level of accuracy, Dragonflye is a good option.
 * Dragonflye should not be used if you care about recovering plasmids.
 
-## v0.7.0 Updates (04 March 2024)
+## Recent Updates
 
-**Changes to short read polishing**
+### v0.9.0 Updates (18 September 2024)
 
-* Logic added to run `polypolish` v0.6.0 with `--careful` and skip pypolca if the SR coverage estimate is below 5x (note: FASTA files for pypolca will be generated in the processing directory to play nice with Snakemake, but these will be identical to the polypolish output). 
-* For 5-25x coverage, `polypolish --careful` and `pypolca` with `--careful` will be run. 
-* For >25x coverage, `polypolish` default and `pypolca` with `--careful` will be run. 
-* A preprint justifying these changes will be available soon.
+**`--auto` for automatic estimation of chromosome size**
 
-**`--logic` changes**
+* Thanks to an [issue](https://github.com/gbouras13/hybracter/issues/90) and code from @[richardstoeckl](https://github.com/richardstoeckl), Hybracter can now estimate the estimated chromosome size for each sample by passing `--auto`. 
+* The implementation uses [kmc](https://github.com/refresh-bio/KMC). Specifically, Hybracter uses kmc to count the number of unique 21mers that appear at least 10 times in your long-read FASTQ file. This is because, for a given assembly of length L,  and a k-mer size of k, the total number of unique possible k-mers  will be given by ( L – k ) + 1, and if L >> k, then it suffices as an estimate of total assembly size
+* The estimated chromosome size used by Hybracter will actually be 80% of the number of 21-mers found at least 10 times, as it needs to account for plasmids
+* If you aren't sure whether you have enough data for assembly (i.e. coverage lower than 20x), be careful using `--auto`, because the actual assembly size will tend to be larger than the number of unique 21mers found at least 10 times. Therefore, the estimated chromosome size will almost certainly be an underestimate and may lead to Hybracter considering your assembly "complete" when in fact it isn't.
 
-* By default, `--logic` defaults to `last` for `hybracter hybrid`, as there we have found that the polishing strategy implemented above never makes the assembly worse. We suggest never using `--logic best` with `hybracter hybrid`.
-
-**Changes for chromosome contigs and circularity**
-
-* If hybracter assembles a contig that is greater than the minimum chromosome length but not marked as circular by Flye, this will now be denoted as a chromosome, but not circular. The genome will be marked as complete also. 
-    * These will usually be assemblies with some issue (e.g. prophages, circularisation issues, heterogeneity) and probably require some more attention.
-    * For example, with the _Vibrio cholerae_ larger chromosome described [here](https://rrwick.github.io/2024/02/15/misassemblies.html), the genome will be marked as 'complete' but the contig will not be marked as 'circular' in the `hybracter` output.
-    * Such contigs will be polished and be in the final `_chromosome.fasta` output, but they will not be rotated by `dnaapler`. 
-    * These were previously being excluded, which was missing assemblies with structural heterogeneity (causing the chromosome not to completely circularise) or even bacteria with linear chromosomes like [_Borrelia_](https://www.nature.com/articles/37551). 
-
-**Adds `--depth_filter`** 
-
-* This is passed to [Plassembler](https://github.com/gbouras13/plassembler) and will filter out all putative plasmid contigs that are lower than this depth fraction compared to the chromosome.
-* Defaults to 0.25 like Unicycler's implementation.
-
-## v0.5.0 Updates (08 January 2024)
-
-Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 basecalled Nanopore reads (his [blog post](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html)). You can read a write-up of the results [here](https://hybracter.readthedocs.io/en/latest/dorado_ryan_louise_0_5_0/). As a result, subsampling has been added to Hybracter. 
-
-* Adds subsampling using `--subsample_depth` using Filtlong, based on some benchmarking of Dorado v0.5.0. Defaults to 100x of the estimated chromosome size `-c`.
-* Also adds stricter criteria for complete assemblies (aka ensures that identified chromosomes must be circularised according to Flye).
+* If you use `--auto`, you do not need to specify the chromosome length in the input. This means you don't need to `-c` with `long-single` or `hybrid-single` and in the input csv sample sheet, you do not need a column with chromosome length.
   
-## v0.4.0 Updates (14 November 2023)
+e.g. for `hybracter long` you only need 2 columns with sample name and long-read FASTQ file path:
 
-* Adds `--logic` parameter. You have 2 choices: `--logic best` (the default) or `--logic last`.
-* `--logic best` will run `hybracter` as normal and the best assembly (by ALE or pyrodigal mean length) will be selected as the final assembly.
-* `--logic last` will force hybracter to pick the last polished round as the final assembly even if it is not the best as per ALE/pyrodigal. So for `hybracter hybrid` this will default to the pypolca polished round, for hybracter long it will be Medaka round 2. You may wish to use this if you want all your isolates to be consistently assembled.
-* Adds reorientation of pre polished chromosome in case it is selected as the best assembly
-* Adds fixes to the chromosome comparisons - now it is much easier to interpret any changes between polishing rounds.
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz
+```
 
+and for `hybracter hybrid` you only need 4 columns with sample name, long-read FASTQ, and R1 and R2 short-read FASTQ file paths:
 
-## v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz,sample1_SR_R1.fastq.gz,sample1_SR_R2.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz,sample2_SR_R1.fastq.gz,sample2_SR_R2.fastq.gz
+```
 
-Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html) on 24 October 2023 suggests that if you have new 5Hz SUP or Res (bacterial model specific) ONT reads, Medaka polishing often makes things worse! It also implies that Nanopore reads are almost good enough to assemble perfect bacterial genomes (at least with Trycycler) which is pretty awesome.
+**Other changes**
 
-Combined with the difficulty and randomness in installing Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
-
-I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going forward, as this is the most recent stable bioconda version that doesn't seem to cause too much grief. 
-
-If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
-
-`hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly appreciably worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. 
+* Hybracter v0.9.0 will automatically support the reorientation of archaeal chromosomes (thanks @[richardstoeckl](https://github.com/richardstoeckl)) to begin with the cog1474 Orc1/cdc6 gene.
+* `--datadir` can now also accept 2 paths separated by a comma, if you have long reads and short reads in separate directories e.g. `--datadir "long_read_dir,short_read_dir"` (https://github.com/gbouras13/hybracter/issues/76).
+* `--min_depth` parameter added. Hybracter will error out if your QC'd long reads have a coverage lower than `min_depth` for a sample (https://github.com/gbouras13/hybracter/issues/89).
 
 ## Why Would You Run Hybracter?
 
@@ -253,14 +235,14 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 
 ## Installation
 
-You will need conda and **highly recommended** mamba to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install mamba.
+You will need conda  (**highly recommended** through miniforge) to run `hybracter`, because it is required for the installation of each compartmentalised environment (e.g. Flye will have its own environment). Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install miniforge.
 
 ### Conda
 
 `hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
 
 ```bash
-mamba create -n hybracterENV hybracter
+conda create -n hybracterENV hybracter
 conda activate hybracterENV
 hybracter --help
 hybracter install
@@ -270,11 +252,11 @@ hybracter install
 
 `hybracter` is available to install with `pip` . 
 
-You will also need conda or mamba available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
+You will also need conda available so `hybracter` can install all the required dependencies. Therefore, it is recommended to install `hybracter` into a conda environment as follows.
 
 
 ```bash
-mamba create -n hybracterENV pip
+conda create -n hybracterENV pip
 conda activate hybracterENV
 pip install hybracter
 hybracter --help
@@ -356,6 +338,17 @@ s_aureus_sample1,sample1_long_read.fastq.gz,2500000,sample1_SR_R1.fastq.gz,sampl
 p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000,sample2_SR_R1.fastq.gz,sample2_SR_R2.fastq.gz
 ```
 
+**Using `--auto`**
+
+* If you use `--auto`, you can remove the column with the chromosome length
+
+e.g.
+
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz,sample1_SR_R1.fastq.gz,sample1_SR_R2.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz,sample2_SR_R1.fastq.gz,sample2_SR_R2.fastq.gz
+```
+
 #### `hybracter long`
 
 `hybracter long` also requires an input csv with no headers, but only 3 columns.
@@ -371,6 +364,15 @@ e.g.
 ```bash
 s_aureus_sample1,sample1_long_read.fastq.gz,2500000
 p_aeruginosa_sample2,sample2_long_read.fastq.gz,5500000
+```
+
+**Using `--auto`**
+
+* If you use `--auto`, you can remove the column with the chromosome length
+
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz
 ```
 
 ## Usage
@@ -502,6 +504,63 @@ hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> -
 
 Thanks to its Snakemake backend, you can modify resource requirements for each job contained within `hybracter` using the configuration file. A defauly can be created using the `hybracter config` command. This can make it even more efficient in server environment, as many jobs can be more efficiently parallelised than the default settings. For more information, please see the [documentation](https://hybracter.readthedocs.io/en/latest/configuration/) 
 
+## Older Updates 
+
+### v0.7.0 Updates (04 March 2024)
+
+**Changes to short read polishing**
+
+* Logic added to run `polypolish` v0.6.0 with `--careful` and skip pypolca if the SR coverage estimate is below 5x (note: FASTA files for pypolca will be generated in the processing directory to play nice with Snakemake, but these will be identical to the polypolish output). 
+* For 5-25x coverage, `polypolish --careful` and `pypolca` with `--careful` will be run. 
+* For >25x coverage, `polypolish` default and `pypolca` with `--careful` will be run. 
+* A preprint justifying these changes will be available soon.
+
+**`--logic` changes**
+
+* By default, `--logic` defaults to `last` for `hybracter hybrid`, as there we have found that the polishing strategy implemented above never makes the assembly worse. We suggest never using `--logic best` with `hybracter hybrid`.
+
+**Changes for chromosome contigs and circularity**
+
+* If hybracter assembles a contig that is greater than the minimum chromosome length but not marked as circular by Flye, this will now be denoted as a chromosome, but not circular. The genome will be marked as complete also. 
+    * These will usually be assemblies with some issue (e.g. prophages, circularisation issues, heterogeneity) and probably require some more attention.
+    * For example, with the _Vibrio cholerae_ larger chromosome described [here](https://rrwick.github.io/2024/02/15/misassemblies.html), the genome will be marked as 'complete' but the contig will not be marked as 'circular' in the `hybracter` output.
+    * Such contigs will be polished and be in the final `_chromosome.fasta` output, but they will not be rotated by `dnaapler`. 
+    * These were previously being excluded, which was missing assemblies with structural heterogeneity (causing the chromosome not to completely circularise) or even bacteria with linear chromosomes like [_Borrelia_](https://www.nature.com/articles/37551). 
+
+**Adds `--depth_filter`** 
+
+* This is passed to [Plassembler](https://github.com/gbouras13/plassembler) and will filter out all putative plasmid contigs that are lower than this depth fraction compared to the chromosome.
+* Defaults to 0.25 like Unicycler's implementation.
+
+### v0.5.0 Updates (08 January 2024)
+
+Ryan Wick recently ran `hybracter long` on the latest Dorado v0.5.0 basecalled Nanopore reads (his [blog post](https://rrwick.github.io/2023/12/18/ont-only-accuracy-update.html)). You can read a write-up of the results [here](https://hybracter.readthedocs.io/en/latest/dorado_ryan_louise_0_5_0/). As a result, subsampling has been added to Hybracter. 
+
+* Adds subsampling using `--subsample_depth` using Filtlong, based on some benchmarking of Dorado v0.5.0. Defaults to 100x of the estimated chromosome size `-c`.
+* Also adds stricter criteria for complete assemblies (aka ensures that identified chromosomes must be circularised according to Flye).
+  
+### v0.4.0 Updates (14 November 2023)
+
+* Adds `--logic` parameter. You have 2 choices: `--logic best` (the default) or `--logic last`.
+* `--logic best` will run `hybracter` as normal and the best assembly (by ALE or pyrodigal mean length) will be selected as the final assembly.
+* `--logic last` will force hybracter to pick the last polished round as the final assembly even if it is not the best as per ALE/pyrodigal. So for `hybracter hybrid` this will default to the pypolca polished round, for hybracter long it will be Medaka round 2. You may wish to use this if you want all your isolates to be consistently assembled.
+* Adds reorientation of pre polished chromosome in case it is selected as the best assembly
+* Adds fixes to the chromosome comparisons - now it is much easier to interpret any changes between polishing rounds.
+
+
+### v0.2.0 Updates 26 October 2023 - Medaka, Polishing and `--no_medaka`
+
+Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-update.html) on 24 October 2023 suggests that if you have new 5Hz SUP or Res (bacterial model specific) ONT reads, Medaka polishing often makes things worse! It also implies that Nanopore reads are almost good enough to assemble perfect bacterial genomes (at least with Trycycler) which is pretty awesome.
+
+Combined with the difficulty and randomness in installing Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
+
+I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going forward, as this is the most recent stable bioconda version that doesn't seem to cause too much grief. 
+
+If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
+
+`hybracter` should still handle cases where Medaka makes assemblies worse. If Medaka makes your assembly appreciably worse, `hybracter` should choose the best most accurate assembly as the unpolished one in long mode. 
+
+
 ## Version Log
 
 A brief description of what is new in each update of `hybracter` can be found in the HISTORY.md file.
@@ -570,3 +629,5 @@ Pypolca:
 Snakemake:
 * Mölder F, Jablonski KP, Letcher B et al. Sustainable data analysis with Snakemake [version 1; peer review: 1 approved, 1 approved with reservations]. F1000Research 2021, 10:33 (https://doi.org/10.12688/f1000research.29032.1).
 
+KMC:
+* Marek Kokot, Maciej Długosz, Sebastian Deorowicz, KMC 3: counting and manipulating k-mer statistics, Bioinformatics, Volume 33, Issue 17, 01 September 2017, Pages 2759–2761, (https://doi.org/10.1093/bioinformatics/btx304).

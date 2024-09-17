@@ -8,7 +8,7 @@ rule pypolca:
         polypolish_fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
-        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
+        coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     output:
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "pypolca_complete.version"),
@@ -47,13 +47,14 @@ rule pypolca_extract_intermediate_assembly:
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
+        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_pypolca.fasta"
         ),
         ignore_list=os.path.join(dir.out.pypolca, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=getMinChromLength,
+        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
         polypolish_flag=True,
     conda:
         os.path.join(dir.env, "scripts.yaml")
@@ -105,7 +106,7 @@ rule pypolca_incomplete:
         polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
-        coverage=os.path.join(dir.out.coverage, "{sample}.txt"),
+        coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     output:
         fasta=os.path.join(
             dir.out.pypolca_incomplete, "{sample}", "{sample}_corrected.fasta"
