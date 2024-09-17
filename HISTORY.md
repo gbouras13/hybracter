@@ -1,5 +1,37 @@
 # History
 
+
+### v0.9.0 Updates (18 September 2024)
+
+**`--auto` for automatic estimation of chromosome size**
+
+* Thanks to an [issue](https://github.com/gbouras13/hybracter/issues/90) and code from @[richardstoeckl](https://github.com/richardstoeckl), Hybracter can now estimate the estimated chromosome size for each sample by passing `--auto`. 
+* The implementation uses [kmc](https://github.com/refresh-bio/KMC). Specifically, Hybracter uses kmc to count the number of unique 21mers that appear at least 10 times in your long-read FASTQ file. This is because, for a given assembly of length L,  and a k-mer size of k, the total number of unique possible k-mers  will be given by ( L – k ) + 1, and if L >> k, then it suffices as an estimate of total assembly size
+* The estimated chromosome size used by Hybracter will actually be 80% of the number of 21-mers found at least 10 times, as it needs to account for plasmids
+* If you aren't sure whether you have enough data for assembly (i.e. coverage lower than 20x), be careful using `--auto`, because the actual assembly size will tend to be larger than the number of unique 21mers found at least 10 times. Therefore, the estimated chromosome size will almost certainly be an underestimate and may lead to Hybracter considering your assembly "complete" when in fact it isn't.
+
+* If you use `--auto`, you do not need to specify the chromosome length in the input. This means you don't need to `-c` with `long-single` or `hybrid-single` and in the input csv sample sheet, you do not need a column with chromosome length.
+  
+e.g. for `hybracter long` you only need 2 columns with sample name and long-read FASTQ file path:
+
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz
+```
+
+and for `hybracter hybrid` you only need 4 columns with sample name, long-read FASTQ, and R1 and R2 short-read FASTQ file paths:
+
+```bash
+s_aureus_sample1,sample1_long_read.fastq.gz,sample1_SR_R1.fastq.gz,sample1_SR_R2.fastq.gz
+p_aeruginosa_sample2,sample2_long_read.fastq.gz,sample2_SR_R1.fastq.gz,sample2_SR_R2.fastq.gz
+```
+
+**Other changes**
+
+* Hybracter v0.9.0 will automatically support the reorientation of archaeal chromosomes (thanks @[richardstoeckl](https://github.com/richardstoeckl)) to begin with the cog1474 Orc1/cdc6 gene.
+* `--datadir` can now also accept 2 paths separated by a comma, if you have long reads and short reads in separate directories e.g. `--datadir "long_read_dir,short_read_dir"` (https://github.com/gbouras13/hybracter/issues/76).
+* `--min_depth` parameter added. Hybracter will error out if your QC'd long reads have a coverage lower than `min_depth` for a sample (https://github.com/gbouras13/hybracter/issues/89).
+
 ## v0.8.0 (30 August 2024)
 
 * Add `--datadir` that removes the need to add full paths in sample sheet (thanks @oschwengers)

@@ -13,7 +13,7 @@ It scales massively using the embarassingly parallel power of HPC and Snakemake 
 
 ![Image](hybracter.png)
 
-- A. Reads are quality controlled and subsampled with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop), [fastp](https://github.com/OpenGene/fastp), [Seqkit](https://github.com/shenwei356/seqkit) and optionally contaminant removal using modules from [trimnami](https://github.com/beardymcjohnface/Trimnami).
+- A. Reads are quality controlled and subsampled with [Filtlong](https://github.com/rrwick/Filtlong), [Porechop](https://github.com/rrwick/Porechop), [fastp](https://github.com/OpenGene/fastp), [Seqkit](https://github.com/shenwei356/seqkit) and optionally contaminant removal using modules from [trimnami](https://github.com/beardymcjohnface/Trimnami). Chromosome length is optionally estimated with [kmc](https://github.com/refresh-bio/KMC).
 - B. Long-read assembly is conducted with [Flye](https://github.com/fenderglass/Flye). Each sample is clssified if the chromosome(s) were assembled (marked as 'complete') or not (marked as 'incomplete') based on the given minimum chromosome length.
 - C. For complete isolates, plasmid recovery with [Plassembler](https://github.com/gbouras13/plassembler).
 - D. For all isolates, long read polishing with [Medaka](https://github.com/nanoporetech/medaka).
