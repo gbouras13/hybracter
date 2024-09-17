@@ -28,6 +28,7 @@ jobs:
             environment-file: build/environment.yaml
             python-version: ${{ matrix.python-version }}
             auto-activate-base: false
+            channel-priority: strict
             miniforge-version: latest # not mambaforge anymore
             channels: conda-forge,bioconda,defaults,anaconda
             auto-update-conda: true
@@ -72,6 +73,7 @@ jobs:
           environment-file: build/environment.yaml
           python-version: ${{ matrix.python-version }}
           auto-activate-base: false
+          channel-priority: strict
           miniforge-version: latest # not mambaforge anymore
           channels: conda-forge,bioconda,defaults,anaconda
           auto-update-conda: true
