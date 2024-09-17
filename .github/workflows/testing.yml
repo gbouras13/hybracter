@@ -27,8 +27,10 @@ jobs:
             activate-environment: hybracterENV
             environment-file: build/environment.yaml
             python-version: ${{ matrix.python-version }}
-            miniforge-version: latest # not mambaforge anymore
             auto-activate-base: false
+            channel-priority: strict
+            channels: conda-forge,bioconda,defaults,anaconda
+            auto-update-conda: true
 
         - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
           shell: bash -l {0}
@@ -71,14 +73,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
           auto-activate-base: false
           channel-priority: strict
-          miniforge-version: latest # not mambaforge anymore
           channels: conda-forge,bioconda,defaults,anaconda
           auto-update-conda: true
 
       - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
         shell: bash -l {0}
         run: |
-          mamba install python=${{ matrix.python-version }}
+          conda install python=${{ matrix.python-version }}
           python -m pip install --upgrade pip
           pip install .
       

@@ -19,7 +19,6 @@ jobs:
         environment-file: build/environment.yaml
         auto-activate-base: false
         channel-priority: strict
-        miniforge-version: latest # not mambaforge anymore
         channels: conda-forge,bioconda,defaults
         auto-update-conda: true
     - name: Install dependencies
