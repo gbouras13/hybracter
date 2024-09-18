@@ -59,9 +59,7 @@ rule aggregate_finalise_complete:
         chrom_pre_polish_fasta=os.path.join(
             dir.out.dnaapler, "{sample}_pre_chrom", "{sample}_reoriented.fasta"
         ),
-        medaka_rd_1_fasta=os.path.join(
-            dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_1.fasta"
-        ),
+        medaka_rd_1_fasta=os.path.join(dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"), # medaka round 1
         medaka_rd_2_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),

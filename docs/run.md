@@ -41,6 +41,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * You can estimate the chromosome size with kmc by using `--auto`
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
+* If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`). You can either specify 1 directory (if long and short FASTQs in the same directory) or 2 (long and short FASTQs in separate directories). If you specify 2, they must be separated by a comma e.g. `--datadir "dirlong,dirshort"`.
 
 ```bash
 hybracter version 0.9.0
@@ -66,7 +67,7 @@ Options:
                                   in separate directories). If you specify 2,
                                   they must be separated by a comma e.g.
                                   dirlong,dirshort. Will be added to the
-                                  filename if an input csv if provided.
+                                  filenames in the input csv.
   --no_pypolca                    Do not use pypolca to polish assemblies with
                                   short reads
   --logic [best|last]             Hybracter logic to select best assembly. Use
@@ -236,6 +237,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can estimate the chromosome size with kmc by using `--auto`
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
+* * If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`).
 
 ```bash
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
@@ -243,8 +245,8 @@ Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
   Run hybracter with only long reads
 Options:
   -i, --input TEXT                Input csv  [required]
-  --datadir TEXT                  Directory where FASTQs are. Will be added to
-                                  the filename if in input csv if provided
+  --datadir TEXT                  Directory where FASTQs are. Will be added 
+                                  to the filenames in the input csv.
   -o, --output PATH               Output directory  [default: hybracter_out]
   --configfile TEXT               Custom config file [default: config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]

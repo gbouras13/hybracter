@@ -82,7 +82,7 @@ hybracter --help
 hybracter install
 ```
 
-Miniforge is **highly highly** recommended. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install miniforeg.
+Miniforge is **highly highly** recommended. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install Miniforge.
 
 When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
 
@@ -225,8 +225,8 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 [Dragonflye](https://github.com/rpetit3/dragonflye) by the awesome @[rpetit3](https://github.com/rpetit3) is a good alternative for automated assembly if `hybracter` doesn't fit your needs, particuarly if you are familiar with [Shovill](https://github.com/tseemann/shovill). Some pros and cons between `hybracter` and `dragonflye` are listed below.
 
   * `dragonflye` allows for more options with regards to assemblers (it supports [Miniasm](https://github.com/lh3/miniasm) or [Raven](https://github.com/lbcb-sci/raven) as well as Flye).
-  * On a single isolate, `dragonflye` should be faster (benchmarking coming but the Plassembler, assessment and extra polishing steps of hybracter should make it slower).
-  * `hybracter` should be more accurate, due to the extra round of polishing following reorientation, and integration of Plassembler (benchmarking coming).
+  * On a single isolate, `dragonflye` should be faster.
+  * `hybracter` should be more accurate, due to the extra round of polishing following reorientation, and integration of Plassembler.
   * `hybracter` has the advantage of scalability across multiple samples due to its Snakemake and Snaketool implementation. 
   * So if you have access to a cluster, `hybracter` is for you and likely faster.
   * `hybracter` gives more accurate plasmid assemblies because it uses [plassembler](https://github.com/gbouras13/plassembler)

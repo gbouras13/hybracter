@@ -28,7 +28,6 @@ jobs:
             environment-file: build/environment.yaml
             python-version: ${{ matrix.python-version }}
             auto-activate-base: false
-            channel-priority: strict
             auto-update-conda: true
 
         - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"

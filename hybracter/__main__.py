@@ -358,7 +358,7 @@ hybrid
     ),
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
-@click.option("--datadir", "datadir", help="Directory/ies where FASTQs are. Can specify 1 directory (long and short FASTQs in the same directory) or 2 (long and short FASTQs in separate directories).\n If you specify 2, they must be separated by a comma e.g. dirlong,dirshort.\n Will be added to the filename if an input csv if provided.", type=str, default=None)
+@click.option("--datadir", "datadir", help="Directory/ies where FASTQs are. Can specify 1 directory (long and short FASTQs in the same directory) or 2 (long and short FASTQs in separate directories).\n If you specify 2, they must be separated by a comma e.g. dirlong,dirshort.\n Will be added to the filenames in the input csv.", type=str, default=None)
 @click.option(
     "--no_pypolca",
     help="Do not use pypolca to polish assemblies with short reads",
@@ -584,7 +584,7 @@ long
     ),
 )
 @click.option("-i", "--input", "_input", help="Input csv", type=str, required=True)
-@click.option("--datadir", "datadir", help="Directory where FASTQs are. Will be added to the filename if in input csv if provided", type=str, default=None)
+@click.option("--datadir", "datadir", help="Directory where FASTQs are. Will be added to the filenames in the input csv.", type=str, default=None)
 @common_options
 @click.option(
             "--logic",
