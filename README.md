@@ -84,7 +84,7 @@ hybracter install
 
 Miniforge is **highly highly** recommended. Please see the [documentation](https://hybracter.readthedocs.io/en/latest/install/) for more details on how to install Miniforge.
 
-When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
+When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependencies will be installed.
 
 If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter test-hybrid` and/or `hybracter test-long` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes. If your computer/node has internet access, please skip this step.
 
@@ -118,7 +118,7 @@ containerImage="$IMAGE_DIR/hybracter_0.9.0.sif"
 
 If you don't want to install `hybracter` locally, you can run it without any code using the colab notebook [https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb](https://colab.research.google.com/github/gbouras13/hybracter/blob/main/run_hybracter.ipynb)
 
-This is only recommend if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install as described below is suggested.
+This is only recommended if you have one or a few samples to assemble (it takes a while per sample due to the limited nature of Google Colab resources - probably an hour or two a sample). If you have more than this, a local install as described below is suggested.
 
 ## Documentation
 
@@ -133,9 +133,9 @@ Documentation for `hybracter` is available [here](https://hybracter.readthedocs.
 ## Description
 
 `hybracter` is designed for assembling bacterial isolate genomes using a long read first assembly approach. 
-It scales massively using the embarassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have isolates with Oxford Nanopore Technologies (ONT) long reads and optionally matched paired-end short reads for polishing.
+It scales massively using the embarrassingly parallel power of HPC and Snakemake profiles. It is designed for applications where you have isolates with Oxford Nanopore Technologies (ONT) long reads and optionally matched paired-end short reads for polishing.
 
-`hybracter` is desined to straddle the fine line between being as fully feature-rich as possible with as much information as you need to decide upon the best assembly, while also being a one-line automated program. In other words, as awesome as Unicycler, but updated for 2023. Perfect for lazy people like myself.
+`hybracter` is designed to straddle the fine line between being as fully feature-rich as possible with as much information as you need to decide upon the best assembly, while also being a one-line automated program. In other words, as awesome as Unicycler, but updated for 2023. Perfect for lazy people like myself.
 
 `hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targeted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
@@ -154,7 +154,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 - E. For complete isolates, the chromosome is reorientated to begin with the dnaA gene with [dnaapler](https://github.com/gbouras13/dnaapler).
 - F. For all isolates, if short reads are provided, short read polishing with [Polypolish](https://github.com/rrwick/Polypolish) and [pypolca](https://github.com/gbouras13/pypolca).
 - G. For all isolates, assessment of all assemblies with [ALE](https://github.com/sc932/ALE) for `hybracter hybrid` or [Pyrodigal](https://github.com/althonos/pyrodigal) for `hybracter long`.
-- H. The best assembly is selected and and output along with final assembly statistics.
+- H. The best assembly is selected and output along with final assembly statistics.
 
 ## Benchmarking
 
@@ -164,7 +164,7 @@ Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `
 
 To summarise the conclusions:
 
-* `Hybracter hybrid` was superior to Unicycler in terms of accuracy, time taken and (slighly) in terms of plasmid recovery. It should be preferred to Unicycler.
+* `Hybracter hybrid` was superior to Unicycler in terms of accuracy, time taken and (slightly) in terms of plasmid recovery. It should be preferred to Unicycler.
 * You should use `hybracter long` if you care about plasmids and have only long reads. It performs similarly to hybrid methods and its inclusion of [Plassembler](https://github.com/gbouras13/plassembler) largely seems to solve the [problem of long read assemblers recovering small plasmids](https://doi.org/10.1099/mgen.0.001024).
 * `Hybracter` in both modes is inferior to Dragonflye in terms of time though better in terms of chromosome accuracy. 
 * If you want the fastest possible chromosome assemblies for applications like species ID or sequence typing that retain a high level of accuracy, Dragonflye is a good option.
@@ -218,11 +218,11 @@ If you are looking for the best possible (manual) bacterial assembly for a singl
 
   * `hybracter` will almost certainly not give you better assemblies than Trycycler. Trycycler is the gold standard for a reason.
   * `hybracter` is automated, scalable, faster and requires less bioinformatics/microbial genomics expertise to run. 
-  * If you use Trycycler, I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) along side Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
+  * If you use Trycycler, I would also highly recommend using (disclaimer: my own program) [plassembler](https://github.com/gbouras13/plassembler) (which is built into hybracter) alongside Trycycler to assemble small plasmids if you are especially interested in those, because long read only assemblies often [miss small plasmids](https://doi.org/10.1099/mgen.0.001024).
 
 #### Dragonflye
 
-[Dragonflye](https://github.com/rpetit3/dragonflye) by the awesome @[rpetit3](https://github.com/rpetit3) is a good alternative for automated assembly if `hybracter` doesn't fit your needs, particuarly if you are familiar with [Shovill](https://github.com/tseemann/shovill). Some pros and cons between `hybracter` and `dragonflye` are listed below.
+[Dragonflye](https://github.com/rpetit3/dragonflye) by the awesome @[rpetit3](https://github.com/rpetit3) is a good alternative for automated assembly if `hybracter` doesn't fit your needs, particularly if you are familiar with [Shovill](https://github.com/tseemann/shovill). Some pros and cons between `hybracter` and `dragonflye` are listed below.
 
   * `dragonflye` allows for more options with regards to assemblers (it supports [Miniasm](https://github.com/lh3/miniasm) or [Raven](https://github.com/lbcb-sci/raven) as well as Flye).
   * On a single isolate, `dragonflye` should be faster.
@@ -239,7 +239,7 @@ You will need conda  (**highly recommended** through miniforge) to run `hybracte
 
 ### Conda
 
-`hybracter` is available to install with `conda`. To install `hybracter` into a conda enviornment called `hybracterENV`:
+`hybracter` is available to install with `conda`. To install `hybracter` into a conda environment called `hybracterENV`:
 
 ```bash
 conda create -n hybracterENV hybracter
@@ -395,7 +395,7 @@ hybracter install -d  <databases directory>
 
 **If you have internet access on the machine or node where you are running hybracter, you can skip this step.**
 
-When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependenices will be installed.
+When you run `hybracter` for the first time, all the required dependencies will be installed as required, so it will take longer than usual (usually a few minutes). Every time you run it afterwards, it will be a lot faster as the dependencies will be installed.
 
 If you intend to run hybracter offline (e.g. on HPC nodes with no access to the internet), I highly recommend running `hybracter  test-hybrid ` and/or `hybracter test-long` on a node with internet access so hybracter can download the required dependencies. It should take 5-10 minutes.
 
@@ -502,7 +502,7 @@ hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> -
 
 ## Advanced Configuration
 
-Thanks to its Snakemake backend, you can modify resource requirements for each job contained within `hybracter` using the configuration file. A defauly can be created using the `hybracter config` command. This can make it even more efficient in server environment, as many jobs can be more efficiently parallelised than the default settings. For more information, please see the [documentation](https://hybracter.readthedocs.io/en/latest/configuration/) 
+Thanks to its Snakemake backend, you can modify resource requirements for each job contained within `hybracter` using the configuration file. A default can be created using the `hybracter config` command. This can make it even more efficient in server environment, as many jobs can be more efficiently parallelised than the default settings. For more information, please see the [documentation](https://hybracter.readthedocs.io/en/latest/configuration/) 
 
 ## Older Updates 
 
