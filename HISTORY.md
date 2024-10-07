@@ -1,5 +1,8 @@
 # History
 
+## v0.9.1 Updates (8 October 2024)
+
+* Small change to the `plassembler.yaml` config preventing installation bugs - Unicycler v0.5.1 to be installed in a much simpler fashion via Bioconda
 
 ### v0.9.0 Updates (18 September 2024)
 
