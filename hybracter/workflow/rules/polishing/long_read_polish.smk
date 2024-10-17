@@ -179,14 +179,12 @@ rule medaka_round_2:
         if [ "{params.bacteria}" = "True" ]; then
            # from v 0.10.0, hybracter supports --bacteria
             medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
-            medaka --version > {output.version}
             touch {params.bam}
             rm {params.bam}
             touch {params.hdf}
             rm {params.hdf}
         else
             medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model} -t {threads} 2> {log}
-            medaka --version > {output.version}
             touch {params.bam}
             rm {params.bam}
             touch {params.hdf}
