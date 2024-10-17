@@ -50,5 +50,6 @@ rule medaka_incomplete:
             touch {params.hdf}
             rm {params.hdf}
         fi
+        cp {output.fasta} {output.copy_fasta}
         """
 
