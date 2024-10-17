@@ -338,6 +338,19 @@ def test_hybracter_long(run_mac):
     exec_command(cmd)
     remove_directory(outdir)
 
+# test override
+# bit useless for mac (as --bacteria won't work) but won't break anything so just leave
+
+def test_hybracter_long(run_mac):
+    """test hybracter long"""
+    outdir: Path = "test_hybracter_output_medaka_override"
+    input_csv: Path = test_data_path / "test_long_input.csv"
+    cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --medaka_override"
+    if run_mac:
+        cmd += " --mac"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 def test_hybracter_long_auto(run_mac):
     """
 

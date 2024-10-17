@@ -18,6 +18,7 @@ rule medaka_incomplete:
         )
     params:
         model=MEDAKA_MODEL,
+        bacteria=BACTERIA,
         dir=os.path.join(dir.out.medaka_incomplete, "{sample}"),
         bam=os.path.join(dir.out.medaka_incomplete, "{sample}", "calls_to_draft.bam"),
         hdf=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus_probs.hdf"),
@@ -32,11 +33,23 @@ rule medaka_incomplete:
         os.path.join(dir.out.stderr, "medaka_incomplete", "{sample}.log"),
     shell:
         """
-        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
-        medaka --version > {output.version}
+        if [ "{params.bacteria}" = "True" ]; then
+           # from v 0.10.0, hybracter supports --bacteria
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
+            medaka --version > {output.version}
+            touch {params.bam}
+            rm {params.bam}
+            touch {params.hdf}
+            rm {params.hdf}
+        else
+           
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model} -t {threads} 2> {log}
+            medaka --version > {output.version}
+            touch {params.bam}
+            rm {params.bam}
+            touch {params.hdf}
+            rm {params.hdf}
+        fi
         cp {output.fasta} {output.copy_fasta}
-        touch {params.bam}
-        rm {params.bam}
-        touch {params.hdf}
-        rm {params.hdf}
         """
+

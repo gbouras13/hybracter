@@ -1,5 +1,11 @@
 # History
 
+## v0.10.0 Updates (17 October 2024)
+
+* Updates Medaka to v2.0.1, implementing the `--bacteria` option by default.
+* This is based on the recommendations of Ryan Wick [here](https://rrwick.github.io/2024/10/17/medaka-v2.html) who found it improved assemblies due to (likely) enhanced methylation error correction.
+* If you still want to specify a Medaka model, the flag `--medaka_override` has been added. You need to include this along with your model via `--medakaModel`. This is most likely useful for older R9 data.
+
 ## v0.9.1 Updates (8 October 2024)
 
 * Small change to the `plassembler.yaml` config preventing installation bugs - Unicycler v0.5.1 to be installed in a much simpler fashion via Bioconda

@@ -19,6 +19,7 @@ rule medaka_round_1:
         )
     params:
         model=MEDAKA_MODEL,
+        bacteria=BACTERIA,
         dir=os.path.join(dir.out.medaka_rd_1, "{sample}"),
         bam=os.path.join(dir.out.medaka_rd_1, "{sample}", "calls_to_draft.bam"),
         hdf=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus_probs.hdf"),
@@ -33,12 +34,23 @@ rule medaka_round_1:
         os.path.join(dir.out.stderr, "medaka_round_1", "{sample}.log"),
     shell:
         """
-        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
-        medaka --version > {output.version}
-        touch {params.bam}
-        rm {params.bam}
-        touch {params.hdf}
-        rm {params.hdf}
+        if [ "{params.bacteria}" = "True" ]; then
+           # from v 0.10.0, hybracter supports --bacteria
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
+            medaka --version > {output.version}
+            touch {params.bam}
+            rm {params.bam}
+            touch {params.hdf}
+            rm {params.hdf}
+        else
+           
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model} -t {threads} 2> {log}
+            medaka --version > {output.version}
+            touch {params.bam}
+            rm {params.bam}
+            touch {params.hdf}
+            rm {params.hdf}
+        fi
         """
 
 
@@ -149,6 +161,7 @@ rule medaka_round_2:
         )
     params:
         model=MEDAKA_MODEL,
+        bacteria=BACTERIA,
         dir=os.path.join(dir.out.medaka_rd_2, "{sample}"),
         bam=os.path.join(dir.out.medaka_rd_2, "{sample}", "calls_to_draft.bam"),
         hdf=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus_probs.hdf"),
@@ -163,13 +176,21 @@ rule medaka_round_2:
         os.path.join(dir.out.stderr, "medaka_round_2", "{sample}.log"),
     shell:
         """
-        medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model}  -t {threads} 2> {log}
-        touch {params.bam}
-        rm {params.bam}
-        touch {params.hdf}
-        rm {params.hdf}
+        if [ "{params.bacteria}" = "True" ]; then
+           # from v 0.10.0, hybracter supports --bacteria
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
+            touch {params.bam}
+            rm {params.bam}
+            touch {params.hdf}
+            rm {params.hdf}
+        else
+            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m {params.model} -t {threads} 2> {log}
+            touch {params.bam}
+            rm {params.bam}
+            touch {params.hdf}
+            rm {params.hdf}
+        fi
         """
-
 
 rule medaka_round_2_extract_intermediate_assembly:
     """

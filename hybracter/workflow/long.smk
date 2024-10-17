@@ -67,6 +67,23 @@ SUBSAMPLE_DEPTH = config.args.subsample_depth
 MIN_DEPTH = config.args.min_depth
 AUTO = config.args.auto
 MAC = config.args.mac
+MEDAKA_OVERRIDE = config.args.medaka_override
+
+# By default, hybracter (linux) will use --bacteria from v0.10.0 onwards 
+# To take advantage of improvements with medaka v2 https://rrwick.github.io/2024/10/17/medaka-v2.html
+# not true if 1) --mac or 2) --medaka_override is specified 
+BACTERIA = True 
+if MAC:
+    BACTERIA = False
+else:
+    if MEDAKA_OVERRIDE:
+        BACTERIA = False
+        print(f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria ")
+
+
+
+
+
 
 # MAC medaka
 

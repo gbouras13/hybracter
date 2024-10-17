@@ -41,6 +41,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * You can estimate the chromosome size with kmc by using `--auto`
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
+* From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.
 * If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`). You can either specify 1 directory (if long and short FASTQs in the same directory) or 2 (long and short FASTQs in separate directories). If you specify 2, they must be separated by a comma e.g. `--datadir "dirlong,dirshort"`.
 
 ```bash
@@ -117,6 +118,9 @@ Options:
   --mac                           If you are running Hybracter on Mac -
                                   installs v1.8.0 of Medaka as higher versions
                                   break.
+  --medaka_override               Use this if you do NOT want to use the
+                                  --bacteria option with Medaka. Instead your
+                                  specified --medakaModel will be used.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -202,6 +206,9 @@ Options:
   --mac                           If you are running Hybracter on Mac -
                                   installs v1.8.0 of Medaka as higher versions
                                   break.
+  --medaka_override               Use this if you do NOT want to use the
+                                  --bacteria option with Medaka. Instead your
+                                  specified --medakaModel will be used.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -237,7 +244,8 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can estimate the chromosome size with kmc by using `--auto`
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
-* * If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`).
+* From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.
+* If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`).
 
 ```bash
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
@@ -290,6 +298,9 @@ Options:
   --mac                           If you are running Hybracter on Mac -
                                   installs v1.8.0 of Medaka as higher versions
                                   break.
+  --medaka_override               Use this if you do NOT want to use the
+                                  --bacteria option with Medaka. Instead your
+                                  specified --medakaModel will be used.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -367,6 +378,9 @@ Options:
   --mac                           If you are running Hybracter on Mac -
                                   installs v1.8.0 of Medaka as higher versions
                                   break.
+  --medaka_override               Use this if you do NOT want to use the
+                                  --bacteria option with Medaka. Instead your
+                                  specified --medakaModel will be used.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
