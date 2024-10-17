@@ -161,6 +161,7 @@ rule medaka_round_2:
         )
     params:
         model=MEDAKA_MODEL,
+        bacteria=BACTERIA,
         dir=os.path.join(dir.out.medaka_rd_2, "{sample}"),
         bam=os.path.join(dir.out.medaka_rd_2, "{sample}", "calls_to_draft.bam"),
         hdf=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus_probs.hdf"),
