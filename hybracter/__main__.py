@@ -158,7 +158,7 @@ def common_options(func):
         ),
         click.option(
             "--medaka_override",
-            help="Use this if you do NOT want to use the --bacteria option with Medaka. Instead your specified --medakaModel will be use.",
+            help="Use this if you do NOT want to use the --bacteria option with Medaka. Instead your specified --medakaModel will be used.",
             is_flag=True,
             default=False,
         ),
