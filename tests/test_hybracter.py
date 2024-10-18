@@ -341,7 +341,7 @@ def test_hybracter_long(run_mac):
 # test override
 # bit useless for mac (as --bacteria won't work) but won't break anything so just leave
 
-def test_hybracter_long(run_mac):
+def test_hybracter_long_medaka_override(run_mac):
     """test hybracter long"""
     outdir: Path = "test_hybracter_output_medaka_override"
     input_csv: Path = test_data_path / "test_long_input.csv"
@@ -350,6 +350,19 @@ def test_hybracter_long(run_mac):
         cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
+
+# test --extra_params_flye
+
+def test_hybracter_long_medaka_override(run_mac):
+    """test hybracter long"""
+    outdir: Path = "test_hybracter_output_medaka_override"
+    input_csv: Path = test_data_path / "test_long_input.csv"
+    cmd = f"hybracter long --input {input_csv} --threads {threads} --output {outdir} --databases {db_dir} --extra_params_flye \"--meta\" "
+    if run_mac:
+        cmd += " --mac"
+    exec_command(cmd)
+    remove_directory(outdir)
+
 
 def test_hybracter_long_auto(run_mac):
     """
