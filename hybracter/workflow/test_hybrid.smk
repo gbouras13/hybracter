@@ -72,7 +72,7 @@ EXTRA_PARAMS_FLYE = config.args.extra_params_flye
 ADD_TO_FLYE =  False
 
 # Only if user specifies - otherwise None
-if extra_params_flye:
+if EXTRA_PARAMS_FLYE:
     ADD_TO_FLYE =  True
     print(f"The extra parameters {EXTRA_PARAMS_FLYE} will be used with Flye ")
 
