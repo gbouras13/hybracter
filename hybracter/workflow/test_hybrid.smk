@@ -67,6 +67,15 @@ MIN_DEPTH = config.args.min_depth
 AUTO = config.args.auto
 MAC = config.args.mac
 MEDAKA_OVERRIDE = config.args.medaka_override
+EXTRA_PARAMS_FLYE = config.args.extra_params_flye
+# flag to add extra arguments to flye
+ADD_TO_FLYE =  False
+
+# Only if user specifies - otherwise None
+if extra_params_flye:
+    ADD_TO_FLYE =  True
+    print(f"The extra parameters {EXTRA_PARAMS_FLYE} will be used with Flye ")
+
 
 # By default, hybracter (linux) will use --bacteria from v0.10.0 onwards 
 # To take advantage of improvements with medaka v2 https://rrwick.github.io/2024/10/17/medaka-v2.html
