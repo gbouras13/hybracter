@@ -20,6 +20,8 @@ rule assemble:
     params:
         model=FLYE_MODEL,
         dir=os.path.join(dir.out.assemblies, "{sample}"),
+        add_to_flye = ADD_TO_FLYE,
+        extra_params_flye = EXTRA_PARAMS_FLYE
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "assemble", "{sample}.txt")
@@ -27,8 +29,12 @@ rule assemble:
         os.path.join(dir.out.stderr, "assemble", "{sample}.log"),
     shell:
         """
-        flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir} 2> {log}
-        flye --version > {output.version}
+        if [ "{params.add_to_flye}" = "True" ]; then 
+            flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir} {params.extra_params_flye} 2> {log}
+        else
+            flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir}  2> {log}
+        fi
+        flye --version > {output.version}   
         cp {output.info} {output.infocopy}
         """
 
