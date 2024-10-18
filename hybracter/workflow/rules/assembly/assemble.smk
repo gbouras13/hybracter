@@ -31,11 +31,10 @@ rule assemble:
         """
         if [ "{params.add_to_flye}" = "True" ]; then 
             flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir} {params.extra_params_flye} 2> {log}
-            flye --version > {output.version}
         else
             flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir}  2> {log}
-            flye --version > {output.version}        
         fi
+        flye --version > {output.version}   
         cp {output.info} {output.infocopy}
         """
 
