@@ -121,6 +121,8 @@ Options:
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.
+  --extra_params_flye TEXT        Use this if want to add extra parameters to
+                                  Flye.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -209,6 +211,8 @@ Options:
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.
+  --extra_params_flye TEXT        Use this if want to add extra parameters to
+                                  Flye.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -301,6 +305,8 @@ Options:
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.
+  --extra_params_flye TEXT        Use this if want to add extra parameters to
+                                  Flye.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
@@ -381,6 +387,8 @@ Options:
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.
+  --extra_params_flye TEXT        Use this if want to add extra parameters to
+                                  Flye.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory

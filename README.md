@@ -178,6 +178,7 @@ To summarise the conclusions:
 * Updates Medaka to v2.0.1, implementing the `--bacteria` option by default.
 * This is based on the recommendations of Ryan Wick [here](https://rrwick.github.io/2024/10/17/medaka-v2.html) who found it improved assemblies due to (likely) enhanced methylation error correction.
 * If you still want to specify a Medaka model, the flag `--medaka_override` has been added. You need to include this along with your model via `--medakaModel`. This is most likely useful for older R9 data.
+* * Adds `--extra_params_flye` parameter if you want to specify extra commands for the Flye assembly step.
 
 ### v0.9.0 Updates (18 September 2024)
 
