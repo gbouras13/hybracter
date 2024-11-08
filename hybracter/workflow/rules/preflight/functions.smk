@@ -125,3 +125,11 @@ def check_db(database_dir):
             "\n"
         )
         sys.exit(1)
+
+
+## helper function to set dnaapler threads to 1 if rule is retried
+def get_cpu_resources_with_fallback(wildcards, attempt):
+    if attempt == 1:
+        return config['resources']['med']['cpu']
+    else:
+        return 1
