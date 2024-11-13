@@ -1,5 +1,11 @@
 # History
 
+## v0.10.1 Updates (13 November 2024)
+
+* Adds retry functionality for dnaapler with 1 thread if there is an error - for some genomes on some systems, [it was observed](https://github.com/gbouras13/hybracter/issues/54) that using the default resources (8 threads, 16GB RAM) will lead to an error in dnaapler. 
+* Thanks @[richardstoeckl](https://github.com/richardstoeckl) for implementing this
+
+
 ## v0.10.0 Updates (18 October 2024)
 
 * Updates Medaka to v2.0.1, implementing the `--bacteria` option by default.
