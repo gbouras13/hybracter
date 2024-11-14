@@ -184,6 +184,8 @@ To summarise the conclusions:
 
 **`--auto` for automatic estimation of chromosome size**
 
+**Note: if you have low quality long read sets (e.g. R9 FAST/HAC or sub Q15 reads), `--auto` is _not_ recommended. Users have reported that it can tend to overestimate the chromosome size as more erroneous 21-mers will be counted by kmc than expected. Please specify a chromosome size for this type of data.**
+
 * Thanks to an [issue](https://github.com/gbouras13/hybracter/issues/90) and code from @[richardstoeckl](https://github.com/richardstoeckl), Hybracter can now estimate the estimated chromosome size for each sample by passing `--auto`. 
 * The implementation uses [kmc](https://github.com/refresh-bio/KMC). Specifically, Hybracter uses kmc to count the number of unique 21mers that appear at least 10 times in your long-read FASTQ file. This is because, for a given assembly of length L,  and a k-mer size of k, the total number of unique possible k-mers  will be given by ( L – k ) + 1, and if L >> k, then it suffices as an estimate of total assembly size
 * The estimated chromosome size used by Hybracter will actually be 80% of the number of 21-mers found at least 10 times, as it needs to account for plasmids
