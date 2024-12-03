@@ -1,5 +1,9 @@
 # History
 
+## v0.10.1 Updates (4 December 2024)
+
+* Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108)
+
 ## v0.10.1 Updates (14 November 2024)
 
 * Adds retry functionality for dnaapler with 1 thread if there is an error - for some genomes on some systems, [it was observed](https://github.com/gbouras13/hybracter/issues/54) that using the default resources (8 threads, 16GB RAM) will lead to an error in dnaapler. 
