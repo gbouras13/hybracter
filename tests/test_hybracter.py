@@ -159,11 +159,13 @@ def test_hybracter_t_long_last(run_mac):
     remove_directory(outdir)
 
 def test_hybracter_t_long_depth_filter(run_mac):
-    """hybracter test-long with depth_filter"""
+    """hybracter test-long with depth_filter - also methylation model for linux"""
     outdir: Path = "test_hybracter_output"
-    cmd = f"hybracter test-long --threads {threads} --output {outdir}--skip_qc --medakaModel r1041_e82_400bps_bacterial_methylation --depth_filter 2"
+    cmd = f"hybracter test-long --threads {threads} --output {outdir} --skip_qc  --depth_filter 2"
     if run_mac:
         cmd += " --mac"
+    else:
+        cmd += " --medakaModel r1041_e82_400bps_bacterial_methylation"
     exec_command(cmd)
     remove_directory(outdir)
 

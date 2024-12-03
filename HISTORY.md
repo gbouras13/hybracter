@@ -2,7 +2,8 @@
 
 ## v0.10.1 Updates (4 December 2024)
 
-* Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108)
+* Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108).
+* Note this won't work if you run `hybracter` on a Mac (as medaka v2 is not available)
 
 ## v0.10.1 Updates (14 November 2024)
 
