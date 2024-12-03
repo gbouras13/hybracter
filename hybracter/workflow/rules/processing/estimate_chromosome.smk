@@ -15,7 +15,7 @@ rule lrge:
     threads: config.resources.med.cpu
     retries: 2
     params:
-        all=get_lrge_overlap
+        all=lambda wildcards, attempt: get_lrge_overlap(wildcards, attempt)
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
