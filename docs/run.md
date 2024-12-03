@@ -38,8 +38,8 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * You can turn off pypolca polishing using `--no_pypolca` - I wouldn't though!
 * You can change the `--depth_filter` from 0.25x chromosome coverage. This will filter out all Plassembler contigs below this depth.
 * By default, `hybracter hybrid` takes the last polishing round as the final assembly  (`--logic last`). We would not recommend changing this to `--logic best`, as picking the best polishing round according to ALE with  `--logic best` is not guaranteed to give the most accurate assembly (See our [paper](https://doi.org/10.1099/mgen.0.001244)).
-* You can estimate the chromosome size with kmc by using `--auto`
-    * **Note: if you have low quality long read sets (e.g. R9 FAST/HAC or sub Q15 reads), `--auto` is _not_ recommended. Users have reported that it can tend to overestimate the chromosome size as more erroneous 21-mers will be counted by kmc than expected. Please specify a chromosome size for this type of data.**
+* You can estimate the chromosome size with lrge by using `--auto`
+    * **Note: if you have low quality long read sets (e.g. R9 FAST/HAC or sub Q15 reads), use `--auto` with care. Users have reported that it can tend to overestimate the chromosome size with kmc - for lrge, some tests have shown similar (but not so bad) behaviour. This is not really solvable - it is simply a limitation of low quality data!**
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
 * From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.
@@ -246,8 +246,8 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can turn off Medaka polishing using `--no_medaka` - recommended for Q20+ modern Nanopore and PacBio reads
 * You can change the `--depth_filter` from 0.25x chromosome coverage. This will filter out all Plassembler contigs below this depth.
 * You can force `hybracter long` to pick the last polishing round (not the best according to pyrodigal mean CDS length) with `--logic last`. `hybracter long` defaults to picking the best i.e. `--logic best`.
-* You can estimate the chromosome size with kmc by using `--auto`
-    * **Note: if you have low quality long read sets (e.g. R9 FAST/HAC or sub Q15 reads), `--auto` is _not_ recommended. Users have reported that it can tend to overestimate the chromosome size as more erroneous 21-mers will be counted by kmc than expected. Please specify a chromosome size for this type of data.**
+* You can estimate the chromosome size with lrge by using `--auto`
+    * **Note: if you have low quality long read sets (e.g. R9 FAST/HAC or sub Q15 reads), use `--auto` with care. Users have reported that it can tend to overestimate the chromosome size with kmc - for lrge, some tests have shown similar (but not so bad) behaviour. This is not really solvable - it is simply a limitation of low quality data!**
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
 * From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.

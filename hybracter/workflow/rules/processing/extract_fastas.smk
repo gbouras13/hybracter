@@ -6,11 +6,22 @@ checkpoint check_completeness:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt"),
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
     params:
-        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(
+            getMinChromLength(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+            )
+        ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -31,12 +42,23 @@ rule extract_chromosome_complete:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
         ignore_list=os.path.join(dir.out.chrom_pre_polish, "{sample}_ignore_list.txt"),
     params:
-        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(
+            getMinChromLength(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+            )
+        ),
         polypolish_flag=False,
     conda:
         os.path.join(dir.env, "scripts.yaml")
@@ -61,7 +83,16 @@ rule copy_flye_intermediate_chrom_assembly:
             dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"
         ),
     params:
-        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(
+            getMinChromLength(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+            )
+        ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -106,11 +137,22 @@ rule extract_incomplete:
     input:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         fasta=os.path.join(dir.out.incomp_pre_polish, "{sample}.fasta"),
     params:
-        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
+        min_chrom_length=lambda wildcards: str(
+            getMinChromLength(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+            )
+        ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

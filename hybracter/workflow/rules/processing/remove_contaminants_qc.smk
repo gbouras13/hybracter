@@ -98,7 +98,9 @@ rule filtlong:
         fastq=os.path.join(
             dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"
         ),
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         fastq=temp(os.path.join(dir.out.qc, "{sample}_filt.fastq.gz")),
         version=os.path.join(dir.out.versions, "{sample}", "filtlong.version"),
@@ -112,7 +114,17 @@ rule filtlong:
     params:
         qual=config.args.min_quality,
         length=config.args.min_length,
-        target_bases=lambda wildcards: str(getTargetBases(kmc_log_path=os.path.join(dir.out.kmc,f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"),sample=wildcards.sample, auto=AUTO, target_depth=SUBSAMPLE_DEPTH)),
+        target_bases=lambda wildcards: str(
+            getTargetBases(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+                target_depth=SUBSAMPLE_DEPTH,
+            )
+        ),
     benchmark:
         os.path.join(dir.out.bench, "filtlong", "{sample}.txt")
     log:

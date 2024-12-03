@@ -54,5 +54,5 @@ Pypolca:
 Snakemake:
 * Mölder F, Jablonski KP, Letcher B et al. Sustainable data analysis with Snakemake [version 1; peer review: 1 approved, 1 approved with reservations]. F1000Research 2021, 10:33 (https://doi.org/10.12688/f1000research.29032.1).
 
-KMC:
-* Marek Kokot, Maciej Długosz, Sebastian Deorowicz, KMC 3: counting and manipulating k-mer statistics, Bioinformatics, Volume 33, Issue 17, 01 September 2017, Pages 2759–2761, (https://doi.org/10.1093/bioinformatics/btx304).
+lrge:
+* Hall, M. B.; Coin, L. J. M. Genome Size Estimation from Long Read Overlaps. bioRxiv 2024, 2024.11.27.625777. doi:10.1101/2024.11.27.625777.

@@ -69,23 +69,25 @@ MAC = config.args.mac
 MEDAKA_OVERRIDE = config.args.medaka_override
 EXTRA_PARAMS_FLYE = config.args.extra_params_flye
 # flag to add extra arguments to flye
-ADD_TO_FLYE =  False
+ADD_TO_FLYE = False
 
 # Only if user specifies - otherwise None
 if EXTRA_PARAMS_FLYE:
-    ADD_TO_FLYE =  True
+    ADD_TO_FLYE = True
     print(f"The extra parameters {EXTRA_PARAMS_FLYE} will be used with Flye ")
 
-# By default, hybracter (linux) will use --bacteria from v0.10.0 onwards 
+# By default, hybracter (linux) will use --bacteria from v0.10.0 onwards
 # To take advantage of improvements with medaka v2 https://rrwick.github.io/2024/10/17/medaka-v2.html
-# not true if 1) --mac or 2) --medaka_override is specified 
-BACTERIA = True 
+# not true if 1) --mac or 2) --medaka_override is specified
+BACTERIA = True
 if MAC:
     BACTERIA = False
 else:
     if MEDAKA_OVERRIDE:
         BACTERIA = False
-        print(f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria ")
+        print(
+            f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria "
+        )
 
 # MAC medaka
 
@@ -134,8 +136,10 @@ SAMPLES = ["Sample1", "Sample2"]
 # Import rules and functions
 ##############################
 
-# kmc - needs to be included due to the chckpointing
+
+# lrge - needs to be included due to the chckpointing
 include: os.path.join("rules", "processing", "estimate_chromosome.smk")
+
 
 # qc and host
 # depends on whehter --contaminants has been specified and --skip_qc flag activiated

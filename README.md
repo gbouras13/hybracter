@@ -30,6 +30,7 @@
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
   - [Recent Updates](#recent-updates)
+  - [v0.11.0 Updates (4 December 2024)](#v0110-updates-4-december-2024)
     - [v0.10.0 Updates (17 October 2024)](#v0100-updates-17-october-2024)
     - [v0.9.0 Updates (18 September 2024)](#v090-updates-18-september-2024)
   - [Why Would You Run Hybracter?](#why-would-you-run-hybracter)
@@ -172,6 +173,13 @@ To summarise the conclusions:
 * Dragonflye should not be used if you care about recovering plasmids.
 
 ## Recent Updates
+
+## v0.11.0 Updates (4 December 2024)
+
+* Replaces [kmc](https://github.com/refresh-bio/KMC) with [lrge](https://github.com/mbhall88/lrge), a much faster tool designed for the purpose of estimating genome size from long reads. It is very very fast and robust. 
+* Nothing else changes - the estimated chromosome size used by Hybracter will still be 80% of the estimate, as it needs to account for plasmids
+* Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108).
+* Note this won't work if you run `hybracter` on a Mac (as medaka v2 is not available)
 
 ### v0.10.0 Updates (17 October 2024)
 

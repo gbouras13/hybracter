@@ -1,7 +1,9 @@
 # History
 
-## v0.10.1 Updates (4 December 2024)
+## v0.11.0 Updates (4 December 2024)
 
+* Replaces [kmc](https://github.com/refresh-bio/KMC) with [lrge](https://github.com/mbhall88/lrge), a much faster tool designed for the purpose of estimating genome size from long reads. It is very very fast and robust. 
+* Nothing else changes - the estimated chromosome size used by Hybracter will still be 80% of the estimate, as it needs to account for plasmids
 * Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108).
 * Note this won't work if you run `hybracter` on a Mac (as medaka v2 is not available)
 
