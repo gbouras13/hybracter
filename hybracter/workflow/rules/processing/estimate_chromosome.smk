@@ -23,9 +23,8 @@ rule lrge:
         os.path.join(dir.out.stderr, "lrge", "{sample}.log"),
     shell:
         """
-        lrge  -s 42 -t {threads} {input.fastq} -o {output.lrge}
-        if [ $? -ne 0 ]; then
-            echo "Initial attempt failed, retrying with 400 reads all vs all"
+        if ! lrge -s 42 -t {threads} {input} -o {output}; then
+            echo "Initial attempt failed, retrying with alternative parameters..."
             lrge -s 42 -t {threads} -n 400 {input} -o {output}
         fi
         """
