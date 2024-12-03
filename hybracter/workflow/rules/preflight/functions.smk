@@ -128,7 +128,7 @@ def get_cpu_resources_with_fallback(wildcards, attempt):
         return 1
 
 # for lrge in test
-def get_lrge_overlap(wildcards, attempt=1):
+def get_lrge_overlap(wildcards, attempt):
     if attempt == 1:
         return ""
     else:
