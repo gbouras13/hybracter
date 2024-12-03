@@ -61,7 +61,8 @@ rule aggregate_finalise_complete:
         ),
         medaka_rd_1_fasta=os.path.join(
             dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"
-        ),  # medaka round 1
+        ),
+        # medaka round 1
         medaka_rd_2_fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"
         ),

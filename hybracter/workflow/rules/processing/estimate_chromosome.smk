@@ -13,13 +13,17 @@ rule lrge:
     conda:
         os.path.join(dir.env, "lrge.yaml")
     threads: config.resources.med.cpu
-    retries: 2
-    params:
-        get_lrge_overlap
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
+    retries: 2
+    params:
+        get_lrge_overlap
+    benchmark:
+        os.path.join(dir.out.bench, "lrge", "{sample}.txt")
+    log:
+        os.path.join(dir.out.stderr, "lrge", "{sample}.log"),
     shell:
         """
         lrge  -s 42 -t {threads} {params} {input.fastq} -o {output.lrge}
