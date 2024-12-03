@@ -19,7 +19,7 @@ rule lrge:
         time=config.resources.sml.time,
     retries: 2
     params:
-        get_lrge_overlap(attempt)
+        get_lrge_overlap
     benchmark:
         os.path.join(dir.out.bench, "lrge", "{sample}.txt")
     log:
