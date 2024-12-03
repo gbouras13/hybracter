@@ -15,14 +15,14 @@ rule lrge:
     threads: config.resources.med.cpu
     retries: 2
     params:
-        all=lambda wildcards, attempt: get_lrge_overlap(wildcards, attempt)
+        a=get_lrge_overlap,
     resources:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     shell:
         """
-        lrge  -s 42 -t {threads} {params.all} {input.fastq} -o {output.lrge}
+        lrge  -s 42 -t {threads} {params.a} {input.fastq} -o {output.lrge}
         """
 
 
