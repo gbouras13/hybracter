@@ -17,16 +17,17 @@ rule lrge:
         mem_mb=config.resources.sml.mem,
         mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
-    retries: 2
-    params:
-        get_lrge_overlap
     benchmark:
         os.path.join(dir.out.bench, "lrge", "{sample}.txt")
     log:
         os.path.join(dir.out.stderr, "lrge", "{sample}.log"),
     shell:
         """
-        lrge  -s 42 -t {threads} {params} {input.fastq} -o {output.lrge}
+        lrge  -s 42 -t {threads} {input.fastq} -o {output.lrge}
+        if [ $? -ne 0 ]; then
+            echo "Initial attempt failed, retrying with 400 reads all vs all"
+            lrge -s 42 -t {threads} -n 400 {input} -o {output}
+        fi
         """
 
 
