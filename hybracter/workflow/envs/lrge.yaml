@@ -4,4 +4,5 @@ channels:
     - bioconda
 dependencies: 
     - lrge <1
+    - gzip # for zcat
     

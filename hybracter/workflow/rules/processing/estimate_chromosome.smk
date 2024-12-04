@@ -1,5 +1,6 @@
 """
 Michael Hall's new tool lrge is awesome
+Thanks to Michael Hall for some code to determine the best way to run it too
 """
 
 
@@ -23,10 +24,21 @@ rule lrge:
         os.path.join(dir.out.stderr, "lrge", "{sample}.log"),
     shell:
         """
-        if ! lrge -s 42 -t {threads} {input} -o {output}; then
-            echo "Initial attempt failed, retrying with alternative parameters..."
-            lrge -s 42 -t {threads} -n 400 {input} -o {output}
+        if [[ {input.fastq} =~ \.gz$ ]]; then
+        INPUT_CMD="zcat {input.fastq}"
+        else
+        INPUT_CMD="cat {input.fastq}"
         fi
+
+        # Now run the awk command on the decompressed file
+        if $INPUT_CMD | awk 'NR % 4 == 1 {count++} count > 10000 {exit} END {exit count > 10000 ? 0 : 1}'; then
+        # There are more than 10,000 reads, run lrge with defaults
+            lrge -t {threads} -s 42 {input.fastq} -o {output.lrge}
+        else
+        # There are less than 10,000 reads, use the all-vs-all strategy with all available reads
+            lrge -t {threads} -s 42 -n 10000 {input.fastq} -o {output.lrge}
+        fi
+
         """
 
 
