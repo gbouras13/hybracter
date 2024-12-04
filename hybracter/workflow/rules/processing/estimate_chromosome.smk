@@ -32,13 +32,11 @@ rule lrge:
 
         # Now run the awk command on the decompressed file
         if $INPUT_CMD | awk '{{if (NR % 4 == 1) count++}} {{if (count > 10000) exit}} END {{exit count > 10000 ? 0 : 1}}'; then
-
+            # There are more than 10,000 reads, run lrge with defaults
+            lrge -t {threads} -s 42 {input.fastq} -o {output.lrge}
+        else
             # There are less than 10,000 reads, use the all-vs-all strategy with all available reads
             lrge -t {threads} -s 42 -n 10000 {input.fastq} -o {output.lrge}
-        else
-        
-             # There are more than 10,000 reads, run lrge with defaults
-            lrge -t {threads} -s 42 {input.fastq} -o {output.lrge}
         fi
 
         """
