@@ -1,5 +1,14 @@
 # History
 
+## v0.11.0 Updates (4 December 2024)
+
+* Replaces [kmc](https://github.com/refresh-bio/KMC) with [lrge](https://github.com/mbhall88/lrge) when using `--auto`, a much faster tool designed for the purpose of estimating genome size from long reads. It is very very fast and robust. 
+    * If you input has more than 5000 long reads (it should!), [lrge](https://github.com/mbhall88/lrge) will run in default settings. If it has under this, then it will run a (slightly) more computationally expensive all-vs-all mode with all input reads. In practice, if you have such low read counts, you should take all downstream analysis (inclduing lrge and hybracter) with a lot of caution anyway. 
+    * According to the [preprint](https://www.biorxiv.org/content/10.1101/2024.11.27.625777v1) (and my less exhaustive testing), lrge is more accurate and much faster than kmc, but I would still be careful using it on data that has lower quality than < Q15. 
+* Nothing else changes - the estimated chromosome size used by Hybracter will still be 80% of the estimate, as it needs to account for plasmids
+* Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108).
+* Note this won't work if you run `hybracter` on a Mac (as medaka v2 is not available)
+
 ## v0.10.1 Updates (14 November 2024)
 
 * Adds retry functionality for dnaapler with 1 thread if there is an error - for some genomes on some systems, [it was observed](https://github.com/gbouras13/hybracter/issues/54) that using the default resources (8 threads, 16GB RAM) will lead to an error in dnaapler. 

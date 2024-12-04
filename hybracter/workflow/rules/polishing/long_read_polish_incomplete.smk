@@ -52,4 +52,3 @@ rule medaka_incomplete:
         fi
         cp {output.fasta} {output.copy_fasta}
         """
-

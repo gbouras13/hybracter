@@ -1,0 +1,8 @@
+name: kmc
+channels:
+    - conda-forge
+    - bioconda
+dependencies: 
+    - lrge <1
+    - gzip # for zcat
+    

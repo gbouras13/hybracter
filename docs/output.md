@@ -93,7 +93,7 @@ The `processing` directory will contain a number of intermediate directories who
 
 ##### 2. `qc` directory
 
- This directory will contain the filtered, trimmed and contaminant removed FASTQ reads (where applicable) for each sample, along with the kmc estimated chromosome size (which will be used if you specify `--auto`)
+ This directory will contain the filtered, trimmed and contaminant removed FASTQ reads (where applicable) for each sample, along with the estimated chromosome size (which will be used if you specify `--auto`)
 
 ##### 3. `plassembler` directory
 

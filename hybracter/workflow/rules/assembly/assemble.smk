@@ -5,7 +5,7 @@ rule assemble:
     """
     input:
         fastq=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
-        lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"), # make sure coverage is run before assembly in case below min_depth
+        lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"),  # make sure coverage is run before assembly in case below min_depth
     output:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
@@ -20,8 +20,8 @@ rule assemble:
     params:
         model=FLYE_MODEL,
         dir=os.path.join(dir.out.assemblies, "{sample}"),
-        add_to_flye = ADD_TO_FLYE,
-        extra_params_flye = EXTRA_PARAMS_FLYE
+        add_to_flye=ADD_TO_FLYE,
+        extra_params_flye=EXTRA_PARAMS_FLYE,
     threads: config.resources.big.cpu
     benchmark:
         os.path.join(dir.out.bench, "assemble", "{sample}.txt")

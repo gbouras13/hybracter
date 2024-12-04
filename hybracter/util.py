@@ -216,6 +216,7 @@ list of all available medaka models
 
 all_medaka_models = [
     
+    'r1041_e82_400bps_bacterial_methylation', #https://github.com/gbouras13/hybracter/issues/108
     # default 1.12.1
     'r1041_e82_400bps_sup_v5.0.0',
     # r1041 e82 (kit14) consensus

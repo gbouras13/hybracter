@@ -3,8 +3,10 @@ rule plassembler_long:
     runs plassembler for long
     """
     input:
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt"),
-        l=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz")
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
+        l=os.path.join(dir.out.qc, "{sample}_filt_trim.fastq.gz"),
     output:
         fasta=os.path.join(
             dir.out.plassembler, "{sample}", "plassembler_plasmids.fasta"
@@ -13,7 +15,16 @@ rule plassembler_long:
         version=os.path.join(dir.out.versions, "{sample}", "plassembler.version"),
     params:
         db=dir.plassemblerdb,
-        chromlen = lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
+        chromlen=lambda wildcards: str(
+            getMinChromLength(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+            )
+        ),
         outdir=os.path.join(dir.out.plassembler, "{sample}"),
         flye_dir=os.path.join(dir.out.assemblies, "{sample}"),
         depth_filter=DEPTH_FILTER,

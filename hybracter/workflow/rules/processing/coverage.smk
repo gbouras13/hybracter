@@ -71,12 +71,33 @@ rule estimate_lr_coverage:
     """
     input:
         long_bases=os.path.join(dir.out.seqkit, "{sample}_long.txt"),
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"),
     params:
-        min_chrom_length=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
-        min_bases=lambda wildcards: str(getMinBases(kmc_log_path=os.path.join(dir.out.kmc,f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"),sample=wildcards.sample, auto=AUTO, min_depth=MIN_DEPTH)),
+        min_chrom_length=lambda wildcards: str(
+            getMinChromLength(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+            )
+        ),
+        min_bases=lambda wildcards: str(
+            getMinBases(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+                min_depth=MIN_DEPTH,
+            )
+        ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -86,7 +107,6 @@ rule estimate_lr_coverage:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "lr_coverage.py")
-        
 
 
 rule aggr_seqkit_long:
@@ -95,7 +115,7 @@ rule aggr_seqkit_long:
     """
     input:
         expand(os.path.join(dir.out.seqkit, "{sample}_long.txt"), sample=SAMPLES),
-        expand(os.path.join(dir.out.coverage, "{sample}_lr.txt"), sample=SAMPLES)
+        expand(os.path.join(dir.out.coverage, "{sample}_lr.txt"), sample=SAMPLES),
     output:
         flag=os.path.join(dir.out.flags, "aggr_seqkit_long.flag"),
     resources:
@@ -108,6 +128,7 @@ rule aggr_seqkit_long:
         touch {output.flag}
         """
 
+
 rule estimate_sr_coverage:
     """
     quickly estimates short read coverage for pypolca and polypolish careful
@@ -115,11 +136,22 @@ rule estimate_sr_coverage:
     input:
         r1=os.path.join(dir.out.seqkit, "{sample}_r1.txt"),
         r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt"),
-        kmc=os.path.join(dir.out.kmc,"{sample}", "{sample}_kmcLOG.txt")
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         sr_coverage=os.path.join(dir.out.coverage, "{sample}_sr.txt"),
     params:
-        chromlen=lambda wildcards: str(getMinChromLength(kmc_log_path=os.path.join(dir.out.kmc, f"{wildcards.sample}", f"{wildcards.sample}_kmcLOG.txt"), sample=wildcards.sample,auto=AUTO)),
+        chromlen=lambda wildcards: str(
+            getMinChromLength(
+                lrge_path=os.path.join(
+                    dir.out.chrom_size,
+                    f"{wildcards.sample}_lrge_estimated_chromosome_size.txt",
+                ),
+                sample=wildcards.sample,
+                auto=AUTO,
+            )
+        ),
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -129,4 +161,3 @@ rule estimate_sr_coverage:
     threads: config.resources.sml.cpu
     script:
         os.path.join(dir.scripts, "sr_coverage.py")
-
