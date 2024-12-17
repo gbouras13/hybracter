@@ -53,19 +53,32 @@ A Docker/Singularity Linux container image is available for Hybracter (starting 
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.9.0 with singularity
+To install and run v0.10.0 with singularity
 
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.9.0
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.10.0
 
-containerImage="$IMAGE_DIR/hybracter_0.9.0.sif"
+containerImage="$IMAGE_DIR/hybracter_0.10.0.sif"
 
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
  -1 test_data/Fastqs/test_short_reads_R1.fastq.gz  -2 test_data/Fastqs/test_short_reads_R2.fastq.gz \
  -o output_test_singularity -t 4 -c 50000
+```
+
+To install and run v0.11.0 with Docker (recommended if you have a Mac as it has Medaka v2)
+
+```
+docker pull quay.io/gbouras13/hybracter:0.11.0
+docker run quay.io/gbouras13/hybracter:0.11.0  hybracter -h
+# -v mounts directories from your local filesystem to the docker contaier
+docker run --rm -v /path/to/my/test/fastqs:/data -v /path/to/where/i/want/the/output:/output quay.io/gbouras13/hybracter:0.11.0 hybracter hybrid-single \
+  -l /data/test_long_reads.fastq.gz \
+  -1 /data/test_short_reads_R1.fastq.gz \
+  -2 /data/test_short_reads_R2.fastq.gz \
+  -o /output/output_test_docker -t 4 –auto 
 ```
 
 # Database Installation
@@ -143,6 +156,9 @@ and for long (same for Linux and MacOS)
 ```bash
 hybracter test-long --threads 1
 ```
+
+* **Note: if you are installing Hybracter on a mac, please use `--mac` - this will install Medaka v1.8 (not v2, which is not available for MacOS). Alternatively, if you want Medaka v2, you should try the container install option with Docker.**
+
 
 # Beginner Conda and Mamba Installation
 
