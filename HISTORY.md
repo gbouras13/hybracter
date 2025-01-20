@@ -1,5 +1,10 @@
 # History
 
+## v0.11.1 Updates (21 January 2025)
+
+* Bug fix for `--contaminants` that was profoundly broken (https://github.com/gbouras13/hybracter/issues/115) thanks @nbat64
+* Bug fix to support for dnaapler v1.1.0 with `--db "dnaa,cog1474,repa"` (https://github.com/gbouras13/hybracter/issues/116)
+
 ## v0.11.0 Updates (4 December 2024)
 
 * Replaces [kmc](https://github.com/refresh-bio/KMC) with [lrge](https://github.com/mbhall88/lrge) when using `--auto`, a much faster tool designed for the purpose of estimating genome size from long reads. It is very very fast and robust. 
