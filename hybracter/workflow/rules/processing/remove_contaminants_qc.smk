@@ -32,7 +32,7 @@ rule host_removal_mapping_single:
     """Map reads to host and return unmapped reads"""
     input:
         index=os.path.join(dir.out.contaminant_index, "host.index"),
-        fastq=get_input_lr_fastqs(sample=wildcards.sample),
+        fastq=lambda wildcards: get_input_lr_fastqs(wildcards=wildcards),
     output:
         r1=os.path.join(
             dir.out.contaminant_removal, "{sample}", "{sample}.host_rm.fastq.gz"

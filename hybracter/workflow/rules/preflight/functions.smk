@@ -61,15 +61,46 @@ def is_fasta_file(file_path):
     Args:
         file_path (str): The path to the file to be checked.
     Returns:
-        bool: True if the file is in FASTA or FASTA.gz format, False otherwise.
+        bool: True if the file is in FASTA or FASTA gzip format, False otherwise.
     """
-    try:
-        with gzip.open(file_path, "rt") as handle:
+
+    def check_fasta(handle):
+        try:
             records = list(SeqIO.parse(handle, "fasta"))
             return len(records) > 0
+        except ValueError:
+            return False
+
+    try:
+        if file_path.endswith(".gz"):
+            try:
+                with gzip.open(file_path, "rt") as handle:
+                    check_fasta(handle)
+            except (IOError, OSError):
+                return False
+        else:
+            try:
+                with open(file_path, "rt") as handle:
+                    return check_fasta(handle)
+            except (IOError, OSError):
+                return False
     except (IOError, ValueError):
         # Handle exceptions for non-existent or non-FASTA files
         return False
+
+
+    if file_path.endswith(".gz") or file_path.endswith(".fasta.gz"):
+        try:
+            with gzip.open(file_path, "rt") as handle:
+                return check_fasta(handle)
+        except (IOError, OSError):
+            return False
+    elif file_path.endswith(".fasta"):
+        try:
+            with open(file_path, "rt") as handle:
+                return check_fasta(handle)
+        except (IOError, OSError):
+            return False
 
 
 def check_host():
