@@ -2,5 +2,13 @@ name: medaka
 channels:
     - conda-forge
     - bioconda
-dependencies: 
-    - medaka==2.0.1
+dependencies:
+    - pip
+    - pyabpoa
+    - python==3.11
+    - samtools >=1.14
+    - bcftools >=1.14
+    - minimap2 >=2.17
+    - htslib >=1.14
+    - pip:
+        - medaka==2.0.1 
