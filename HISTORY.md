@@ -1,5 +1,10 @@
 # History
 
+## v0.11.2 Updates (30 January 2025)
+
+* Changes Medaka env to use pip - see this issue https://github.com/nanoporetech/medaka/issues/547 - thanks William Shropshire for investigating and alerting me to this and Matthew Croxen for noticing in the first place
+* Using pip is 5-10x faster 
+
 ## v0.11.1 Updates (21 January 2025)
 
 * Bug fix for `--contaminants` that was profoundly broken (https://github.com/gbouras13/hybracter/issues/115) thanks @nbat64
