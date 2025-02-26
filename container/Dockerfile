@@ -32,18 +32,16 @@ RUN apt-get -y update \
     | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
     && apt-add-repository -y "deb https://apt.kitware.com/ubuntu/ jammy-rc main" \
     && apt-get -y update \
-    # Build and install libfabric
-    && rm -rf /tmp/build \
-    && mkdir -p /tmp/build \
-    && cd /tmp/build \
+    && rm -rf /var/lib/apt/lists/* \
     && wget https://github.com/ofiwg/libfabric/archive/refs/tags/v${LIBFABRIC_VERSION}.tar.gz \
-    && tar xf v${LIBFABRIC_VERSION}.tar.gz \
-    && cd libfabric-${LIBFABRIC_VERSION} \
-    && ./autogen.sh \
+    && tar xf v${LIBFABRIC_VERSION}.tar.gz
+
+# Build and install libfabric
+WORKDIR libfabric-${LIBFABRIC_VERSION}
+RUN ./autogen.sh \
     && ./configure \
     && make -j 16 \
     && make install \
-    && rm -rf /var/lib/apt/lists/*
 
 #
 # Install miniforge
