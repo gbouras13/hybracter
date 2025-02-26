@@ -67,5 +67,5 @@ ENV PATH /opt/miniforge3/bin:$PATH
 
 RUN hybracter install --medaka \
     && hybracter test-hybrid --threads 8 \
-    && hybracter test-long --threads 16  --conda-create-envs-only \
+    && hybracter test-long --threads 16 --conda-create-envs-only \
     && rm -rf hybracter_out
