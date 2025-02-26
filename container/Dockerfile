@@ -50,7 +50,7 @@ RUN apt -y update \
 # Install miniforge
 #
 RUN set -eux ; \
-    wget https://github.com/conda-forge/miniforge/releases/${MINIFORGE_VERSION}/download/Miniforge3-Linux-x86_64.sh ; \
+    wget https://github.com/conda-forge/miniforge/releases/download/${MINIFORGE_VERSION}/Miniforge3-${MINIFORGE_VERSION}-Linux-x86_64.sh ; \
     bash ./Miniforge3-* -b -p /opt/miniforge3 -s ; \
     rm -rf ./Miniforge3-*
 ENV PATH /opt/miniforge3/bin:$PATH
