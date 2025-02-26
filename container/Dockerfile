@@ -37,7 +37,7 @@ RUN apt-get -y update \
     && tar xf v${LIBFABRIC_VERSION}.tar.gz
 
 # Build and install libfabric
-WORKDIR libfabric-${LIBFABRIC_VERSION}
+WORKDIR /libfabric-${LIBFABRIC_VERSION}
 RUN ./autogen.sh \
     && ./configure \
     && make -j 16 \
