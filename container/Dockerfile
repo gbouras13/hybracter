@@ -8,6 +8,7 @@ FROM staphb/unicycler:0.5.0
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG LIBFABRIC_VERSION=1.18.1
 ARG HYBRACTER_VERSION=0.7.1
+ARG MINIFORGE_VERSION=24.11.3-0
 
 # Install required packages and dependencies
 RUN apt -y update \
