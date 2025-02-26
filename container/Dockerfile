@@ -10,6 +10,7 @@ ARG HYBRACTER_VERSION=0.7.1
 ARG MINIFORGE_VERSION=24.11.3-0
 
 # Install required packages and dependencies
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get -y update \
     && apt-get -y install --no-install-recommends \
     build-essential=12.8ubuntu1.1 \
