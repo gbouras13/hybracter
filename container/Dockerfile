@@ -11,7 +11,8 @@ ARG MINIFORGE_VERSION=24.11.3-0
 
 # Install required packages and dependencies
 RUN apt-get -y update \
-    && apt-get -y install build-essential \
+    && apt-get -y install --no-install-recommends \
+    build-essential=12.8ubuntu1.1 \
     wget=1.20.3-1ubuntu2.1 \
     doxygen=1.8.17-0ubuntu2  \
     gnupg=2.2.19-3ubuntu2.2  \
