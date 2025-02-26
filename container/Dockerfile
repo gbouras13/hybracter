@@ -42,7 +42,7 @@ WORKDIR /data/libfabric-${LIBFABRIC_VERSION}
 RUN ./autogen.sh \
     && ./configure \
     && make -j 16 \
-    && make install \
+    && make install
 
 #
 # Install miniforge
@@ -55,7 +55,7 @@ ENV PATH /opt/miniforge3/bin:$PATH
 
 #
 # Install conda environment
-# 
+#
 RUN set -eux ; \
     mamba install -y -c conda-forge -c bioconda -c defaults \
     hybracter=${HYBRACTER_VERSION}=pyhdfd78af_0 \
