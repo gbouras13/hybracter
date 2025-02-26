@@ -13,21 +13,21 @@ ARG MINIFORGE_VERSION=24.11.3-0
 # Install required packages and dependencies
 RUN apt -y update \
     && apt -y install build-essential \
-    wget \
-    doxygen \
-    gnupg \
-    gnupg2 \
-    apt-transport-https \
-    software-properties-common  \
-    git \
-    vim \
-    gfortran \
-    libtool \
-    python3-venv \
-    ninja-build \
-    python3-pip \
-    libnuma-dev \
-    python3-dev \
+    wget=1.20.3-1ubuntu2.1 \
+    doxygen=1.8.17-0ubuntu2  \
+    gnupg=2.2.19-3ubuntu2.2  \
+    gnupg2=2.2.19-3ubuntu2.2  \
+    apt-transport-https=2.0.10  \
+    software-properties-common=0.99.9.12  \
+    git=1:2.25.1-1ubuntu3.13  \
+    vim=2:8.1.2269-1ubuntu5.31  \
+    gfortran=4:9.3.0-1ubuntu2  \
+    libtool=2.4.6-14 \
+    python3-venv=3.8.2-0ubuntu2 \
+    ninja-build=1.10.0-1build1 \
+    python3-pip=20.0.2-5ubuntu1.11  \
+    libnuma-dev=2.0.12-1  \
+    python3-dev=3.8.2-0ubuntu2 \
     && apt -y remove --purge --auto-remove cmake \
     && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null\
     | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
