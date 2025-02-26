@@ -28,12 +28,12 @@ RUN apt-get -y update \
     libnuma-dev=2.0.12-1  \
     python3-dev=3.8.2-0ubuntu2 \
     && apt-get -y remove --purge --auto-remove cmake \
-    && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null\
+    && wget -q -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null\
     | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
     && apt-add-repository -y "deb https://apt.kitware.com/ubuntu/ jammy-rc main" \
     && apt-get -y update \
     && rm -rf /var/lib/apt/lists/* \
-    && wget https://github.com/ofiwg/libfabric/archive/refs/tags/v${LIBFABRIC_VERSION}.tar.gz \
+    && wget -q https://github.com/ofiwg/libfabric/archive/refs/tags/v${LIBFABRIC_VERSION}.tar.gz \
     && tar xf v${LIBFABRIC_VERSION}.tar.gz
 
 # Build and install libfabric
@@ -47,7 +47,7 @@ RUN ./autogen.sh \
 # Install miniforge
 #
 RUN set -eux ; \
-    wget https://github.com/conda-forge/miniforge/releases/download/${MINIFORGE_VERSION}/Miniforge3-${MINIFORGE_VERSION}-Linux-x86_64.sh ; \
+    wget -q https://github.com/conda-forge/miniforge/releases/download/${MINIFORGE_VERSION}/Miniforge3-${MINIFORGE_VERSION}-Linux-x86_64.sh ; \
     bash ./Miniforge3-* -b -p /opt/miniforge3 -s ; \
     rm -rf ./Miniforge3-*
 ENV PATH /opt/miniforge3/bin:$PATH
