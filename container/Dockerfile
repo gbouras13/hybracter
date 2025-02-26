@@ -10,8 +10,8 @@ ARG HYBRACTER_VERSION=0.7.1
 ARG MINIFORGE_VERSION=24.11.3-0
 
 # Install required packages and dependencies
-RUN apt -y update \
-    && apt -y install build-essential \
+RUN apt-get -y update \
+    && apt-get -y install build-essential \
     wget=1.20.3-1ubuntu2.1 \
     doxygen=1.8.17-0ubuntu2  \
     gnupg=2.2.19-3ubuntu2.2  \
@@ -27,11 +27,11 @@ RUN apt -y update \
     python3-pip=20.0.2-5ubuntu1.11  \
     libnuma-dev=2.0.12-1  \
     python3-dev=3.8.2-0ubuntu2 \
-    && apt -y remove --purge --auto-remove cmake \
+    && apt-get -y remove --purge --auto-remove cmake \
     && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null\
     | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
     && apt-add-repository -y "deb https://apt.kitware.com/ubuntu/ jammy-rc main" \
-    && apt -y update \
+    && apt-get -y update \
     # Build and install libfabric
     && rm -rf /tmp/build \
     && mkdir -p /tmp/build \
