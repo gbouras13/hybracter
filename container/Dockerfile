@@ -2,7 +2,6 @@
 # hybracter 
 #
 
-FROM --platform=linux/amd64 ubuntu:20.04
 FROM staphb/unicycler:0.5.0
 
 ARG DEBIAN_FRONTEND="noninteractive"
