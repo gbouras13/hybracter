@@ -2,35 +2,35 @@
 # hybracter 
 #
 
-FROM staphb/unicycler:0.5.0
+FROM staphb/unicycler:0.5.1
 
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG LIBFABRIC_VERSION=1.18.1
-ARG HYBRACTER_VERSION=0.7.1
+ARG LIBFABRIC_VERSION=2.0.0
+ARG HYBRACTER_VERSION=0.11.2
 ARG MINIFORGE_VERSION=24.11.3-0
 
 # Install required packages and dependencies
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get -y update \
     && apt-get -y install --no-install-recommends \
-    build-essential=12.8ubuntu1.1 \
-    autoconf=2.69-11.1  \
-    automake=1:1.16.1-4ubuntu6  \
-    wget=1.20.3-1ubuntu2.1 \
-    doxygen=1.8.17-0ubuntu2  \
-    gnupg=2.2.19-3ubuntu2.2  \
-    gnupg2=2.2.19-3ubuntu2.2  \
-    apt-transport-https=2.0.10  \
-    software-properties-common=0.99.9.12  \
-    git=1:2.25.1-1ubuntu3.13  \
-    vim=2:8.1.2269-1ubuntu5.31  \
-    gfortran=4:9.3.0-1ubuntu2  \
-    libtool=2.4.6-14 \
-    python3-venv=3.8.2-0ubuntu2 \
-    ninja-build=1.10.0-1build1 \
-    python3-pip=20.0.2-5ubuntu1.11  \
-    libnuma-dev=2.0.12-1  \
-    python3-dev=3.8.2-0ubuntu2 \
+    build-essential=12.9ubuntu3 \
+    autoconf=2.71-2 \
+    automake=1:1.16.5-1.3  \
+    wget=1.21.2-2ubuntu1.1 \
+    doxygen=1.9.1-2ubuntu2 \
+    gnupg=2.2.27-3ubuntu2.1 \
+    gnupg2=2.2.27-3ubuntu2.1 \
+    apt-transport-https=2.4.13 \
+    software-properties-common=0.99.22.9 \
+    git=1:2.34.1-1ubuntu1.12 \
+    vim=2:8.2.3995-1ubuntu2.23 \
+    gfortran=4:11.2.0-1ubuntu1 \
+    libtool=2.4.6-15build2 \
+    python3-venv=3.10.6-1~22.04.1 \
+    ninja-build=1.10.1-1 \
+    python3-pip=22.0.2+dfsg-1ubuntu0.5 \
+    libnuma-dev=2.0.14-3ubuntu2 \
+    python3-dev=3.10.6-1~22.04.1 \
     && apt-get -y remove --purge --auto-remove cmake \
     && wget -q -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null\
     | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
@@ -61,7 +61,7 @@ ENV PATH /opt/miniforge3/bin:$PATH
 #
 RUN set -eux ; \
     mamba install -y -c conda-forge -c bioconda -c defaults \
-    hybracter=${HYBRACTER_VERSION}=pyhdfd78af_0 \
+    hybracter=${HYBRACTER_VERSION} \
     && mamba clean -af -y
 ENV PATH /opt/miniforge3/bin:$PATH
 
