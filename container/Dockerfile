@@ -63,7 +63,6 @@ RUN set -eux ; \
     mamba install -y -c conda-forge -c bioconda -c defaults \
     hybracter=${HYBRACTER_VERSION} \
     && mamba clean -af -y
-ENV PATH /opt/miniforge3/bin:$PATH
 
 RUN hybracter install --medaka \
     && hybracter test-hybrid --threads 8 \
