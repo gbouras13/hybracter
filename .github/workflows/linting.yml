@@ -1,0 +1,16 @@
+name: Linting
+
+on:
+  push:
+
+jobs:
+
+  docker-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: container/Dockerfile
