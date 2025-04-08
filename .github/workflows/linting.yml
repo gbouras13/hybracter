@@ -7,10 +7,15 @@ jobs:
 
   docker-lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        array:
+          - dockerfile: containers/HPC/Dockerfile
+          - dockerfile: containers/minimal/Dockerfile
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: containers/*/Dockerfile
+          dockerfile: ${{ matrix.array.dockerfile }}
