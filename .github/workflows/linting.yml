@@ -13,4 +13,4 @@ jobs:
       - name: Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: container/Dockerfile
+          dockerfile: containers/*/Dockerfile
