@@ -230,6 +230,9 @@ def print_splash():
 |_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
        |___/
 
+
+MODIFIED MODIFIED MODIFIED MODIFIED MODIFIED MODIFIED MODIFIED MODIFIED
+!!!!!!!!!!RICHARD, DONT USE THIS IN PRODUCTION!!!!!!!!
 """
     )
 
@@ -357,6 +360,119 @@ Available targets:
     all             Run everything (default)
     print_targets   List available targets
 """
+
+help_msg_automatic = """
+\b
+CLUSTER EXECUTION:
+hybracter automatic ... --profile [profile]
+For information on Snakemake profiles see:
+https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+\b
+RUN EXAMPLES:
+Required:           hybracter automatic --input [csv file]
+Specify output directory:    hybracter automatic ... --output [directory]
+Specify threads:    hybracter automatic ... --threads [threads]
+Disable conda:      hybracter automatic ... --no-use-conda 
+Change defaults:    hybracter automatic ... --snake-default="-k --nolock"
+Add Snakemake args: hybracter automatic ... --dry-run --keep-going --touch
+Specify targets:    hybracter automatic ... all print_targets
+Available targets:
+    all             Run everything (default)
+    print_targets   List available targets
+"""
+
+@click.command(
+    epilog=help_msg_automatic,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@click.option("-i", "--input", "_input", help="Input csv file with mixed sample types", type=str, required=True)
+@click.option("--datadir", "datadir", help="Directory/ies where FASTQs are. Can specify 1 directory (long and short FASTQs in same directory) or 2 (separated by comma)", type=str, default=None)
+@click.option(
+    "--no_pypolca",
+    help="Do not use pypolca to polish assemblies with short reads",
+    is_flag=True,
+    default=False,
+)
+@click.option(
+            "--logic",
+            "logic",
+            help="Hybracter logic to select best assembly. Use --last to pick the last polishing round. Use --best to pick best assembly based on ALE (hybrid). ",
+            show_default=True,
+            default="last",
+            type=click.Choice(
+                [
+                    "best",
+                    "last",
+                ]
+            ),
+        )
+@common_options
+def automatic(
+    _input,
+    datadir,
+    no_medaka,
+    auto,
+    no_pypolca,
+    skip_qc,
+    medakaModel,
+    databases,
+    subsample_depth,
+    min_depth,
+    min_quality,
+    flyeModel,
+    min_length,
+    output,
+    contaminants,
+    dnaapler_custom_db,
+    logic,
+    depth_filter,
+    mac,
+    medaka_override,
+    extra_params_flye,
+    log,
+    configfile,
+    **kwargs
+):
+    """Run hybracter in automatic mode - detects sample type from input CSV"""
+    
+    merge_config = {
+        "args": {
+            "input": _input,
+            "datadir": datadir,
+            "output": output,
+            "log": log,
+            "min_length": min_length,
+            "databases": databases,
+            "subsample_depth": subsample_depth,
+            "min_depth":min_depth,
+            "min_quality": min_quality,
+            "no_pypolca": no_pypolca,
+            "skip_qc": skip_qc,
+            "medakaModel": medakaModel,
+            "flyeModel": flyeModel,
+            "contaminants": contaminants,
+            "dnaapler_custom_db": dnaapler_custom_db,
+            "no_medaka": no_medaka,
+            "auto": auto,
+            "mac": mac,
+            "medaka_override": medaka_override,
+            "extra_params_flye": extra_params_flye,
+            "depth_filter": depth_filter,
+            "single": False,
+            "logic": logic,
+            "configfile": configfile
+        }
+    }
+
+    run_snakemake(
+        snakefile_path=snake_base(os.path.join("workflow", "automatic.smk")),
+        configfile=configfile,
+        merge_config=merge_config,
+        log=log,
+        **kwargs
+    )
 
 """
 hybrid
@@ -1083,6 +1199,7 @@ cli.add_command(test_long)
 cli.add_command(config)
 cli.add_command(citation)
 cli.add_command(version)
+cli.add_command(automatic) 
 
 
 def main():

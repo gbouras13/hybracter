@@ -14,6 +14,8 @@ rule assess_chrom_pre_polish:
     """
     Run ALE on Flye chrom after dnaapler & plassembler plasmids
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
@@ -53,6 +55,8 @@ rule assess_polypolish:
     """
     Run ALE on polypolish
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
@@ -89,6 +93,8 @@ rule assess_pypolca:
     """
     Run ALE on pypolca
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
         r2=os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"),
