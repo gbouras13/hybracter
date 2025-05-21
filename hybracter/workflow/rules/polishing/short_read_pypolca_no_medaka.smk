@@ -4,6 +4,8 @@ rule pypolca:
     if coverage > 5, run pypolca --careful
     otherwise don't run pypolca at all (depth < 5) - copies file to make it work in snakemake for later
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         polypolish_fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
@@ -43,6 +45,8 @@ rule pypolca_extract_intermediate_assembly:
     """
     extracts the chromosome intermediate assembly from pypolca
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(dir.out.pypolca, "{sample}", "{sample}_corrected.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
@@ -82,6 +86,8 @@ rule compare_assemblies_pypolca_vs_polypolish:
     """
     compare assemblies 
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         reference=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_polypolish.fasta"
@@ -110,6 +116,8 @@ rule pypolca_incomplete:
     if coverage > 5, run pypolca --careful
     otherwise don't run pypolca at all (depth < 5) - copies file to make it work in snakemake for later
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         polypolish_fasta=os.path.join(dir.out.polypolish_incomplete, "{sample}.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),

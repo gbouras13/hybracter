@@ -1,4 +1,6 @@
 rule bwa_index_incomplete:
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
     output:
@@ -17,6 +19,8 @@ rule bwa_index_incomplete:
 
 
 rule bwa_mem_incomplete:
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         r1=os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"),
@@ -49,6 +53,8 @@ rule polypolish_incomplete:
     if depth 5-25, run polypolish --careful
     if depth > 25, run polypolish default - might fix errors in repeats pypolca can't
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus.fasta"),
         sam1=os.path.join(dir.out.bwa_incomplete, "{sample}_1.sam"),

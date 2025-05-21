@@ -239,37 +239,115 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
 
     return outDict
 
+def samplesFromCsvAutomatic(csvFile, subsample_depth, datadir, min_depth, auto):
+    """
+    Read samples and files from a CSV in automatic mode
+    Accepts mixed format with either:
+    - 3 cols (sample, long_read, MinChromLength) for long-read only (if auto=False)
+    - 2 cols (sample, long_read) for long-read only (if auto=True)
+    - 5 cols (sample, long_read, MinChromLength, short_read_1, short_read_2) for hybrid (if auto=False)
+    - 4 cols (sample, long_read, short_read_1, short_read_2) for hybrid (if auto=True)
+    Empty values for short reads indicate long-read only samples
+    """
+    outDict = {}
+    with open(csvFile, "r") as csv:
+        for line in csv:
+            l = line.strip().split(",")
+            # Initialize sample with default None values for R1/R2
+            outDict[l[0]] = {
+                "R1": None,
+                "R2": None
+            }
 
-def parseSamples(csvfile, long_flag, subsample_depth, datadir, min_depth, auto):
-    if os.path.isfile(csvfile) and long_flag is True:
-        sampleDict = samplesFromCsvLong(
-            csvfile, subsample_depth, datadir, min_depth, auto
-        )
-    elif os.path.isfile(csvfile) and long_flag is False:
-        sampleDict = samplesFromCsvShort(
-            csvfile, subsample_depth, datadir, min_depth, auto
-        )
+            # Handle paths based on datadir
+            if datadir is None:
+                long_fastq = l[1]
+            else:
+                datadirlong, datadirshort = check_datadir(datadir)
+                long_fastq = os.path.join(datadirlong, l[1])
+
+            # Validate and add long read path
+            if not os.path.isfile(long_fastq):
+                sys.stderr.write(f"\nFATAL: Long read file {long_fastq} does not exist\n")
+                sys.exit(1)
+            
+            outDict[l[0]]["LR"] = long_fastq
+
+            # Handle MinChromLength based on auto parameter
+            if not auto:
+                chrom_length_idx = 2
+                if not l[chrom_length_idx].isnumeric():
+                    sys.stderr.write(f"\nFATAL: MinChromLength {l[chrom_length_idx]} is not a number\n")
+                    sys.exit(1)
+                outDict[l[0]]["MinChromLength"] = l[chrom_length_idx]
+                outDict[l[0]]["TargetBases"] = int(l[chrom_length_idx]) * subsample_depth
+                outDict[l[0]]["MinBases"] = int(l[chrom_length_idx]) * min_depth
+
+            # Handle short reads if present and not empty
+            if len(l) >= 4:  # Check if we have enough columns for short reads
+                r1_idx = 2 if auto else 3
+                r2_idx = 3 if auto else 4
+                
+                # Only process if both R1 and R2 are non-empty
+                if l[r1_idx].strip() and l[r2_idx].strip():
+                    if datadir is None:
+                        r1_fastq = l[r1_idx]
+                        r2_fastq = l[r2_idx]
+                    else:
+                        if datadirshort is None:
+                            r1_fastq = os.path.join(datadirlong, l[r1_idx])
+                            r2_fastq = os.path.join(datadirlong, l[r2_idx])
+                        else:
+                            r1_fastq = os.path.join(datadirshort, l[r1_idx])
+                            r2_fastq = os.path.join(datadirshort, l[r2_idx])
+
+                    if not (os.path.isfile(r1_fastq) and os.path.isfile(r2_fastq)):
+                        sys.stderr.write(
+                            f"\nFATAL: Short read files {r1_fastq} or {r2_fastq} do not exist\n"
+                        )
+                        sys.exit(1)
+
+                    outDict[l[0]]["R1"] = r1_fastq
+                    outDict[l[0]]["R2"] = r2_fastq
+
+    return outDict
+
+
+def parseSamples(csvfile, long_flag, subsample_depth, datadir, min_depth, auto, automatic_flag=False):
+    """
+    Parse samples from CSV file
+    automatic_flag: If True, use automatic mode to detect sample types
+    """
+    if not os.path.isfile(csvfile):
+        sys.stderr.write(f"\nFATAL: {csvfile} is not a file\n")
+        sys.exit(1)
+        
+    if automatic_flag:
+        return samplesFromCsvAutomatic(csvfile, subsample_depth, datadir, min_depth, auto)
+    elif long_flag:
+        return samplesFromCsvLong(csvfile, subsample_depth, datadir, min_depth, auto)
     else:
-        sys.stderr.write(
-            "\n"
-            f"    FATAL: something is wrong. Likely {csvfile} is neither a file nor directory.\n"
-            "\n"
-        )
-        sys.exit(1)
+        return samplesFromCsvShort(csvfile, subsample_depth, datadir, min_depth, auto)
 
-    # checks for dupes
+# helper function to see if a sample should be hybrid or long in the automatic mode
+def filter_samples_by_workflow_type(samples_dict):
+    """
+    Filter samples into hybrid and long-read-only based on presence of short read data
+    Input: Dictionary from parseSamples
+    Returns: Dict with 'hybrid' and 'long' sample lists
+    """
+    hybrid_samples = []
+    long_samples = []
 
-    SAMPLES = list(sampleDict.keys())
+    for sample_id, sample_data in samples_dict.items():
+        # Check if R1 and R2 exist and are not None
+        if sample_data.get("R1") is not None and sample_data.get("R2") is not None:
+            hybrid_samples.append(sample_id)
+        else:
+            long_samples.append(sample_id)
 
-    # Check for duplicates
-    has_duplicates = len(SAMPLES) != len(set(SAMPLES))
+    return {
+        'hybrid': hybrid_samples,
+        'long': long_samples
+    }
 
-    # error out if dupes
-    if has_duplicates is True:
-        sys.stderr.write(
-            f"Duplicates found in the SAMPLES list in column 1 of {csvfile}.\n"
-            f"Please check {csvfile} and give each sample a unique name!"
-        )
-        sys.exit(1)
-
-    return sampleDict
