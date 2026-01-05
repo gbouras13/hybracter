@@ -13,7 +13,7 @@ jobs:
 
       strategy:
         matrix:
-          os: [macos-13] #macos-latest/macos-14 is M1 - porechop-abi etc don't have M1 package builds, so fails CI
+          os: [macos-latest] #macos-latest/macos-14 is M1 - porechop-abi etc don't have M1 package builds, so fails CI
           python-version: ["3.11"]
 
       steps:
