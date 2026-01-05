@@ -51,6 +51,11 @@ setup(
         "attrmap>=0.0.5",
         "biopython>=1.76",
     ],
-    entry_points={"console_scripts": ["hybracter=hybracter.__main__:main"]},
+    entry_points={
+        "console_scripts": [
+            "hybracter=hybracter.__main__:main",
+            "concat-gfas=hybracter.concat_GFAs_hybracter:main",
+        ]
+    },
     include_package_data=True,
 )
