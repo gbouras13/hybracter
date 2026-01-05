@@ -1,3 +1,14 @@
+"""
+Script to combine hybracter's flye and plassembler GFAs into one output
+
+Some may find this useful so I have included it, but I (George) do not have the development time to continue development/improvements/fix bugs, so caveat emptor when using this
+
+Contributed by bananabenana https://github.com/gbouras13/hybracter/issues/123 with some minor modifications - thanks so much Ben
+
+Requires minimap2
+
+"""
+
 #!/usr/bin/env python3
 import argparse
 import pathlib
