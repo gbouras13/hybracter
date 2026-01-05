@@ -5,7 +5,7 @@ import subprocess
 import tempfile
 import sys
 from collections import defaultdict
-
+import shutil
 
 def parse_gfa_raw(gfa_path):
     """Parse GFA files"""
@@ -299,9 +299,9 @@ def process_genome(genome, indir, outdir, args):
 
 def parse_args():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--indir", required=True, type=pathlib.Path)
-    ap.add_argument("--outdir", required=True, type=pathlib.Path)
-    ap.add_argument("-t", "--threads", type=int, default=4)
+    ap.add_argument("-i","--indir", required=True, type=pathlib.Path)
+    ap.add_argument("-o","--outdir", required=True, type=pathlib.Path)
+    ap.add_argument("-t","--threads", type=int, default=4)
     ap.add_argument("--min-mapq", type=int, default=20)
     ap.add_argument("--min-cov", type=float, default=0.5)
     args = ap.parse_args()
@@ -311,6 +311,25 @@ def parse_args():
 
 def main():
     args = parse_args()
+
+    # checkf or minimap2
+
+    mm2 = shutil.which("minimap2")
+    if mm2 is None:
+        sys.exit("ERROR: minimap2 is not installed or not found in $PATH. Please install it to use concat-gfas")
+
+    try:
+        result = subprocess.run(
+            ["minimap2", "--version"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        version = result.stdout.strip()
+        print(f"minimap2 version {version} is installed")
+    except Exception as e:
+        sys.exit(f"ERROR: minimap2 found at {mm2} but failed to get version: {e}")
+
 
     # Get list of genomes and their relevant files
     genomes = sorted(
