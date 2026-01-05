@@ -7,6 +7,10 @@ Contributed by bananabenana https://github.com/gbouras13/hybracter/issues/123 wi
 
 Requires minimap2
 
+Usage (when installed with hybracter)
+
+concat-gfas -i hybracter_output_dir -o gfas_output_dir -t 4
+
 """
 
 #!/usr/bin/env python3
