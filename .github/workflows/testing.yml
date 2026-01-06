@@ -3,46 +3,48 @@ name: CI
 on: [push,pull_request,workflow_dispatch]
 
 jobs:
-  test_mac:
-      name: "Python ${{ matrix.python-version }}"
-      runs-on: ${{ matrix.os }}
 
-      defaults:
-        run:
-          shell: bash -el {0}
 
-      strategy:
-        matrix:
-          os: [macos-latest] #macos-latest/macos-14 is M1 - porechop-abi etc don't have M1 package builds, so fails CI
-          python-version: ["3.11"]
+  # test_mac:
+  #     name: "Python ${{ matrix.python-version }}"
+  #     runs-on: ${{ matrix.os }}
 
-      steps:
-        - uses: "actions/checkout@v3"
-          with:
-            fetch-depth: 0
+  #     defaults:
+  #       run:
+  #         shell: bash -el {0}
 
-        # Setup env
-        - uses: conda-incubator/setup-miniconda@v3
-          with:
-            activate-environment: hybracterENV
-            environment-file: build/environment.yaml
-            python-version: ${{ matrix.python-version }}
-            auto-activate-base: false
-            auto-update-conda: true
+  #     strategy:
+  #       matrix:
+  #         os: [macos-latest] #macos-latest/macos-14 is M1 - porechop-abi etc don't have M1 package builds, so fails CI
+  #         python-version: ["3.11"]
 
-        - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
-          shell: bash -l {0}
-          run: |
-            conda install python=${{ matrix.python-version }}
-            python -m pip install --upgrade pip
-            pip install .
+  #     steps:
+  #       - uses: "actions/checkout@v3"
+  #         with:
+  #           fetch-depth: 0
+
+  #       # Setup env
+  #       - uses: conda-incubator/setup-miniconda@v3
+  #         with:
+  #           activate-environment: hybracterENV
+  #           environment-file: build/environment.yaml
+  #           python-version: ${{ matrix.python-version }}
+  #           auto-activate-base: false
+  #           auto-update-conda: true
+
+  #       - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
+  #         shell: bash -l {0}
+  #         run: |
+  #           conda install python=${{ matrix.python-version }}
+  #           python -m pip install --upgrade pip
+  #           pip install .
         
-        - name: "Run tests on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
-          shell: bash -l {0}
-          run: |
-            export TERM=linux
-            pip install pytest
-            pytest --run_mac .
+  #       - name: "Run tests on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
+  #         shell: bash -l {0}
+  #         run: |
+  #           export TERM=linux
+  #           pip install pytest
+  #           pytest --run_mac .
             
 
   test_ubuntu:
@@ -73,6 +75,13 @@ jobs:
           channel-priority: strict
           channels: conda-forge,bioconda,defaults,anaconda
           auto-update-conda: true
+
+      - name: "Free disk space"
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache
+          sudo apt-get clean
 
       - name: "Setup hybracter on ${{ matrix.os }} for Python ${{ matrix.python-version }}"
         shell: bash -l {0}
