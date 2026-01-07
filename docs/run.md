@@ -405,3 +405,22 @@ Options:
                                   regardless.  [default: best]
   -h, --help                      Show this message and exit.
 ```
+
+## `concat-gfas`
+
+* Based on @bananabenana's script [here](https://github.com/gbouras13/hybracter/issues/123) as a command line function `concat-gfas` script to combine Hybracter's output .gfa files (from Flye and Plassembler). 
+* **Minimap2 must available in $PATH to use this**
+* note: `INDIR` is the top-level hybracter output directory
+
+```bash
+concat-gfas --help
+usage: concat-gfas [-h] -i INDIR -o OUTDIR [-t THREADS] [--min-mapq MIN_MAPQ] [--min-cov MIN_COV]
+
+options:
+  -h, --help            show this help message and exit
+  -i INDIR, --indir INDIR
+  -o OUTDIR, --outdir OUTDIR
+  -t THREADS, --threads THREADS
+  --min-mapq MIN_MAPQ
+  --min-cov MIN_COV
+```

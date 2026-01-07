@@ -30,6 +30,7 @@
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
   - [Recent Updates](#recent-updates)
+    - [v0.12.0 Updates (7 January 2026)](#v0120-updates-7-january-2026)
     - [v0.11.0 Updates (4 December 2024)](#v0110-updates-4-december-2024)
     - [v0.10.0 Updates (17 October 2024)](#v0100-updates-17-october-2024)
     - [v0.9.0 Updates (18 September 2024)](#v090-updates-18-september-2024)
@@ -189,6 +190,26 @@ To summarise the conclusions:
 * Dragonflye should not be used if you care about recovering plasmids.
 
 ## Recent Updates
+
+### v0.12.0 Updates (7 January 2026)
+
+* Various bugfixes
+* Adds @bananabenana's script [here](https://github.com/gbouras13/hybracter/issues/123) as a command line function `concat-gfas` script to combine Hybracter's output .gfa files (from Flye and Plassembler). 
+* **Minimap2 must available in $PATH to use this**
+* note: `INDIR` is the top-level hybracter output directory
+
+```bash
+concat-gfas --help
+usage: concat-gfas [-h] -i INDIR -o OUTDIR [-t THREADS] [--min-mapq MIN_MAPQ] [--min-cov MIN_COV]
+
+options:
+  -h, --help            show this help message and exit
+  -i INDIR, --indir INDIR
+  -o OUTDIR, --outdir OUTDIR
+  -t THREADS, --threads THREADS
+  --min-mapq MIN_MAPQ
+  --min-cov MIN_COV
+```
 
 ### v0.11.0 Updates (4 December 2024)
 
