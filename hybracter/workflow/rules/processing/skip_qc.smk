@@ -46,8 +46,18 @@ rule skip_qc_short:
     threads: config.resources.sml.cpu
     shell:
         """
-        cp {input.r1} {output.r1}
-        cp {input.r2} {output.r2}
+        if [[ {input.r1} == *.gz ]]; then
+            cp {input.r1} {output.r1}
+        else
+            gzip -c {input.r1} > {output.r1}
+        fi
+
+        if [[ {input.r2} == *.gz ]]; then
+            cp {input.r2} {output.r2}
+        else
+            gzip -c {input.r2} > {output.r2}
+        fi
+
         """
 
 

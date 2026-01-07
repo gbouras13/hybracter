@@ -65,7 +65,7 @@ rule porechop_abi:
         os.path.join(dir.out.stderr, "porechop", "{sample}.log"),
     shell:
         """
-        porechop_abi -i {input.fastq}  -o {output.fastq} -t {threads} 2> {log}
+        porechop_abi -i {input.fastq}  -o {output.fastq} -t {threads} --discard_middle 2> {log}
         porechop_abi --version > {output.version}
         """
 

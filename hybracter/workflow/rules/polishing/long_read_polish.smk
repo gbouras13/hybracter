@@ -34,6 +34,7 @@ rule medaka_round_1:
         os.path.join(dir.out.stderr, "medaka_round_1", "{sample}.log"),
     shell:
         """
+        export CUDA_VISIBLE_DEVICES=""
         if [ "{params.bacteria}" = "True" ]; then
            # from v 0.10.0, hybracter supports --bacteria
             medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
@@ -187,6 +188,7 @@ rule medaka_round_2:
         os.path.join(dir.out.stderr, "medaka_round_2", "{sample}.log"),
     shell:
         """
+        export CUDA_VISIBLE_DEVICES=""
         if [ "{params.bacteria}" = "True" ]; then
            # from v 0.10.0, hybracter supports --bacteria
             medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
