@@ -1,8 +1,8 @@
+import os
 import glob
 import attrmap as ap
 import attrmap.utils as au
 from pathlib import Path
-import os
 
 
 # Concatenate Snakemake's own log file with the master log file
@@ -24,6 +24,8 @@ onerror:
 
 
 # config file
+
+
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 
@@ -47,7 +49,7 @@ check_db(dir.plassemblerdb)
 # samples
 include: os.path.join("rules", "preflight", "samples.smk")
 # targets
-include: os.path.join("rules", "preflight", "targets_long.smk")
+include: os.path.join("rules", "preflight", "targets_automatic.smk")
 
 
 ### from config files
@@ -75,8 +77,9 @@ ADD_TO_FLYE = False
 # Only if user specifies - otherwise None
 if EXTRA_PARAMS_FLYE:
     ADD_TO_FLYE = True
-    print(f"The extra parameters {EXTRA_PARAMS_FLYE} will be used with Flye ")
-
+    print(
+        f"As you have used --extra_params_flye the extra parameters {EXTRA_PARAMS_FLYE} will be used with Flye."
+    )
 
 # By default, hybracter (linux) will use --bacteria from v0.10.0 onwards
 # To take advantage of improvements with medaka v2 https://rrwick.github.io/2024/10/17/medaka-v2.html
@@ -90,7 +93,6 @@ else:
         print(
             f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria "
         )
-
 
 # MAC medaka
 
@@ -109,35 +111,27 @@ if MAC:
         print(f"Changing the medaka model to r1041_e82_400bps_sup_v4.2.0.")
         MEDAKA_MODEL = "r1041_e82_400bps_sup_v4.2.0"
 
+
 # Parse the samples and read files
 
-# for hybracter hybrid
 if config.args.single is False:
     dictReads = parseSamples(
-        INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO
-    )  # long flag true
+        INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO, automatic_flag=True
+    )  # automatic flag true
     SAMPLES = list(dictReads.keys())
-    LONG_SAMPLES = SAMPLES
-# for hybracter hybrid-single
-else:
-    dictReads = {}
-    dictReads[config.args.sample] = {}
-    dictReads[config.args.sample]["LR"] = config.args.longreads
-    dictReads[config.args.sample]["MinChromLength"] = config.args.chromosome
-    # add target bases for filtlong
-    dictReads[config.args.sample]["TargetBases"] = SUBSAMPLE_DEPTH * config.args.chromosome
-    dictReads[config.args.sample]["MinBases"] = MIN_DEPTH * config.args.chromosome
-    SAMPLES = [config.args.sample]
-    LONG_SAMPLES = SAMPLES
+
+    # Filter samples
+    filtered_samples = filter_samples_by_workflow_type(dictReads)
+    HYBRID_SAMPLES = filtered_samples['hybrid'] 
+    LONG_SAMPLES = filtered_samples['long']
+
+    # Print the detected workflow types
+    print(f"Hybrid assembly samples: {HYBRID_SAMPLES}")
+    print(f"Long-read-only samples: {LONG_SAMPLES}")
 
 ##############################
 # Import rules and functions
 ##############################
-
-
-# lrge - needs to be included due to the
-include: os.path.join("rules", "processing", "estimate_chromosome.smk")
-
 
 # qc and host
 # depends on whehter --contaminants has been specified and --skip_qc flag activiated
@@ -158,25 +152,28 @@ else:  # where no contaminants to be removed
         include: os.path.join("rules", "processing", "qc.smk")
 
 
-# for seqkit
-include: os.path.join("rules", "processing", "coverage.smk")
 # assembly
 include: os.path.join("rules", "assembly", "assemble.smk")
 # extract chrom
 include: os.path.join("rules", "processing", "extract_fastas.smk")
 # checkpoint
-# needs its own rules for long
-include: os.path.join("rules", "completeness", "aggregate_long.smk")
-# plassembler long and info
-include: os.path.join("rules", "assembly", "plassembler_long.smk")
-include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
+include: os.path.join("rules", "completeness", "aggregate_automatic.smk")
 
 
 # checkpoint here for completeness
 
-## medaka vs no medaka
-if config.args.no_medaka is False:  # standard - uses Medaka
 
+# for short read polishing --careful
+include: os.path.join("rules", "processing", "coverage.smk")
+# lrge - needs to be included due to the checkpointing
+include: os.path.join("rules", "processing", "estimate_chromosome.smk")
+
+
+### medaka vs no medaka
+# default - medaka will be run
+if config.args.no_medaka is False:
+
+    # checkpoint here for completeness
     # need long read polish files regardless
     include: os.path.join("rules", "polishing", "long_read_polish.smk")
     include: os.path.join("rules", "polishing", "long_read_polish_incomplete.smk")
@@ -189,11 +186,24 @@ if config.args.no_medaka is False:  # standard - uses Medaka
     else:
 
         include: os.path.join("rules", "reorientation", "dnaapler_custom.smk")
-    # finalse & pyrodigal
-    include: os.path.join("rules", "finalise", "select_best_assembly_long.smk")
+    #  polish the assemblies
+    include: os.path.join("rules", "polishing", "short_read_polish.smk")
+    include: os.path.join("rules", "polishing", "short_read_polish_incomplete.smk")
+    # plassembler
+    include: os.path.join("rules", "assembly", "plassembler_automatic.smk")
+    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
+
+    if config.args.no_pypolca is False:
+
+        include: os.path.join("rules", "polishing", "short_read_pypolca.smk")
+    # ale
+    include: os.path.join("rules", "assess", "assess_complete.smk")
+    include: os.path.join("rules", "assess", "assess_incomplete.smk")
+    # finalse
+    include: os.path.join("rules", "finalise", "select_best_assembly.smk") #TODO change to automatic
 
 
-# --no_medaka is chosen
+# --no_medaka
 else:
     # dnaapler or dnaapler custom
     if config.args.dnaapler_custom_db == "none":  # standard - no custom
@@ -203,11 +213,22 @@ else:
     else:
 
         include: os.path.join("rules", "reorientation", "dnaapler_custom_no_medaka.smk")
-    # finalse & pyrodigal
-    include: os.path.join("rules", "finalise", "select_best_assembly_long_no_medaka.smk")
+    #  polish the assemblies with short reads
+    include: os.path.join("rules", "polishing", "short_read_polish_no_medaka.smk")
+    include: os.path.join("rules", "polishing", "short_read_polish_incomplete_no_medaka.smk")
+    # plassembler
+    include: os.path.join("rules", "assembly", "plassembler_automatic.smk")
+    include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 
+    if config.args.no_pypolca is False:
 
+        include: os.path.join("rules", "polishing", "short_read_pypolca_no_medaka.smk")
+    # ale
+    include: os.path.join("rules", "assess", "assess_complete_no_medaka.smk")
+    include: os.path.join("rules", "assess", "assess_incomplete_no_medaka.smk")
+    # finalse
+    include: os.path.join("rules", "finalise", "select_best_assembly_automatic_no_medaka.smk")
 ### rule all
 rule all:
     input:
-        TargetFilesLong,
+        TargetFilesAutomatic,

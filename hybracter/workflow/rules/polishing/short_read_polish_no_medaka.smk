@@ -1,4 +1,6 @@
 rule bwa_index:
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(
             dir.out.dnaapler,
@@ -25,6 +27,8 @@ rule bwa_index:
 
 
 rule bwa_mem:
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(
             dir.out.dnaapler,
@@ -65,6 +69,8 @@ rule polypolish:
     if depth 5-25, run polypolish --careful
     if depth > 25, run polypolish default - might fix errors in repeats pypolca can't
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(
             dir.out.dnaapler,
@@ -104,6 +110,8 @@ rule polypolish_extract_intermediate_assembly:
     """
     extracts the chromosome intermediate assembly
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         fasta=os.path.join(dir.out.polypolish, "{sample}.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
@@ -143,6 +151,8 @@ rule compare_assemblies_polypolish_vs_prechrom:
     """
     compare assemblies 
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         reference=os.path.join(
             dir.out.dnaapler, "{sample}", "{sample}_reoriented.fasta"

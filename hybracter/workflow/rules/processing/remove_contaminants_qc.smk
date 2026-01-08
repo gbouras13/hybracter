@@ -231,8 +231,8 @@ rule aggr_short_qc:
     aggregates over all samples
     """
     input:
-        expand(os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"), sample=SAMPLES),
-        expand(os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"), sample=SAMPLES),
+        expand(os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"), sample=HYBRID_SAMPLES),
+        expand(os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"), sample=HYBRID_SAMPLES),
     output:
         flag=os.path.join(dir.out.flags, "aggr_short_qc.flag"),
     resources:

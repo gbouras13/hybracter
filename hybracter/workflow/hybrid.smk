@@ -120,6 +120,7 @@ if config.args.single is False:
         INPUT, False, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO
     )  # long flag false
     SAMPLES = list(dictReads.keys())
+    HYBRID_SAMPLES = SAMPLES
 # for hybracter hybrid-single
 else:
     dictReads = {}
@@ -131,6 +132,7 @@ else:
     dictReads[config.args.sample]["R1"] = config.args.short_one
     dictReads[config.args.sample]["R2"] = config.args.short_two
     SAMPLES = [config.args.sample]
+    HYBRID_SAMPLES = SAMPLES
 
 
 ##############################

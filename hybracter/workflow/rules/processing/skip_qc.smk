@@ -33,6 +33,8 @@ rule skip_qc_short:
     copies short reads
     fastp detects gzip by default if file ends in .gz
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         r1=get_input_r1,
         r2=get_input_r2,
@@ -85,8 +87,8 @@ rule aggr_short_skip_qc:
     aggregates over all samples short
     """
     input:
-        expand(os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"), sample=SAMPLES),
-        expand(os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"), sample=SAMPLES),
+        expand(os.path.join(dir.out.fastp, "{sample}_1.fastq.gz"), sample=HYBRID_SAMPLES),
+        expand(os.path.join(dir.out.fastp, "{sample}_2.fastq.gz"), sample=HYBRID_SAMPLES),
     output:
         flag=os.path.join(dir.out.flags, "aggr_short_qc.flag"),
     resources:
