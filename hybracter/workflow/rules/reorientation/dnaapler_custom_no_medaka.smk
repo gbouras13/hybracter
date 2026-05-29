@@ -20,7 +20,6 @@ rule dnaapler_custom:
         custom_db=config.args.dnaapler_custom_db,
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     retries: 2
     threads: get_cpu_resources_with_fallback
@@ -54,7 +53,6 @@ rule dnaapler_custom_combine_assembly_with_plasmids_assembly:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:

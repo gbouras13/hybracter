@@ -22,7 +22,6 @@ rule dnaapler:
         dir=os.path.join(dir.out.dnaapler, "{sample}"),
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     retries: 2
     threads: get_cpu_resources_with_fallback

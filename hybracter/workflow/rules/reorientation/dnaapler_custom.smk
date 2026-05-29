@@ -22,7 +22,6 @@ rule dnaapler_custom:
         custom_db=config.args.dnaapler_custom_db,
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     retries: 2
     threads: get_cpu_resources_with_fallback

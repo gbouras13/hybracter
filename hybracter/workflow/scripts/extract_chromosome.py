@@ -5,8 +5,11 @@ from Bio import SeqIO
 import os
 
 """
-get chromosome if length > min chrom length 
-add ignore_list if the contig is not marked as circular by Flye - to make sure Dnaapler doesn't rotate it
+Extract chromosomes for the complete assembly path.
+Default: extract all contigs above min_chrom_length regardless of circularity.
+Non-circular contigs are added to ignore_list so dnaapler skips reorientation for them.
+With --circular_chromosome: only extract contigs that are BOTH above min_chrom_length AND
+marked circular by Flye.
 """
 
 # touches an empty file
@@ -17,7 +20,7 @@ def touch_file(path):
 
 
 def get_chromosome_plasmids(
-    input_fasta, chromosome_fasta, ignore_list, min_chrom_length, info_file_path, polypolish_flag
+    input_fasta, chromosome_fasta, ignore_list, min_chrom_length, info_file_path, polypolish_flag, circular_chromosome
 ):
     # read in the fasta
 
@@ -52,24 +55,29 @@ def get_chromosome_plasmids(
 
             if len(circ_values) == 1:
                 circ_value = circ_values[0]
-            # this should never every happen as there won't be dupes in the Flye info shee but just in case
+            # this should never every happen as there won't be dupes in the Flye info sheet but just in case
             elif len(circ_values) > 1:
                 circ_value = circ_values[0]
             # will be 0 (so under this case) if:
                 # chromosome didn't circularise
-                # plasmids - not part of the chromosome 
-                # so 'N' to make sure it doesn't get extracted
+                # plasmids - not part of the chromosome
+                # so 'N' to make sure it doesn't get extracted with --circular_chromosome
             else:
                 circ_value = "N"
-            # will actually extract multiple chromosomes if above the desired chrom length and circularised
-            if len(dna_record.seq) > int(min_chrom_length):
-                SeqIO.write(dna_record, fa, "fasta")
-                if circ_value == "N":
-                    with open(ignore_list, 'a') as file:
-                        file.write(f'{seq_id}\n')
 
-                    
-            
+            if circular_chromosome:
+                # --circular_chromosome: only extract contigs that are long AND circular
+                if len(dna_record.seq) > int(min_chrom_length) and circ_value == "Y":
+                    SeqIO.write(dna_record, fa, "fasta")
+            else:
+                # default: extract all long contigs; add non-circular to ignore_list
+                # so dnaapler skips reorientation for them
+                if len(dna_record.seq) > int(min_chrom_length):
+                    SeqIO.write(dna_record, fa, "fasta")
+                    if circ_value == "N":
+                        with open(ignore_list, "a") as file:
+                            file.write(f"{seq_id}\n")
+
 
 get_chromosome_plasmids(
     snakemake.input.fasta,
@@ -78,4 +86,5 @@ get_chromosome_plasmids(
     snakemake.params.min_chrom_length,
     snakemake.input.info,
     snakemake.params.polypolish_flag,
+    snakemake.params.circular_chromosome,
 )

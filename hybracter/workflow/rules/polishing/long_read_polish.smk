@@ -25,7 +25,6 @@ rule medaka_round_1:
         hdf=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
-        mem=str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -87,7 +86,6 @@ rule medaka_round_1_extract_intermediate_assembly:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -115,7 +113,6 @@ rule compare_assemblies_medaka_round_1:
         query_polishing_round="medaka_round_1",
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:
@@ -141,7 +138,6 @@ rule concatenate_intermediate_dnaapler_with_plassembler:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -179,7 +175,6 @@ rule medaka_round_2:
         hdf=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
-        mem=str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -237,7 +232,6 @@ rule medaka_round_2_extract_intermediate_assembly:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -269,7 +263,6 @@ rule compare_assemblies_medaka_round_2:
         query_polishing_round="medaka_round_2",
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:

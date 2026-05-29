@@ -44,19 +44,9 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
 * From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.
 * If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`). You can either specify 1 directory (if long and short FASTQs in the same directory) or 2 (long and short FASTQs in separate directories). If you specify 2, they must be separated by a comma e.g. `--datadir "dirlong,dirshort"`.
+* Use `--circular_chromosome` if you want to require Flye to circularise a contig before classifying a sample as complete. By default, hybracter classifies a sample as complete based on contig length alone. With `--circular_chromosome`, a contig must be both above the minimum chromosome length **and** marked as circular by Flye. Non-circular long contigs will still be polished and included in the final assembly but will not be reoriented by dnaapler. See the [Circular Chromosome](circular_chromosome.md) page for full details, including when **not** to use this flag (e.g. _Borrelia_, _Streptomyces_).
 
 ```bash
-hybracter version 0.9.0
-
-
- _           _                    _            
-| |__  _   _| |__  _ __ __ _  ___| |_ ___ _ __ 
-| '_ \| | | | '_ \| '__/ _` |/ __| __/ _ \ '__|
-| | | | |_| | |_) | | | (_| | (__| ||  __/ |   
-|_| |_|\__, |_.__/|_|  \__,_|\___|\__\___|_|   
-       |___/
-
-
 Usage: hybracter hybrid [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter with hybrid long and paired end short reads
@@ -95,7 +85,7 @@ Options:
                                   min_depth*chromosome_size bases of long-
                                   reads left AFTER filtlong and porechop-ABI
                                   steps are run.  [default: 0]
-  --medakaModel [r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
+  --medakaModel [r1041_e82_400bps_bacterial_methylation|r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
                                   Medaka Model.  [default:
                                   r1041_e82_400bps_sup_v5.0.0]
   --flyeModel [--nano-hq|--nano-corr|--nano-raw|--pacbio-raw|--pacbio-corr|--pacbio-hifi]
@@ -124,14 +114,37 @@ Options:
                                   specified --medakaModel will be used.
   --extra_params_flye TEXT        Use this if want to add extra parameters to
                                   Flye.
+  --circular_chromosome           Use this if your chromosome is expected to
+                                  be circular and you want to require Flye to
+                                  circularise a contig before classifying a
+                                  sample as complete (e.g. most bacteria). By
+                                  default, complete classification is based on
+                                  length alone.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
   --snake-default TEXT            Customise Snakemake runtime args  [default:
                                   --rerun-incomplete, --printshellcmds,
                                   --nolock, --show-failed-logs, --conda-
-                                  frontend mamba]
+                                  frontend conda]
   -h, --help                      Show this message and exit.
+
+  CLUSTER EXECUTION:
+  hybracter hybrid ... --profile [profile]
+  For information on Snakemake profiles see:
+  https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+  
+  RUN EXAMPLES:
+  Required:           hybracter hybrid --input [file]
+  Specify output directory:    hybracter hybrid ... --output [directory]
+  Specify threads:    hybracter hybrid ... --threads [threads]
+  Disable conda:      hybracter hybrid ... --no-use-conda 
+  Change defaults:    hybracter hybrid ... --snake-default="-k --nolock"
+  Add Snakemake args: hybracter hybrid ... --dry-run --keep-going --touch
+  Specify targets:    hybracter hybrid ... all print_targets
+  Available targets:
+      all             Run everything (default)
+      print_targets   List available targets
 ```
 
 ## `hybracter hybrid-single`
@@ -145,7 +158,6 @@ hybracter hybrid-single -l <longread FASTQ> -1 <R1 short reads FASTQ> -2 <R2 sho
 The other arguments are the same as `hybracter hybrid`
 
 ```bash
-
 Usage: hybracter hybrid-single [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter hybrid on 1 isolate
@@ -185,7 +197,7 @@ Options:
                                   min_depth*chromosome_size bases of long-
                                   reads left AFTER filtlong and porechop-ABI
                                   steps are run.  [default: 0]
-  --medakaModel [r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
+  --medakaModel [r1041_e82_400bps_bacterial_methylation|r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
                                   Medaka Model.  [default:
                                   r1041_e82_400bps_sup_v5.0.0]
   --flyeModel [--nano-hq|--nano-corr|--nano-raw|--pacbio-raw|--pacbio-corr|--pacbio-hifi]
@@ -214,15 +226,39 @@ Options:
                                   specified --medakaModel will be used.
   --extra_params_flye TEXT        Use this if want to add extra parameters to
                                   Flye.
+  --circular_chromosome           Use this if your chromosome is expected to
+                                  be circular and you want to require Flye to
+                                  circularise a contig before classifying a
+                                  sample as complete (e.g. most bacteria). By
+                                  default, complete classification is based on
+                                  length alone.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
   --snake-default TEXT            Customise Snakemake runtime args  [default:
                                   --rerun-incomplete, --printshellcmds,
                                   --nolock, --show-failed-logs, --conda-
-                                  frontend mamba]
+                                  frontend conda]
   -h, --help                      Show this message and exit.
 
+  CLUSTER EXECUTION:
+  hybracter hybrid-single ... --profile [profile]
+  For information on Snakemake profiles see:
+  https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+  
+  RUN EXAMPLES:
+  Required:           hybracter hybrid-single -l [FASTQ file of longreads]
+  Required:           hybracter hybrid-single -1 [R1 FASTQ file of paired end short reads]
+  Required:           hybracter hybrid-single -2 [R2 FASTQ file of paired end short reads]
+  Specify output directory:    hybracter hybrid-single  ... --output [directory]
+  Specify threads:    hybracter hybrid-single  ... --threads [threads]
+  Disable conda:      hybracter hybrid-single  ... --no-use-conda 
+  Change defaults:    hybracter hybrid-single  ... --snake-default="-k --nolock"
+  Add Snakemake args: hybracter hybrid-single  ... --dry-run --keep-going --touch
+  Specify targets:    hybracter hybrid-single  ... all print_targets
+  Available targets:
+      all             Run everything (default)
+      print_targets   List available targets
 ```
 
 ## `hybracter long`
@@ -252,15 +288,17 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
 * From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.
 * If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`).
+* Use `--circular_chromosome` if you want to require Flye to circularise a contig before classifying a sample as complete. By default, hybracter classifies a sample as complete based on contig length alone. With `--circular_chromosome`, a contig must be both above the minimum chromosome length **and** marked as circular by Flye. Non-circular long contigs will still be polished and included in the final assembly but will not be reoriented by dnaapler. See the [Circular Chromosome](circular_chromosome.md) page for full details, including when **not** to use this flag (e.g. _Borrelia_, _Streptomyces_).
 
 ```bash
 Usage: hybracter long [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter with only long reads
+
 Options:
   -i, --input TEXT                Input csv  [required]
-  --datadir TEXT                  Directory where FASTQs are. Will be added 
-                                  to the filenames in the input csv.
+  --datadir TEXT                  Directory where FASTQs are. Will be added to
+                                  the filenames in the input csv.
   -o, --output PATH               Output directory  [default: hybracter_out]
   --configfile TEXT               Custom config file [default: config.yaml]
   -t, --threads INTEGER           Number of threads to use  [default: 1]
@@ -280,7 +318,7 @@ Options:
                                   min_depth*chromosome_size bases of long-
                                   reads left AFTER filtlong and porechop-ABI
                                   steps are run.  [default: 0]
-  --medakaModel [r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
+  --medakaModel [r1041_e82_400bps_bacterial_methylation|r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
                                   Medaka Model.  [default:
                                   r1041_e82_400bps_sup_v5.0.0]
   --flyeModel [--nano-hq|--nano-corr|--nano-raw|--pacbio-raw|--pacbio-corr|--pacbio-hifi]
@@ -309,13 +347,19 @@ Options:
                                   specified --medakaModel will be used.
   --extra_params_flye TEXT        Use this if want to add extra parameters to
                                   Flye.
+  --circular_chromosome           Use this if your chromosome is expected to
+                                  be circular and you want to require Flye to
+                                  circularise a contig before classifying a
+                                  sample as complete (e.g. most bacteria). By
+                                  default, complete classification is based on
+                                  length alone.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
   --snake-default TEXT            Customise Snakemake runtime args  [default:
                                   --rerun-incomplete, --printshellcmds,
                                   --nolock, --show-failed-logs, --conda-
-                                  frontend mamba]
+                                  frontend conda]
   --logic [best|last]             Hybracter logic to select best assembly. Use
                                   --best to pick best assembly based on ALE
                                   (hybrid) or pyrodigal mean length (long).
@@ -323,6 +367,22 @@ Options:
                                   regardless.  [default: best]
   -h, --help                      Show this message and exit.
 
+  CLUSTER EXECUTION:
+  hybracter hybrid ... --profile [profile]
+  For information on Snakemake profiles see:
+  https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+  
+  RUN EXAMPLES:
+  Required:           hybracter long --input [file]
+  Specify output directory:    hybracter long ... --output [directory]
+  Specify threads:    hybracter long ... --threads [threads]
+  Disable conda:      hybracter long ... --no-use-conda 
+  Change defaults:    hybracter long ... --snake-default="-k --nolock"
+  Add Snakemake args: hybracter long ... --dry-run --keep-going --touch
+  Specify targets:    hybracter long ... all print_targets
+  Available targets:
+      all             Run everything (default)
+      print_targets   List available targets
 ```
 
 ## `hybracter long-single`
@@ -338,6 +398,7 @@ hybracter long-single -l <longread FASTQ> -s <sample name> -c <chromosome size> 
 Usage: hybracter long-single [OPTIONS] [SNAKE_ARGS]...
 
   Run hybracter long on 1 isolate
+
 Options:
   -l, --longreads TEXT            FASTQ file of longreads  [required]
   -s, --sample TEXT               Sample name.  [default: sample]
@@ -362,7 +423,7 @@ Options:
                                   min_depth*chromosome_size bases of long-
                                   reads left AFTER filtlong and porechop-ABI
                                   steps are run.  [default: 0]
-  --medakaModel [r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
+  --medakaModel [r1041_e82_400bps_bacterial_methylation|r1041_e82_400bps_sup_v5.0.0|r1041_e82_400bps_hac_v5.0.0|r1041_e82_400bps_hac_v4.3.0|r1041_e82_400bps_sup_v4.3.0|r1041_e82_400bps_hac_v4.2.0|r1041_e82_400bps_sup_v4.2.0|r941_sup_plant_g610|r941_min_fast_g507|r941_prom_fast_g507|r941_min_fast_g303|r941_min_high_g303|r941_min_high_g330|r941_prom_fast_g303|r941_prom_high_g303|r941_prom_high_g330|r941_min_high_g344|r941_min_high_g351|r941_min_high_g360|r941_prom_high_g344|r941_prom_high_g360|r941_prom_high_g4011|r10_min_high_g303|r10_min_high_g340|r103_min_high_g345|r103_min_high_g360|r103_prom_high_g360|r103_fast_g507|r103_hac_g507|r103_sup_g507|r104_e81_fast_g5015|r104_e81_sup_g5015|r104_e81_hac_g5015|r104_e81_sup_g610|r1041_e82_400bps_hac_g615|r1041_e82_400bps_fast_g615|r1041_e82_400bps_fast_g632|r1041_e82_260bps_fast_g632|r1041_e82_400bps_hac_g632|r1041_e82_400bps_sup_g615|r1041_e82_260bps_hac_g632|r1041_e82_260bps_sup_g632|r1041_e82_400bps_hac_v4.0.0|r1041_e82_400bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.0.0|r1041_e82_260bps_sup_v4.0.0|r1041_e82_260bps_hac_v4.1.0|r1041_e82_260bps_sup_v4.1.0|r1041_e82_400bps_hac_v4.1.0|r1041_e82_400bps_sup_v4.1.0|r941_min_high_g340_rle|r941_min_hac_g507|r941_min_sup_g507|r941_prom_hac_g507|r941_prom_sup_g507|r941_e81_fast_g514|r941_e81_hac_g514|r941_e81_sup_g514]
                                   Medaka Model.  [default:
                                   r1041_e82_400bps_sup_v5.0.0]
   --flyeModel [--nano-hq|--nano-corr|--nano-raw|--pacbio-raw|--pacbio-corr|--pacbio-hifi]
@@ -391,19 +452,42 @@ Options:
                                   specified --medakaModel will be used.
   --extra_params_flye TEXT        Use this if want to add extra parameters to
                                   Flye.
+  --circular_chromosome           Use this if your chromosome is expected to
+                                  be circular and you want to require Flye to
+                                  circularise a contig before classifying a
+                                  sample as complete (e.g. most bacteria). By
+                                  default, complete classification is based on
+                                  length alone.
   --use-conda / --no-use-conda    Use conda for Snakemake rules  [default:
                                   use-conda]
   --conda-prefix PATH             Custom conda env directory
   --snake-default TEXT            Customise Snakemake runtime args  [default:
                                   --rerun-incomplete, --printshellcmds,
                                   --nolock, --show-failed-logs, --conda-
-                                  frontend mamba]
+                                  frontend conda]
   --logic [best|last]             Hybracter logic to select best assembly. Use
                                   --best to pick best assembly based on ALE
                                   (hybrid) or pyrodigal mean length (long).
                                   Use --last to pick the last polishing round
                                   regardless.  [default: best]
   -h, --help                      Show this message and exit.
+
+  CLUSTER EXECUTION:
+  hybracter long-single ... --profile [profile]
+  For information on Snakemake profiles see:
+  https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+  
+  RUN EXAMPLES:
+  Required:           hybracter long-single -l [FASTQ file of longreads]
+  Specify output directory:    hybracter long-single  ... --output [directory]
+  Specify threads:    hybracter long-single  ... --threads [threads]
+  Disable conda:      hybracter long-single  ... --no-use-conda 
+  Change defaults:    hybracter long-single  ... --snake-default="-k --nolock"
+  Add Snakemake args: hybracter long-single  ... --dry-run --keep-going --touch
+  Specify targets:    hybracter long-single  ... all print_targets
+  Available targets:
+      all             Run everything (default)
+      print_targets   List available targets
 ```
 
 ## `concat-gfas`

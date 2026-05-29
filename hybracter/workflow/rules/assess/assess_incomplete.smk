@@ -22,7 +22,6 @@ rule assess_incomp_pre_polish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.cpu,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -62,7 +61,6 @@ rule assess_medaka_incomplete:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -103,7 +101,6 @@ rule assess_polypolish_incomplete:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -144,7 +141,6 @@ rule assess_polca_incomplete:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:

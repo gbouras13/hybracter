@@ -19,7 +19,6 @@ rule pypolca:
         os.path.join(dir.env, "pypolca.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -71,7 +70,6 @@ rule pypolca_extract_intermediate_assembly:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -98,7 +96,6 @@ rule compare_assemblies_pypolca_vs_polypolish:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     params:
@@ -135,7 +132,6 @@ rule pypolca_incomplete:
         os.path.join(dir.env, "pypolca.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:

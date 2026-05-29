@@ -22,11 +22,11 @@ checkpoint check_completeness:
                 auto=AUTO,
             )
         ),
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -60,11 +60,11 @@ rule extract_chromosome_complete:
             )
         ),
         polypolish_flag=False,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -97,7 +97,6 @@ rule copy_flye_intermediate_chrom_assembly:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -121,7 +120,6 @@ rule concatenate_chrom_plassembler:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -157,7 +155,6 @@ rule extract_incomplete:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:

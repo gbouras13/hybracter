@@ -89,7 +89,6 @@ rule dnaapler_pre_chrom:
         dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom"),
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -146,7 +145,6 @@ rule select_best_chromosome_assembly_complete:
         no_pypolca=config.args.no_pypolca,
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "scripts.yaml")
@@ -186,7 +184,6 @@ rule select_best_chromosome_assembly_incomplete:
         no_pypolca=config.args.no_pypolca,
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "scripts.yaml")

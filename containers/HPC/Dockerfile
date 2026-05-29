@@ -2,11 +2,12 @@
 # hybracter 
 #
 
-FROM staphb/unicycler:0.5.1
+# FROM --platform=linux/amd64 staphb/unicycler:0.5.1
+FROM --platform=linux/amd64 quay.io/biocontainers/unicycler:0.5.1--py312hdcc493e_5
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG LIBFABRIC_VERSION=2.0.0
-ARG HYBRACTER_VERSION=0.11.2
+ARG HYBRACTER_VERSION=0.12.0
 ARG MINIFORGE_VERSION=24.11.3-0
 
 # Install required packages and dependencies
@@ -60,9 +61,9 @@ ENV PATH /opt/miniforge3/bin:$PATH
 # Install conda environment
 #
 RUN set -eux ; \
-    mamba install -y -c conda-forge -c bioconda -c defaults \
-    hybracter=${HYBRACTER_VERSION} \
-    && mamba clean -af -y
+    conda install -y -c conda-forge -c bioconda -c defaults \
+    hybracter=${HYBRACTER_VERSION} minimap2 \
+    && conda clean -af -y
 
 RUN hybracter install --medaka \
     && hybracter test-hybrid --use-conda --conda-create-envs-only \

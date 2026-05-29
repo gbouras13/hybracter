@@ -27,9 +27,11 @@
   - [Documentation](#documentation)
   - [Manuscript](#manuscript)
   - [Description](#description)
+  - [Autocycler](#autocycler)
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
   - [Recent Updates](#recent-updates)
+    - [v0.13.0 Updates (28 May 2026)](#v0130-updates-28-may-2026)
     - [v0.12.0 Updates (7 January 2026)](#v0120-updates-7-january-2026)
     - [v0.11.0 Updates (4 December 2024)](#v0110-updates-4-december-2024)
     - [v0.10.0 Updates (17 October 2024)](#v0100-updates-17-october-2024)
@@ -158,7 +160,9 @@ It scales massively using the embarrassingly parallel power of HPC and Snakemake
 
 `hybracter` is largely based off Ryan Wick's [magnificent tutorial](https://github.com/rrwick/Perfect-bacterial-genome-tutorial) and associated [paper](https://doi.org/10.1371/journal.pcbi.1010905). `hybracter` differs in that it adds some additional steps regarding targeted plasmid assembly with [plassembler](https://github.com/gbouras13/plassembler), contig reorientation with [dnaapler](https://github.com/gbouras13/dnaapler) and extra polishing and statistical summaries.
 
-Note: if you have Pacbio reads, as of 2023, you can run  `hybracter long` with `--no_medaka` to turn off polishing, and  `--flyeModel pacbio-hifi`. You can also probably just run [Flye](https://github.com/fenderglass/Flye) or [Dragonflye](https://github.com/rpetit3/dragonflye) (or of course [Trycyler](https://github.com/rrwick/Trycycler) ) and reorient the contigs with [dnaapler](https://github.com/gbouras13/dnaapler) without polishing. See Ryan Wick's [blogpost](https://doi.org/10.5281/zenodo.7703461) for more details. 
+## Autocycler
+
+As of 2026, you should probably run [Autocycler](https://github.com/rrwick/Autocycler) if you want the best possible automated bacterial genome assembly. Hybracter is still a good option if you want faster assemblies (depending on what constituent assemblers you feed to Autocycler, Hybracter is conservatively at least 10x faster end to end) and/or have many input samples. You could also use Hybracter to generate input assemblies to feed into Autocycler.
 
 ## Pipeline
 
@@ -190,6 +194,12 @@ To summarise the conclusions:
 * Dragonflye should not be used if you care about recovering plasmids.
 
 ## Recent Updates
+
+### v0.13.0 Updates (28 May 2026)
+
+* Adds `--circular_chromosome` flag. 
+* Hybracter's default behaviour (without `--circular_chromosome`) is that contigs that are **only** longer than the minimum chromosome length are marked as complete chromosome (noting that any linear contigs above the length threshold are still polished and included in the final assembly as chromosomes, but are not reoriented by Dnaapler). This is to ensure Hybracter can support bacteria with linear chromosomes.
+* If you specify `--circular_chromosome` a sample is only classified as complete if a contig is **both** above the minimum chromosome length **and** marked as circular by Flye - it recommended now for users who know their input bacterial genome should have circular chromosome(s). 
 
 ### v0.12.0 Updates (7 January 2026)
 
@@ -482,6 +492,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>
 * You can turn off Medaka polishing using `--no_medaka`
 * You can turn off pypolca polishing using `--no_pypolca`
 * You can force `hybracter` to pick the last polishing round (not the best according to ALE) with `--logic last`. `hybracter` defaults to picking the best (according to ALE) i.e. `--logic best`.
+* Use `--circular_chromosome` if you want to require Flye to circularise a contig before classifying a sample as complete. By default, hybracter classifies a sample as complete based on contig length alone. With `--circular_chromosome`, a contig must be both above the minimum chromosome length **and** marked as circular by Flye to be classified as complete. Non-circular long contigs will still be polished and included in the final assembly but will not be reoriented by dnaapler.
 
 #### `hybracter hybrid-single`
 
@@ -505,6 +516,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can change the `--flyeModel` (all available options are listed in `hybracter long -h`)
 * You can turn off Medaka polishing using `--no_medaka`
 * You can force `hybracter` to pick the last polishing round (not the best according to pyrodigal mean CDS length) with `--logic last`. `hybracter` defaults to picking the best i.e. `--logic best`.
+* Use `--circular_chromosome` if you want to require Flye to circularise a contig before classifying a sample as complete. See the `hybracter hybrid` section above for details.
 
 
 #### `hybracter long-single`

@@ -9,7 +9,6 @@ rule run_seqkit_short:
         os.path.join(dir.env, "seqkit.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     benchmark:
@@ -32,7 +31,6 @@ rule run_seqkit_long:
         os.path.join(dir.env, "seqkit.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     benchmark:
@@ -56,7 +54,6 @@ rule aggr_seqkit_short:
         flag=os.path.join(dir.out.flags, "aggr_seqkit_short.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -102,7 +99,6 @@ rule estimate_lr_coverage:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -120,7 +116,6 @@ rule aggr_seqkit_long:
         flag=os.path.join(dir.out.flags, "aggr_seqkit_long.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -156,7 +151,6 @@ rule estimate_sr_coverage:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
