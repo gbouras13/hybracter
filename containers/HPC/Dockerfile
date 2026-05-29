@@ -2,7 +2,7 @@
 # hybracter 
 #
 
-FROM --platform=linux/amd64 quay.io/biocontainers/unicycler:0.5.1--py312hdcc493e_5
+FROM quay.io/biocontainers/unicycler:0.5.1--py312hdcc493e_5
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG HYBRACTER_VERSION=0.13.0

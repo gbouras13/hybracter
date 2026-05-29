@@ -15,14 +15,29 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache
+          sudo apt-get clean
+
       - name: Log in to Quay
         run: echo "${{ secrets.QUAY_PASSWORD }}" | docker login quay.io -u "${{ secrets.QUAY_USERNAME }}" --password-stdin
 
       - name: Build Docker image
         run: |
           VERSION=${{ github.ref_name }}
+          # Use the Dockerfile's default ARG when pushing to a branch (not a release tag).
+          # On a tag push (e.g. 0.13.0) VERSION is the tag; on a branch push it's the
+          # branch name (e.g. "dev"), which is not a valid conda package version.
+          if [[ "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9] ]]; then
+            BUILD_ARG="--build-arg HYBRACTER_VERSION=${VERSION}"
+          else
+            BUILD_ARG=""
+          fi
           docker build \
-            --build-arg HYBRACTER_VERSION=${VERSION} \
+            ${BUILD_ARG} \
             -f containers/HPC/Dockerfile \
             -t quay.io/${{ secrets.QUAY_USERNAME }}/hybracter:${VERSION} \
             -t quay.io/${{ secrets.QUAY_USERNAME }}/hybracter:latest \
