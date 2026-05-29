@@ -13,3 +13,4 @@ dependencies:
   - biopython>=1.76
   - attrmap >=0.0.5
   - minimap2 >=2.26
+  - pandas >=1.5.0
