@@ -5,10 +5,9 @@
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG HYBRACTER_VERSION=0.13.0
 ARG MINIFORGE_VERSION=24.11.3-0
 
-# Install required packages and dependencies
+# Install system dependencies
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -38,13 +37,20 @@ RUN set -eux ; \
 ENV PATH="/opt/miniforge3/bin:${PATH}"
 
 #
-# Install conda environment
-# unicycler is not a dependency of the hybracter conda package so must be explicit
+# Install bioinformatics tools via conda.
+# hybracter itself is installed from source below (not yet on bioconda for dev builds).
+# unicycler is not pulled in by the hybracter package so must be listed explicitly.
 #
 RUN set -eux ; \
     conda install -y -c conda-forge -c bioconda -c defaults \
-    hybracter=${HYBRACTER_VERSION} unicycler minimap2 \
+    unicycler minimap2 snakemake \
     && conda clean -af -y
+
+#
+# Install hybracter from the repo source committed in this build
+#
+COPY . /opt/hybracter_src
+RUN pip install /opt/hybracter_src
 
 RUN HYBRACTER_PKG=$(python3 -c "import hybracter, os; print(os.path.dirname(hybracter.__file__))") && \
     hybracter install --medaka || true && \
