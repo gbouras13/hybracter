@@ -56,7 +56,7 @@ rule medaka_round_1:
 
 rule medaka_round_1_extract_intermediate_assembly:
     """
-    extracts the chromosome intermediate assembly 
+    extracts the chromosome intermediate assembly
     """
     input:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
@@ -82,6 +82,7 @@ rule medaka_round_1_extract_intermediate_assembly:
             )
         ),
         polypolish_flag=False,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
@@ -228,6 +229,7 @@ rule medaka_round_2_extract_intermediate_assembly:
             )
         ),
         polypolish_flag=False,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:

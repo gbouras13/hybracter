@@ -125,6 +125,7 @@ rule polypolish_extract_intermediate_assembly:
             )
         ),
         polypolish_flag=True,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
