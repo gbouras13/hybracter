@@ -1,14 +1,18 @@
 #
 # hybracter
 #
+# StaPH-B unicycler base gives us:
+#   - Ubuntu foundation (apt-get works)
+#   - unicycler 0.5.1 installed to /usr/local/bin (system PATH, survives
+#     conda env activation so plassembler's sub-env can still find it)
 
-FROM ubuntu:22.04
+FROM staphb/unicycler:0.5.1
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG MINIFORGE_VERSION=24.11.3-0
 
-# Install system dependencies
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     autoconf \
@@ -38,12 +42,12 @@ ENV PATH="/opt/miniforge3/bin:${PATH}"
 
 #
 # Install bioinformatics tools via conda.
+# unicycler comes from the base image (/usr/local/bin) — no need to conda-install it.
 # hybracter itself is installed from source below (not yet on bioconda for dev builds).
-# unicycler is not pulled in by the hybracter package so must be listed explicitly.
 #
 RUN set -eux ; \
     conda install -y -c conda-forge -c bioconda -c defaults \
-    unicycler minimap2 snakemake \
+    minimap2 snakemake \
     && conda clean -af -y
 
 #
