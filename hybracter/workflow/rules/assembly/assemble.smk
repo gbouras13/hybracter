@@ -8,7 +8,6 @@ rule assemble:
         lr_coverage=os.path.join(dir.out.coverage, "{sample}_lr.txt"),  # make sure coverage is run before assembly in case below min_depth
     output:
         fasta=os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
-        gfa=os.path.join(dir.out.assemblies, "{sample}", "assembly.gfa").
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
         version=os.path.join(dir.out.versions, "{sample}", "flye.version"),
         infocopy=os.path.join(dir.out.assembly_statistics, "{sample}_assembly_info.txt"),
@@ -45,9 +44,6 @@ rule aggr_assemble:
             os.path.join(dir.out.assemblies, "{sample}", "assembly.fasta"),
             sample=SAMPLES,
         ),
-        expand(os.path.join(dir.out.assemblies, "{sample}", "assembly.gfa").
-                sample=SAMPLES,)
-        ,
         expand(
             os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
             sample=SAMPLES,
