@@ -1,0 +1,35 @@
+name: Build and Push Container to Quay
+
+# on:
+#  push:
+#    tags:
+#      - '*.*.*'
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Quay
+        run: echo "${{ secrets.QUAY_PASSWORD }}" | docker login quay.io -u "${{ secrets.QUAY_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          VERSION=${{ github.ref_name }}
+          docker build \
+            --build-arg HYBRACTER_VERSION=${VERSION} \
+            -f containers/HPC/Dockerfile \
+            -t quay.io/${{ secrets.QUAY_USERNAME }}/hybracter:${VERSION} \
+            -t quay.io/${{ secrets.QUAY_USERNAME }}/hybracter:latest \
+            .
+
+      - name: Push Docker image
+        run: |
+          VERSION=${{ github.ref_name }}
+          docker push quay.io/${{ secrets.QUAY_USERNAME }}/hybracter:${VERSION}
+          docker push quay.io/${{ secrets.QUAY_USERNAME }}/hybracter:latest

@@ -5,8 +5,7 @@
 FROM --platform=linux/amd64 quay.io/biocontainers/unicycler:0.5.1--py312hdcc493e_5
 
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG LIBFABRIC_VERSION=2.0.0
-ARG HYBRACTER_VERSION=0.12.0
+ARG HYBRACTER_VERSION=0.13.0
 ARG MINIFORGE_VERSION=24.11.3-0
 
 # Install required packages and dependencies
