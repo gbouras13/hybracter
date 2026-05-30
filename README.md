@@ -257,7 +257,7 @@ s_aureus_sample1,sample1_long_read.fastq.gz
 p_aeruginosa_sample2,sample2_long_read.fastq.gz
 ```
 
-and for `hybracter hybrid` you only need 4 columns with sample name, long-read FASTQ, and R1 and R2 short-read FASTQ file paths:
+And for `hybracter hybrid` you only need 4 columns with sample name, long-read FASTQ, and R1 and R2 short-read FASTQ file paths:
 
 ```bash
 s_aureus_sample1,sample1_long_read.fastq.gz,sample1_SR_R1.fastq.gz,sample1_SR_R2.fastq.gz
