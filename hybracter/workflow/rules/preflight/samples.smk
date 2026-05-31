@@ -5,6 +5,23 @@ Function for parsing the config and identifying samples and read files
 from itertools import chain
 import sys
 
+
+def sanitise_sample_name(name: str) -> str:
+    """Strip leading/trailing whitespace and replace internal spaces with underscores.
+
+    Spaces in sample names break file paths and Snakemake wildcards.  We fix
+    them automatically and warn rather than crashing deep in the pipeline.
+    """
+    stripped = name.strip()
+    sanitised = stripped.replace(" ", "_")
+    if sanitised != name:
+        sys.stderr.write(
+            f"\n    WARNING: sample name '{name}' contains whitespace and has "
+            f"been renamed to '{sanitised}'.\n"
+            f"    Consider updating your CSV to avoid this warning.\n\n"
+        )
+    return sanitised
+
 """
 check_datadir function
 """
@@ -50,7 +67,8 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
             l = line.strip().split(",")
             if auto:
                 if len(l) == 2:
-                    outDict[l[0]] = {}
+                    sample_name = sanitise_sample_name(l[0])
+                    outDict[sample_name] = {}
                     # where datafir isn't specified
                     if datadir is None:
                         long_fastq = l[1]
@@ -58,7 +76,7 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
                         datadirlong, datadirshort = check_datadir(datadir)
                         long_fastq = os.path.join(datadirlong, l[1])
                     if os.path.isfile(long_fastq):
-                        outDict[l[0]]["LR"] = long_fastq
+                        outDict[sample_name]["LR"] = long_fastq
                     else:
                         sys.stderr.write(
                             "\n"
@@ -80,7 +98,8 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
 
             else:
                 if len(l) == 3:
-                    outDict[l[0]] = {}
+                    sample_name = sanitise_sample_name(l[0])
+                    outDict[sample_name] = {}
                     # where datafir isn't specified
                     if datadir is None:
                         long_fastq = l[1]
@@ -88,10 +107,10 @@ def samplesFromCsvLong(csvFile, subsample_depth, datadir, min_depth, auto):
                         datadirlong, datadirshort = check_datadir(datadir)
                         long_fastq = os.path.join(datadirlong, l[1])
                     if os.path.isfile(long_fastq) and l[2].isnumeric():
-                        outDict[l[0]]["LR"] = long_fastq
-                        outDict[l[0]]["MinChromLength"] = l[2]
-                        outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
-                        outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+                        outDict[sample_name]["LR"] = long_fastq
+                        outDict[sample_name]["MinChromLength"] = l[2]
+                        outDict[sample_name]["TargetBases"] = int(l[2]) * subsample_depth
+                        outDict[sample_name]["MinBases"] = int(l[2]) * min_depth
                     else:
                         sys.stderr.write(
                             "\n"
@@ -134,7 +153,8 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
             l = line.strip().split(",")
             if auto:
                 if len(l) == 4:
-                    outDict[l[0]] = {}
+                    sample_name = sanitise_sample_name(l[0])
+                    outDict[sample_name] = {}
                     # where datafir isn't specified
                     if datadir is None:
                         long_fastq = l[1]
@@ -158,9 +178,9 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
                         and os.path.isfile(r1_fastq)
                         and os.path.isfile(r2_fastq)
                     ):
-                        outDict[l[0]]["LR"] = long_fastq
-                        outDict[l[0]]["R1"] = r1_fastq
-                        outDict[l[0]]["R2"] = r2_fastq
+                        outDict[sample_name]["LR"] = long_fastq
+                        outDict[sample_name]["R1"] = r1_fastq
+                        outDict[sample_name]["R2"] = r2_fastq
                     else:
                         sys.stderr.write(
                             "\n"
@@ -185,7 +205,8 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
 
             else:
                 if len(l) == 5:
-                    outDict[l[0]] = {}
+                    sample_name = sanitise_sample_name(l[0])
+                    outDict[sample_name] = {}
                     # where datafir isn't specified
                     if datadir is None:
                         long_fastq = l[1]
@@ -209,12 +230,12 @@ def samplesFromCsvShort(csvFile, subsample_depth, datadir, min_depth, auto):
                         and os.path.isfile(r1_fastq)
                         and os.path.isfile(r2_fastq)
                     ):
-                        outDict[l[0]]["LR"] = long_fastq
-                        outDict[l[0]]["MinChromLength"] = l[2]
-                        outDict[l[0]]["R1"] = r1_fastq
-                        outDict[l[0]]["R2"] = r2_fastq
-                        outDict[l[0]]["TargetBases"] = int(l[2]) * subsample_depth
-                        outDict[l[0]]["MinBases"] = int(l[2]) * min_depth
+                        outDict[sample_name]["LR"] = long_fastq
+                        outDict[sample_name]["MinChromLength"] = l[2]
+                        outDict[sample_name]["R1"] = r1_fastq
+                        outDict[sample_name]["R2"] = r2_fastq
+                        outDict[sample_name]["TargetBases"] = int(l[2]) * subsample_depth
+                        outDict[sample_name]["MinBases"] = int(l[2]) * min_depth
                     else:
                         sys.stderr.write(
                             "\n"

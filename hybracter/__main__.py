@@ -557,6 +557,8 @@ def hybrid_single(
     **kwargs
 ):
     """Run hybracter hybrid on 1 isolate"""
+    # Sanitise sample name: strip whitespace and replace spaces with underscores
+    sample = sample.strip().replace(" ", "_")
     # Config to add or update in configfile
     merge_config = {
         "args": {
@@ -764,6 +766,8 @@ def long_single(
     **kwargs
 ):
     """Run hybracter long on 1 isolate"""
+    # Sanitise sample name: strip whitespace and replace spaces with underscores
+    sample = sample.strip().replace(" ", "_")
     # Config to add or update in configfile
     merge_config = {
         "args": {
