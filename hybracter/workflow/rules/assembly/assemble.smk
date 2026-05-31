@@ -33,7 +33,8 @@ rule assemble:
         else
             flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir}  2> {log}
         fi
-        flye --version > {output.version}   
+        [ -s {output.fasta} ] || {{ echo "ERROR: Flye produced an empty assembly for sample {wildcards.sample}. Check your input reads, coverage depth, and --min_length settings." | tee -a {log} >&2; exit 1; }}
+        flye --version > {output.version}
         cp {output.info} {output.infocopy}
         """
 

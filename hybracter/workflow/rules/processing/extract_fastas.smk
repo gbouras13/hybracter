@@ -107,7 +107,9 @@ rule copy_flye_intermediate_chrom_assembly:
 
 rule concatenate_chrom_plassembler:
     """
-    concatenates chrom and plassembler outputs
+    concatenates chrom and plassembler outputs.
+    plasmid headers are prefixed with 'plasmid_' to avoid ID collisions with
+    Flye chromosome names (which are numeric: 1, 2, …).
     """
     input:
         chrom_fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
@@ -124,7 +126,7 @@ rule concatenate_chrom_plassembler:
     threads: config.resources.sml.cpu
     shell:
         """
-        cat {input.chrom_fasta} {input.plasmid_fasta} > {output.combo_fasta}
+        cat {input.chrom_fasta} <(sed 's/^>/>plasmid_/' {input.plasmid_fasta}) > {output.combo_fasta}
         """
 
 

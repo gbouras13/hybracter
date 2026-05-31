@@ -122,7 +122,9 @@ rule compare_assemblies_medaka_round_1:
 
 rule concatenate_intermediate_dnaapler_with_plassembler:
     """
-    concatenates dnaapler (medaka rd 1) and plassembler outputs
+    concatenates dnaapler (medaka rd 1) and plassembler outputs.
+    plasmid headers are prefixed with 'plasmid_' to avoid ID collisions with
+    Flye chromosome names (which are numeric: 1, 2, …).
     """
     input:
         chrom_fasta=os.path.join(
@@ -143,7 +145,7 @@ rule concatenate_intermediate_dnaapler_with_plassembler:
     threads: config.resources.sml.cpu
     shell:
         """
-        cat {input.chrom_fasta} {input.plasmid_fasta} > {output.combo_fasta}
+        cat {input.chrom_fasta} <(sed 's/^>/>plasmid_/' {input.plasmid_fasta}) > {output.combo_fasta}
         """
 
 

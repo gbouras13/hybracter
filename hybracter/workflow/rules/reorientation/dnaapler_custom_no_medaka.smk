@@ -36,7 +36,9 @@ rule dnaapler_custom:
 
 rule dnaapler_custom_combine_assembly_with_plasmids_assembly:
     """
-    extracts the reoriented prepolished chrom assembly
+    combines reoriented chromosome with plassembler plasmids (custom db path).
+    plasmid headers are prefixed with 'plasmid_' to avoid ID collisions with
+    Flye chromosome names (which are numeric: 1, 2, …).
     """
     input:
         chromosome_fasta=os.path.join(
@@ -57,5 +59,5 @@ rule dnaapler_custom_combine_assembly_with_plasmids_assembly:
     threads: config.resources.sml.cpu
     shell:
         """
-        cat {input.chromosome_fasta} {input.plasmid_fasta} > {output.combined_fasta}
+        cat {input.chromosome_fasta} <(sed 's/^>/>plasmid_/' {input.plasmid_fasta}) > {output.combined_fasta}
         """
