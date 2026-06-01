@@ -24,7 +24,6 @@ rule medaka_incomplete:
         hdf=os.path.join(dir.out.medaka_incomplete, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
-        mem=str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:

@@ -15,7 +15,6 @@ rule assemble:
         os.path.join(dir.env, "flye.yaml")
     resources:
         mem_mb=config.resources.big.mem,
-        mem=str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     params:
         model=FLYE_MODEL,
@@ -34,7 +33,8 @@ rule assemble:
         else
             flye {params.model} {input.fastq} -t {threads}  --out-dir {params.dir}  2> {log}
         fi
-        flye --version > {output.version}   
+        [ -s {output.fasta} ] || {{ echo "ERROR: Flye produced an empty assembly for sample {wildcards.sample}. Check your input reads, coverage depth, and --min_length settings." | tee -a {log} >&2; exit 1; }}
+        flye --version > {output.version}
         cp {output.info} {output.infocopy}
         """
 
@@ -60,7 +60,6 @@ rule aggr_assemble:
         flag=os.path.join(dir.out.flags, "aggr_assemble.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:

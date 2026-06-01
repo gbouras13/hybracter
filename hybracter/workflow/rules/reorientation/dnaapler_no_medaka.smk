@@ -19,7 +19,6 @@ rule dnaapler_no_medaka:
         dir=os.path.join(dir.out.dnaapler, "{sample}"),
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     retries: 2
     threads: get_cpu_resources_with_fallback
@@ -36,7 +35,9 @@ rule dnaapler_no_medaka:
 
 rule dnaapler_combine_assembly_with_plasmids_assembly:
     """
-    extracts the reoriented prepolished chrom assembly
+    combines reoriented chromosome with plassembler plasmids.
+    plasmid headers are prefixed with 'plasmid_' to avoid ID collisions with
+    Flye chromosome names (which are numeric: 1, 2, …).
     """
     input:
         chromosome_fasta=os.path.join(
@@ -53,10 +54,9 @@ rule dnaapler_combine_assembly_with_plasmids_assembly:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
         """
-        cat {input.chromosome_fasta} {input.plasmid_fasta} > {output.combined_fasta}
+        cat {input.chromosome_fasta} <(sed 's/^>/>plasmid_/' {input.plasmid_fasta}) > {output.combined_fasta}
         """

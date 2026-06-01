@@ -1,5 +1,10 @@
 # History
 
+## v0.13.0 Updates (28 May 2026)
+
+* Adds `--circular_chromosome` flag. When specified, a sample is only classified as complete if a contig is **both** above the minimum chromosome length **and** marked as circular by Flye. Non-circular long contigs will not be included in the complete assembly path.
+* By default (without `--circular_chromosome`), hybracter classifies a sample as complete based on contig length alone (the same behaviour as v0.12.0 and earlier). Non-circular long contigs above the length threshold are still polished and included in the final assembly but are not reoriented by dnaapler.
+
 ## v0.11.2 Updates (30 January 2025)
 
 * Changes Medaka env to use pip - see this issue https://github.com/nanoporetech/medaka/issues/547 - thanks William Shropshire for investigating and alerting me to this and Matthew Croxen for noticing in the first place

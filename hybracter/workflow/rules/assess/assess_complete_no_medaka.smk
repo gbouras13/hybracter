@@ -32,7 +32,6 @@ rule assess_chrom_pre_polish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -68,7 +67,6 @@ rule assess_polypolish:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -102,7 +100,6 @@ rule assess_pypolca:
         os.path.join(dir.env, "ale.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.big.time,
     threads: config.resources.big.cpu
     benchmark:

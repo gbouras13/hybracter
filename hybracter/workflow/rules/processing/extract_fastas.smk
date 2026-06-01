@@ -22,11 +22,11 @@ checkpoint check_completeness:
                 auto=AUTO,
             )
         ),
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -60,11 +60,11 @@ rule extract_chromosome_complete:
             )
         ),
         polypolish_flag=False,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -97,7 +97,6 @@ rule copy_flye_intermediate_chrom_assembly:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -108,7 +107,9 @@ rule copy_flye_intermediate_chrom_assembly:
 
 rule concatenate_chrom_plassembler:
     """
-    concatenates chrom and plassembler outputs
+    concatenates chrom and plassembler outputs.
+    plasmid headers are prefixed with 'plasmid_' to avoid ID collisions with
+    Flye chromosome names (which are numeric: 1, 2, …).
     """
     input:
         chrom_fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
@@ -121,12 +122,11 @@ rule concatenate_chrom_plassembler:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
         """
-        cat {input.chrom_fasta} {input.plasmid_fasta} > {output.combo_fasta}
+        cat {input.chrom_fasta} <(sed 's/^>/>plasmid_/' {input.plasmid_fasta}) > {output.combo_fasta}
         """
 
 
@@ -157,7 +157,6 @@ rule extract_incomplete:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:

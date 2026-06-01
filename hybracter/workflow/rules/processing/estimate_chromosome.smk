@@ -16,7 +16,6 @@ rule lrge:
     threads: config.resources.med.cpu
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     benchmark:
         os.path.join(dir.out.bench, "lrge", "{sample}.txt")
@@ -57,7 +56,6 @@ rule aggr_lrge:
         flag=os.path.join(dir.out.flags, "aggr_lrge.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:

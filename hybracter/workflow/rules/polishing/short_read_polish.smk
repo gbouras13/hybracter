@@ -7,7 +7,6 @@ rule bwa_index:
         os.path.join(dir.env, "bwa.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -29,7 +28,6 @@ rule bwa_mem:
         os.path.join(dir.env, "bwa.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -61,7 +59,6 @@ rule polypolish:
         os.path.join(dir.env, "polypolish.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -108,11 +105,11 @@ rule polypolish_extract_intermediate_assembly:
             )
         ),
         polypolish_flag=True,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -144,7 +141,6 @@ rule compare_assemblies_polypolish_vs_medaka_round_2:
         query_polishing_round="polypolish",
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:

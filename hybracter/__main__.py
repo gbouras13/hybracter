@@ -168,6 +168,12 @@ def common_options(func):
             type=str,
             default=None
         ),
+        click.option(
+            "--circular_chromosome",
+            help="Use this if your chromosome is expected to be circular and you want to require Flye to circularise a contig before classifying a sample as complete (e.g. most bacteria). By default, complete classification is based on length alone.",
+            is_flag=True,
+            default=False,
+        ),
 
         click.option(
             "--use-conda/--no-use-conda",
@@ -413,6 +419,7 @@ def hybrid(
     mac,
     medaka_override,
     extra_params_flye,
+    circular_chromosome,
     log,
     configfile,
     **kwargs
@@ -441,6 +448,7 @@ def hybrid(
             "mac": mac,
             "medaka_override": medaka_override,
             "extra_params_flye": extra_params_flye,
+            "circular_chromosome": circular_chromosome,
             "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
@@ -541,6 +549,7 @@ def hybrid_single(
     mac,
     medaka_override,
     extra_params_flye,
+    circular_chromosome,
     logic,
     depth_filter,
     log,
@@ -548,6 +557,8 @@ def hybrid_single(
     **kwargs
 ):
     """Run hybracter hybrid on 1 isolate"""
+    # Sanitise sample name: strip whitespace and replace spaces with underscores
+    sample = sample.strip().replace(" ", "_")
     # Config to add or update in configfile
     merge_config = {
         "args": {
@@ -574,6 +585,7 @@ def hybrid_single(
             "mac": mac,
             "medaka_override": medaka_override,
             "extra_params_flye": extra_params_flye,
+            "circular_chromosome": circular_chromosome,
             "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
@@ -638,6 +650,7 @@ def long(
     mac,
     medaka_override,
     extra_params_flye,
+    circular_chromosome,
     logic,
     depth_filter,
     log,
@@ -667,6 +680,7 @@ def long(
             "mac": mac,
             "medaka_override": medaka_override,
             "extra_params_flye": extra_params_flye,
+            "circular_chromosome": circular_chromosome,
             "depth_filter": depth_filter,
             "single": False,
             "logic": logic,
@@ -745,12 +759,15 @@ def long_single(
     mac,
     medaka_override,
     extra_params_flye,
+    circular_chromosome,
     logic,
     depth_filter,
     configfile,
     **kwargs
 ):
     """Run hybracter long on 1 isolate"""
+    # Sanitise sample name: strip whitespace and replace spaces with underscores
+    sample = sample.strip().replace(" ", "_")
     # Config to add or update in configfile
     merge_config = {
         "args": {
@@ -774,6 +791,7 @@ def long_single(
             "mac": mac,
             "medaka_override": medaka_override,
             "extra_params_flye": extra_params_flye,
+            "circular_chromosome": circular_chromosome,
             "depth_filter": depth_filter,
             "single": True,
             "logic": logic,
@@ -928,6 +946,7 @@ def test_hybrid(
     mac,
     medaka_override,
     extra_params_flye,
+    circular_chromosome,
     contaminants,
     dnaapler_custom_db,
     logic,
@@ -957,6 +976,7 @@ def test_hybrid(
             "mac": mac,
             "medaka_override": medaka_override,
             "extra_params_flye": extra_params_flye,
+            "circular_chromosome": circular_chromosome,
             "logic": logic,
             "depth_filter": depth_filter,
             "configfile": configfile
@@ -1015,6 +1035,7 @@ def test_long(
     mac,
     medaka_override,
     extra_params_flye,
+    circular_chromosome,
     logic,
     depth_filter,
     configfile,
@@ -1041,6 +1062,7 @@ def test_long(
             "mac": mac,
             "medaka_override": medaka_override,
             "extra_params_flye": extra_params_flye,
+            "circular_chromosome": circular_chromosome,
             "logic": logic,
             "depth_filter": depth_filter,
             "configfile": configfile

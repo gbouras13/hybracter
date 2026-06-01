@@ -11,7 +11,6 @@ rule download_medaka_models:
         flag=os.path.join(dir.plassemblerdb, "medaka.flag"),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     shell:

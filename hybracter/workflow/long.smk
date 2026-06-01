@@ -69,6 +69,7 @@ AUTO = config.args.auto
 MAC = config.args.mac
 MEDAKA_OVERRIDE = config.args.medaka_override
 EXTRA_PARAMS_FLYE = config.args.extra_params_flye
+CIRCULAR_CHROMOSOME = config.args.circular_chromosome
 # flag to add extra arguments to flye
 ADD_TO_FLYE = False
 

@@ -25,7 +25,6 @@ rule medaka_round_1:
         hdf=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
-        mem=str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -57,7 +56,7 @@ rule medaka_round_1:
 
 rule medaka_round_1_extract_intermediate_assembly:
     """
-    extracts the chromosome intermediate assembly 
+    extracts the chromosome intermediate assembly
     """
     input:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
@@ -83,11 +82,11 @@ rule medaka_round_1_extract_intermediate_assembly:
             )
         ),
         polypolish_flag=False,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -115,7 +114,6 @@ rule compare_assemblies_medaka_round_1:
         query_polishing_round="medaka_round_1",
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:
@@ -124,7 +122,9 @@ rule compare_assemblies_medaka_round_1:
 
 rule concatenate_intermediate_dnaapler_with_plassembler:
     """
-    concatenates dnaapler (medaka rd 1) and plassembler outputs
+    concatenates dnaapler (medaka rd 1) and plassembler outputs.
+    plasmid headers are prefixed with 'plasmid_' to avoid ID collisions with
+    Flye chromosome names (which are numeric: 1, 2, …).
     """
     input:
         chrom_fasta=os.path.join(
@@ -141,12 +141,11 @@ rule concatenate_intermediate_dnaapler_with_plassembler:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
         """
-        cat {input.chrom_fasta} {input.plasmid_fasta} > {output.combo_fasta}
+        cat {input.chrom_fasta} <(sed 's/^>/>plasmid_/' {input.plasmid_fasta}) > {output.combo_fasta}
         """
 
 
@@ -179,7 +178,6 @@ rule medaka_round_2:
         hdf=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus_probs.hdf"),
     resources:
         mem_mb=config.resources.big.mem,
-        mem=str(config.resources.big.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
@@ -233,11 +231,11 @@ rule medaka_round_2_extract_intermediate_assembly:
             )
         ),
         polypolish_flag=False,
+        circular_chromosome=CIRCULAR_CHROMOSOME,
     conda:
         os.path.join(dir.env, "scripts.yaml")
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     script:
@@ -269,7 +267,6 @@ rule compare_assemblies_medaka_round_2:
         query_polishing_round="medaka_round_2",
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.sml.cpu
     script:

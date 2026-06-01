@@ -6,7 +6,7 @@ from Bio import SeqIO
 # get chromosome if length > 2.5 million
 
 
-def get_completeness(input_fasta, completeness_check, min_chrom_length, info_file_path):
+def get_completeness(input_fasta, completeness_check, min_chrom_length, info_file_path, circular_chromosome):
     # Read the flye info file
     info_df = pd.read_csv(
         info_file_path,
@@ -29,9 +29,14 @@ def get_completeness(input_fasta, completeness_check, min_chrom_length, info_fil
     comp = False
     for dna_record in SeqIO.parse(input_fasta, "fasta"):
         circ_value = info_df[info_df["seq_name"] == dna_record.id]["circ"].values[0]
-        # mark as complete if over the size - but these will not necessarily be rotated - needs to be circular (as per extract_chromosome.py)
-        if len(dna_record.seq) > int(min_chrom_length):
-            comp = True
+        if circular_chromosome:
+            # --circular_chromosome: complete requires length AND Flye circularity
+            if len(dna_record.seq) > int(min_chrom_length) and circ_value == "Y":
+                comp = True
+        else:
+            # default: complete means length above threshold only
+            if len(dna_record.seq) > int(min_chrom_length):
+                comp = True
 
     with open(completeness_check, "w") as f:
         if comp == True:
@@ -45,4 +50,5 @@ get_completeness(
     snakemake.output.completeness_check,
     snakemake.params.min_chrom_length,
     snakemake.input.info,
+    snakemake.params.circular_chromosome,
 )

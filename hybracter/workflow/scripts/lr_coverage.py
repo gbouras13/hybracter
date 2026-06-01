@@ -1,22 +1,17 @@
 #!/usr/bin/env python3
 
 
-import pandas as pd
 import sys
 
 
 def get_sum_len(file_path):
     """
-    get sum_len from seqkit output
+    get sum_len from seqkit stats -T output
     """
-
-    # Define the column names based on the file format
-
-    # Read the file into a pandas DataFrame
-    df = pd.read_csv(file_path, sep="\t")
-    sum_len_value = df["sum_len"].values[0]
-
-    return sum_len_value
+    with open(file_path) as fh:
+        cols = fh.readline().strip().split("\t")
+        vals = fh.readline().strip().split("\t")
+    return int(vals[cols.index("sum_len")])
 
 
 def get_quick_coverage_estimate_long(

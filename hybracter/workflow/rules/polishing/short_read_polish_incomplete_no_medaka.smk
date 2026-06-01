@@ -7,7 +7,6 @@ rule bwa_index_incomplete:
         os.path.join(dir.env, "bwa.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.sml.time,
     threads: config.resources.sml.cpu
     shell:
@@ -29,7 +28,6 @@ rule bwa_mem_incomplete:
         os.path.join(dir.env, "bwa.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -68,7 +66,6 @@ rule polypolish_incomplete:
         os.path.join(dir.env, "polypolish.yaml")
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:

@@ -21,7 +21,6 @@ rule dnaapler_pre_chrom:
         dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom"),
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -68,7 +67,6 @@ rule aggregate_finalise_complete:
         complete_flag=True,
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "dnaapler.yaml")  # will contain pyrodigal but dnaapler needed if the best hit is pre-polish (based on Ryan wick's 24-10-23 blogpost medaka might make long only assemblies worse)
@@ -106,7 +104,6 @@ rule aggregate_finalise_incomplete:
         ),
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "pyrodigal.yaml")

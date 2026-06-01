@@ -1,11 +1,14 @@
 """
 # to run on mac
-pytest --run_mac .  
+pytest --run_mac .
 """
 
+import io
 import os
 import shutil
 import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -489,6 +492,200 @@ def test_hybracter_dnaapler_custom_db(run_mac):
         cmd += " --mac"
     exec_command(cmd)
     remove_directory(outdir)
+
+
+def test_hybracter_t_hybrid_circular_chromosome(run_mac):
+    """hybracter test-hybrid with --circular_chromosome"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-hybrid --threads {threads} --output {outdir} --no_medaka --skip_qc --circular_chromosome"
+    if run_mac:
+        cmd = "hybracter test-hybrid -h"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+
+def test_hybracter_t_long_circular_chromosome(run_mac):
+    """hybracter test-long with --circular_chromosome"""
+    outdir: Path = "test_hybracter_output"
+    cmd = f"hybracter test-long --threads {threads} --output {outdir} --no_medaka --skip_qc --circular_chromosome"
+    if run_mac:
+        cmd = "hybracter test-long -h"
+    exec_command(cmd)
+    remove_directory(outdir)
+
+
+# ---------------------------------------------------------------------------
+# Unit tests for check_completeness and extract_chromosome logic
+# These test the Python functions directly without going through Snakemake.
+#
+# Snakemake normally injects a `snakemake` builtin into scripts at runtime.
+# We replicate that here so the module-level calls in each script don't fail
+# on import. The mock points at real (but empty/throwaway) temp files so
+# pandas / BioPython don't raise FileNotFoundError.
+# ---------------------------------------------------------------------------
+
+def _make_snakemake_mock(tmpdir, circ="Y"):
+    """Return a SimpleNamespace that looks enough like snakemake for module import."""
+    import types
+    fasta = os.path.join(tmpdir, "_mock.fa")
+    info = os.path.join(tmpdir, "_mock_info.txt")
+    with open(fasta, "w") as f:
+        f.write(">c0\nAAAA\n")
+    with open(info, "w") as f:
+        f.write("# col1\n")
+        f.write(f"c0\t4\t1\t{circ}\tN\t1\t*\t*\n")
+    return types.SimpleNamespace(
+        input=types.SimpleNamespace(fasta=fasta, info=info),
+        output=types.SimpleNamespace(
+            completeness_check=os.path.join(tmpdir, "_mock_comp.txt"),
+            fasta=os.path.join(tmpdir, "_mock_chrom.fa"),
+            ignore_list=os.path.join(tmpdir, "_mock_ignore.txt"),
+        ),
+        params=types.SimpleNamespace(
+            min_chrom_length="10",
+            circular_chromosome=False,
+            polypolish_flag=False,
+        ),
+    )
+
+
+def _write_fasta(path, seq_id, length):
+    with open(path, "w") as f:
+        f.write(f">{seq_id}\n" + "A" * length + "\n")
+
+
+def _write_flye_info(path, seq_id, circ):
+    with open(path, "w") as f:
+        f.write("# col1\n")
+        f.write(f"{seq_id}\t100\t50\t{circ}\tN\t1\t*\t*\n")
+
+
+def _import_scripts():
+    """Import check_completeness and extract_chromosome with a mocked snakemake builtin.
+    Safe to call multiple times — returns cached modules after the first import."""
+    import builtins
+    import importlib
+    import types
+
+    scripts_dir = str(Path("hybracter/workflow/scripts"))
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+
+    # We need a real temp dir for the mock so module-level calls don't blow up
+    _tmpdir = tempfile.mkdtemp()
+    builtins.snakemake = _make_snakemake_mock(_tmpdir)
+
+    # Force fresh import (in case a previous test already imported them)
+    for mod in ("check_completeness", "extract_chromosome"):
+        if mod in sys.modules:
+            del sys.modules[mod]
+
+    import check_completeness as cc
+    import extract_chromosome as ec
+
+    # Clean up the builtin — we don't need it after import
+    if hasattr(builtins, "snakemake"):
+        del builtins.snakemake
+    shutil.rmtree(_tmpdir, ignore_errors=True)
+
+    return cc, ec
+
+
+class TestCheckCompleteness:
+    """Unit tests for check_completeness.get_completeness."""
+
+    @pytest.fixture(autouse=True, scope="class")
+    def load_module(self, request):
+        cc, _ = _import_scripts()
+        request.cls.cc = cc
+
+    def _run(self, seq_length, circ, min_chrom_length, circular_chromosome):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fasta = os.path.join(tmpdir, "assembly.fasta")
+            info = os.path.join(tmpdir, "assembly_info.txt")
+            out = os.path.join(tmpdir, "completeness.txt")
+            _write_fasta(fasta, "contig_1", seq_length)
+            _write_flye_info(info, "contig_1", circ)
+            self.cc.get_completeness(fasta, out, min_chrom_length, info, circular_chromosome)
+            return open(out).read().strip()
+
+    def test_noncircular_long_default_complete(self):
+        """Non-circular contig above threshold → Complete with default settings (length only)."""
+        assert self._run(200000, "N", 100000, False) == "C"
+
+    def test_circular_long_default_complete(self):
+        """Circular contig above threshold → Complete with default settings."""
+        assert self._run(200000, "Y", 100000, False) == "C"
+
+    def test_noncircular_long_circular_flag_incomplete(self):
+        """Non-circular contig above threshold → Incomplete with --circular_chromosome."""
+        assert self._run(200000, "N", 100000, True) == "I"
+
+    def test_circular_long_circular_flag_complete(self):
+        """Circular contig above threshold → Complete with --circular_chromosome."""
+        assert self._run(200000, "Y", 100000, True) == "C"
+
+    def test_short_always_incomplete(self):
+        """Contig below threshold → Incomplete regardless of circularity or flag."""
+        assert self._run(50000, "Y", 100000, False) == "I"
+        assert self._run(50000, "Y", 100000, True) == "I"
+        assert self._run(50000, "N", 100000, False) == "I"
+        assert self._run(50000, "N", 100000, True) == "I"
+
+
+class TestExtractChromosome:
+    """Unit tests for extract_chromosome.get_chromosome_plasmids."""
+
+    @pytest.fixture(autouse=True, scope="class")
+    def load_module(self, request):
+        _, ec = _import_scripts()
+        request.cls.ec = ec
+
+    def _run(self, seq_length, circ, min_chrom_length, circular_chromosome):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fasta = os.path.join(tmpdir, "assembly.fasta")
+            info = os.path.join(tmpdir, "assembly_info.txt")
+            chrom_out = os.path.join(tmpdir, "chromosome.fasta")
+            ignore_list = os.path.join(tmpdir, "ignore_list.txt")
+            _write_fasta(fasta, "contig_1", seq_length)
+            _write_flye_info(info, "contig_1", circ)
+            self.ec.get_chromosome_plasmids(
+                fasta, chrom_out, ignore_list, min_chrom_length, info, False, circular_chromosome
+            )
+            extracted = open(chrom_out).read()
+            ignored = open(ignore_list).read().strip()
+            return extracted, ignored
+
+    def test_noncircular_long_extracted_default(self):
+        """Non-circular contig above threshold IS extracted by default and added to ignore_list."""
+        extracted, ignored = self._run(200000, "N", 100000, False)
+        assert "contig_1" in extracted
+        assert "contig_1" in ignored
+
+    def test_circular_long_extracted_default_not_ignored(self):
+        """Circular contig above threshold is extracted by default and NOT in ignore_list."""
+        extracted, ignored = self._run(200000, "Y", 100000, False)
+        assert "contig_1" in extracted
+        assert ignored == ""
+
+    def test_noncircular_long_not_extracted_circular_flag(self):
+        """Non-circular contig above threshold is NOT extracted with --circular_chromosome."""
+        extracted, ignored = self._run(200000, "N", 100000, True)
+        assert "contig_1" not in extracted
+        assert ignored == ""
+
+    def test_circular_long_extracted_circular_flag_not_ignored(self):
+        """Circular contig above threshold is extracted with --circular_chromosome and NOT in ignore_list."""
+        extracted, ignored = self._run(200000, "Y", 100000, True)
+        assert "contig_1" in extracted
+        assert ignored == ""
+
+    def test_short_contig_never_extracted(self):
+        """Contig below threshold is never extracted regardless of circularity or flag."""
+        for circ in ("Y", "N"):
+            for flag in (True, False):
+                extracted, _ = self._run(50000, circ, 100000, flag)
+                assert "contig_1" not in extracted
 
 
 def test_citation():

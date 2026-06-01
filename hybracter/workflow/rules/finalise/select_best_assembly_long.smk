@@ -40,7 +40,6 @@ rule dnaapler_pre_chrom:
         dir=os.path.join(dir.out.dnaapler, "{sample}_pre_chrom"),
     resources:
         mem_mb=config.resources.med.mem,
-        mem=str(config.resources.med.mem) + "MB",
         time=config.resources.med.time,
     threads: config.resources.med.cpu
     benchmark:
@@ -96,7 +95,6 @@ rule aggregate_finalise_complete:
         logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "pyrodigal.yaml")
@@ -136,7 +134,6 @@ rule aggregate_finalise_incomplete:
         logic=LOGIC,
     resources:
         mem_mb=config.resources.sml.mem,
-        mem=str(config.resources.sml.mem) + "MB",
         time=config.resources.sml.time,
     conda:
         os.path.join(dir.env, "pyrodigal.yaml")
