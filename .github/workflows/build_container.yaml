@@ -1,11 +1,11 @@
 name: Build and Push Container to Quay
 
-# on:
-#  push:
-#    tags:
-#      - '*.*.*'
-
-on: [push]
+on:
+  push:
+    branches:
+      - '**'        # every branch push → tagged with branch name + latest
+  release:
+    types: [published]   # every GitHub release → tagged with release tag + latest
 
 jobs:
   build:
