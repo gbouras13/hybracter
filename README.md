@@ -31,7 +31,7 @@
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
   - [Recent Updates](#recent-updates)
-    - [v0.13.0 Updates (28 May 2026)](#v0130-updates-28-may-2026)
+    - [v0.13.0 Updates (1 June 2026)](#v0130-updates-1-june-2026)
     - [v0.12.0 Updates (7 January 2026)](#v0120-updates-7-january-2026)
     - [v0.11.0 Updates (4 December 2024)](#v0110-updates-4-december-2024)
     - [v0.10.0 Updates (17 October 2024)](#v0100-updates-17-october-2024)
@@ -111,9 +111,9 @@ To install and run v0.12.0 with singularity
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.12.0
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:latest
 
-containerImage="$IMAGE_DIR/hybracter_0.12.0.sif"
+containerImage="$IMAGE_DIR/hybracter_latest.sif"
 
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
@@ -121,11 +121,11 @@ containerImage="$IMAGE_DIR/hybracter_0.12.0.sif"
  -o output_test_singularity -t 4 --auto
 ```
 
-To install and run v0.12.0 with Docker (recommended if you have a Mac as it has Medaka v2)
+To install and run the latest container with Docker (recommended if you have a Mac as it has Medaka v2)
 
 ```
-docker pull quay.io/gbouras13/hybracter:0.12.0
-docker run quay.io/gbouras13/hybracter:0.12.0  hybracter -h
+docker pull quay.io/gbouras13/hybracter:latest
+docker run quay.io/gbouras13/hybracter:latest  hybracter -h
 # -v mounts directories from your local filesystem to the docker container
 docker run --rm -v /path/to/my/test/fastqs:/data -v /path/to/where/i/want/the/output:/output quay.io/gbouras13/hybracter:0.12.0 hybracter hybrid-single \
   -l /data/test_long_reads.fastq.gz \
@@ -195,11 +195,12 @@ To summarise the conclusions:
 
 ## Recent Updates
 
-### v0.13.0 Updates (28 May 2026)
+### v0.13.0 Updates (1 June 2026)
 
 * Adds `--circular_chromosome` flag. 
 * Hybracter's default behaviour (without `--circular_chromosome`) is that contigs that are **only** longer than the minimum chromosome length are marked as complete chromosome (noting that any linear contigs above the length threshold are still polished and included in the final assembly as chromosomes, but are not reoriented by Dnaapler). This is to ensure Hybracter can support bacteria with linear chromosomes.
 * If you specify `--circular_chromosome` a sample is only classified as complete if a contig is **both** above the minimum chromosome length **and** marked as circular by Flye - it recommended now for users who know their input bacterial genome should have circular chromosome(s). 
+* Various other bugfixes
 
 ### v0.12.0 Updates (7 January 2026)
 

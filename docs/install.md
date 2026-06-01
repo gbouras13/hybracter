@@ -49,18 +49,18 @@ hybracter --help
 
 ## Docker/Singularity
 
-A Docker/Singularity Linux container image is available for Hybracter (starting from v0.7.1) [here](https://quay.io/repository/gbouras13/hybracter). This will likely be useful for running Hybracter in HPC environments.
+A Docker/Singularity Linux container image is available for Hybracter (starting from v0.7.1) [here](https://quay.io/repository/gbouras13/hybracter). This will likely be useful for running Hybracter in HPC environments. As of v0.13.0, there is a latest image (that might contain new but untested features)
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.10.0 with singularity
+To install and run the latest version with singularity
 
 ```bash
 
 IMAGE_DIR="<the directory you want the .sif file to be in >"
-singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:0.10.0
+singularity pull --dir $IMAGE_DIR docker://quay.io/gbouras13/hybracter:latest
 
-containerImage="$IMAGE_DIR/hybracter_0.10.0.sif"
+containerImage="$IMAGE_DIR/hybracter_latest.sif"
 
 # example command with test fastqs
  singularity exec $containerImage    hybracter hybrid-single -l test_data/Fastqs/test_long_reads.fastq.gz \
@@ -68,13 +68,13 @@ containerImage="$IMAGE_DIR/hybracter_0.10.0.sif"
  -o output_test_singularity -t 4 -c 50000
 ```
 
-To install and run v0.11.0 with Docker (recommended if you have a Mac as it has Medaka v2)
+To install and run the latest version with Docker (recommended if you have a Mac as it has Medaka v2)
 
 ```
-docker pull quay.io/gbouras13/hybracter:0.11.0
-docker run quay.io/gbouras13/hybracter:0.11.0  hybracter -h
+docker pull quay.io/gbouras13/hybracter:latest
+docker run quay.io/gbouras13/hybracter:latest  hybracter -h
 # -v mounts directories from your local filesystem to the docker contaier
-docker run --rm -v /path/to/my/test/fastqs:/data -v /path/to/where/i/want/the/output:/output quay.io/gbouras13/hybracter:0.11.0 hybracter hybrid-single \
+docker run --rm -v /path/to/my/test/fastqs:/data -v /path/to/where/i/want/the/output:/output quay.io/gbouras13/hybracter:latest hybracter hybrid-single \
   -l /data/test_long_reads.fastq.gz \
   -1 /data/test_short_reads_R1.fastq.gz \
   -2 /data/test_short_reads_R2.fastq.gz \

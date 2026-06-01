@@ -4,6 +4,10 @@ __pycache__/*
 *.py[cod]
 *$py.class
 
+# claude
+.claude
+.claude/*
+
 # C extensions
 *.so
 
