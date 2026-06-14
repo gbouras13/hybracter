@@ -32,7 +32,12 @@ rule medaka_round_1:
         export CUDA_VISIBLE_DEVICES=""
         if [ "{params.bacteria}" = "True" ]; then
            # from v 0.10.0, hybracter supports --bacteria
-            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
+            if medaka tools resolve_model --auto_model consensus_bacteria {input.fastq} > /dev/null 2>> {log}; then
+                medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria -t {threads} 2>> {log}
+            else
+                echo "hybracter: medaka --bacteria cannot auto-select a model (reads carry no basecaller model tag); falling back to -m r1041_e82_400bps_bacterial_methylation" | tee -a {log}
+                medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m r1041_e82_400bps_bacterial_methylation -t {threads} 2>> {log}
+            fi
             medaka --version > {output.version}
             touch {params.bam}
             rm {params.bam}
@@ -181,7 +186,12 @@ rule medaka_round_2:
         export CUDA_VISIBLE_DEVICES=""
         if [ "{params.bacteria}" = "True" ]; then
            # from v 0.10.0, hybracter supports --bacteria
-            medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria  -t {threads} 2> {log}
+            if medaka tools resolve_model --auto_model consensus_bacteria {input.fastq} > /dev/null 2>> {log}; then
+                medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} --bacteria -t {threads} 2>> {log}
+            else
+                echo "hybracter: medaka --bacteria cannot auto-select a model (reads carry no basecaller model tag); falling back to -m r1041_e82_400bps_bacterial_methylation" | tee -a {log}
+                medaka_consensus -i {input.fastq} -d {input.fasta} -o {params.dir} -m r1041_e82_400bps_bacterial_methylation -t {threads} 2>> {log}
+            fi
             touch {params.bam}
             rm {params.bam}
             touch {params.hdf}
