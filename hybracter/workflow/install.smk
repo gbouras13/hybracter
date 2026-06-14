@@ -17,7 +17,6 @@ config = ap.AttrMap(config)
 
 # flag to download all medaka models
 MEDAKA_DOWNLOAD = config.args.medaka
-MAC = config.args.mac
 
 
 # directories
