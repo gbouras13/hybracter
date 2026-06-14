@@ -12,11 +12,7 @@ rule medaka_round_1:
         fasta=os.path.join(dir.out.medaka_rd_1, "{sample}", "consensus.fasta"),
         version=os.path.join(dir.out.versions, "{sample}", "medaka_complete.version"),
     conda:
-        (
-            os.path.join(dir.env, "medaka_mac.yaml")
-            if MAC
-            else os.path.join(dir.env, "medaka.yaml")
-        )
+        os.path.join(dir.env, "medaka.yaml")
     params:
         model=MEDAKA_MODEL,
         bacteria=BACTERIA,
@@ -165,11 +161,7 @@ rule medaka_round_2:
     output:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
     conda:
-        (
-            os.path.join(dir.env, "medaka_mac.yaml")
-            if MAC
-            else os.path.join(dir.env, "medaka.yaml")
-        )
+        os.path.join(dir.env, "medaka.yaml")
     params:
         model=MEDAKA_MODEL,
         bacteria=BACTERIA,
