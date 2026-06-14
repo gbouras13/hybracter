@@ -309,23 +309,24 @@ def select_best_chromosome_assembly_complete(
     stats_df.to_csv(per_conting_summary, index=False, sep="\t")
 
 
-select_best_chromosome_assembly_complete(
-    snakemake.output.hybracter_summary,
-    snakemake.output.per_conting_summary,
-    snakemake.params.ale_dir,
-    snakemake.input.plassembler_fasta,
-    snakemake.output.chromosome_fasta,
-    snakemake.output.plasmid_fasta,
-    snakemake.output.total_fasta,
-    snakemake.output.ale_summary,
-    snakemake.input.chrom_pre_polish_fasta,
-    snakemake.params.medaka_rd_1_fasta,
-    snakemake.params.medaka_rd_2_fasta,
-    snakemake.params.polypolish_fasta,
-    snakemake.params.polca_fasta,
-    snakemake.wildcards.sample,
-    snakemake.input.flye_info,
-    snakemake.params.logic,
-    snakemake.params.no_pypolca,
-    snakemake.input.ignore_list
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    select_best_chromosome_assembly_complete(
+        snakemake.output.hybracter_summary,
+        snakemake.output.per_conting_summary,
+        snakemake.params.ale_dir,
+        snakemake.input.plassembler_fasta,
+        snakemake.output.chromosome_fasta,
+        snakemake.output.plasmid_fasta,
+        snakemake.output.total_fasta,
+        snakemake.output.ale_summary,
+        snakemake.input.chrom_pre_polish_fasta,
+        snakemake.params.medaka_rd_1_fasta,
+        snakemake.params.medaka_rd_2_fasta,
+        snakemake.params.polypolish_fasta,
+        snakemake.params.polca_fasta,
+        snakemake.wildcards.sample,
+        snakemake.input.flye_info,
+        snakemake.params.logic,
+        snakemake.params.no_pypolca,
+        snakemake.input.ignore_list
+    )

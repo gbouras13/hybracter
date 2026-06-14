@@ -45,10 +45,11 @@ def get_completeness(input_fasta, completeness_check, min_chrom_length, info_fil
             f.write("I")
 
 
-get_completeness(
-    snakemake.input.fasta,
-    snakemake.output.completeness_check,
-    snakemake.params.min_chrom_length,
-    snakemake.input.info,
-    snakemake.params.circular_chromosome,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    get_completeness(
+        snakemake.input.fasta,
+        snakemake.output.completeness_check,
+        snakemake.params.min_chrom_length,
+        snakemake.input.info,
+        snakemake.params.circular_chromosome,
+    )

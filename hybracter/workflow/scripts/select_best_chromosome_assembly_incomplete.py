@@ -184,18 +184,19 @@ def select_best_chromosome_assembly_incomplete(
     stats_df.to_csv(per_conting_summary, index=False, sep="\t")
 
 
-select_best_chromosome_assembly_incomplete(
-    snakemake.output.hybracter_summary,
-    snakemake.output.per_conting_summary,
-    snakemake.params.ale_dir,
-    snakemake.output.fasta,
-    snakemake.output.ale_summary,
-    snakemake.params.pre_polish_fasta,
-    snakemake.params.medaka_fasta,
-    snakemake.params.polypolish_fasta,
-    snakemake.params.polca_fasta,
-    snakemake.wildcards.sample,
-    snakemake.input.flye_info,
-    snakemake.params.logic,
-    snakemake.params.no_pypolca,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    select_best_chromosome_assembly_incomplete(
+        snakemake.output.hybracter_summary,
+        snakemake.output.per_conting_summary,
+        snakemake.params.ale_dir,
+        snakemake.output.fasta,
+        snakemake.output.ale_summary,
+        snakemake.params.pre_polish_fasta,
+        snakemake.params.medaka_fasta,
+        snakemake.params.polypolish_fasta,
+        snakemake.params.polca_fasta,
+        snakemake.wildcards.sample,
+        snakemake.input.flye_info,
+        snakemake.params.logic,
+        snakemake.params.no_pypolca,
+    )

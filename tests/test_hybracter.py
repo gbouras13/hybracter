@@ -21,6 +21,11 @@ __type__ = "Test Script"
 __maintainer__ = "George Bouras"
 __email__ = "george.bouras@adelaide.edu.au"
 
+# Every test in this module shells out to a full hybracter run (needs conda +
+# the assembler tool stack), so the whole file is the slow "integration" lane.
+# The fast unit tests live in tests/unit/. Run these with: pytest -m integration
+pytestmark = pytest.mark.integration
+
 # test data
 test_data_path = Path("hybracter/test_data")
 db_dir: Path = "plassembler_db"

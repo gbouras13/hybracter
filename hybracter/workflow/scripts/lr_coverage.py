@@ -34,9 +34,10 @@ def get_quick_coverage_estimate_long(
         sys.exit(f"The total number of bases of long-read sequencing is {long_bases}, which is lower than the required minimum value {min_bases} based on the chromosome size multiplied by the --min_depth parameter.\n Please check --min_depth and/or get more long-read sequencing data! Hybracter will stop here.")
 
 
-get_quick_coverage_estimate_long(
-    snakemake.input.long_bases,
-    snakemake.params.min_chrom_length,
-    snakemake.params.min_bases,
-    snakemake.output.lr_coverage,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    get_quick_coverage_estimate_long(
+        snakemake.input.long_bases,
+        snakemake.params.min_chrom_length,
+        snakemake.params.min_bases,
+        snakemake.output.lr_coverage,
+    )

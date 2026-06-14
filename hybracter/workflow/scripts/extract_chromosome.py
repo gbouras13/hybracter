@@ -79,12 +79,13 @@ def get_chromosome_plasmids(
                             file.write(f"{seq_id}\n")
 
 
-get_chromosome_plasmids(
-    snakemake.input.fasta,
-    snakemake.output.fasta,
-    snakemake.output.ignore_list,
-    snakemake.params.min_chrom_length,
-    snakemake.input.info,
-    snakemake.params.polypolish_flag,
-    snakemake.params.circular_chromosome,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    get_chromosome_plasmids(
+        snakemake.input.fasta,
+        snakemake.output.fasta,
+        snakemake.output.ignore_list,
+        snakemake.params.min_chrom_length,
+        snakemake.input.info,
+        snakemake.params.polypolish_flag,
+        snakemake.params.circular_chromosome,
+    )
