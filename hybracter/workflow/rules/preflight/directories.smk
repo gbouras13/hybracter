@@ -4,22 +4,22 @@ Ensures consistent variable names and file locations for the pipeline.
 A lot taken and modified from hecatomb
 """
 
-import attrmap as ap
+from hybracter.util import AttrMap, to_dict
 
-dir = ap.AttrMap()
+dir = AttrMap()
 
 ### DATABASE LOCATION
 
 
 try:
-    assert (ap.utils.to_dict(config.args)["databases"]) is not None
+    assert (to_dict(config.args)["databases"]) is not None
     dir.plassemblerdb = config.args.databases
 except (KeyError, AssertionError):
     dir.plassemblerdb = os.path.join(workflow.basedir, "..", "databases")
 
 ### OUTPUT LOCATION
 try:
-    assert (ap.utils.to_dict(config.args)["output"]) is not None
+    assert (to_dict(config.args)["output"]) is not None
     dir.out.base = config.args.output
 except (KeyError, AssertionError):
     dir.out.base = "hybracter_out"

@@ -1,6 +1,5 @@
 import glob
-import attrmap as ap
-import attrmap.utils as au
+from hybracter.util import AttrMap
 from pathlib import Path
 import os
 
@@ -27,7 +26,7 @@ onerror:
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 
-config = ap.AttrMap(config)
+config = AttrMap(config)
 
 
 # directories

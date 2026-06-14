@@ -48,7 +48,6 @@ setup(
         "snakemake>=8.0",
         "pyyaml>=6.0",
         "Click>=8.1.3",
-        "attrmap>=0.0.5",
         "biopython>=1.76",
     ],
     entry_points={
