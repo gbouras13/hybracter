@@ -98,7 +98,7 @@ hybracter test-hybrid --threads 8
 hybracter test-long --threads 8
 ```
 
-* Note: if you are installing Hybracter on a mac, please use `--mac` - this will install Medaka v1.8 (not v2, which is not available for MacOS). Alternatively, if you want Medaka v2, you should try the container option with Docker.
+* Note: Hybracter now uses Medaka v2, which installs and runs on all platforms including macOS (Intel and Apple Silicon). The `--mac` flag is deprecated and no longer needed (it is now a hidden no-op).
 
 ### Container
 
@@ -106,7 +106,7 @@ Alternatively, a Docker/Singularity Linux container image is available for Hybra
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.12.0 with singularity
+To install and run the latest version with singularity
 
 ```bash
 
@@ -121,7 +121,7 @@ containerImage="$IMAGE_DIR/hybracter_latest.sif"
  -o output_test_singularity -t 4 --auto
 ```
 
-To install and run the latest container with Docker (recommended if you have a Mac as it has Medaka v2)
+To install and run the latest container with Docker
 
 ```
 docker pull quay.io/gbouras13/hybracter:latest
@@ -229,7 +229,7 @@ options:
     * According to the [preprint](https://www.biorxiv.org/content/10.1101/2024.11.27.625777v1) (and my less exhaustive testing), lrge is more accurate and much faster than kmc, but I would still be careful using it on data that has lower quality than < Q15. 
 * Nothing else changes - the estimated chromosome size used by Hybracter will still be 80% of the estimate, as it needs to account for plasmids
 * Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108).
-* Note this won't work if you run `hybracter` on a Mac (as medaka v2 is not available)
+* Note: since the move to Medaka v2, this now works on macOS too (Intel and Apple Silicon).
 
 ### v0.10.0 Updates (17 October 2024)
 
@@ -624,7 +624,7 @@ Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-upd
 
 Combined with the difficulty and randomness in installing Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
 
-I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going forward, as this is the most recent stable bioconda version that doesn't seem to cause too much grief. 
+Historically Medaka was pinned to v1.8.0, but Hybracter now uses a single conda Medaka v2 environment that installs and runs on all platforms (including macOS / Apple Silicon).
 
 If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
 

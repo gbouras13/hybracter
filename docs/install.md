@@ -68,7 +68,7 @@ containerImage="$IMAGE_DIR/hybracter_latest.sif"
  -o output_test_singularity -t 4 -c 50000
 ```
 
-To install and run the latest version with Docker (recommended if you have a Mac as it has Medaka v2)
+To install and run the latest version with Docker
 
 ```
 docker pull quay.io/gbouras13/hybracter:latest
@@ -157,7 +157,7 @@ and for long (same for Linux and MacOS)
 hybracter test-long --threads 1
 ```
 
-* **Note: if you are installing Hybracter on a mac, please use `--mac` - this will install Medaka v1.8 (not v2, which is not available for MacOS). Alternatively, if you want Medaka v2, you should try the container install option with Docker.**
+* **Note: Hybracter now uses Medaka v2, which installs and runs on all platforms including macOS (Intel and Apple Silicon). The `--mac` flag is deprecated and no longer needed.**
 
 
 # Beginner Conda and Mamba Installation

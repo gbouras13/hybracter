@@ -21,6 +21,23 @@ from .util import (
 )
 
 
+def _warn_mac_deprecated(ctx, param, value):
+    """``--mac`` is a deprecated no-op kept for backwards compatibility.
+
+    Medaka v2 installs and runs on all platforms (including macOS / Apple
+    Silicon), so --mac is no longer needed. We keep the flag so existing
+    commands don't error, but warn and ignore it.
+    """
+    if value:
+        click.echo(
+            "WARNING: --mac is deprecated and has no effect. Medaka v2 now works "
+            "on all platforms (including macOS / Apple Silicon), so --mac is no "
+            "longer needed and will be removed in a future release.",
+            err=True,
+        )
+    return value
+
+
 def common_options(func):
     """Common command line args
     Define common command line args here, and include them with the @common_options decorator below.
@@ -152,9 +169,11 @@ def common_options(func):
         ),
         click.option(
             "--mac",
-            help="If you are running Hybracter on Mac - installs v1.8.0 of Medaka as higher versions break.",
+            help="[DEPRECATED] No-op kept for backwards compatibility; Medaka v2 works on all platforms.",
             is_flag=True,
             default=False,
+            hidden=True,
+            callback=_warn_mac_deprecated,
         ),
         click.option(
             "--medaka_override",
@@ -857,9 +876,11 @@ install
 )
 @click.option(
             "--mac",
-            help="If you are running Hybracter on Mac - installs v1.8.0 of Medaka as higher versions break.",
+            help="[DEPRECATED] No-op kept for backwards compatibility; Medaka v2 works on all platforms.",
             is_flag=True,
             default=False,
+            hidden=True,
+            callback=_warn_mac_deprecated,
 )
 @click.option(
     "-o",
