@@ -46,7 +46,12 @@ def _read_summary(path):
 def _run_and_compare(subcommand, golden_name, tmp_path):
     outdir = tmp_path / subcommand
     cmd = f"hybracter {subcommand} --threads {THREADS} --output {outdir} --skip_qc"
-    subprocess.run(cmd, shell=True, check=True)
+    # Ensure TERM is set: without it, unicycler emits `tput: No value for $TERM`
+    # on stderr, which plassembler's dependency check merges into stdout and then
+    # mis-parses ("Unicycler not found"). CI sets TERM=linux; do the same here so
+    # the test is self-contained when run outside CI.
+    env = {**os.environ, "TERM": os.environ.get("TERM") or "xterm"}
+    subprocess.run(cmd, shell=True, check=True, env=env)
 
     produced = _summary_path(outdir)
     assert produced.is_file(), f"no summary produced at {produced}"
