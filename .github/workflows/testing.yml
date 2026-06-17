@@ -1,19 +1,29 @@
 name: CI
 
-on: [push,pull_request,workflow_dispatch]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Weekly (Sun 06:00 UTC) heavy macOS / Apple-Silicon golden run.
+    - cron: "0 6 * * 0"
 
 jobs:
 
   # ---------------------------------------------------------------------------
   # Fast unit / regression lane.
   # Imports the workflow scripts directly (no conda, no assembler tools) and runs
-  # the pure-logic tests in tests/unit/ in seconds. Gates every push/PR and
-  # catches regressions in coverage parsing, completeness, and chromosome
-  # extraction without waiting on the full pipeline.
+  # the pure-logic tests in tests/unit/ in seconds. Gates every push/PR on both
+  # Linux and macOS (Apple Silicon) and catches regressions in coverage parsing,
+  # completeness, and chromosome extraction without waiting on the full pipeline.
   # ---------------------------------------------------------------------------
   unit:
-    name: "Unit tests (fast)"
-    runs-on: ubuntu-latest
+    name: "Unit tests (fast, ${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -31,12 +41,12 @@ jobs:
 
 
   # ---------------------------------------------------------------------------
-  # Slow integration + golden assembly-output lane.
+  # Slow integration + golden assembly-output lane (Linux).
   # Builds the conda env and runs the full `hybracter` pipeline end-to-end,
   # including the golden summary comparison in tests/test_golden.py.
   # ---------------------------------------------------------------------------
   integration:
-    name: "Integration + golden (Python ${{ matrix.python-version }})"
+    name: "Integration + golden (linux, Python ${{ matrix.python-version }})"
     runs-on: ${{ matrix.os }}
 
     defaults:
@@ -89,3 +99,55 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+
+  # ---------------------------------------------------------------------------
+  # macOS (Apple Silicon) golden assembly lane.
+  # The full osx-arm64 dependency stack now resolves (ale-core, canu >=2.3,
+  # freebayes>=1.3.9 / pypolca, medaka v2, porechop_abi, unicycler, dnaapler,
+  # pyrodigal, ...), so we validate the native arm64 assembly path with the
+  # golden test (test-long + test-hybrid vs the committed references). It builds
+  # every per-rule conda env, so it runs weekly + on demand rather than on every
+  # push.
+  # ---------------------------------------------------------------------------
+  golden-macos:
+    name: "Golden assembly (macOS / Apple Silicon)"
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - uses: "actions/checkout@v4"
+        with:
+          fetch-depth: 0
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: hybracterENV
+          environment-file: build/environment.yaml
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
+          channel-priority: strict
+          channels: conda-forge,bioconda
+          auto-update-conda: true
+
+      - name: "Setup hybracter"
+        shell: bash -l {0}
+        run: |
+          conda install python=${{ matrix.python-version }}
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: "Run golden assembly tests"
+        shell: bash -l {0}
+        run: |
+          export TERM=xterm
+          pip install pytest
+          pytest -m integration tests/test_golden.py -v
