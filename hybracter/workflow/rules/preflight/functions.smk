@@ -2,6 +2,7 @@
 Defines all functions used in hybracter
 """
 
+import functools
 import gzip
 from Bio import SeqIO
 import sys
@@ -9,11 +10,21 @@ import os
 import re
 
 
+@functools.lru_cache(maxsize=None)
+def _lrge_genome_size(lrge_path):
+    """Read the lrge-estimated genome size from disk, once per file.
+
+    These helpers are called from many rules' ``params:`` lambdas across many
+    samples during DAG evaluation, but the file content is fixed for a run, so
+    the read is cached on the path (E4).
+    """
+    with open(lrge_path, "r") as file:
+        return float(file.readline().strip())
+
+
 def getMinChromLength(lrge_path, sample, auto):
     if auto:
-        with open(lrge_path, "r") as file:
-            genome_size = file.readline().strip()
-            return int(float(genome_size) * 0.8)
+        return int(_lrge_genome_size(lrge_path) * 0.8)
     else:
         return dictReads[sample]["MinChromLength"]
 
@@ -21,18 +32,14 @@ def getMinChromLength(lrge_path, sample, auto):
 # get min_depth
 def getMinBases(lrge_path, sample, auto, min_depth):
     if auto:
-        with open(lrge_path, "r") as file:
-            genome_size = file.readline().strip()
-            return int(min_depth * float(genome_size) * 0.8)
+        return int(min_depth * _lrge_genome_size(lrge_path) * 0.8)
     else:
         return dictReads[sample]["MinBases"]
 
 
 def getTargetBases(lrge_path, sample, auto, target_depth):
     if auto:
-        with open(lrge_path, "r") as file:
-            genome_size = file.readline().strip()
-            return int(target_depth * float(genome_size) * 0.8)
+        return int(target_depth * _lrge_genome_size(lrge_path) * 0.8)
     else:
         return dictReads[sample]["TargetBases"]
 
