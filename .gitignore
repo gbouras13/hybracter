@@ -147,3 +147,7 @@ ENV/
 
 # DSstore
 .DS_Store
+
+# Generated alignment/index artifacts (samtools faidx, minimap2 index)
+*.fai
+*.mmi
