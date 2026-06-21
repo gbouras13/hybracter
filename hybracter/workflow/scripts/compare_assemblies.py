@@ -43,22 +43,20 @@ def run_compare(
     assembly_1, assembly_2 = load_assemblies(
         assembly_1, assembly_2, reference_polishing_round, query_polishing_round
     )
-    touch_file(outputfile)
-    align_sequences(
-        assembly_1,
-        assembly_2,
-        padding,
-        merge,
-        aligner,
-        outputfile,
-        reference_polishing_round,
-        query_polishing_round,
-    )
-
-
-def touch_file(path):
-    with open(path, "a"):
-        os.utime(path, None)
+    # Open the output once and thread the handle through, rather than
+    # re-opening the file for every difference region (E2). "w" creates/truncates
+    # the file, so it still exists (empty) when there are no differences.
+    with open(outputfile, "w") as out:
+        align_sequences(
+            assembly_1,
+            assembly_2,
+            padding,
+            merge,
+            aligner,
+            out,
+            reference_polishing_round,
+            query_polishing_round,
+        )
 
 
 def load_assemblies(
@@ -106,7 +104,7 @@ def align_sequences(
     padding,
     merge,
     aligner,
-    outputfile,
+    out,
     reference_polishing_round,
     query_polishing_round,
 ):
@@ -126,7 +124,7 @@ def align_sequences(
             merge,
             longest_label,
             aligner,
-            outputfile,
+            out,
             reference_polishing_round,
             query_polishing_round,
         )
@@ -153,7 +151,7 @@ def output_differences(
     merge,
     longest_label,
     aligner,
-    outputfile,
+    out,
     reference_polishing_round,
     query_polishing_round,
 ):
@@ -170,14 +168,10 @@ def output_differences(
     ) = get_aligned_seqs(assembly_1_seq, assembly_2_seq, aligner)
     if len(diff_pos) == 1:
         log(f"  1 difference")
-        with open(outputfile, "a") as out:
-            out.write(f"  1 difference")
-            out.write("\n")
+        out.write("  1 difference\n")
     else:
         log(f"  {len(diff_pos):,} differences")
-        with open(outputfile, "a") as out:
-            out.write(f"  {len(diff_pos):,} differences")
-            out.write("\n")
+        out.write(f"  {len(diff_pos):,} differences\n")
     log()
 
     aligned_len = len(assembly_1_aligned)
@@ -218,12 +212,10 @@ def output_differences(
             print(" " * longest_label, differences[start:end], flush=True)
             print(flush=True)
 
-            # Open the output file in write mode
-            with open(outputfile, "a") as out:
-                out.write(f"{assembly_1_label} {assembly_1_aligned[start:end]}\n")
-                out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
-                out.write(" " * longest_label + differences[start:end] + "\n")
-                out.write("\n")
+            out.write(f"{assembly_1_label} {assembly_1_aligned[start:end]}\n")
+            out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
+            out.write(" " * longest_label + differences[start:end] + "\n")
+            out.write("\n")
         except IndexError:
             print(f"Warning: Error writing {assembly_1_label} or {assembly_2_label}")
             print("This isn't a fatal error, but the difference won't be visualised.")
