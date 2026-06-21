@@ -68,7 +68,6 @@ def select_best_chromosome_assembly_incomplete(
         closest_to_zero_key = min(
             filtered_score_dict, key=lambda k: abs(filtered_score_dict[k] - 0)
         )
-        best_score = filtered_score_dict[closest_to_zero_key]
 
     # output df with scores and round
     scores_df = pd.DataFrame(list(score_dict.items()), columns=["Key", "Score"])
@@ -86,7 +85,12 @@ def select_best_chromosome_assembly_incomplete(
         best_round = "polypolish"
 
     if logic == "best":
-        if "incomp_pre_polish" in closest_to_zero_key:
+        if not filtered_score_dict:
+            print(
+                f"WARNING: --logic best was set but no valid ALE scores were found; "
+                f"keeping the final polishing round ({best_round})."
+            )
+        elif "incomp_pre_polish" in closest_to_zero_key:
             best_assembly = pre_polish_fasta
             best_round = "pre_polish"
         elif "polypolish" in closest_to_zero_key:
