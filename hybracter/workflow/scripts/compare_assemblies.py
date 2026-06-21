@@ -173,13 +173,11 @@ def output_differences(
         with open(outputfile, "a") as out:
             out.write(f"  1 difference")
             out.write("\n")
-            out.close()
     else:
         log(f"  {len(diff_pos):,} differences")
         with open(outputfile, "a") as out:
             out.write(f"  {len(diff_pos):,} differences")
             out.write("\n")
-            out.close()
     log()
 
     aligned_len = len(assembly_1_aligned)
@@ -226,7 +224,6 @@ def output_differences(
                 out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
                 out.write(" " * longest_label + differences[start:end] + "\n")
                 out.write("\n")
-                out.close()
         except IndexError:
             print(f"Warning: Error writing {assembly_1_label} or {assembly_2_label}")
             print("This isn't a fatal error, but the difference won't be visualised.")
