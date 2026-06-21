@@ -231,7 +231,7 @@ def select_best_chromosome_assembly_long_complete(
                     record.description = record.description.split(" ", 1)[1]
 
                     completeness_flag = False
-                    if "circular" in record.description:
+                    if "circular=true" in record.description:
                         completeness_flag = True
                         circular_plasmids += 1
 

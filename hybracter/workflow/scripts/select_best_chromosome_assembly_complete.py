@@ -256,7 +256,7 @@ def select_best_chromosome_assembly_complete(
 
                     completeness_flag = False
                     # will have circular in header if plassembler notes it
-                    if "circular" in record.description:
+                    if "circular=true" in record.description:
                         completeness_flag = True
                         circular_plasmids += 1
 
