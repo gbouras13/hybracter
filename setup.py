@@ -50,11 +50,11 @@ setup(
         "pyyaml>=6.0",
         "Click>=8.1.3",
         "biopython>=1.76",
-        "pandas>=1.5.0",
     ],
     extras_require={
-        # deps needed to run the fast unit tests (`pip install .[test]`)
-        "test": ["pytest"],
+        # deps needed to run the fast unit tests (`pip install .[test]`):
+        # polars for the concat-script tests; biopython comes from install_requires
+        "test": ["pytest", "polars"],
     },
     entry_points={
         "console_scripts": [

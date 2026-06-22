@@ -3,8 +3,6 @@ channels:
     - conda-forge
     - bioconda
 dependencies:
-    - pandas
-    - pyarrow
     - polars-lts-cpu
     - numpy
     - biopython >=1.78
