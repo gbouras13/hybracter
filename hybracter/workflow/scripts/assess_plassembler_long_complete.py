@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
+import csv
 import os
 import sys
 
-import pandas as pd
 import pyrodigal
 from Bio import SeqIO
 
@@ -104,11 +104,12 @@ def determine_best_plassembler_assembly(
             "plassembler_polished_mean_cds_length": medaka_mean_cds,
         }
 
-        # Convert the dictionary to a DataFrame
-        summary_df = pd.DataFrame([dict])
-
-        # Write to a CSV file
-        summary_df.to_csv(plassembler_prodigal_summary, index=False)
+        # Write the single-row summary as CSV (matches the old pandas
+        # DataFrame([dict]).to_csv(index=False): header + one row, comma-separated)
+        with open(plassembler_prodigal_summary, "w", newline="") as fh:
+            writer = csv.DictWriter(fh, fieldnames=list(dict.keys()), lineterminator="\n")
+            writer.writeheader()
+            writer.writerow(dict)
 
         # determine the best assembly
         if plassembler_mean_cds > medaka_mean_cds:
