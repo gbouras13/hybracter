@@ -19,11 +19,11 @@ Import:
         import select_best_lib as sbl
 """
 
+import csv
 import glob
 import os
 import sys
 
-import pandas as pd
 from Bio import SeqIO
 from Bio.SeqUtils import gc_fraction
 
@@ -114,19 +114,43 @@ def read_ale_scores(ale_dir, ale_summary):
             filtered_score_dict, key=lambda k: abs(filtered_score_dict[k] - 0)
         )
 
-    # df with scores and files; sorted ascending (worst top, best bottom)
-    scores_df = pd.DataFrame(list(score_dict.items()), columns=["Key", "Score"])
-    scores_df.sort_values(by="Score", ascending=True, inplace=True)
-    scores_df.to_csv(ale_summary, index=False, sep="\t")
+    # write the scores summary sorted ascending by score (worst top, best bottom);
+    # invalid/None scores sort last and are written as an empty field, matching the
+    # previous pandas NaN handling.
+    sorted_items = sorted(
+        score_dict.items(), key=lambda kv: (kv[1] is None, kv[1] if kv[1] is not None else 0)
+    )
+    with open(ale_summary, "w", newline="") as fh:
+        writer = csv.writer(fh, delimiter="\t", lineterminator="\n")
+        writer.writerow(["Key", "Score"])
+        for key, score in sorted_items:
+            writer.writerow([key, "" if score is None else score])
 
     return filtered_score_dict, closest_to_zero_key
 
 
 def longest_contig_coverage(flye_info):
-    """Return the coverage of the longest contig from a Flye assembly_info.txt."""
-    flye_df = pd.read_csv(flye_info, sep="\t")
-    longest_contig_row = flye_df[flye_df["length"] == flye_df["length"].max()]
-    return longest_contig_row["cov."].values[0]
+    """Return the coverage of the longest contig from a Flye assembly_info.txt.
+
+    Reads the header to locate the ``length`` and ``cov.`` columns, then returns
+    the ``cov.`` field (as a string) of the first row with the maximum length -
+    matching the previous pandas ``length == length.max()`` then ``.values[0]``.
+    """
+    with open(flye_info) as fh:
+        header = fh.readline().rstrip("\n").split("\t")
+        length_i = header.index("length")
+        cov_i = header.index("cov.")
+        best_length = None
+        best_cov = None
+        for line in fh:
+            if not line.strip():
+                continue
+            fields = line.rstrip("\n").split("\t")
+            length = int(fields[length_i])
+            if best_length is None or length > best_length:
+                best_length = length
+                best_cov = fields[cov_i]
+    return best_cov
 
 
 def write_chromosomes(
@@ -323,21 +347,40 @@ def write_summary(
         "Longest_contig_coverage": longest_contig_coverage,
         "Number_circular_plasmids": number_circular_plasmids,
     }
-    summary_df = pd.DataFrame([summary_dict])
-    summary_df.to_csv(hybracter_summary, index=False, sep="\t")
+    write_single_row_tsv(hybracter_summary, summary_dict)
 
 
 def write_single_row_tsv(path, row_dict):
-    """Write a one-row dict to a TSV (e.g. the long-read pyrodigal mean-CDS summary)."""
-    pd.DataFrame([row_dict]).to_csv(path, index=False, sep="\t")
+    """Write a one-row dict to a TSV (header + one row), tab-separated.
+
+    Matches the previous ``pd.DataFrame([row_dict]).to_csv(index=False, sep='\\t')``:
+    header line, one data row, '\\n' line terminator.
+    """
+    with open(path, "w", newline="") as fh:
+        writer = csv.DictWriter(
+            fh, fieldnames=list(row_dict.keys()), delimiter="\t", lineterminator="\n"
+        )
+        writer.writeheader()
+        writer.writerow(row_dict)
 
 
 def write_per_contig_stats(per_contig_summary, stats_dict):
-    """Write the per-contig stats TSV with ``contig_name`` as the first column."""
-    stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
-    stats_df["contig_name"] = stats_df.index
-    # reorder with 'contig_name' first
-    stats_df = stats_df[
-        ["contig_name"] + [col for col in stats_df.columns if col != "contig_name"]
-    ]
-    stats_df.to_csv(per_contig_summary, index=False, sep="\t")
+    """Write the per-contig stats TSV with ``contig_name`` as the first column.
+
+    Matches the previous ``pd.DataFrame.from_dict(orient="index")`` + reorder:
+    columns are ``contig_name`` then the union of the inner-dict keys in first-seen
+    order; a row missing a key is written as an empty field (as pandas wrote NaN).
+    """
+    fieldnames = ["contig_name"]
+    for inner in stats_dict.values():
+        for key in inner:
+            if key not in fieldnames:
+                fieldnames.append(key)
+
+    with open(per_contig_summary, "w", newline="") as fh:
+        writer = csv.DictWriter(
+            fh, fieldnames=fieldnames, delimiter="\t", lineterminator="\n"
+        )
+        writer.writeheader()
+        for contig_name, inner in stats_dict.items():
+            writer.writerow({"contig_name": contig_name, **inner})

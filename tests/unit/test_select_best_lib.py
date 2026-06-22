@@ -80,7 +80,9 @@ def test_longest_contig_coverage(tmp_path):
         "contig_1\t100000\t37\tN\tN\t1\t*\t*\n"
         "contig_2\t5000\t99\tN\tN\t1\t*\t*\n"  # higher cov but shorter
     )
-    assert sbl.longest_contig_coverage(str(flye)) == 37
+    # returns the longest contig's cov. as the raw string from the file (it is only
+    # ever written into a summary TSV), picking contig_1 (37) over the shorter contig_2
+    assert sbl.longest_contig_coverage(str(flye)) == "37"
 
 
 # --------------------------------------------------------------------------- #
