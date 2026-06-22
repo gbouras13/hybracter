@@ -19,14 +19,12 @@ have received a copy of the GNU General Public License along with this program. 
 """
 
 import datetime
-# import edlib
 import gzip
 import os
 import re
 import sys
 import textwrap
 
-import mappy
 from Bio import SeqIO
 
 
@@ -322,6 +320,8 @@ def get_cigar(assembly_1_seq, assembly_2_seq, aligner):
 
 
 def get_cigar_with_mappy(assembly_1_seq, assembly_2_seq):
+    import mappy  # imported lazily so the module is importable without mappy (e.g. unit tests)
+
     a = mappy.Aligner(seq=assembly_2_seq, preset="map-ont")
     for result in a.map(assembly_1_seq):
         full_length_query = result.q_st == 0 and result.q_en == len(assembly_1_seq)
@@ -332,6 +332,8 @@ def get_cigar_with_mappy(assembly_1_seq, assembly_2_seq):
 
 
 def get_cigar_with_edlib(assembly_1_seq, assembly_2_seq):
+    import edlib  # optional aligner; imported lazily so it isn't a hard dependency
+
     result = edlib.align(assembly_1_seq, assembly_2_seq, mode="NW", task="path")
     return result["cigar"]
 
@@ -476,65 +478,6 @@ def get_timestamp():
 def check_python_version():
     if sys.version_info.major < 3 or sys.version_info.minor < 6:
         sys.exit("\nError: compare_assemblies.py requires Python 3.6 or later")
-
-
-# Unit tests for Pytest
-# =====================
-
-
-def test_get_longest_label():
-    assembly_1 = [("seq1", "ACGT"), ("seq2", "ACGTACGTACGTACGT")]
-    assembly_2 = [("seq1_polished", "ACGT"), ("seq2_polished", "ACGT")]
-    reference_polishing_round = "polypolish"
-    query_polishing_round = "pypolca"
-    assert (
-        get_longest_label(
-            assembly_1, assembly_2, reference_polishing_round, query_polishing_round
-        )
-        == 20
-    )
-
-
-def test_get_expanded_cigar():
-    assert get_expanded_cigar("5=") == "====="
-    assert get_expanded_cigar("3=2X4=1I6=3D3=") == "===XX====I======DDD==="
-
-
-def test_make_diff_ranges():
-    diff_pos = [100, 110]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 121)]
-
-    diff_pos = [100, 120]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 131)]
-
-    diff_pos = [100, 121]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 111), (111, 132)]
-
-    diff_pos = [100, 150]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 111), (140, 161)]
-
-    diff_pos = [2, 195]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(0, 13), (185, 200)]
 
 
 #### to actually run the rule
