@@ -22,9 +22,10 @@ CLASSIFIERS = [
     "Natural Language :: English",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS :: MacOS X",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 
@@ -49,7 +50,12 @@ setup(
         "pyyaml>=6.0",
         "Click>=8.1.3",
         "biopython>=1.76",
+        "pandas>=1.5.0",
     ],
+    extras_require={
+        # deps needed to run the fast unit tests (`pip install .[test]`)
+        "test": ["pytest"],
+    },
     entry_points={
         "console_scripts": [
             "hybracter=hybracter.__main__:main",
