@@ -13,6 +13,8 @@ import csv
 
 import select_best_chromosome_assembly_complete as sbc
 import select_best_chromosome_assembly_incomplete as sb
+import select_best_chromosome_assembly_long_incomplete as sbli
+import select_best_lib as sbl
 
 
 def _write_fasta(path, seq_id, length):
@@ -131,3 +133,44 @@ def test_plasmid_circularity_only_counts_circular_true(tmp_path):
     per = {r["contig_name"]: r for r in csv.DictReader(open(per_contig), delimiter="\t")}
     plasmids = {k: v for k, v in per.items() if v["contig_type"] == "plasmid"}
     assert sorted(v["circular"] for v in plasmids.values()) == ["False", "False", "True"]
+
+
+def test_long_incomplete_best_compares_cds_not_paths(tmp_path, monkeypatch):
+    """--logic best for the long incomplete path must compare mean CDS lengths,
+    not FASTA paths (the old `pre_polish_fasta > medaka_fasta` bug).
+
+    The filenames are chosen so the *path* comparison ('a_pre' > 'z_medaka') is
+    False - i.e. the buggy code would keep medaka - while the mean CDS lengths say
+    pre-polish is better. A correct implementation picks pre_polish.
+    """
+    pre = tmp_path / "a_pre.fasta"  # path-sorts BEFORE medaka
+    medaka = tmp_path / "z_medaka.fasta"  # path-sorts AFTER pre
+    _write_fasta(pre, "contig_1", 5000)
+    _write_fasta(medaka, "contig_1", 5000)
+    assert str(pre) < str(medaka)  # so the buggy path test would keep medaka
+
+    # pre-polish has the higher mean CDS -> medaka made it worse
+    cds = {str(pre): 1000.0, str(medaka): 900.0}
+    monkeypatch.setattr(sbl, "calculate_mean_CDS_length", lambda p: cds[p])
+
+    flye_info = tmp_path / "assembly_info.txt"
+    _write_flye_info(flye_info)
+    summary = tmp_path / "hybracter_summary.tsv"
+    per_contig = tmp_path / "per_contig.tsv"
+    pyrodigal = tmp_path / "pyrodigal.tsv"
+    out_fasta = tmp_path / "out.fasta"
+
+    sbli.select_best_chromosome_assembly_long_incomplete(
+        str(summary),
+        str(per_contig),
+        str(pyrodigal),
+        str(out_fasta),
+        str(pre),
+        str(medaka),
+        "Sample1",
+        str(flye_info),
+        "best",
+    )
+
+    row = next(csv.DictReader(open(summary), delimiter="\t"))
+    assert row["Most_accurate_polishing_round"] == "pre_polish"

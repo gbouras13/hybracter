@@ -38,11 +38,9 @@ def select_best_chromosome_assembly_long_incomplete(
     best_round = "medaka"
 
     if logic == "best":
-        # NOTE: pre-existing latent bug, preserved verbatim by the E1 refactor.
-        # This compares the FASTA *paths*, not the mean CDS lengths; it should be
-        # `pre_polish_mean_cds > medaka_mean_cds`. Tracked separately (see REVIEW.md);
-        # fixing it here would change behaviour, so it is intentionally untouched.
-        if pre_polish_fasta > medaka_fasta:
+        # if the pre-polish assembly has the higher mean CDS length, medaka made
+        # it worse - step back to pre-polish.
+        if pre_polish_mean_cds > medaka_mean_cds:
             best_assembly = pre_polish_fasta
             best_round = "pre_polish"
 
