@@ -34,7 +34,7 @@ jobs:
       - name: Install test deps
         run: |
           python -m pip install --upgrade pip
-          pip install pytest biopython pandas
+          pip install pytest biopython pandas polars
 
       - name: Run unit tests
         run: pytest -m "not integration" -v

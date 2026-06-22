@@ -13,4 +13,5 @@ dependencies:
   - biopython>=1.76
   - minimap2 >=2.26
   - pandas >=1.5.0
+  - polars-lts-cpu
   - pip

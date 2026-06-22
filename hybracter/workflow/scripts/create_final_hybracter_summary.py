@@ -3,7 +3,7 @@
 import glob
 import os
 
-import pandas as pd
+import polars as pl
 
 
 def make_final_summary(hybracter_summary, complete_summary_dir, incomplete_summary_dir):
@@ -17,25 +17,18 @@ def make_final_summary(hybracter_summary, complete_summary_dir, incomplete_summa
         os.path.join(incomplete_summary_dir, "*summary.tsv")
     )
 
-    # list
-    summary_dfs = []
-
-    # complete
-    for file_path in complete_file_list:
-        # Read the DataFrame from the file and append it to the list
-        df = pd.read_csv(file_path, delimiter="\t")  # Assuming tab-separated files
-        summary_dfs.append(df)
-
-    # incomplete
-    for file_path in incomplete_file_list:
-        # Read the DataFrame from the file and append it to the list
-        df = pd.read_csv(file_path, delimiter="\t")  # Assuming tab-separated files
-        summary_dfs.append(df)
+    # Read each per-sample summary as strings so the values (ints, floats, and the
+    # "Unknown" Number_circular_plasmids for incomplete assemblies) are carried into
+    # the combined summary exactly as written - this is the FINAL_OUTPUT summary.
+    summary_dfs = [
+        pl.read_csv(file_path, separator="\t", infer_schema_length=0)
+        for file_path in complete_file_list + incomplete_file_list
+    ]
 
     # Concatenate all DataFrames into a single DataFrame
-    combined_df = pd.concat(summary_dfs, ignore_index=True)
+    combined_df = pl.concat(summary_dfs, how="vertical_relaxed")
 
-    combined_df.to_csv(hybracter_summary, index=False, sep="\t")
+    combined_df.write_csv(hybracter_summary, separator="\t")
 
 
 if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
