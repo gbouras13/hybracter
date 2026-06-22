@@ -12,6 +12,7 @@ def get_incomplete(input_fasta, incomplete_fasta, min_chrom_length):
             SeqIO.write(dna_record, fa, "fasta")
 
 
-get_incomplete(
-    snakemake.input.fasta, snakemake.output.fasta, snakemake.params.min_chrom_length
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    get_incomplete(
+        snakemake.input.fasta, snakemake.output.fasta, snakemake.params.min_chrom_length
+    )

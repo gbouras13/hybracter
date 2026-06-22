@@ -538,13 +538,14 @@ def test_make_diff_ranges():
 
 
 #### to actually run the rule
-run_compare(
-    snakemake.input.reference,
-    snakemake.input.assembly,
-    15,
-    30,
-    "mappy",
-    snakemake.output.diffs,
-    snakemake.params.reference_polishing_round,
-    snakemake.params.query_polishing_round,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    run_compare(
+        snakemake.input.reference,
+        snakemake.input.assembly,
+        15,
+        30,
+        "mappy",
+        snakemake.output.diffs,
+        snakemake.params.reference_polishing_round,
+        snakemake.params.query_polishing_round,
+    )

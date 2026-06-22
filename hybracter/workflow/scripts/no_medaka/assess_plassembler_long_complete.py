@@ -149,10 +149,11 @@ def determine_best_plassembler_assembly(
                 SeqIO.write(record, output_handle, "fasta")
 
 
-determine_best_plassembler_assembly(
-    snakemake.input.plassembler_fasta,
-    snakemake.input.medaka_fasta,
-    snakemake.output.final_plasmid_fasta,
-    snakemake.output.plassembler_prodigal_summary,
-    snakemake.wildcards.sample,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    determine_best_plassembler_assembly(
+        snakemake.input.plassembler_fasta,
+        snakemake.input.medaka_fasta,
+        snakemake.output.final_plasmid_fasta,
+        snakemake.output.plassembler_prodigal_summary,
+        snakemake.wildcards.sample,
+    )

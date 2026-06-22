@@ -45,4 +45,5 @@ def combine_sample_plassembler(summary_dir, output):
             os.utime(output, None)
 
 
-combine_sample_plassembler(snakemake.params.summary_dir, snakemake.output.out)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    combine_sample_plassembler(snakemake.params.summary_dir, snakemake.output.out)

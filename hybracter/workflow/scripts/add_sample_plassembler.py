@@ -24,6 +24,7 @@ def add_sample_plassembler(input, output, sample):
             os.utime(output, None)
 
 
-add_sample_plassembler(
-    snakemake.input.inp, snakemake.output.out, snakemake.wildcards.sample
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    add_sample_plassembler(
+        snakemake.input.inp, snakemake.output.out, snakemake.wildcards.sample
+    )

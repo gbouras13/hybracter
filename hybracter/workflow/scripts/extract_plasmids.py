@@ -14,6 +14,7 @@ def get_plasmids(input_fasta, chromosome_fasta, min_chrom_length):
                 SeqIO.write(dna_record, fa, "fasta")
 
 
-get_plasmids(
-    snakemake.input.fasta, snakemake.output.fasta, snakemake.params.min_chrom_length
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    get_plasmids(
+        snakemake.input.fasta, snakemake.output.fasta, snakemake.params.min_chrom_length
+    )
