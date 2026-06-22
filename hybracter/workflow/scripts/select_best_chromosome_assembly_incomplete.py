@@ -5,7 +5,7 @@ import select_best_lib as sbl
 
 def select_best_chromosome_assembly_incomplete(
     hybracter_summary,
-    per_conting_summary,
+    per_contig_summary,
     ale_dir,
     output_fasta,
     ale_summary,
@@ -74,13 +74,13 @@ def select_best_chromosome_assembly_incomplete(
         "Unknown",
     )
 
-    sbl.write_per_contig_stats(per_conting_summary, stats_dict)
+    sbl.write_per_contig_stats(per_contig_summary, stats_dict)
 
 
 if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
     select_best_chromosome_assembly_incomplete(
         snakemake.output.hybracter_summary,
-        snakemake.output.per_conting_summary,
+        snakemake.output.per_contig_summary,
         snakemake.params.ale_dir,
         snakemake.output.fasta,
         snakemake.output.ale_summary,

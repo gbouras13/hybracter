@@ -137,7 +137,7 @@ def common_options(func):
         ),
         click.option(
             "--contaminants",
-            help="Contaminants FASTA file to map long readsagainst to filter out. Choose --contaminants lambda to filter out phage lambda long reads.",
+            help="Contaminants FASTA file to map long reads against to filter out. Choose --contaminants lambda to filter out phage lambda long reads.",
             type=click.Path(),
             default="none",
             required=False,

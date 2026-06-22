@@ -11,7 +11,7 @@ import select_best_lib as sbl
 
 def select_best_chromosome_assembly_long_complete(
     hybracter_summary,
-    per_conting_summary,
+    per_contig_summary,
     pyrodigal_summary,
     plassembler_plasmid_fasta,
     output_chromosome_fasta,
@@ -74,13 +74,13 @@ def select_best_chromosome_assembly_long_complete(
         int(circular_plasmids),
     )
 
-    sbl.write_per_contig_stats(per_conting_summary, stats_dict)
+    sbl.write_per_contig_stats(per_contig_summary, stats_dict)
 
 
 if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
     select_best_chromosome_assembly_long_complete(
         snakemake.output.hybracter_summary,
-        snakemake.output.per_conting_summary,
+        snakemake.output.per_contig_summary,
         snakemake.output.pyrodigal_summary,
         snakemake.input.plassembler_plasmid_fasta,
         snakemake.output.chromosome_fasta,

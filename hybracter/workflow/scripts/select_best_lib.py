@@ -327,7 +327,7 @@ def write_single_row_tsv(path, row_dict):
     pd.DataFrame([row_dict]).to_csv(path, index=False, sep="\t")
 
 
-def write_per_contig_stats(per_conting_summary, stats_dict):
+def write_per_contig_stats(per_contig_summary, stats_dict):
     """Write the per-contig stats TSV with ``contig_name`` as the first column."""
     stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
     stats_df["contig_name"] = stats_df.index
@@ -335,4 +335,4 @@ def write_per_contig_stats(per_conting_summary, stats_dict):
     stats_df = stats_df[
         ["contig_name"] + [col for col in stats_df.columns if col != "contig_name"]
     ]
-    stats_df.to_csv(per_conting_summary, index=False, sep="\t")
+    stats_df.to_csv(per_contig_summary, index=False, sep="\t")
