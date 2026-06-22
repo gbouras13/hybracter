@@ -88,6 +88,15 @@ def snake_base(rel_path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), rel_path)
 
 
+def sanitise_sample_name(sample):
+    """Strip surrounding whitespace and replace internal spaces with underscores.
+
+    Sample names flow into output filenames and snakemake wildcards, so spaces
+    would break paths/rules (issue #119).
+    """
+    return sample.strip().replace(" ", "_")
+
+
 def print_version():
     with open(snake_base("hybracter.VERSION"), "r") as f:
         version = f.readline()

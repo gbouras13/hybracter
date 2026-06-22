@@ -17,6 +17,7 @@ from .util import (
     print_citation,
     print_version,
     run_snakemake,
+    sanitise_sample_name,
     snake_base,
 )
 
@@ -577,7 +578,7 @@ def hybrid_single(
 ):
     """Run hybracter hybrid on 1 isolate"""
     # Sanitise sample name: strip whitespace and replace spaces with underscores
-    sample = sample.strip().replace(" ", "_")
+    sample = sanitise_sample_name(sample)
     # Config to add or update in configfile
     merge_config = {
         "args": {
@@ -786,7 +787,7 @@ def long_single(
 ):
     """Run hybracter long on 1 isolate"""
     # Sanitise sample name: strip whitespace and replace spaces with underscores
-    sample = sample.strip().replace(" ", "_")
+    sample = sanitise_sample_name(sample)
     # Config to add or update in configfile
     merge_config = {
         "args": {
