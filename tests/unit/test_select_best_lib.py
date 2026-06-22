@@ -187,6 +187,15 @@ def test_write_summary_complete_vs_incomplete(tmp_path):
     assert row["Complete"] == "False" and row["Number_circular_plasmids"] == "Unknown"
 
 
+def test_write_single_row_tsv(tmp_path):
+    out = tmp_path / "pyrodigal.tsv"
+    sbl.write_single_row_tsv(
+        str(out), {"Sample": "S1", "pre_polish_mean_cds_length": 950.5}
+    )
+    row = _read_tsv(out)[0]
+    assert row["Sample"] == "S1" and row["pre_polish_mean_cds_length"] == "950.5"
+
+
 def test_write_per_contig_stats_contig_name_first(tmp_path):
     out = tmp_path / "per_contig.tsv"
     stats = {

@@ -322,6 +322,11 @@ def write_summary(
     summary_df.to_csv(hybracter_summary, index=False, sep="\t")
 
 
+def write_single_row_tsv(path, row_dict):
+    """Write a one-row dict to a TSV (e.g. the long-read pyrodigal mean-CDS summary)."""
+    pd.DataFrame([row_dict]).to_csv(path, index=False, sep="\t")
+
+
 def write_per_contig_stats(per_conting_summary, stats_dict):
     """Write the per-contig stats TSV with ``contig_name`` as the first column."""
     stats_df = pd.DataFrame.from_dict(stats_dict, orient="index")
