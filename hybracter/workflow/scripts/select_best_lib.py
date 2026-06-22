@@ -211,9 +211,11 @@ def write_plasmids(
     """Append plassembler plasmid records to a *complete* assembly's output.
 
     Records are renamed ``plasmid00001`` etc and appended to both the plasmid
-    FASTA and the (already-written) overall FASTA. Circularity uses the exact
-    ``circular=true`` test (B4). If the plassembler output is empty the plasmid
-    FASTA is just touched.
+    FASTA and the (already-written) overall FASTA. Circularity uses a
+    case-insensitive ``circular=true`` test (B4): plassembler writes
+    ``circular=true`` on the short/hybrid path but ``circular=True`` on the
+    long-only path, and both must count (while ``circular=false`` must not). If
+    the plassembler output is empty the plasmid FASTA is just touched.
 
     :return: ``(plasmids, circular_plasmids, total_assembly_length)``.
     """
@@ -233,8 +235,11 @@ def write_plasmids(
                     # drop the plassembler contig id (1, 2, 3 ...) from the header
                     record.description = record.description.split(" ", 1)[1]
 
+                    # Case-insensitive: plassembler emits `circular=true` on the
+                    # short/hybrid path but `circular=True` on the long-only path
+                    # (and via canu). Match both, but still not `circular=false`.
                     completeness_flag = False
-                    if "circular=true" in record.description:
+                    if "circular=true" in record.description.lower():
                         completeness_flag = True
                         circular_plasmids += 1
 

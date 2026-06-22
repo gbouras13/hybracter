@@ -86,11 +86,15 @@ def test_plasmid_circularity_only_counts_circular_true(tmp_path):
     # three plasmids: circular=true, circular=false, and no circular tag.
     # the first whitespace-delimited token is stripped (plassembler contig id),
     # so each header needs an id token followed by the description.
+    # Includes both casings plassembler actually emits: `circular=true` (short/
+    # hybrid path) and `circular=True` (long-only path) - both must count, while
+    # circular=false and an absent marker must not.
     plassembler = tmp_path / "plassembler.fasta"
     plassembler.write_text(
         ">1 len=1000 circular=true copy_number=2\n" + "A" * 1000 + "\n"
         ">2 len=2000 circular=false copy_number=1\n" + "C" * 2000 + "\n"
         ">3 len=3000 copy_number=1\n" + "G" * 3000 + "\n"
+        ">4 len=4000 plasmid_copy_number_long=3x circular=True\n" + "T" * 4000 + "\n"
     )
 
     ignore_list = tmp_path / "ignore.txt"
@@ -127,12 +131,17 @@ def test_plasmid_circularity_only_counts_circular_true(tmp_path):
     )
 
     row = next(csv.DictReader(open(summary), delimiter="\t"))
-    # only the circular=true plasmid counts (false + absent must not)
-    assert row["Number_circular_plasmids"] == "1"
+    # circular=true and circular=True both count; false + absent must not
+    assert row["Number_circular_plasmids"] == "2"
 
     per = {r["contig_name"]: r for r in csv.DictReader(open(per_contig), delimiter="\t")}
     plasmids = {k: v for k, v in per.items() if v["contig_type"] == "plasmid"}
-    assert sorted(v["circular"] for v in plasmids.values()) == ["False", "False", "True"]
+    assert sorted(v["circular"] for v in plasmids.values()) == [
+        "False",
+        "False",
+        "True",
+        "True",
+    ]
 
 
 def test_long_incomplete_best_compares_cds_not_paths(tmp_path, monkeypatch):
