@@ -31,6 +31,7 @@
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
   - [Recent Updates](#recent-updates)
+    - [v0.14.0 Updates (3 July 2026)](#v0140-updates-3-july-2026)
     - [v0.13.0 Updates (1 June 2026)](#v0130-updates-1-june-2026)
     - [v0.12.0 Updates (7 January 2026)](#v0120-updates-7-january-2026)
     - [v0.11.0 Updates (4 December 2024)](#v0110-updates-4-december-2024)
@@ -194,6 +195,14 @@ To summarise the conclusions:
 * Dragonflye should not be used if you care about recovering plasmids.
 
 ## Recent Updates
+
+### v0.14.0 Updates (3 July 2026)
+
+* Fixes `TypeError: Object of type AttrMap is not JSON serializable`, which crashed every run on newer Snakemake (≥9.22, e.g. when a fresh install pulled in Python 3.14). Upgrading fixes this without needing to pin Python or Snakemake.
+* Fixes a container crash where a stale package in the host `~/.local` shadowed the container's own (e.g. `ImportError: cannot import name 'DOUBLE' from 'sqlalchemy.types'`) — see [#160](https://github.com/gbouras13/hybracter/issues/160). The images now set `PYTHONNOUSERSITE=1`.
+* Medaka now installs from a single conda `medaka>=2` environment on all platforms (Linux and macOS, Intel & Apple Silicon); `--mac` is deprecated to a hidden no-op and no longer needed.
+* Various other bugfixes: `--logic best` with no ALE scores, the numpy 2.0 coverage error ([#142](https://github.com/gbouras13/hybracter/issues/142)), empty Flye assembly / plasmid ID collision ([#86](https://github.com/gbouras13/hybracter/issues/86), [#133](https://github.com/gbouras13/hybracter/issues/133)), whitespace sample names ([#119](https://github.com/gbouras13/hybracter/issues/119)), and plasmid circularity counting.
+* Under the hood (no change to assembly results): removed pandas (now polars + the standard library), de-duplicated the assembly-selection scripts into a shared, unit-tested library, and added a fast test suite. See [HISTORY.md](HISTORY.md) for the full list.
 
 ### v0.13.0 Updates (1 June 2026)
 

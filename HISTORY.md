@@ -1,5 +1,36 @@
 # History
 
+## v0.14.0 Updates (3 July 2026)
+
+This release fixes a crash on newer Snakemake, resolves several assembly-selection and container bugs, unifies macOS/Apple Silicon support, and modernises hybracter's internals (with no change to assembly results).
+
+**Bug fixes**
+
+* Fixes `TypeError: Object of type AttrMap is not JSON serializable`, which crashed **every** run on Snakemake ≥9.22 (commonly pulled in alongside newer Python, e.g. Python 3.14). hybracter's runtime config is now a plain `dict` subclass that Snakemake can serialise natively — upgrading fixes this without needing to pin Python or Snakemake.
+* Fixes a container failure where a stale package in the host `~/.local` (bind-mounted into the container by Apptainer/Singularity by default) shadowed the container's own copy, e.g. `ImportError: cannot import name 'DOUBLE' from 'sqlalchemy.types'` (https://github.com/gbouras13/hybracter/issues/160). The images now set `PYTHONNOUSERSITE=1` so the container ignores host user site-packages.
+* Fixes a `NameError` crash when running `--logic best` if ALE produced no valid scores; hybracter now falls back to the final polishing round with a warning.
+* Fixes a numpy 2.0 `TypeError` in the coverage-estimation step by replacing the pandas read with a dependency-free parser (https://github.com/gbouras13/hybracter/issues/142).
+* Fixes handling of empty Flye assemblies and a plasmid contig-ID collision (https://github.com/gbouras13/hybracter/issues/86, https://github.com/gbouras13/hybracter/issues/133).
+* Sample names containing whitespace are now sanitised (spaces → underscores) so they don't break output paths and Snakemake rules (https://github.com/gbouras13/hybracter/issues/119).
+* Corrects plasmid circularity counting: `circular=false` is no longer miscounted as circular, and the test is now case-insensitive so the long-read path (which writes `circular=True`) is counted correctly.
+* Fixes `--logic best` on the long-read incomplete path, which selected the polishing round by comparing file paths instead of the mean CDS lengths.
+* More robust FASTA detection for `--contaminants`, and a fallback to an explicit bacterial Medaka model when `--bacteria` cannot auto-select one from the reads (e.g. reads without basecaller metadata).
+
+**macOS / Apple Silicon**
+
+* Medaka now installs from a single conda `medaka>=2` environment on all platforms — Linux and macOS (Intel **and** Apple Silicon). The `--mac` flag is no longer needed and has been deprecated to a hidden no-op (to be removed in a future release); you can drop it from your scripts.
+* Updated osx-arm64-compatible dependencies (canu 2.3, freebayes ≥1.3.9) and re-enabled macOS continuous integration.
+
+**Containers**
+
+* Added HPC and minimal Docker images with automated builds. A `latest` image tracks newer (and possibly untested) features; tagged images track releases.
+
+**Under the hood** (no change to assembly results)
+
+* Removed pandas (and pyarrow) entirely — the dataframe usage moved to [polars](https://pola.rs) and the Python standard library — which eliminates the numpy-2.0 breakage class at its root.
+* De-duplicated the eight `select_best_chromosome_assembly_*` scripts into a single shared, unit-tested library, so fixes are made once instead of drifting across copies.
+* Added a fast unit-test suite and CI lane plus end-to-end "golden" regression tests, and consolidated packaging/test configuration into `pyproject.toml`.
+
 ## v0.13.0 Updates (28 May 2026)
 
 * Adds `--circular_chromosome` flag. When specified, a sample is only classified as complete if a contig is **both** above the minimum chromosome length **and** marked as circular by Flye. Non-circular long contigs will not be included in the complete assembly path.
