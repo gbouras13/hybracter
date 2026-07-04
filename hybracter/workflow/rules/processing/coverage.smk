@@ -48,8 +48,8 @@ rule aggr_seqkit_short:
     aggregates the seqkit stats over all samples
     """
     input:
-        expand(os.path.join(dir.out.seqkit, "{sample}_r1.txt"), sample=SAMPLES),
-        expand(os.path.join(dir.out.seqkit, "{sample}_r2.txt"), sample=SAMPLES),
+        expand(os.path.join(dir.out.seqkit, "{sample}_r1.txt"), sample=HYBRID_SAMPLES),
+        expand(os.path.join(dir.out.seqkit, "{sample}_r2.txt"), sample=HYBRID_SAMPLES),
     output:
         flag=os.path.join(dir.out.flags, "aggr_seqkit_short.flag"),
     resources:
@@ -128,6 +128,8 @@ rule estimate_sr_coverage:
     """
     quickly estimates short read coverage for pypolca and polypolish careful
     """
+    wildcard_constraints:
+        sample="|".join(HYBRID_SAMPLES)  # Only allow hybrid samples
     input:
         r1=os.path.join(dir.out.seqkit, "{sample}_r1.txt"),
         r2=os.path.join(dir.out.seqkit, "{sample}_r2.txt"),

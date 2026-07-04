@@ -95,6 +95,7 @@ if config.args.single is False:
         INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO
     )  # long flag true
     SAMPLES = list(dictReads.keys())
+    LONG_SAMPLES = SAMPLES
 # for hybracter hybrid-single
 else:
     dictReads = {}
@@ -105,6 +106,7 @@ else:
     dictReads[config.args.sample]["TargetBases"] = SUBSAMPLE_DEPTH * config.args.chromosome
     dictReads[config.args.sample]["MinBases"] = MIN_DEPTH * config.args.chromosome
     SAMPLES = [config.args.sample]
+    LONG_SAMPLES = SAMPLES
 
 ##############################
 # Import rules and functions

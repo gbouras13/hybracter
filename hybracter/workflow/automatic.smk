@@ -1,6 +1,7 @@
 import os
 import glob
-from hybracter.util import AttrMap
+import attrmap as ap
+import attrmap.utils as au
 from pathlib import Path
 
 
@@ -28,7 +29,7 @@ onerror:
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 
-config = AttrMap(config)
+config = ap.AttrMap(config)
 
 
 # directories
@@ -48,7 +49,7 @@ check_db(dir.plassemblerdb)
 # samples
 include: os.path.join("rules", "preflight", "samples.smk")
 # targets
-include: os.path.join("rules", "preflight", "targets_hybrid.smk")
+include: os.path.join("rules", "preflight", "targets_automatic.smk")
 
 
 ### from config files
@@ -67,9 +68,9 @@ DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 MIN_DEPTH = config.args.min_depth
 AUTO = config.args.auto
+MAC = config.args.mac
 MEDAKA_OVERRIDE = config.args.medaka_override
 EXTRA_PARAMS_FLYE = config.args.extra_params_flye
-CIRCULAR_CHROMOSOME = config.args.circular_chromosome
 # flag to add extra arguments to flye
 ADD_TO_FLYE = False
 
@@ -80,39 +81,53 @@ if EXTRA_PARAMS_FLYE:
         f"As you have used --extra_params_flye the extra parameters {EXTRA_PARAMS_FLYE} will be used with Flye."
     )
 
-# By default, hybracter will use --bacteria from v0.10.0 onwards
+# By default, hybracter (linux) will use --bacteria from v0.10.0 onwards
 # To take advantage of improvements with medaka v2 https://rrwick.github.io/2024/10/17/medaka-v2.html
-# not true if --medaka_override is specified
+# not true if 1) --mac or 2) --medaka_override is specified
 BACTERIA = True
-if MEDAKA_OVERRIDE:
+if MAC:
     BACTERIA = False
-    print(
-        f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria "
-    )
+else:
+    if MEDAKA_OVERRIDE:
+        BACTERIA = False
+        print(
+            f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria "
+        )
+
+# MAC medaka
+
+new_models = [
+    "r1041_e82_400bps_sup_v5.0.0",
+    "r1041_e82_400bps_hac_v5.0.0",
+    "r1041_e82_400bps_hac_v4.3.0",
+    "r1041_e82_400bps_sup_v4.3.0",
+]
+
+if MAC:
+    if MEDAKA_MODEL in new_models:
+        print(
+            f"{MEDAKA_MODEL} is not available in medaka v1.8.0 as it is too new. If you want this model, try Hybracter on a Linux machine."
+        )
+        print(f"Changing the medaka model to r1041_e82_400bps_sup_v4.2.0.")
+        MEDAKA_MODEL = "r1041_e82_400bps_sup_v4.2.0"
 
 
 # Parse the samples and read files
 
-# for hybracter hybrid
 if config.args.single is False:
     dictReads = parseSamples(
-        INPUT, False, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO
-    )  # long flag false
+        INPUT, True, SUBSAMPLE_DEPTH, DATADIR, MIN_DEPTH, AUTO, automatic_flag=True
+    )  # automatic flag true
     SAMPLES = list(dictReads.keys())
-    HYBRID_SAMPLES = SAMPLES
-# for hybracter hybrid-single
-else:
-    dictReads = {}
-    dictReads[config.args.sample] = {}
-    dictReads[config.args.sample]["LR"] = config.args.longreads
-    dictReads[config.args.sample]["MinChromLength"] = config.args.chromosome
-    dictReads[config.args.sample]["TargetBases"] = SUBSAMPLE_DEPTH * config.args.chromosome
-    dictReads[config.args.sample]["MinBases"] = MIN_DEPTH * config.args.chromosome
-    dictReads[config.args.sample]["R1"] = config.args.short_one
-    dictReads[config.args.sample]["R2"] = config.args.short_two
-    SAMPLES = [config.args.sample]
-    HYBRID_SAMPLES = SAMPLES
 
+    # Filter samples
+    filtered_samples = filter_samples_by_workflow_type(dictReads)
+    HYBRID_SAMPLES = filtered_samples['hybrid'] 
+    LONG_SAMPLES = filtered_samples['long']
+
+    # Print the detected workflow types
+    print(f"Hybrid assembly samples: {HYBRID_SAMPLES}")
+    print(f"Long-read-only samples: {LONG_SAMPLES}")
 
 ##############################
 # Import rules and functions
@@ -142,7 +157,7 @@ include: os.path.join("rules", "assembly", "assemble.smk")
 # extract chrom
 include: os.path.join("rules", "processing", "extract_fastas.smk")
 # checkpoint
-include: os.path.join("rules", "completeness", "aggregate.smk")
+include: os.path.join("rules", "completeness", "aggregate_automatic.smk")
 
 
 # checkpoint here for completeness
@@ -175,7 +190,7 @@ if config.args.no_medaka is False:
     include: os.path.join("rules", "polishing", "short_read_polish.smk")
     include: os.path.join("rules", "polishing", "short_read_polish_incomplete.smk")
     # plassembler
-    include: os.path.join("rules", "assembly", "plassembler.smk")
+    include: os.path.join("rules", "assembly", "plassembler_automatic.smk")
     include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 
     if config.args.no_pypolca is False:
@@ -185,7 +200,7 @@ if config.args.no_medaka is False:
     include: os.path.join("rules", "assess", "assess_complete.smk")
     include: os.path.join("rules", "assess", "assess_incomplete.smk")
     # finalse
-    include: os.path.join("rules", "finalise", "select_best_assembly.smk")
+    include: os.path.join("rules", "finalise", "select_best_assembly.smk") #TODO change to automatic
 
 
 # --no_medaka
@@ -202,7 +217,7 @@ else:
     include: os.path.join("rules", "polishing", "short_read_polish_no_medaka.smk")
     include: os.path.join("rules", "polishing", "short_read_polish_incomplete_no_medaka.smk")
     # plassembler
-    include: os.path.join("rules", "assembly", "plassembler.smk")
+    include: os.path.join("rules", "assembly", "plassembler_automatic.smk")
     include: os.path.join("rules", "processing", "combine_plassembler_info.smk")
 
     if config.args.no_pypolca is False:
@@ -212,10 +227,8 @@ else:
     include: os.path.join("rules", "assess", "assess_complete_no_medaka.smk")
     include: os.path.join("rules", "assess", "assess_incomplete_no_medaka.smk")
     # finalse
-    include: os.path.join("rules", "finalise", "select_best_assembly_no_medaka.smk")
-
-
+    include: os.path.join("rules", "finalise", "select_best_assembly_automatic_no_medaka.smk")
 ### rule all
 rule all:
     input:
-        TargetFilesHybrid,
+        TargetFilesAutomatic,
