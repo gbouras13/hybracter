@@ -17,8 +17,26 @@ from .util import (
     print_citation,
     print_version,
     run_snakemake,
+    sanitise_sample_name,
     snake_base,
 )
+
+
+def _warn_mac_deprecated(ctx, param, value):
+    """``--mac`` is a deprecated no-op kept for backwards compatibility.
+
+    Medaka v2 installs and runs on all platforms (including macOS / Apple
+    Silicon), so --mac is no longer needed. We keep the flag so existing
+    commands don't error, but warn and ignore it.
+    """
+    if value:
+        click.echo(
+            "WARNING: --mac is deprecated and has no effect. Medaka v2 now works "
+            "on all platforms (including macOS / Apple Silicon), so --mac is no "
+            "longer needed and will be removed in a future release.",
+            err=True,
+        )
+    return value
 
 
 def common_options(func):
@@ -120,7 +138,7 @@ def common_options(func):
         ),
         click.option(
             "--contaminants",
-            help="Contaminants FASTA file to map long readsagainst to filter out. Choose --contaminants lambda to filter out phage lambda long reads.",
+            help="Contaminants FASTA file to map long reads against to filter out. Choose --contaminants lambda to filter out phage lambda long reads.",
             type=click.Path(),
             default="none",
             required=False,
@@ -152,9 +170,11 @@ def common_options(func):
         ),
         click.option(
             "--mac",
-            help="If you are running Hybracter on Mac - installs v1.8.0 of Medaka as higher versions break.",
+            help="[DEPRECATED] No-op kept for backwards compatibility; Medaka v2 works on all platforms.",
             is_flag=True,
             default=False,
+            hidden=True,
+            callback=_warn_mac_deprecated,
         ),
         click.option(
             "--medaka_override",
@@ -558,7 +578,7 @@ def hybrid_single(
 ):
     """Run hybracter hybrid on 1 isolate"""
     # Sanitise sample name: strip whitespace and replace spaces with underscores
-    sample = sample.strip().replace(" ", "_")
+    sample = sanitise_sample_name(sample)
     # Config to add or update in configfile
     merge_config = {
         "args": {
@@ -767,7 +787,7 @@ def long_single(
 ):
     """Run hybracter long on 1 isolate"""
     # Sanitise sample name: strip whitespace and replace spaces with underscores
-    sample = sample.strip().replace(" ", "_")
+    sample = sanitise_sample_name(sample)
     # Config to add or update in configfile
     merge_config = {
         "args": {
@@ -857,9 +877,11 @@ install
 )
 @click.option(
             "--mac",
-            help="If you are running Hybracter on Mac - installs v1.8.0 of Medaka as higher versions break.",
+            help="[DEPRECATED] No-op kept for backwards compatibility; Medaka v2 works on all platforms.",
             is_flag=True,
             default=False,
+            hidden=True,
+            callback=_warn_mac_deprecated,
 )
 @click.option(
     "-o",

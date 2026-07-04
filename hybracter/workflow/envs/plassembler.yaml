@@ -6,7 +6,7 @@ dependencies:
     - plassembler >=1.6.2
     - unicycler >=0.5.1
     - spades >=3.15.4
-    - canu ==2.2
+    - canu ==2.3
     - mash >=2.2
 
 

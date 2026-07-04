@@ -1,7 +1,6 @@
 import os
 import glob
-import attrmap as ap
-import attrmap.utils as au
+from hybracter.util import AttrMap
 from pathlib import Path
 
 
@@ -29,7 +28,7 @@ onerror:
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 
-config = ap.AttrMap(config)
+config = AttrMap(config)
 
 
 # directories
@@ -68,7 +67,6 @@ DEPTH_FILTER = config.args.depth_filter
 SUBSAMPLE_DEPTH = config.args.subsample_depth
 MIN_DEPTH = config.args.min_depth
 AUTO = config.args.auto
-MAC = config.args.mac
 MEDAKA_OVERRIDE = config.args.medaka_override
 EXTRA_PARAMS_FLYE = config.args.extra_params_flye
 CIRCULAR_CHROMOSOME = config.args.circular_chromosome
@@ -82,35 +80,15 @@ if EXTRA_PARAMS_FLYE:
         f"As you have used --extra_params_flye the extra parameters {EXTRA_PARAMS_FLYE} will be used with Flye."
     )
 
-# By default, hybracter (linux) will use --bacteria from v0.10.0 onwards
+# By default, hybracter will use --bacteria from v0.10.0 onwards
 # To take advantage of improvements with medaka v2 https://rrwick.github.io/2024/10/17/medaka-v2.html
-# not true if 1) --mac or 2) --medaka_override is specified
+# not true if --medaka_override is specified
 BACTERIA = True
-if MAC:
+if MEDAKA_OVERRIDE:
     BACTERIA = False
-else:
-    if MEDAKA_OVERRIDE:
-        BACTERIA = False
-        print(
-            f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria "
-        )
-
-# MAC medaka
-
-new_models = [
-    "r1041_e82_400bps_sup_v5.0.0",
-    "r1041_e82_400bps_hac_v5.0.0",
-    "r1041_e82_400bps_hac_v4.3.0",
-    "r1041_e82_400bps_sup_v4.3.0",
-]
-
-if MAC:
-    if MEDAKA_MODEL in new_models:
-        print(
-            f"{MEDAKA_MODEL} is not available in medaka v1.8.0 as it is too new. If you want this model, try Hybracter on a Linux machine."
-        )
-        print(f"Changing the medaka model to r1041_e82_400bps_sup_v4.2.0.")
-        MEDAKA_MODEL = "r1041_e82_400bps_sup_v4.2.0"
+    print(
+        f"As you have selected --medaka_override, {MEDAKA_MODEL} will be used with Medaka, not --bacteria "
+    )
 
 
 # Parse the samples and read files

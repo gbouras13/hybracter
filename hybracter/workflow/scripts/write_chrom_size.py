@@ -18,7 +18,8 @@ def write_chrom_size(
         file.write(str(chrom_size))
 
 
-write_chrom_size(
-    snakemake.input.kmcLOG,
-    snakemake.output.chrom_size,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    write_chrom_size(
+        snakemake.input.kmcLOG,
+        snakemake.output.chrom_size,
+    )

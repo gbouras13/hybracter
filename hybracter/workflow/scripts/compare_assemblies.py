@@ -19,14 +19,12 @@ have received a copy of the GNU General Public License along with this program. 
 """
 
 import datetime
-# import edlib
 import gzip
 import os
 import re
 import sys
 import textwrap
 
-import mappy
 from Bio import SeqIO
 
 
@@ -43,22 +41,20 @@ def run_compare(
     assembly_1, assembly_2 = load_assemblies(
         assembly_1, assembly_2, reference_polishing_round, query_polishing_round
     )
-    touch_file(outputfile)
-    align_sequences(
-        assembly_1,
-        assembly_2,
-        padding,
-        merge,
-        aligner,
-        outputfile,
-        reference_polishing_round,
-        query_polishing_round,
-    )
-
-
-def touch_file(path):
-    with open(path, "a"):
-        os.utime(path, None)
+    # Open the output once and thread the handle through, rather than
+    # re-opening the file for every difference region (E2). "w" creates/truncates
+    # the file, so it still exists (empty) when there are no differences.
+    with open(outputfile, "w") as out:
+        align_sequences(
+            assembly_1,
+            assembly_2,
+            padding,
+            merge,
+            aligner,
+            out,
+            reference_polishing_round,
+            query_polishing_round,
+        )
 
 
 def load_assemblies(
@@ -106,7 +102,7 @@ def align_sequences(
     padding,
     merge,
     aligner,
-    outputfile,
+    out,
     reference_polishing_round,
     query_polishing_round,
 ):
@@ -126,7 +122,7 @@ def align_sequences(
             merge,
             longest_label,
             aligner,
-            outputfile,
+            out,
             reference_polishing_round,
             query_polishing_round,
         )
@@ -153,7 +149,7 @@ def output_differences(
     merge,
     longest_label,
     aligner,
-    outputfile,
+    out,
     reference_polishing_round,
     query_polishing_round,
 ):
@@ -170,16 +166,10 @@ def output_differences(
     ) = get_aligned_seqs(assembly_1_seq, assembly_2_seq, aligner)
     if len(diff_pos) == 1:
         log(f"  1 difference")
-        with open(outputfile, "a") as out:
-            out.write(f"  1 difference")
-            out.write("\n")
-            out.close()
+        out.write("  1 difference\n")
     else:
         log(f"  {len(diff_pos):,} differences")
-        with open(outputfile, "a") as out:
-            out.write(f"  {len(diff_pos):,} differences")
-            out.write("\n")
-            out.close()
+        out.write(f"  {len(diff_pos):,} differences\n")
     log()
 
     aligned_len = len(assembly_1_aligned)
@@ -220,13 +210,10 @@ def output_differences(
             print(" " * longest_label, differences[start:end], flush=True)
             print(flush=True)
 
-            # Open the output file in write mode
-            with open(outputfile, "a") as out:
-                out.write(f"{assembly_1_label} {assembly_1_aligned[start:end]}\n")
-                out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
-                out.write(" " * longest_label + differences[start:end] + "\n")
-                out.write("\n")
-                out.close()
+            out.write(f"{assembly_1_label} {assembly_1_aligned[start:end]}\n")
+            out.write(f"{assembly_2_label} {assembly_2_aligned[start:end]}\n")
+            out.write(" " * longest_label + differences[start:end] + "\n")
+            out.write("\n")
         except IndexError:
             print(f"Warning: Error writing {assembly_1_label} or {assembly_2_label}")
             print("This isn't a fatal error, but the difference won't be visualised.")
@@ -333,6 +320,8 @@ def get_cigar(assembly_1_seq, assembly_2_seq, aligner):
 
 
 def get_cigar_with_mappy(assembly_1_seq, assembly_2_seq):
+    import mappy  # imported lazily so the module is importable without mappy (e.g. unit tests)
+
     a = mappy.Aligner(seq=assembly_2_seq, preset="map-ont")
     for result in a.map(assembly_1_seq):
         full_length_query = result.q_st == 0 and result.q_en == len(assembly_1_seq)
@@ -343,6 +332,8 @@ def get_cigar_with_mappy(assembly_1_seq, assembly_2_seq):
 
 
 def get_cigar_with_edlib(assembly_1_seq, assembly_2_seq):
+    import edlib  # optional aligner; imported lazily so it isn't a hard dependency
+
     result = edlib.align(assembly_1_seq, assembly_2_seq, mode="NW", task="path")
     return result["cigar"]
 
@@ -489,73 +480,15 @@ def check_python_version():
         sys.exit("\nError: compare_assemblies.py requires Python 3.6 or later")
 
 
-# Unit tests for Pytest
-# =====================
-
-
-def test_get_longest_label():
-    assembly_1 = [("seq1", "ACGT"), ("seq2", "ACGTACGTACGTACGT")]
-    assembly_2 = [("seq1_polished", "ACGT"), ("seq2_polished", "ACGT")]
-    reference_polishing_round = "polypolish"
-    query_polishing_round = "pypolca"
-    assert (
-        get_longest_label(
-            assembly_1, assembly_2, reference_polishing_round, query_polishing_round
-        )
-        == 20
-    )
-
-
-def test_get_expanded_cigar():
-    assert get_expanded_cigar("5=") == "====="
-    assert get_expanded_cigar("3=2X4=1I6=3D3=") == "===XX====I======DDD==="
-
-
-def test_make_diff_ranges():
-    diff_pos = [100, 110]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 121)]
-
-    diff_pos = [100, 120]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 131)]
-
-    diff_pos = [100, 121]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 111), (111, 132)]
-
-    diff_pos = [100, 150]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(90, 111), (140, 161)]
-
-    diff_pos = [2, 195]
-    padding = 10
-    merge = 20
-    aligned_len = 200
-    diff_ranges = make_diff_ranges(diff_pos, padding, merge, aligned_len)
-    assert diff_ranges == [(0, 13), (185, 200)]
-
-
 #### to actually run the rule
-run_compare(
-    snakemake.input.reference,
-    snakemake.input.assembly,
-    15,
-    30,
-    "mappy",
-    snakemake.output.diffs,
-    snakemake.params.reference_polishing_round,
-    snakemake.params.query_polishing_round,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    run_compare(
+        snakemake.input.reference,
+        snakemake.input.assembly,
+        15,
+        30,
+        "mappy",
+        snakemake.output.diffs,
+        snakemake.params.reference_polishing_round,
+        snakemake.params.query_polishing_round,
+    )

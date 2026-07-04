@@ -3,7 +3,6 @@ channels:
     - conda-forge
     - bioconda
 dependencies:
-    - pandas
     - numpy
     - biopython >=1.78
     - pyrodigal >=3.0.0

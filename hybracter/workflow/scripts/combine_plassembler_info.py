@@ -3,7 +3,7 @@
 import glob
 import os
 
-import pandas as pd
+import polars as pl
 
 
 def combine_sample_plassembler(summary_dir, output):
@@ -28,21 +28,22 @@ def combine_sample_plassembler(summary_dir, output):
         for a in summary_list:
             # only if > 0
             if os.path.getsize(a) > 0:
-                tmp_summary = pd.read_csv(a, delimiter="\t", index_col=False, header=0)
-                summaries.append(tmp_summary)
+                # read as strings to preserve values exactly across the concat
+                summaries.append(pl.read_csv(a, separator="\t", infer_schema_length=0))
                 # appends to the number of plasmids
                 samples_with_plasmids += 1
 
     # save as tsv
     if samples_with_plasmids > 1:
         # make into combined dataframe
-        total_summary_df = pd.concat(summaries, ignore_index=True)
-        total_summary_df.to_csv(output, sep="\t", index=False)
+        total_summary_df = pl.concat(summaries, how="vertical_relaxed")
+        total_summary_df.write_csv(output, separator="\t")
     elif samples_with_plasmids == 1:  # just print the first
-        summaries[0].to_csv(output, sep="\t", index=False)
+        summaries[0].write_csv(output, separator="\t")
     else:  # touch the output
         with open(output, "a"):
             os.utime(output, None)
 
 
-combine_sample_plassembler(snakemake.params.summary_dir, snakemake.output.out)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    combine_sample_plassembler(snakemake.params.summary_dir, snakemake.output.out)

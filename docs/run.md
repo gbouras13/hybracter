@@ -41,7 +41,7 @@ hybracter hybrid -i <input.csv> -o <output_dir> -t <threads>  [other arguments]
 * You can estimate the chromosome size with lrge by using `--auto`
     * **Note: if you have low quality long read sets (e.g. R9 FAST/HAC or sub Q15 reads), use `--auto` with care. Users have reported that it can tend to overestimate the chromosome size with kmc - for lrge, some tests have shown similar (but not so bad) behaviour. This is not really solvable - it is simply a limitation of low quality data!**
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
-* If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
+* Medaka v2 now installs and runs on all platforms including macOS (Intel and Apple Silicon), so no Mac-specific options are needed. The `--mac` flag is deprecated and is now a hidden no-op.
 * From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.
 * If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`). You can either specify 1 directory (if long and short FASTQs in the same directory) or 2 (long and short FASTQs in separate directories). If you specify 2, they must be separated by a comma e.g. `--datadir "dirlong,dirshort"`.
 * Use `--circular_chromosome` if you want to require Flye to circularise a contig before classifying a sample as complete. By default, hybracter classifies a sample as complete based on contig length alone. With `--circular_chromosome`, a contig must be both above the minimum chromosome length **and** marked as circular by Flye. Non-circular long contigs will still be polished and included in the final assembly but will not be reoriented by dnaapler. See the [Circular Chromosome](circular_chromosome.md) page for full details, including when **not** to use this flag (e.g. _Borrelia_, _Streptomyces_).
@@ -106,9 +106,6 @@ Options:
                                   fraction of the chromosome read depth (needs
                                   to be below in both long and short read sets
                                   for hybrid).
-  --mac                           If you are running Hybracter on Mac -
-                                  installs v1.8.0 of Medaka as higher versions
-                                  break.
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.
@@ -218,9 +215,6 @@ Options:
                                   fraction of the chromosome read depth (needs
                                   to be below in both long and short read sets
                                   for hybrid).
-  --mac                           If you are running Hybracter on Mac -
-                                  installs v1.8.0 of Medaka as higher versions
-                                  break.
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.
@@ -285,7 +279,7 @@ hybracter long -i <input.csv> -o <output_dir> -t <threads> [other arguments]
 * You can estimate the chromosome size with lrge by using `--auto`
     * **Note: if you have low quality long read sets (e.g. R9 FAST/HAC or sub Q15 reads), use `--auto` with care. Users have reported that it can tend to overestimate the chromosome size with kmc - for lrge, some tests have shown similar (but not so bad) behaviour. This is not really solvable - it is simply a limitation of low quality data!**
 * You can set a minimum long-read depth with `--min_depth`. Hybracter will error out if your estimated long-reads coverage is lower than this.
-* If you are running hybracter on a Mac, please use `--mac` (or find a Linux machine). This will make sure Medaka v1.8.0 is installed, as newer versions don't work on Macs.
+* Medaka v2 now installs and runs on all platforms including macOS (Intel and Apple Silicon), so no Mac-specific options are needed. The `--mac` flag is deprecated and is now a hidden no-op.
 * From v0.10.0, Hybracter will implement the `--bacteria` flag designed specifically for bacterial genomes. See Ryan Wick's [blogpost](https://rrwick.github.io/2024/10/17/medaka-v2.html) for some more explanation and benchmarking. If you do not want to use `--bactera`, please use `--medaka_override` to make sure hybracter uses your `--medakaModel`. This is likely most useful for R9 data.
 * If you have all your FASTQs in a certain directory, you can use `--datadir` to specify these (and omit the directory path in the sample sheet `--input`).
 * Use `--circular_chromosome` if you want to require Flye to circularise a contig before classifying a sample as complete. By default, hybracter classifies a sample as complete based on contig length alone. With `--circular_chromosome`, a contig must be both above the minimum chromosome length **and** marked as circular by Flye. Non-circular long contigs will still be polished and included in the final assembly but will not be reoriented by dnaapler. See the [Circular Chromosome](circular_chromosome.md) page for full details, including when **not** to use this flag (e.g. _Borrelia_, _Streptomyces_).
@@ -339,9 +333,6 @@ Options:
                                   fraction of the chromosome read depth (needs
                                   to be below in both long and short read sets
                                   for hybrid).
-  --mac                           If you are running Hybracter on Mac -
-                                  installs v1.8.0 of Medaka as higher versions
-                                  break.
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.
@@ -444,9 +435,6 @@ Options:
                                   fraction of the chromosome read depth (needs
                                   to be below in both long and short read sets
                                   for hybrid).
-  --mac                           If you are running Hybracter on Mac -
-                                  installs v1.8.0 of Medaka as higher versions
-                                  break.
   --medaka_override               Use this if you do NOT want to use the
                                   --bacteria option with Medaka. Instead your
                                   specified --medakaModel will be used.

@@ -12,6 +12,71 @@ import click
 import yaml
 
 
+class AttrMap(dict):
+    """A ``dict`` that also supports attribute access, with auto-vivification.
+
+    Drop-in replacement for ``attrmap.AttrMap``. The key difference is that this
+    subclasses ``dict``: snakemake (>=9.22) JSON-serialises the workflow
+    ``config``, and ``attrmap.AttrMap`` is not JSON-serialisable
+    (``TypeError: Object of type AttrMap is not JSON serializable``), whereas a
+    ``dict`` subclass serialises natively.
+
+    - Nested dicts/lists are wrapped recursively, so ``config.args.foo`` works.
+    - Accessing a missing attribute auto-creates a nested ``AttrMap`` (so
+      ``dir.out.base = ...`` works without pre-creating ``dir.out``), matching
+      attrmap's behaviour.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for key, value in list(self.items()):
+            super().__setitem__(key, self._wrap(value))
+
+    @classmethod
+    def _wrap(cls, value):
+        if isinstance(value, AttrMap):
+            return value
+        if isinstance(value, dict):
+            return cls(value)
+        if isinstance(value, list):
+            return [cls._wrap(item) for item in value]
+        if isinstance(value, tuple):
+            return tuple(cls._wrap(item) for item in value)
+        return value
+
+    def __setitem__(self, key, value):
+        super().__setitem__(key, self._wrap(value))
+
+    def __getattr__(self, name):
+        # __getattr__ only fires when normal lookup fails; don't auto-vivify
+        # dunders so copy/pickle protocol methods still raise AttributeError.
+        if name.startswith("__") and name.endswith("__"):
+            raise AttributeError(name)
+        if name not in self:
+            self[name] = AttrMap()
+        return self[name]
+
+    def __setattr__(self, name, value):
+        self[name] = value
+
+    def __delattr__(self, name):
+        try:
+            del self[name]
+        except KeyError as exc:
+            raise AttributeError(name) from exc
+
+
+def to_dict(obj):
+    """Recursively convert an :class:`AttrMap` (or nested dict) to plain dicts."""
+    if isinstance(obj, dict):
+        return {key: to_dict(value) for key, value in obj.items()}
+    if isinstance(obj, list):
+        return [to_dict(item) for item in obj]
+    if isinstance(obj, tuple):
+        return tuple(to_dict(item) for item in obj)
+    return obj
+
+
 class OrderedCommands(click.Group):
     """This class will preserve the order of subcommands, which is useful when printing --help"""
 
@@ -21,6 +86,15 @@ class OrderedCommands(click.Group):
 
 def snake_base(rel_path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), rel_path)
+
+
+def sanitise_sample_name(sample):
+    """Strip surrounding whitespace and replace internal spaces with underscores.
+
+    Sample names flow into output filenames and snakemake wildcards, so spaces
+    would break paths/rules (issue #119).
+    """
+    return sample.strip().replace(" ", "_")
 
 
 def print_version():

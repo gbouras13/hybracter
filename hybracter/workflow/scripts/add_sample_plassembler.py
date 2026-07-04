@@ -2,21 +2,18 @@
 
 import os
 
-import pandas as pd
+import polars as pl
 
 
 def add_sample_plassembler(input, output, sample):
     if os.path.getsize(input) > 0:
-        tmp_summary = pd.read_csv(input, delimiter="\t", index_col=False, header=0)
-        tmp_summary["Sample"] = sample
-
-        # shift column 'Sample' to first position
-        first_column = tmp_summary.pop("Sample")
-
-        # insert column using insert(position,column_name,
-        # first_column) function
-        tmp_summary.insert(0, "Sample", first_column)
-        tmp_summary.to_csv(output, sep="\t", index=False)
+        # read as strings to preserve plassembler's own value formatting exactly
+        tmp_summary = pl.read_csv(input, separator="\t", infer_schema_length=0)
+        # add the Sample column at the first position (overwriting any existing one)
+        tmp_summary = tmp_summary.select(
+            pl.lit(sample).alias("Sample"), pl.exclude("Sample")
+        )
+        tmp_summary.write_csv(output, separator="\t")
 
     # touch a file if nothing
     else:
@@ -24,6 +21,7 @@ def add_sample_plassembler(input, output, sample):
             os.utime(output, None)
 
 
-add_sample_plassembler(
-    snakemake.input.inp, snakemake.output.out, snakemake.wildcards.sample
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    add_sample_plassembler(
+        snakemake.input.inp, snakemake.output.out, snakemake.wildcards.sample
+    )

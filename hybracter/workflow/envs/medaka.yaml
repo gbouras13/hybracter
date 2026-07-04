@@ -3,12 +3,11 @@ channels:
     - conda-forge
     - bioconda
 dependencies:
-    - pip
-    - pyabpoa
-    - python==3.11
-    - samtools >=1.14
-    - bcftools >=1.14
-    - minimap2 >=2.17
-    - htslib >=1.14
-    - pip:
-        - medaka==2.0.1 
+    # conda-installed medaka v2 works natively on linux-64, linux-aarch64,
+    # osx-64 and osx-arm64 (Apple Silicon), so a single env serves every
+    # platform - no more separate medaka_mac.yaml / --mac workaround.
+    # medaka pulls its own toolchain (pytorch, samtools, minimap2, bcftools,
+    # htslib, pysam, pyabpoa). setuptools is pinned so `pkg_resources` is
+    # always present (see issue #152).
+    - medaka >=2
+    - setuptools

@@ -2,6 +2,7 @@
 Defines all functions used in hybracter
 """
 
+import functools
 import gzip
 from Bio import SeqIO
 import sys
@@ -9,11 +10,21 @@ import os
 import re
 
 
+@functools.lru_cache(maxsize=None)
+def _lrge_genome_size(lrge_path):
+    """Read the lrge-estimated genome size from disk, once per file.
+
+    These helpers are called from many rules' ``params:`` lambdas across many
+    samples during DAG evaluation, but the file content is fixed for a run, so
+    the read is cached on the path (E4).
+    """
+    with open(lrge_path, "r") as file:
+        return float(file.readline().strip())
+
+
 def getMinChromLength(lrge_path, sample, auto):
     if auto:
-        with open(lrge_path, "r") as file:
-            genome_size = file.readline().strip()
-            return int(float(genome_size) * 0.8)
+        return int(_lrge_genome_size(lrge_path) * 0.8)
     else:
         return dictReads[sample]["MinChromLength"]
 
@@ -21,18 +32,14 @@ def getMinChromLength(lrge_path, sample, auto):
 # get min_depth
 def getMinBases(lrge_path, sample, auto, min_depth):
     if auto:
-        with open(lrge_path, "r") as file:
-            genome_size = file.readline().strip()
-            return int(min_depth * float(genome_size) * 0.8)
+        return int(min_depth * _lrge_genome_size(lrge_path) * 0.8)
     else:
         return dictReads[sample]["MinBases"]
 
 
 def getTargetBases(lrge_path, sample, auto, target_depth):
     if auto:
-        with open(lrge_path, "r") as file:
-            genome_size = file.readline().strip()
-            return int(target_depth * float(genome_size) * 0.8)
+        return int(target_depth * _lrge_genome_size(lrge_path) * 0.8)
     else:
         return dictReads[sample]["TargetBases"]
 
@@ -66,41 +73,17 @@ def is_fasta_file(file_path):
 
     def check_fasta(handle):
         try:
-            records = list(SeqIO.parse(handle, "fasta"))
-            return len(records) > 0
+            return any(SeqIO.parse(handle, "fasta"))
         except ValueError:
             return False
 
+    # pick the opener by extension, parse once, return the result
+    opener = gzip.open if file_path.endswith(".gz") else open
     try:
-        if file_path.endswith(".gz"):
-            try:
-                with gzip.open(file_path, "rt") as handle:
-                    check_fasta(handle)
-            except (IOError, OSError):
-                return False
-        else:
-            try:
-                with open(file_path, "rt") as handle:
-                    return check_fasta(handle)
-            except (IOError, OSError):
-                return False
-    except (IOError, ValueError):
-        # Handle exceptions for non-existent or non-FASTA files
+        with opener(file_path, "rt") as handle:
+            return check_fasta(handle)
+    except (IOError, OSError):
         return False
-
-
-    if file_path.endswith(".gz") or file_path.endswith(".fasta.gz"):
-        try:
-            with gzip.open(file_path, "rt") as handle:
-                return check_fasta(handle)
-        except (IOError, OSError):
-            return False
-    elif file_path.endswith(".fasta"):
-        try:
-            with open(file_path, "rt") as handle:
-                return check_fasta(handle)
-        except (IOError, OSError):
-            return False
 
 
 def check_host():

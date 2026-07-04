@@ -13,6 +13,13 @@ ARG MINIFORGE_VERSION=24.11.3-0
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Ignore any user site-packages (~/.local) bind-mounted from the host. Apptainer/
+# Singularity mount $HOME by default, and Python puts ~/.local ahead of the
+# container's site-packages - a stale host sqlalchemy (<2.0) there shadowed the
+# container's copy and broke snakemake with
+# "cannot import name 'DOUBLE' from 'sqlalchemy.types'" (issue #160).
+ENV PYTHONNOUSERSITE=1
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     autoconf \

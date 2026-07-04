@@ -31,6 +31,7 @@
   - [Pipeline](#pipeline)
   - [Benchmarking](#benchmarking)
   - [Recent Updates](#recent-updates)
+    - [v0.14.0 Updates (3 July 2026)](#v0140-updates-3-july-2026)
     - [v0.13.0 Updates (1 June 2026)](#v0130-updates-1-june-2026)
     - [v0.12.0 Updates (7 January 2026)](#v0120-updates-7-january-2026)
     - [v0.11.0 Updates (4 December 2024)](#v0110-updates-4-december-2024)
@@ -98,7 +99,7 @@ hybracter test-hybrid --threads 8
 hybracter test-long --threads 8
 ```
 
-* Note: if you are installing Hybracter on a mac, please use `--mac` - this will install Medaka v1.8 (not v2, which is not available for MacOS). Alternatively, if you want Medaka v2, you should try the container option with Docker.
+* Note: Hybracter now uses Medaka v2, which installs and runs on all platforms including macOS (Intel and Apple Silicon). The `--mac` flag is deprecated and no longer needed (it is now a hidden no-op).
 
 ### Container
 
@@ -106,7 +107,7 @@ Alternatively, a Docker/Singularity Linux container image is available for Hybra
 
 * **Note** the container image comes with the database and all environments installed - there is no need to run `hybracter install` or `hybracter test-hybrid`/`hybracter test-long` or to specify a database directory with `-d`.
 
-To install and run v0.12.0 with singularity
+To install and run the latest version with singularity
 
 ```bash
 
@@ -121,7 +122,7 @@ containerImage="$IMAGE_DIR/hybracter_latest.sif"
  -o output_test_singularity -t 4 --auto
 ```
 
-To install and run the latest container with Docker (recommended if you have a Mac as it has Medaka v2)
+To install and run the latest container with Docker
 
 ```
 docker pull quay.io/gbouras13/hybracter:latest
@@ -195,6 +196,14 @@ To summarise the conclusions:
 
 ## Recent Updates
 
+### v0.14.0 Updates (3 July 2026)
+
+* Fixes `TypeError: Object of type AttrMap is not JSON serializable`, which crashed every run on newer Snakemake (≥9.22, e.g. when a fresh install pulled in Python 3.14). Upgrading fixes this without needing to pin Python or Snakemake.
+* Fixes a container crash where a stale package in the host `~/.local` shadowed the container's own (e.g. `ImportError: cannot import name 'DOUBLE' from 'sqlalchemy.types'`) — see [#160](https://github.com/gbouras13/hybracter/issues/160). The images now set `PYTHONNOUSERSITE=1`.
+* Medaka now installs from a single conda `medaka>=2` environment on all platforms (Linux and macOS, Intel & Apple Silicon); `--mac` is deprecated to a hidden no-op and no longer needed.
+* Various other bugfixes: `--logic best` with no ALE scores, the numpy 2.0 coverage error ([#142](https://github.com/gbouras13/hybracter/issues/142)), empty Flye assembly / plasmid ID collision ([#86](https://github.com/gbouras13/hybracter/issues/86), [#133](https://github.com/gbouras13/hybracter/issues/133)), whitespace sample names ([#119](https://github.com/gbouras13/hybracter/issues/119)), and plasmid circularity counting.
+* Under the hood (no change to assembly results): removed pandas (now polars + the standard library), de-duplicated the assembly-selection scripts into a shared, unit-tested library, and added a fast test suite. See [HISTORY.md](HISTORY.md) for the full list.
+
 ### v0.13.0 Updates (1 June 2026)
 
 * Adds `--circular_chromosome` flag. 
@@ -229,7 +238,7 @@ options:
     * According to the [preprint](https://www.biorxiv.org/content/10.1101/2024.11.27.625777v1) (and my less exhaustive testing), lrge is more accurate and much faster than kmc, but I would still be careful using it on data that has lower quality than < Q15. 
 * Nothing else changes - the estimated chromosome size used by Hybracter will still be 80% of the estimate, as it needs to account for plasmids
 * Adds `r1041_e82_400bps_bacterial_methylation` as an option for `--medakaModel` thanks to [this issue](https://github.com/gbouras13/hybracter/issues/108).
-* Note this won't work if you run `hybracter` on a Mac (as medaka v2 is not available)
+* Note: since the move to Medaka v2, this now works on macOS too (Intel and Apple Silicon).
 
 ### v0.10.0 Updates (17 October 2024)
 
@@ -624,7 +633,7 @@ Ryan Wick's [blogpost](https://rrwick.github.io/2023/10/24/ont-only-accuracy-upd
 
 Combined with the difficulty and randomness in installing Medaka from Nanopore, I have therefore decided to add a `--no_medaka` flag into v0.2.0. 
 
-I have also set Medaka to be v1.8.0 and I do not intend to upgrade this going forward, as this is the most recent stable bioconda version that doesn't seem to cause too much grief. 
+Historically Medaka was pinned to v1.8.0, but Hybracter now uses a single conda Medaka v2 environment that installs and runs on all platforms (including macOS / Apple Silicon).
 
 If you have trouble with Medaka installation, I'd therefore suggest please using `--no_medaka`.
 

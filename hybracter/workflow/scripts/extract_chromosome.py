@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import pandas as pd
 from Bio import SeqIO
 import os
 
@@ -19,28 +18,29 @@ def touch_file(path):
 
 
 
+def circ_by_seq_name(info_file_path):
+    """Map each Flye contig seq_name -> its circ flag ('Y'/'N') from assembly_info.txt.
+
+    Replaces a pandas read of the tab-separated Flye info table
+    (cols: seq_name, length, cov, circ, ...); '#' comment lines are skipped.
+    """
+    circ = {}
+    with open(info_file_path) as fh:
+        for line in fh:
+            if not line.strip() or line.startswith("#"):
+                continue
+            fields = line.rstrip("\n").split("\t")
+            circ[fields[0]] = fields[3]
+    return circ
+
+
 def get_chromosome_plasmids(
     input_fasta, chromosome_fasta, ignore_list, min_chrom_length, info_file_path, polypolish_flag, circular_chromosome
 ):
     # read in the fasta
 
-    # Read the flye info file
-    info_df = pd.read_csv(
-        info_file_path,
-        sep="\t",
-        comment="#",
-        header=None,
-        names=[
-            "seq_name",
-            "length",
-            "cov",
-            "circ",
-            "repeat",
-            "mult",
-            "alt_group",
-            "graph_path",
-        ],
-    )
+    # Read the flye info file (seq_name -> circ flag)
+    circ_by_name = circ_by_seq_name(info_file_path)
 
     # to make sure it gets made regardless for snakemake
     touch_file(ignore_list)
@@ -50,20 +50,10 @@ def get_chromosome_plasmids(
 
             seq_id = dna_record.id
 
-            # get all the values
-            circ_values = info_df.loc[info_df["seq_name"] == seq_id, "circ"].values
-
-            if len(circ_values) == 1:
-                circ_value = circ_values[0]
-            # this should never every happen as there won't be dupes in the Flye info sheet but just in case
-            elif len(circ_values) > 1:
-                circ_value = circ_values[0]
-            # will be 0 (so under this case) if:
-                # chromosome didn't circularise
-                # plasmids - not part of the chromosome
-                # so 'N' to make sure it doesn't get extracted with --circular_chromosome
-            else:
-                circ_value = "N"
+            # look up the Flye circularity; absent (chromosome didn't circularise,
+            # or a plasmid not part of the chromosome set) defaults to 'N' so it
+            # isn't extracted under --circular_chromosome
+            circ_value = circ_by_name.get(seq_id, "N")
 
             if circular_chromosome:
                 # --circular_chromosome: only extract contigs that are long AND circular
@@ -79,12 +69,13 @@ def get_chromosome_plasmids(
                             file.write(f"{seq_id}\n")
 
 
-get_chromosome_plasmids(
-    snakemake.input.fasta,
-    snakemake.output.fasta,
-    snakemake.output.ignore_list,
-    snakemake.params.min_chrom_length,
-    snakemake.input.info,
-    snakemake.params.polypolish_flag,
-    snakemake.params.circular_chromosome,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    get_chromosome_plasmids(
+        snakemake.input.fasta,
+        snakemake.output.fasta,
+        snakemake.output.ignore_list,
+        snakemake.params.min_chrom_length,
+        snakemake.input.info,
+        snakemake.params.polypolish_flag,
+        snakemake.params.circular_chromosome,
+    )

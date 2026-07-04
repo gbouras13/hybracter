@@ -134,7 +134,7 @@ rule select_best_chromosome_assembly_complete:
         hybracter_summary=os.path.join(
             dir.out.final_summaries_complete, "{sample}_summary.tsv"
         ),
-        per_conting_summary=os.path.join(
+        per_contig_summary=os.path.join(
             dir.out.final_summaries_complete, "{sample}_per_contig_stats.tsv"
         ),
     params:
@@ -179,7 +179,7 @@ rule select_best_chromosome_assembly_incomplete:
         hybracter_summary=os.path.join(
             dir.out.final_summaries_incomplete, "{sample}_summary.tsv"
         ),
-        per_conting_summary=os.path.join(
+        per_contig_summary=os.path.join(
             dir.out.final_summaries_incomplete, "{sample}_per_contig_stats.tsv"
         ),
     params:

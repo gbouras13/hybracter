@@ -4,8 +4,7 @@ Snakefile for downloading plassembler database
 
 import os
 import glob
-import attrmap as ap
-import attrmap.utils as au
+from hybracter.util import AttrMap
 from pathlib import Path
 
 
@@ -13,11 +12,10 @@ from pathlib import Path
 configfile: os.path.join(workflow.basedir, "../", "config", "config.yaml")
 
 
-config = ap.AttrMap(config)
+config = AttrMap(config)
 
 # flag to download all medaka models
 MEDAKA_DOWNLOAD = config.args.medaka
-MAC = config.args.mac
 
 
 # directories

@@ -1,21 +1,14 @@
 #!/usr/bin/env python3
 
 
-import pandas as pd
-
-
 def get_sum_len(file_path):
     """
-    get sum_len from seqkit output
+    get sum_len from seqkit stats -T output
     """
-
-    # Define the column names based on the file format
-
-    # Read the file into a pandas DataFrame
-    df = pd.read_csv(file_path, sep="\t")
-    sum_len_value = df["sum_len"].values[0]
-
-    return sum_len_value
+    with open(file_path) as fh:
+        cols = fh.readline().strip().split("\t")
+        vals = fh.readline().strip().split("\t")
+    return int(vals[cols.index("sum_len")])
 
 
 def get_quick_coverage_estimate(
@@ -35,9 +28,10 @@ def get_quick_coverage_estimate(
         file.write(str(coverage))
 
 
-get_quick_coverage_estimate(
-    snakemake.input.r1,
-    snakemake.input.r2,
-    snakemake.params.chromlen,
-    snakemake.output.sr_coverage,
-)
+if "snakemake" in globals():  # only runs under Snakemake; lets pytest import this module
+    get_quick_coverage_estimate(
+        snakemake.input.r1,
+        snakemake.input.r2,
+        snakemake.params.chromlen,
+        snakemake.output.sr_coverage,
+    )

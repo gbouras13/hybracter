@@ -1,0 +1,3 @@
+Sample	Complete	Total_assembly_length	Number_of_contigs	Most_accurate_polishing_round	Longest_contig_length	Longest_contig_coverage	Number_circular_plasmids
+Sample1	True	73079	2	medaka_rd_2	70606	60	1
+Sample2	False	70606	1	medaka	70606	61	Unknown
