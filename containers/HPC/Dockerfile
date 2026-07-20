@@ -69,6 +69,6 @@ RUN HYBRACTER_PKG=$(python3 -c "import hybracter, os; print(os.path.dirname(hybr
     touch ${HYBRACTER_PKG}/databases/medaka.flag
 RUN python3 -c "import hybracter, os; print(os.listdir(os.path.join(os.path.dirname(hybracter.__file__), 'databases')))"
 RUN hybracter install --medaka
-RUN hybracter test-hybrid --use-conda -t 8 -o hybracter_out_hybrid
-RUN hybracter test-long --use-conda -t 8 -o hybracter_out_long
-RUN rm -rf hybracter_out_long hybracter_out_hybrid
+RUN hybracter test-hybrid --use-conda -t 8 -o hybracter_out_hybrid --contaminants lambda
+RUN hybracter test-long --use-conda -t 8 -o hybracter_out_long --contaminants lambda
+RUN rm -rf hybracter_out_long hybracter_out_hybrid hybracter_out_contam
