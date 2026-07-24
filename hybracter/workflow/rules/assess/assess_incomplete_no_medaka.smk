@@ -14,10 +14,11 @@ rule assess_incomp_pre_polish:
         ale=temp(
             os.path.join(dir.out.ale_out_files, "{sample}", "incomp_pre_polish.ale")
         ),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_incomp_pre_polish_1.sam")),
         score=os.path.join(
             dir.out.ale_scores_incomplete, "{sample}", "incomp_pre_polish.score"
         ),
+    params:
+        sam1=os.path.join(dir.out.ale_sams, "{sample}_incomp_pre_polish_1.sam"),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -32,9 +33,10 @@ rule assess_incomp_pre_polish:
         """
 
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
-        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {params.sam1} 2> {log}
+        ALE {params.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        rm {params.sam1}
         """
 
 
@@ -54,12 +56,11 @@ rule assess_polypolish_incomplete:
                 dir.out.ale_out_files, "{sample}", "polypolish_incomplete.ale"
             )
         ),
-        sam1=temp(
-            os.path.join(dir.out.ale_sams, "{sample}_polypolish_incomplete_1.sam")
-        ),
         score=os.path.join(
             dir.out.ale_scores_incomplete, "{sample}", "polypolish_incomplete.score"
         ),
+    params:
+        sam1=os.path.join(dir.out.ale_sams, "{sample}_polypolish_incomplete_1.sam"),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -74,9 +75,10 @@ rule assess_polypolish_incomplete:
         """
 
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
-        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {params.sam1} 2> {log}
+        ALE {params.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        rm {params.sam1}
         """
 
 
@@ -96,10 +98,11 @@ rule assess_polca_incomplete:
         ale=temp(
             os.path.join(dir.out.ale_out_files, "{sample}", "pypolca_incomplete.ale")
         ),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_pypolca_incomplete_1.sam")),
         score=os.path.join(
             dir.out.ale_scores_incomplete, "{sample}", "pypolca_incomplete.score"
         ),
+    params:
+        sam1=os.path.join(dir.out.ale_sams, "{sample}_pypolca_incomplete_1.sam"),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -114,7 +117,8 @@ rule assess_polca_incomplete:
         """
 
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
-        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} > {params.sam1} 2> {log}
+        ALE {params.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        rm {params.sam1}
         """
