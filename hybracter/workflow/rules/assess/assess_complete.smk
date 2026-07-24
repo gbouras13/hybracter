@@ -44,7 +44,7 @@ rule assess_chrom_pre_polish:
         bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {output.sam1} {log}
         """
 
 
@@ -79,7 +79,7 @@ rule assess_medaka_rd_1:
         bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {output.sam1} {log}
         """
 
 
@@ -112,7 +112,7 @@ rule assess_medaka_rd_2:
         bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {output.sam1} {log}
         """
 
 
@@ -145,7 +145,7 @@ rule assess_polypolish:
         bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {output.sam1} {log}
         """
 
 
@@ -178,5 +178,5 @@ rule assess_pypolca:
         bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {output.sam1} {log}
         """

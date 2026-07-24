@@ -35,6 +35,7 @@ rule assess_incomp_pre_polish:
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        rm {output.sam1}
         """
 
 
@@ -72,6 +73,7 @@ rule assess_medaka_incomplete:
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        rm {output.sam1}
         """
 
 
@@ -114,6 +116,7 @@ rule assess_polypolish_incomplete:
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        rm {output.sam1}
         """
 
 
@@ -154,4 +157,5 @@ rule assess_polca_incomplete:
         bwa mem -t {threads} -a {input.fasta} {input.r1} > {output.sam1} 2> {log}
         ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
+        rm {output.sam1}
         """
