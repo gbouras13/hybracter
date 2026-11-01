@@ -22,7 +22,7 @@ rule assess_incomp_pre_polish:
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
-        mem_mb=config.resources.med.cpu,
+        mem_mb=config.resources.med.mem,
         time=config.resources.med.time,
     threads: config.resources.big.cpu
     benchmark:
