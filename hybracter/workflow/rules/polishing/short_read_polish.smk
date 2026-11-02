@@ -74,6 +74,7 @@ rule polypolish:
             polypolish polish --careful {input.fasta} {input.sam1} {input.sam2} > {output.fasta} 2> {log}
         fi
         polypolish --version > {output.version}
+        rm {input.sam1} {input.sam2}
         """
 
 

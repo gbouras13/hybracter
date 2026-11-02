@@ -123,6 +123,7 @@ dir.out.ale_scores_incomplete = os.path.join(
     dir.out.processing, "ale_scores_incomplete"
 )
 dir.out.ale_sams = os.path.join(dir.out.processing, "ale_sams")
+os.makedirs(dir.out.ale_sams, exist_ok=True)
 dir.out.ale_out_files = os.path.join(dir.out.processing, "ale_out_files")
 dir.out.ale_summary = os.path.join(dir.out.results, "ale_score_summaries")
 

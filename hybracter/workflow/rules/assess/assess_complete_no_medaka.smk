@@ -1,7 +1,7 @@
 """
 scores need to be sequential so that it can easily be aggregated based on a polca flag or not - otherwise I need another rule
 
-assess all the genome (including plasmids). 
+assess all the genome (including plasmids).
 
 This is to avoid the Medaka polishing style errors when you use the whole read set to polish only certain contigs
 
@@ -27,7 +27,8 @@ rule assess_chrom_pre_polish:
         ale=temp(
             os.path.join(dir.out.ale_out_files, "{sample}", "chrom_pre_polish.ale")
         ),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_chrom_pre_polish_1.sam")),
+    params:
+        sam1=os.path.join(dir.out.ale_sams, "{sample}_chrom_pre_polish_1.sam"),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -41,10 +42,10 @@ rule assess_chrom_pre_polish:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
-        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {params.sam1} 2> {log}
+        ALE {params.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {params.sam1} {log}
         """
 
 
@@ -62,7 +63,8 @@ rule assess_polypolish:
     output:
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "polypolish.score"),
         ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "polypolish.ale")),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_polypolish.sam")),
+    params:
+        sam1=os.path.join(dir.out.ale_sams, "{sample}_polypolish.sam"),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -76,10 +78,10 @@ rule assess_polypolish:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
-        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {params.sam1} 2> {log}
+        ALE {params.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {params.sam1} {log}
         """
 
 
@@ -95,7 +97,8 @@ rule assess_pypolca:
     output:
         score=os.path.join(dir.out.ale_scores_complete, "{sample}", "pypolca.score"),
         ale=temp(os.path.join(dir.out.ale_out_files, "{sample}", "pypolca.ale")),
-        sam1=temp(os.path.join(dir.out.ale_sams, "{sample}_pypolca.sam")),
+    params:
+        sam1=os.path.join(dir.out.ale_sams, "{sample}_pypolca.sam"),
     conda:
         os.path.join(dir.env, "ale.yaml")
     resources:
@@ -109,8 +112,8 @@ rule assess_pypolca:
     shell:
         """
         bwa index {input.fasta}
-        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {output.sam1} 2> {log}
-        ALE {output.sam1} {input.fasta} {output.ale} 2> {log}
+        bwa mem -t {threads} -a {input.fasta} {input.r1} {input.r2} > {params.sam1} 2> {log}
+        ALE {params.sam1} {input.fasta} {output.ale} 2> {log}
         grep "# ALE_score: " {output.ale} | sed 's/# ALE_score: //' > {output.score}
-        rm {log}
+        rm {params.sam1} {log}
         """

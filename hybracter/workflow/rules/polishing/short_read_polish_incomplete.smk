@@ -82,4 +82,5 @@ rule polypolish_incomplete:
         fi
         polypolish --version > {output.version}
         cp {output.fasta} {output.copy_fasta}
+        rm {input.sam1} {input.sam2}
         """
