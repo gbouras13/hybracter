@@ -310,11 +310,14 @@ def run_snakemake(
     snake_command = " ".join(str(s) for s in snake_command)
     msg_box("Snakemake command", errmsg=snake_command, log=log)
     # make sure the snakemake/conda next to this python are found even if the
-    # caller's PATH lacks them (e.g. apptainer dropping the image PATH, #158)
+    # caller's PATH lacks them (e.g. apptainer dropping the image PATH, #158).
+    # Append, never prepend: a copy ahead of the rule envs' bin dirs shadows
+    # their python and breaks `#!/usr/bin/env python` tools like porechop_abi.
     env = os.environ.copy()
-    env["PATH"] = os.pathsep.join(
-        [os.path.dirname(sys.executable), env.get("PATH", "")]
-    )
+    bin_dir = os.path.dirname(sys.executable)
+    path = env.get("PATH", "")
+    if bin_dir not in path.split(os.pathsep):
+        env["PATH"] = os.pathsep.join([path, bin_dir]) if path else bin_dir
     if not subprocess.run(snake_command, shell=True, env=env).returncode == 0:
         msg("ERROR: Snakemake failed", log=log)
         sys.exit(1)
