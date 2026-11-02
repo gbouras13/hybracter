@@ -576,7 +576,7 @@ All samples that are denoted by hybracter to be incomplete will have 3 outputs i
 I would highly highly recommend running hybracter using a Snakemake profile. Please see this blog [post](https://fame.flinders.edu.au/blog/2021/08/02/snakemake-profiles-updated) for more details. I have included an example slurm profile in the profile directory, but check out this [link](https://github.com/Snakemake-Profiles) for more detail on other HPC job scheduler profiles.
 
 ```bash
-hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
+hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/slurm
 ```
 
 ## Advanced Configuration

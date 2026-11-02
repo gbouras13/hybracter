@@ -216,6 +216,9 @@ rule medaka_round_2_extract_intermediate_assembly:
         fasta=os.path.join(dir.out.medaka_rd_2, "{sample}", "consensus.fasta"),
         completeness_check=os.path.join(dir.out.completeness, "{sample}.txt"),
         info=os.path.join(dir.out.assemblies, "{sample}", "assembly_info.txt"),
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_medaka_rd_2.fasta"

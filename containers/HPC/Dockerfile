@@ -62,6 +62,10 @@ RUN set -eux ; \
 #
 COPY . /opt/hybracter_src
 RUN pip install /opt/hybracter_src
+# Some apptainer setups don't carry the image's ENV PATH into `exec` (#158).
+# /usr/local/bin is on every default PATH (unicycler lives there too); hybracter
+# itself puts /opt/miniforge3/bin back on PATH before calling snakemake.
+RUN ln -s /opt/miniforge3/bin/hybracter /usr/local/bin/hybracter
 
 RUN HYBRACTER_PKG=$(python3 -c "import hybracter, os; print(os.path.dirname(hybracter.__file__))") && \
     hybracter install --medaka || true && \

@@ -1,4 +1,7 @@
-cluster:
+# Snakemake >= 8 slurm profile (needs snakemake-executor-plugin-cluster-generic)
+# Thanks to @aforestsomewhere for the v8 migration (#55)
+executor: cluster-generic
+cluster-generic-submit-cmd:
   mkdir -p logs/{rule}/ &&
   sbatch
     --nodes=1
@@ -9,6 +12,8 @@ cluster:
     --parsable
     --output=logs/{rule}/{jobid}.out
     --error=logs/{rule}/{jobid}.err
+cluster-generic-status-cmd: ~/.config/snakemake/slurm/slurm_status.py
+cluster-generic-cancel-cmd: scancel
 default-resources:
   - mem_mb=4000
   - time=1320
@@ -17,11 +22,10 @@ latency-wait: 30
 local-cores: 8
 restart-times: 1
 max-jobs-per-second: 10
+max-status-checks-per-second: 10
 keep-going: True
 rerun-incomplete: True
 printshellcmds: True
 scheduler: greedy
-use-conda: True
+software-deployment-method: conda
 conda-frontend: conda
-cluster-status: ~/slurm-status.py
-max-status-checks-per-second: 10
