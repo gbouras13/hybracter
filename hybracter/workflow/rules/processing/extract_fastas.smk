@@ -78,6 +78,9 @@ rule copy_flye_intermediate_chrom_assembly:
     """
     input:
         fasta=os.path.join(dir.out.chrom_pre_polish, "{sample}_chromosome.fasta"),
+        lrge=os.path.join(
+            dir.out.chrom_size, "{sample}_lrge_estimated_chromosome_size.txt"
+        ),
     output:
         fasta=os.path.join(
             dir.out.intermediate_assemblies, "{sample}", "{sample}_flye.fasta"

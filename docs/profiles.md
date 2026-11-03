@@ -8,7 +8,7 @@ An example slurm profile is included in the `profile` [directory](https://github
 
 You can run `hybracter` with a profile using `--profile` e.g.:
 ```
-hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/hybracter
+hybracter hybrid --input <input.csv> --output <output_dir> --threads <threads> --profile profiles/slurm
 ```
 
 The following guide below has been copied and modified from the [hecatomb documentation](https://hecatomb.readthedocs.io/en/latest/profiles/)
@@ -24,6 +24,16 @@ or this recent [blog post on Snakemake profiles](https://fame.flinders.edu.au/bl
 ## Profiles for Hybracter
 
 The example _profile_ `config.yaml` file contains all the Snakemake options for jobs that are submitted to the scheduler.
+
+`hybracter` requires Snakemake >= 8, where cluster submission moved to executor plugins. The example profile uses the generic cluster executor, which you need to install into your hybracter environment:
+
+```bash
+mamba install -c bioconda snakemake-executor-plugin-cluster-generic
+# or: pip install snakemake-executor-plugin-cluster-generic
+```
+
+Older (Snakemake 7) profiles using `cluster:` and `cluster-status:` will not work - rename these to `cluster-generic-submit-cmd:` and `cluster-generic-status-cmd:` and add `executor: cluster-generic`.
+
 `hybracter` expects the following in the cluster commands:
 
  - `resources.time` for time in minutes
@@ -42,8 +52,8 @@ This will make troubleshooting easier for jobs that fail due to scheduler issues
 The example profile includes a 'watcher' script.
 Snakemake won't always pick up when a scheduler prematurely terminates a job, which is why we need a watcher script.
 This line in the config file tells Snakemake how to check on the status of a job:
-`cluster-status: ~/.config/snakemake/slurm/slurm-status.py` (be sure to check and update your file path).
-The `slurm-status.py` script will query the scheduler with the jobid and report back to Snakemake on the job's status.
+`cluster-generic-status-cmd: ~/.config/snakemake/slurm/slurm_status.py` (be sure to check and update your file path).
+The `slurm_status.py` script will query the scheduler with the jobid and report back to Snakemake on the job's status.
 
 ## Profile installation examples
 
@@ -66,7 +76,7 @@ mkdir -p ~/.config/snakemake/slurm
 ```
 
 Now copy the files for the example slurm profile 
-(you can view them [here on GitHub](https://github.com/gbouras13/hybracter/tree/main/profiles/hybracter)):
+(you can view them [here on GitHub](https://github.com/gbouras13/hybracter/tree/main/profiles/slurm)):
 
 ```bash
 # go to your new profile directory
@@ -76,11 +86,11 @@ wget https://raw.githubusercontent.com/gbouras13/hybracter/main/profiles/slurm/c
 wget https://raw.githubusercontent.com/gbouras13/hybracter/main/profiles/slurm/slurm_status.py
 ```
 
-This example includes the necessary `config.yaml` file for profiles and a watcher script called `slurm-status.py`.
+This example includes the necessary `config.yaml` file for profiles and a watcher script called `slurm_status.py`.
 Make the watcher script executable:
 
 ```bash
-chmod +x ~/.config/snakemake/slurm/slurm-status.py
+chmod +x ~/.config/snakemake/slurm/slurm_status.py
 ```
 
 Done!
@@ -96,6 +106,8 @@ Cookiecutter is a nifty tool for creating projects using a template.
 For Snakemake profiles, Cookiecutter takes away a lot of the manual configuration steps involved with setting up a profile for a specific scheduler.
 There are currently [Cookiecutter templates for Slurm, SGE, PBS, and several other workload managers](https://github.com/Snakemake-Profiles),
 and `hybracter` is intended to be compatible with these profiles.
+
+Note: the Snakemake-Profiles cookiecutter templates were written for Snakemake 7 and may need updating for Snakemake >= 8 (see above).
 
 We will walk through installing the [Slurm profile using Cookiecutter](https://github.com/Snakemake-Profiles/slurm).
 To begin, create a new directory for your profile:
@@ -115,7 +127,7 @@ Follow the prompts and you're done!
 For our system, we did not need to specify anything, but you may need to specify account information for billing etc.
 There is more detail on the [GitHub page for this profile](https://github.com/Snakemake-Profiles/slurm).
 
-Use the profile with Hecatomb:
+Use the profile with hybracter:
 
 ```bash
 hybracter test-hybrid --profile slurm

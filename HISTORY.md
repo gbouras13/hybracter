@@ -1,5 +1,24 @@
 # History
 
+## v0.14.1 Updates (2 November 2026)
+
+**Bug fixes**
+
+* Fixes a container failure when running with `--contaminants` (`OSError: [Errno 30] Read-only file system` while Snakemake tried to write a conda env `.yaml` inside the image) (https://github.com/gbouras13/hybracter/issues/163). The HPC image now runs the test suite with `--contaminants lambda` at build time, so the contaminant-removal environment is pre-built in the container.
+* Large intermediate SAM files are now deleted as soon as they have been used (by Polypolish and ALE), instead of being left in `processing/ale_sams` and `processing/incomplete`. Previously these could exhaust disk quotas on large hybrid runs, particularly when a run failed part-way (https://github.com/gbouras13/hybracter/issues/165).
+* Fixes `assess_incomp_pre_polish` (and its `--no_medaka` counterpart) requesting the medium CPU count (8) as `mem_mb`, i.e. only 8 MB of memory, which caused out-of-memory failures on cluster executors (https://github.com/gbouras13/hybracter/issues/169).
+* hybracter now runs from a shared or read-only conda environment (https://github.com/gbouras13/hybracter/issues/166). If the default conda prefix inside the installed package is not writable and holds no pre-built environments, Snakemake's rule environments are built in `$XDG_CACHE_HOME/hybracter/conda` (default `~/.cache/hybracter/conda`) instead, with a warning. An explicit `--conda-prefix` is always honoured.
+* The `medaka_round_2_extract_intermediate_assembly` and `copy_flye_intermediate_chrom_assembly` rules now declare the lrge chromosome-size estimate as an input, since they read it with `--auto`.
+
+**HPC / profiles**
+
+* Updated the example slurm profile for Snakemake ≥8, which hybracter requires: it now uses the `cluster-generic` executor plugin (`snakemake-executor-plugin-cluster-generic`, which must be installed separately) instead of the removed `cluster:`/`cluster-status:` options. The docs have been updated to match (https://github.com/gbouras13/hybracter/issues/55). Thanks @aforestsomewhere.
+
+**Containers**
+
+* Removed the outdated `minimal` Dockerfile (pinned to hybracter v0.11.2); the HPC image is the maintained container.
+* `hybracter` is now symlinked into `/usr/local/bin`, and hybracter puts its own Python's `bin` directory on `PATH` before calling Snakemake. This fixes `"hybracter": executable file not found in $PATH` under Apptainer setups that drop the image's `PATH` (https://github.com/gbouras13/hybracter/issues/158).
+
 ## v0.14.0 Updates (3 July 2026)
 
 This release fixes a crash on newer Snakemake, resolves several assembly-selection and container bugs, unifies macOS/Apple Silicon support, and modernises hybracter's internals (with no change to assembly results).

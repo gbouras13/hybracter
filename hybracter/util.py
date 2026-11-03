@@ -88,6 +88,41 @@ def snake_base(rel_path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), rel_path)
 
 
+def resolve_conda_prefix(conda_prefix, log=None):
+    """Fall back to a user cache dir if the default conda prefix is read-only.
+
+    The default prefix lives inside the installed package, which can't be
+    written in a shared/read-only conda env (#166). If it already holds built
+    envs (e.g. the container), Snakemake can use them read-only, so keep it.
+    A prefix the user passed explicitly is always honoured.
+    """
+    default_prefix = snake_base(os.path.join("workflow", "conda"))
+    if os.path.realpath(conda_prefix) != os.path.realpath(default_prefix):
+        return conda_prefix
+    if not os.path.isdir(conda_prefix) and os.access(
+        os.path.dirname(conda_prefix), os.W_OK
+    ):
+        os.makedirs(conda_prefix)
+    if os.access(conda_prefix, os.W_OK):
+        return conda_prefix
+    if os.path.isdir(conda_prefix) and any(
+        e.name.endswith("_") and e.is_dir() for e in os.scandir(conda_prefix)
+    ):
+        return conda_prefix
+    cache_home = os.environ.get("XDG_CACHE_HOME") or os.path.join(
+        os.path.expanduser("~"), ".cache"
+    )
+    fallback = os.path.join(cache_home, "hybracter", "conda")
+    os.makedirs(fallback, exist_ok=True)
+    msg(
+        f"WARNING: default conda prefix {conda_prefix} is not writable. "
+        f"Snakemake conda envs will be built in {fallback} instead "
+        "(override with --conda-prefix).",
+        log=log,
+    )
+    return fallback
+
+
 def sanitise_sample_name(sample):
     """Strip surrounding whitespace and replace internal spaces with underscores.
 
@@ -260,6 +295,7 @@ def run_snakemake(
     if use_conda:
         snake_command += ["--use-conda"]
         if conda_prefix:
+            conda_prefix = resolve_conda_prefix(conda_prefix, log=log)
             snake_command += ["--conda-prefix", conda_prefix]
 
     # add snakemake default args
@@ -273,7 +309,16 @@ def run_snakemake(
     # Run Snakemake!!!
     snake_command = " ".join(str(s) for s in snake_command)
     msg_box("Snakemake command", errmsg=snake_command, log=log)
-    if not subprocess.run(snake_command, shell=True).returncode == 0:
+    # make sure the snakemake/conda next to this python are found even if the
+    # caller's PATH lacks them (e.g. apptainer dropping the image PATH, #158).
+    # Append, never prepend: a copy ahead of the rule envs' bin dirs shadows
+    # their python and breaks `#!/usr/bin/env python` tools like porechop_abi.
+    env = os.environ.copy()
+    bin_dir = os.path.dirname(sys.executable)
+    path = env.get("PATH", "")
+    if bin_dir not in path.split(os.pathsep):
+        env["PATH"] = os.pathsep.join([path, bin_dir]) if path else bin_dir
+    if not subprocess.run(snake_command, shell=True, env=env).returncode == 0:
         msg("ERROR: Snakemake failed", log=log)
         sys.exit(1)
     else:
